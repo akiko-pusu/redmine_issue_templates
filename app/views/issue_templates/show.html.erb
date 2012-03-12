@@ -1,0 +1,59 @@
+<div class="contextual">
+<%= link_to_if_authorized l(:button_edit), 
+   {:controller => 'issue_templates', :action => 'edit', :id => @issue_template, 
+    :project_id => @project},
+    :class => 'icon icon-edit',
+    :accesskey => accesskey(:edit),
+    :onclick => 'Element.show("edit-issue_template"); return false;' %>
+<%= link_to_if_authorized l(:button_delete), 
+  {:controller => 'issue_templates', :action => 'destroy', 
+	:id => @issue_template, :project_id => @project}, 
+        :confirm => l(:text_are_you_sure), :method => :post, :class => 'icon icon-del' %>
+</div>
+
+<h2><%= l(:issue_templates) %>: #<%= @issue_template.id %> <%= avatar(@issue_template.author, :size => "24") %></h2>
+
+<% if authorize_for('issue_templates', 'edit') %>
+<div id="edit-issue_template" style="display:none;">
+<% labelled_tabular_form_for :issue_template, @issue_template, :url => { :controller => 'issue_templates', :action => 'edit', :project_id => @project, :id => @issue_template },
+       :html => { :id => 'issue_template-form',
+       :class => nil,
+       :multipart => false } do |f| %> 
+<%= render :partial => 'form', :locals => { :f => f } %>
+<%= submit_tag l(:button_edit) %>
+<% end %>
+<%= link_to_remote l(:label_preview),
+                   { :url => { :controller => 'issue_templates', :action => 'preview', :id => @issue_template },
+                     :method => 'post',
+                     :update => 'preview',
+                     :with => "Form.serialize('issue_template-form')"
+                   }, :accesskey => accesskey(:preview) %> |
+<%= link_to l(:button_cancel), {:action => 'index'}, :onclick => 'Element.hide("edit-issue_template"); return false;' %>
+<div id="preview" class="wiki"></div>
+<hr/>
+</div>
+<% end %>
+
+
+<div class="box tabular">
+<p>
+<label><%= l(:field_title) %></label>
+<%= h @issue_template.title %>
+</p>
+<p><label><%= l(:label_tracker) %></label>
+<%= h @issue_template.tracker.name %>
+</p>
+<p><label><%=  l(:field_author) %></label>
+<%= @issue_template.author %> (<%= @issue_template.updated_on %>)</p>
+
+<p>
+<label for="issue_template_description"><%= l(:template_description) %></label>
+<%=  textilizable(@issue_template.description) %>
+</p>
+<p><label><%= l(:issue_template_note) %></label>
+<%= @issue_template.note.blank? ? l(:label_none) : @issue_template.note %>
+</p>
+<p><label><%= l(:label_enabled) %></label>
+<%= @issue_template.enabled? ? l(:label_enabled) : l(:label_disabled) %>
+</p>
+</div>

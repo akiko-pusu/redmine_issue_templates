@@ -1,0 +1,73 @@
+#main-menu a.issue-templates.selected { 
+    background-image: url(../images/issue_templates.png); 
+    background-repeat: no-repeat;
+    background-position: 3px center; 
+    padding-left: 18px;
+}
+
+#main-menu a.issue-templates.selected:hover { 
+    background-image: url(../images/issue_templates.png); 
+    background-repeat: no-repeat;
+    background-position: 3px center; 
+    padding-left: 18px;
+}
+
+#main-menu a.issue-templates { 
+    background-image: url(../images/issue_templates.png); 
+    background-repeat: no-repeat;
+    background-position: 3px center;
+    color: transparent;
+    padding-left: 18px;
+}
+
+#main-menu a.issue-templates:hover { 
+    background-image: url(../images/issue_templates.png); 
+    background-repeat: no-repeat;
+    background-position: 3px center;
+    padding-left: 18px;
+}
+
+#template_help_message {
+}
+
+#template_area {
+}
+
+.template_help {
+    display: block;
+    border: solid #BBB 1px;
+    background-color: #F0F0F0;
+    padding: 1em;
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+}
+
+#template_help_content {
+    position:relative;
+    text-align: left;
+    margin-left: 0.5em;
+}
+
+#template_help_content p{
+    padding-left: 5px;
+}
+
+  
+div.template_help div#template_help_hide {
+    display:block;
+    position:absolute;
+    bottom:5px;
+    right:10px;
+    font-size:smaller;
+    background:none;
+    color:#000;
+    filter: alpha(opacity=30);
+    -moz-opacity: 0.3;
+    opacity: 0.3;    
+}
+
+div.template_help div#template_help_hide:hover {
+    filter: alpha(opacity=80);
+    -moz-opacity: 0.8;
+    opacity: 0.8;    
+}

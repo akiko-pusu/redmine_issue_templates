@@ -1,0 +1,34 @@
+<div id="issue_templates_settings">
+<%
+@issue_templates_setting = IssueTemplateSetting.find_or_create(@project.id)
+ %>
+  <p><%= l(:about_help_message) %></p>  
+<% labelled_tabular_form_for :settings, @issue_templates_setting,
+                             :url => {:controller => 'issue_templates_settings',
+                             :action => 'edit', :project_id => @project, :tab => 'issue_templates',
+                             :setting_id => @issue_templates_setting.id}, 
+                             :html => {:id => 'issue_templates_settings' } do |f| %>
+    <%= error_messages_for 'issue_templates_setting' %>
+    <div class="box">
+    <p><%= f.check_box :enabled, :label => l(:field_enabled) %></p>     
+    <p><label><%=l(:label_help_message)%></label>
+   <%=content_tag(:label, l(:label_help_message)) %>
+   <%=text_area_tag 'settings[help_message]',  @issue_templates_setting['help_message'],  :size =>"50x5", 
+        :class => 'wiki-edit' ,:required => true  %><br/>
+ <%= wikitoolbar_for "settings_help_message" %>
+   <%= link_to_remote l(:label_preview),
+                       { :url => { :controller => 'issue_templates_settings', 
+                         :action => 'preview', :project_id => @project},
+                         :method => 'post',
+                         :id => 'help_preview',
+                         :update => 'template_help_preview',
+                         :with => "Form.serialize('issue_templates_settings')",
+                         :complete => "Element.scrollTo('template_help_preview')"
+                       }, :accesskey => accesskey(:preview) %>
+<div id="template_help_preview" class="wiki"></div>       
+        
+    </div>
+    <%= submit_tag l(:button_update) %>
+<% end %>
+</div>
+

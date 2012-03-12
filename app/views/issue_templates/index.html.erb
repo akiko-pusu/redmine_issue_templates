@@ -1,0 +1,36 @@
+<div class="contextual">
+  <%= link_to_if_authorized(l(:label_new), 
+    {:controller => 'issue_templates', :action => 'new', :project_id => @project}, 
+    :class => 'icon icon-add',:onclick => 'Element.show("add-template"); return false;') %>
+</div>
+
+<% if @notice -%>
+  <div class="flash notice"><%= @notice -%></div>
+<% end -%>
+
+<table class="list issues">
+  <thead>
+    <tr>
+      <th><%= sort_header_tag 'id', :caption => '#' %></th> 
+      <th><%= sort_header_tag 'title', :caption => l(:field_title) %></th>
+      <th><%= sort_header_tag 'tracker_id', :caption =>  l(:field_tracker) %></th>
+      <th><%= sort_header_tag 'author_id', :caption => l(:field_author) %></th> 
+      <th><%= sort_header_tag 'updated_on', :caption => l(:field_updated_on) %></th>
+      <th><%= sort_header_tag 'enabled', :caption => l(:label_enabled) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @issue_templates.each do |issue_template| %>
+      <tr class="<%= cycle("odd", "even") %> issue_template issue">
+        <td colspan="2"><%= issue_template.id %></td>
+        <td colspan="2"><%= link_to h(issue_template.title),  :controller => 'issue_templates', 
+                 :action => 'show', :id => issue_template.id, :project_id => @project %></td>
+        <td colspan="2"><%=h issue_template.tracker.name %></td>
+        <td colspan="2"><%=h issue_template.author %></td>
+        <td colspan="2"><%= format_time(issue_template.updated_on)%> </td>
+        <td colspan="2"><%= image_tag('true.png') if issue_template.enabled? %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

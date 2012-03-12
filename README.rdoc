@@ -1,0 +1,27 @@
+= Redmine Issue Templates Plugin 
+
+Plugin to generate and use issue templates to assist issue creation. 
+
+=== Plugin installation
+
+1. Copy the plugin directory into the vendor/plugins directory.
+2. Do migration task. (e.g. rake db:migrate_plugins RAILS_ENV=production)
+2. (Re)Start Redmine.
+
+=== Note
+
+This plugin aims to assist contributor's feedback by using template if the 
+project has some format for issues.
+
+=== Repository
+
+* https://bitbucket.org/akiko_pusu/redmine_issue_templates
+
+=== WebPage
+
+* http://www.r-labs.org/projects/issue-template (Project Page)
+
+
+=== License
+
+This software is licensed under the GNU GPL v2. See COPYRIGHT and COPYING for details. 

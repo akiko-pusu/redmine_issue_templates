@@ -1,0 +1,48 @@
+<% return '' unless @project.module_enabled? :issue_templates %>
+ <%
+   # TODO: This code should be moved from vire template.
+   @setting = IssueTemplateSetting.find_or_create(@project.id)
+   grouprd_options = []
+   
+   # default set templates of first tracker
+   tracker = @project.trackers[0]
+   group = []
+   tmpls = IssueTemplate.find(:all, 
+      :conditions => ['tracker_id = ? AND project_id = ? AND enabled = ?',
+        tracker.id, @project.id, true])
+   if tmpls.size > 0
+     tmpls.each { |x| group.push([x.title, x.id]) }
+     grouprd_options.push([tracker.name, group])
+   end 
+ %>
+
+<div id="template_area" style="margin-top: 4pt;">
+<label><%=h l(:issue_template)%></label>
+  <select id="issue_template" include_blank="true" length="150" name="issue_template">
+    <option value="">---</option>
+    <%= grouped_options_for_select(grouprd_options) %>
+  </select>
+    
+  <% if @setting.enable_help? == true %>    
+  <a class="icon icon-help" href="#" title="<%= l(:about_template_help_message) %>"
+     onclick="checkExpand('template_help_content');">
+<%= l(:label_help_message) %></a>    
+    <br/>   
+  <% end %>
+ <div class="template_help box" id="template_help_content" style="display: none;"><%= textilizable @setting.help_message %>
+  <div id="template_help_hide"><a href="#" onClick="checkExpand('template_help_content');" title="<%= l(:close_help) %>">[x]</a></div>
+</div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+
+token = '<%= form_authenticity_token %>';
+load_url = '<%= url_for(:controller => 'issue_templates', 
+      :action => 'load', :project_id => @project) %>';
+pulldown_url = '<%= url_for(:controller => 'issue_templates', 
+      :action => 'set_pulldown', :project_id => @project) %>';
+document.observe("dom:loaded", function() {
+   Event.observe('issue_tracker_id', 'change', function(e){ set_pulldown(e, pulldown_url, token); },false ); 
+   Event.observe('issue_template', 'change', function(e){ load_template(e, load_url, token); },false);
+});    
+</script>

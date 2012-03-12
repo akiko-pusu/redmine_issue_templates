@@ -1,0 +1,14 @@
+# English strings go here for Rails i18n
+en:
+  issue_templates: Templates
+  issue_template: Issue template
+  issue_template_note: note
+  label_enabled: Enable
+  label_disabled: Disable  
+  template_description: Template description
+  label_help_meessage: About templates
+  label_show_help_message: Show help message when create/update issues. 
+  about_help_message: Each project can customize help message for templates.
+  close_help: Close help message.
+  about_template_help_message: You can see the instruction of issue templates on this project.
+  label_enabled_help_message: Checkbox to activate (enabled) to this template. If you hope to save this template as draft, turn this checkbox off.

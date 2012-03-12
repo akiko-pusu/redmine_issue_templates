@@ -1,0 +1,21 @@
+<%= error_messages_for 'issue_template' %>
+<div class="box tabular">
+<p><%= f.text_field :title, :required => true, :size => 100, :label => l(:field_title) %> </p>
+<p><%= f.select :tracker_id, @project.trackers.collect {|t| [t.name, t.id]}, :required => true,:label => l(:label_tracker) %></p>
+<p>
+<%= f.text_area :description,:cols => 78, :rows => 12,
+                 :required => true,
+                 :label => l(:template_description), :style => "overflow:auto;" %>
+</p>
+<p>
+<%= f.text_area :note,:cols => 70, :rows => 3,
+                 :required => false,
+                 :label => l(:issue_template_note), :style => "overflow:auto;" %>
+</p>
+<p><%= f.check_box :enabled, :label => l(:label_enabled) %> <%= l(:label_enabled_help_message) %></p>
+</div>
+
+<%= wikitoolbar_for 'issue_template_description' %>
+
+
+
