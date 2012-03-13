@@ -1,4 +1,5 @@
 <% return '' unless @project.module_enabled? :issue_templates %>
+<% return '' unless authorize_for('issue_templates', 'show') %>
  <%
    # TODO: This code should be moved from vire template.
    @setting = IssueTemplateSetting.find_or_create(@project.id)
