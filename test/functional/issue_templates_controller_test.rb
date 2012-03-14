@@ -27,7 +27,7 @@ class IssueTemplatesControllerTest < ActionController::TestCase
     end   
 
     should "return new template instance when request is get" do
-      get :new, :project_id => 1, :author_id => User.current.id
+      get :new, :project_id => 1, :author_id => 2
       assert_response :success
 
       template = assigns(:issue_template)
@@ -44,8 +44,8 @@ class IssueTemplatesControllerTest < ActionController::TestCase
     should "insert new template record when request is post" do
       count = IssueTemplate.find(:all).length
       post :new, :issue_template => {:title => "newtitle", :note => "note", 
-        :description => "description", :tracker_id => 1, :enabled => 1, 
-        :author_id => 1 }, :project_id => 1
+        :description => "description", :tracker_id => 1, :enabled => 1, :author_id => 3 
+        }, :project_id => 1
 
       template = IssueTemplate.first(:order => 'id DESC')
       assert_response :redirect # show
@@ -82,7 +82,7 @@ class IssueTemplatesControllerTest < ActionController::TestCase
 
     should "should edit template when request is post" do
       post :edit, :id => 2, 
-        :issue_template => { :description => 'Update Test template2' }, 
+        :issue_template => { :description => 'Update Test template2'}, 
         :project_id => 1
       project = Project.find 1
       assert_response :redirect # show
@@ -98,6 +98,21 @@ class IssueTemplatesControllerTest < ActionController::TestCase
       assert_redirected_to :controller => 'issue_templates', 
         :action => "index",  :project_id => project
       assert_raise(ActiveRecord::RecordNotFound) {IssueTemplate.find(1)}
+    end
+    
+    should "not be able to change project id and safe attributes" do
+       post :edit, :id => 2, 
+        :issue_template => { :description => 'Update Test template2', 
+        :project_id => 2, :author_id => 2 }, 
+        :project_id => 1
+      project = Project.find 1
+      assert_response :redirect # show
+      issue_template = IssueTemplate.find(2)
+      assert_redirected_to :controller => 'issue_templates', 
+        :action => "show", :id => issue_template.id,  :project_id => project
+      assert_equal 'Update Test template2', issue_template.description
+      assert_equal(1, issue_template.project.id)
+      assert_equal(1, issue_template.author.id)     
     end
   
   end

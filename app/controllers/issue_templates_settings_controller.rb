@@ -6,7 +6,7 @@ class IssueTemplatesSettingsController < ApplicationController
   def edit
     if (params[:settings] != nil)
       @issue_templates_setting = IssueTemplateSetting.find_or_create(@project.id)
-      @issue_templates_setting.attributes = params[:settings]
+      @issue_templates_setting.safe_attributes = params[:settings]
       @issue_templates_setting.save!
       flash[:notice] = l(:notice_successful_update)
       redirect_to :controller => 'projects', 

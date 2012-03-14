@@ -13,7 +13,6 @@ class IssuteTemplatesSettingControllerTest < ActionController::TestCase
     @controller = IssueTemplatesSettingsController.new
     @response   = ActionController::TestResponse.new
     # Enabled Template module
-    #EnabledModule.generate! :project_id => 1, :name => 'issue_templates'
     enabled_module = EnabledModule.new
     enabled_module.project_id = 1
     enabled_module.name = 'issue_templates'	
@@ -45,10 +44,9 @@ class IssuteTemplatesSettingControllerTest < ActionController::TestCase
         should "should redirect post" do
           project = Project.find 1
           post :edit, :project_id => project, 
-            :settings => { :enabled => "1", :help_message => "Hoo"},
+            :settings => { :enabled => "1", :help_message => "Hoo", :project_id => 2},
             :setting_id => 1, :tab => "issue_templates"
-          assert_response :redirect
-          
+          assert_response :redirect          
           assert_redirected_to :controller => 'projects', 
             :action => "settings", :id => project, :tab => 'issue_templates'
         end

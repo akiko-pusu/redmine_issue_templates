@@ -29,7 +29,7 @@ class IssueTemplatesController < ApplicationController
       :tracker => @tracker)
     if request.post?
       # Case post, set attributes passed as parameters.
-      @issue_template.attributes = params[:issue_template]
+      @issue_template.safe_attributes = params[:issue_template]
       if @issue_template.save
         flash[:notice] = l(:notice_successful_create)
         redirect_to :action => "show", :id => @issue_template.id, :project_id => @project
@@ -40,7 +40,7 @@ class IssueTemplatesController < ApplicationController
 
   def edit
     if request.post?
-      @issue_template.attributes = params[:issue_template]
+      @issue_template.safe_attributes = params[:issue_template]
       if @issue_template.save
         flash[:notice] = l(:notice_successful_update)
         redirect_to :action => "show", :id => @issue_template.id,  :project_id => @project
