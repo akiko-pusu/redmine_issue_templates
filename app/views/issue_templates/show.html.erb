@@ -9,9 +9,13 @@
   {:controller => 'issue_templates', :action => 'destroy', 
 	:id => @issue_template, :project_id => @project}, 
         :confirm => l(:text_are_you_sure), :method => :post, :class => 'icon icon-del' %>
+<%= link_to(l(:label_list_templates),
+              {:controller => :issue_templates,
+              :action => :index,
+              :project_id => @project}, :class => 'template') %>  
 </div>
 
-<h2><%= l(:issue_templates) %>: #<%= @issue_template.id %> <%= avatar(@issue_template.author, :size => "24") %></h2>
+<h2 class="template"><%= l(:issue_templates) %>: #<%= @issue_template.id %> <%= avatar(@issue_template.author, :size => "24") %></h2>
 
 <% if authorize_for('issue_templates', 'edit') %>
 <div id="edit-issue_template" style="display:none;">

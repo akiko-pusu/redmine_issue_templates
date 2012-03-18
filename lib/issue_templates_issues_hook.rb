@@ -27,4 +27,6 @@ class IssueTemplatesIssuesHook < Redmine::Hook::ViewListener
       }
     ) 
   end
+  
+  render_on :view_issues_sidebar_issues_bottom, :partial => 'issue_templates/issue_template_link'
 end

@@ -12,3 +12,6 @@ ja:
   close_help: "ヘルプメッセージを閉じます。"
   about_template_help_message: "プロジェクト毎のテンプレートに関するヘルプを表示します。"
   label_enabled_help_message: "有効にチェックを入れると、選択できるようになります。ドラフト状態の場合は、チェックを外して下さい。"
+  label_list_templates: "一覧"
+  label_new_templates: "新規作成"
+  

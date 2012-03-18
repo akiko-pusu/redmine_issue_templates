@@ -12,3 +12,5 @@ en:
   close_help: Close help message.
   about_template_help_message: You can see the instruction of issue templates on this project.
   label_enabled_help_message: Checkbox to activate (enabled) to this template. If you hope to save this template as draft, turn this checkbox off.
+  label_list_templates: "Template list"
+  label_new_templates: "Add template"

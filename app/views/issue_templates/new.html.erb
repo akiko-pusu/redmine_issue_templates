@@ -1,4 +1,10 @@
-<h2><%=h "#{l(:issue_templates)} / #{l(:button_add)}" %></h2>
+<div class="contextual">
+<%= link_to(l(:label_list_templates),
+              {:controller => :issue_templates,
+              :action => :index,
+              :project_id => @project}, :class => 'template') %> 
+</div>
+<h2 class="template"><%=h "#{l(:issue_templates)} / #{l(:button_add)}" %></h2>
 <div class="box">
   <%= error_messages_for 'issue_template' %>
   <% labelled_tabular_form_for :issue_template,  @issue_template, 

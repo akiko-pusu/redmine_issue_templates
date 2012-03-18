@@ -1,0 +1,9 @@
+<% if authorize_for('issue_templates', 'show') %>
+<h4 class="template"><%= l(:issue_template)%> </h4>
+  <%= link_to(l(:label_list_templates),
+              :controller => :issue_templates,
+              :action => :index,
+              :project_id => @project) %><br />
+ <%= link_to_if_authorized(l(:label_new_templates), 
+    {:controller => 'issue_templates', :action => 'new', :project_id => @project},:onclick => 'Element.show("add-template"); return false;') %>            
+<%- end -%>

@@ -1,3 +1,4 @@
+<h2 class="template"><%=h "#{l(:issue_template)}" %></h2>
 <div class="contextual">
   <%= link_to_if_authorized(l(:label_new), 
     {:controller => 'issue_templates', :action => 'new', :project_id => @project}, 

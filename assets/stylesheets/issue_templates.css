@@ -1,30 +1,9 @@
-#main-menu a.issue-templates.selected { 
-    background-image: url(../images/issue_templates.png); 
-    background-repeat: no-repeat;
-    background-position: 3px center; 
-    padding-left: 18px;
-}
-
-#main-menu a.issue-templates.selected:hover { 
-    background-image: url(../images/issue_templates.png); 
-    background-repeat: no-repeat;
-    background-position: 3px center; 
-    padding-left: 18px;
-}
-
-#main-menu a.issue-templates { 
+.template {
     background-image: url(../images/issue_templates.png); 
     background-repeat: no-repeat;
     background-position: 3px center;
-    color: transparent;
-    padding-left: 18px;
-}
-
-#main-menu a.issue-templates:hover { 
-    background-image: url(../images/issue_templates.png); 
-    background-repeat: no-repeat;
-    background-position: 3px center;
-    padding-left: 18px;
+    padding-top: 3px;
+    padding-left: 18px;    
 }
 
 #template_help_message {
@@ -52,7 +31,6 @@
     padding-left: 5px;
 }
 
-  
 div.template_help div#template_help_hide {
     display:block;
     position:absolute;
