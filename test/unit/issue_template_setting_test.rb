@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class IssueTemplateSettingTest < ActiveSupport::TestCase
-  fixtures :issue_template_settings
+  fixtures :issue_template_settings, :projects
 
   def setup
     @issue_template_setting = IssueTemplateSetting.find(1)
