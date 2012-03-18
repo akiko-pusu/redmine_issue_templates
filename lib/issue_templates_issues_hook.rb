@@ -13,5 +13,18 @@ class IssueTemplatesIssuesHook < Redmine::Hook::ViewListener
     return o
   end
   
-  render_on :view_issues_form_details_top, :partial => 'issue_templates/issue_select_form'
+  def view_issues_form_details_top(context={})
+    action = context[:request].parameters[:action]
+    project_id = context[:request].parameters[:project_id]
+
+    if (action != 'new' && action != 'create') || !project_id then
+      return ''
+    end
+    context[:controller].send(
+      :render_to_string,
+      {
+        :partial => 'issue_templates/issue_select_form'
+      }
+    ) 
+  end
 end
