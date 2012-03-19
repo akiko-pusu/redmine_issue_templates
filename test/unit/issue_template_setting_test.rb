@@ -12,8 +12,9 @@ class IssueTemplateSettingTest < ActiveSupport::TestCase
   end
   
   def test_help_message_enabled
-    assert_equal(true, @issue_template_setting.enabled)
-    assert_equal(false, !@issue_template_setting.enabled)
+    enable_help = @issue_template_setting.enable_help?
+    assert_equal(true, enable_help)
+    assert_equal(false, !enable_help)
   end
 
   def test_duplicate_project_setting
@@ -26,4 +27,11 @@ class IssueTemplateSettingTest < ActiveSupport::TestCase
     templ2.attributes = {:project_id => 1, :enabled => true, :help_message => 'Help!'}
     assert !templ2.save, 'Dupricate project should be denied.'
   end
+  
+  def test_help_message_disabled
+    # load disabled template setting
+    issue_template_setting = IssueTemplateSetting.find(2)
+    enable_help = issue_template_setting.enable_help?
+    assert_equal(false, enable_help)
+  end  
 end

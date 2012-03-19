@@ -12,12 +12,12 @@ class IssueTemplateTest < ActiveSupport::TestCase
   end
   
   def test_template_enabled
-    @issue_template.enabled = true
-    @issue_template.save!
-    assert_equal true, @issue_template.enabled?, @issue_template.enabled?
+    enabled = @issue_template.enabled?
+    assert_equal true, enabled, @issue_template.enabled?
     
     @issue_template.enabled = false
     @issue_template.save!
-    assert_equal false, @issue_template.enabled?, @issue_template.enabled?
+    enabled = @issue_template.enabled?
+    assert_equal false, enabled, @issue_template.enabled?
   end  
 end
