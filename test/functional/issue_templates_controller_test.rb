@@ -47,7 +47,7 @@ class IssueTemplatesControllerTest < ActionController::TestCase
       end
       
       should "return 404 with non existing template" do
-        get :show, :id => 100
+        get :show, :id => 100, :project_id => 1
         assert_response 404
       end
       
