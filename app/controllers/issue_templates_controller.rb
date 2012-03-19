@@ -67,12 +67,11 @@ class IssueTemplatesController < ApplicationController
   def set_pulldown
     issue_templates = IssueTemplate.find(:all, 
       :conditions => ['project_id = ? AND tracker_id = ? AND enabled = ?', 
-      @project.id, params[:issue_tracker_id], true])
+      @project.id, @tracker.id, true])
     @grouped_options = []
     group = []
-    tmpls = issue_templates
-    if tmpls.size > 0
-      tmpls.each { |x| group.push([x.title, x.id]) }
+    if issue_templates.size > 0
+      issue_templates.each { |x| group.push([x.title, x.id]) }
       @grouped_options.push([@tracker.name, group])
     end      
     render :action => "issue_templates/_template_pulldown", :layout => false
