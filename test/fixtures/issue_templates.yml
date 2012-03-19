@@ -14,7 +14,7 @@ one:
 
   note: note1
   
-  enabled: 1
+  enabled: true
 
 
 two:
@@ -32,7 +32,7 @@ two:
 
   note: note2
   
-  enabled: 0
+  enabled: false
   
 three:
   id: 3
@@ -49,5 +49,38 @@ three:
 
   note: note3
   
-  enabled: 1  
+  enabled: true
+  
+four:
+  id: 4
 
+  project_id: 1
+
+  tracker_id: 1
+  
+  author_id: 2
+
+  title: titel4
+
+  description: description4
+
+  note: note4
+  
+  enabled: true   
+
+five:
+  id: 5
+
+  project_id: 1
+  
+  tracker_id: 1
+  
+  author_id: 1
+
+  title: title5
+
+  description: description5
+
+  note: note5
+  
+  enabled: false
