@@ -18,9 +18,9 @@ class IssueTemplatesControllerTest < ActionController::TestCase
     setup do
     end
 
-    should "non existing project return 404" do
+    should "return 404 with non existing project" do
       # set non existing project
-      get :index
+      get :index, :project_id => 100
       assert_response 404
     end
 
@@ -45,10 +45,24 @@ class IssueTemplatesControllerTest < ActionController::TestCase
       setup do
         Role.find(1).add_permission! :show_issue_templates         
       end
+      
+      should "return 404 with non existing template" do
+        get :show, :id => 100
+        assert_response 404
+      end
+      
       should "return json hash" do
         get :load, :project_id => 1, :issue_template => 1
         assert_response :success
         assert_equal "description1", json_response['description']
+      end
+      
+      should "render pulldown" do
+        get :set_pulldown, :project_id => 1, :issue_tracker_id => 1
+        tracker = Tracker.find(1)
+        assert_response :success
+        assert_template "issue_templates/_template_pulldown.html.erb"
+        assert_select "optgroup[label=#{tracker.name}]"
       end
     end
   end
