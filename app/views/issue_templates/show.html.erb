@@ -19,7 +19,7 @@
 
 <% if authorize_for('issue_templates', 'edit') %>
 <div id="edit-issue_template" style="display:none;">
-<% labelled_tabular_form_for :issue_template, @issue_template, :url => { :controller => 'issue_templates', :action => 'edit', :project_id => @project, :id => @issue_template },
+<% labelled_form_for :issue_template, @issue_template, :url => { :controller => 'issue_templates', :action => 'edit', :project_id => @project, :id => @issue_template },
        :html => { :id => 'issue_template-form',
        :class => nil,
        :multipart => false } do |f| %> 
