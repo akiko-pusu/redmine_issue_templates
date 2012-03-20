@@ -7,6 +7,8 @@ class IssueTemplatesController < ApplicationController
   helper :issues
   include IssuesHelper
   
+  menu_item :issues
+  
   before_filter :find_object, :only => [:show, :edit, :destroy]
   before_filter :find_user, :find_project, :authorize, :except => [ :preview ]
   before_filter :find_tracker, :only => [:set_pulldown]
