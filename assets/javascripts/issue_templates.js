@@ -22,7 +22,7 @@ function load_template(evt, target_url, token) {
          onComplete:function(request){
            eval("var template = " + request.responseText);
            $('issue_description').value = template.description
-           $('issue_subject').value = template.title
+           $('issue_subject').value = template.issue_title
          },
        parameters:'issue_template=' + encodeURIComponent(evt.target.value)
          + '&authenticity_token=' + encodeURIComponent(token)

@@ -49,3 +49,11 @@ div.template_help div#template_help_hide:hover {
     -moz-opacity: 0.8;
     opacity: 0.8;    
 }
+
+fieldset.issue {
+     padding-top: 5px; 
+     padding-bottom: 5px; 
+     background-color: #F6F6F6; 
+     margin-top: 10px; 
+     margin-bottom: 10px;
+}

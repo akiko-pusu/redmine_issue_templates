@@ -1,16 +1,21 @@
 <%= error_messages_for 'issue_template' %>
-<div class="box tabular">
-<p><%= f.text_field :title, :required => true, :size => 100, :label => l(:field_title) %> </p>
+<div class="box tabular" style="background-color: white;">
+<p><%= f.text_field :title, :required => true, :size => 100, :label => l(:issue_template_name) %> </p>
+
+<fieldset class="issue">
+<legend class="issue"><%= l(:label_applied_for_issue) %></legend>
 <p><%= f.select :tracker_id, @project.trackers.collect {|t| [t.name, t.id]}, :required => true,:label => l(:label_tracker) %></p>
+<p><%= f.text_field :issue_title, :required => false, :size => 100, :label => l(:issue_title) %> </p>
 <p>
 <%= f.text_area :description,:cols => 78, :rows => 12,
                  :required => true,
-                 :label => l(:template_description), :style => "overflow:auto;" %>
+                 :label => l(:issue_description), :style => "overflow:auto;" %>
 </p>
+</fieldset>
 <p>
 <%= f.text_area :note,:cols => 70, :rows => 3,
                  :required => false,
-                 :label => l(:issue_template_note), :style => "overflow:auto;" %>
+                 :label => l(:issue_template_note), :style => "overflow:auto;" %>  
 </p>
 <p><%= f.check_box :enabled, :label => l(:label_enabled) %> <%= l(:label_enabled_help_message) %></p>
 </div>

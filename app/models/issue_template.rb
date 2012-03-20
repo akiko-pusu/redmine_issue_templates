@@ -8,7 +8,7 @@ class IssueTemplate < ActiveRecord::Base
   validates_uniqueness_of :title, :scope => :project_id
   
   # author and project should be stable.
-  safe_attributes 'title', 'description', 'tracker_id', 'note', 'enabled'
+  safe_attributes 'title', 'description', 'tracker_id', 'note', 'enabled', 'issue_title'
                    
   def enabled?
     self.enabled == true

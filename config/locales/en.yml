@@ -14,3 +14,7 @@ en:
   label_enabled_help_message: Checkbox to activate (enabled) to this template. If you hope to save this template as draft, turn this checkbox off.
   label_list_templates: "Template list"
   label_new_templates: "Add template"
+  issue_template_name: "Template name"
+  issue_description: "Issue body"
+  issue_title: "Issue title"
+  label_applied_for_issue: "Fields applied for issue: "

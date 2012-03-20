@@ -14,4 +14,8 @@ ja:
   label_enabled_help_message: "有効にチェックを入れると、選択できるようになります。ドラフト状態の場合は、チェックを外して下さい。"
   label_list_templates: "一覧"
   label_new_templates: "新規作成"
+  issue_template_name: "テンプレート名"
+  issue_description: "チケット本文"
+  issue_title: "チケットタイトル"
+  label_applied_for_issue: "チケットへの適用項目: "
   

@@ -13,7 +13,7 @@
   <thead>
     <tr>
       <th><%= sort_header_tag 'id', :caption => '#' %></th> 
-      <th><%= sort_header_tag 'title', :caption => l(:field_title) %></th>
+      <th><%= sort_header_tag 'title', :caption => l(:issue_template_name) %></th>
       <th><%= sort_header_tag 'tracker_id', :caption =>  l(:field_tracker) %></th>
       <th><%= sort_header_tag 'author_id', :caption => l(:field_author) %></th> 
       <th><%= sort_header_tag 'updated_on', :caption => l(:field_updated_on) %></th>
@@ -23,9 +23,10 @@
   <tbody>
     <% @issue_templates.each do |issue_template| %>
       <tr class="<%= cycle("odd", "even") %> issue_template issue">
-        <td colspan="2"><%= issue_template.id %></td>
-        <td colspan="2"><%= link_to h(issue_template.title),  :controller => 'issue_templates', 
-                 :action => 'show', :id => issue_template.id, :project_id => @project %></td>
+        <td colspan="2"><%= link_to h(issue_template.id),  {:controller => 'issue_templates', 
+                 :action => 'show', :id => issue_template.id, :project_id => @project}, {:title => issue_template.note } %></td>
+        <td colspan="2"><%= link_to h(issue_template.title),  {:controller => 'issue_templates', 
+                 :action => 'show', :id => issue_template.id, :project_id => @project}, {:title => issue_template.note } %></td>
         <td colspan="2"><%=h issue_template.tracker.name %></td>
         <td colspan="2"><%=h issue_template.author %></td>
         <td colspan="2"><%= format_time(issue_template.updated_on)%> </td>
