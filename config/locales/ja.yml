@@ -4,7 +4,6 @@ ja:
   issue_template_note: メモ
   label_enabled: "有効"
   label_disabled: "無効"
-  template_description: "テンプレートの本文"
   label_help_message: "テンプレートについて"
   label_show_help_message: "ヘルプメッセージを有効にする"
   field_enabled: "ヘルプメッセージを有効にする"
@@ -18,4 +17,6 @@ ja:
   issue_description: "チケット本文"
   issue_title: "チケットタイトル"
   label_applied_for_issue: "チケットへの適用項目: "
+  help_for_issue_title: "チケットタイトルを設定すると、テンプレート選択時に、タイトルもテンプレート化されたものをセットできます。"
+  help_for_this_field: "この項目のヘルプ"
   

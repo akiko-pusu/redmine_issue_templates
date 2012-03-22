@@ -1,11 +1,17 @@
 <%= error_messages_for 'issue_template' %>
 <div class="box tabular" style="background-color: white;">
-<p><%= f.text_field :title, :required => true, :size => 100, :label => l(:issue_template_name) %> </p>
+<p><%= f.text_field :title, :required => true, :size => 80, :label => l(:issue_template_name) %> </p>
 
 <fieldset class="issue">
 <legend class="issue"><%= l(:label_applied_for_issue) %></legend>
 <p><%= f.select :tracker_id, @project.trackers.collect {|t| [t.name, t.id]}, :required => true,:label => l(:label_tracker) %></p>
-<p><%= f.text_field :issue_title, :required => false, :size => 100, :label => l(:issue_title) %> </p>
+<p><%= f.text_field :issue_title, :required => false, :size => 80, :label => l(:issue_title) %>
+    <a class="icon icon-help" href="#" title="<%= l(:help_for_this_field) %>"
+     onclick="checkExpand('issue_title_help_content');"></a><br/>
+<span id="issue_title_help_content" class="help_content" style="display: none;">
+  <%= l(:help_for_issue_title) %>   
+</span>
+</p>
 <p>
 <%= f.text_area :description,:cols => 78, :rows => 12,
                  :required => true,
@@ -17,7 +23,12 @@
                  :required => false,
                  :label => l(:issue_template_note), :style => "overflow:auto;" %>  
 </p>
-<p><%= f.check_box :enabled, :label => l(:label_enabled) %> <%= l(:label_enabled_help_message) %></p>
+<p><%= f.check_box :enabled, :label => l(:label_enabled) %>
+  <a class="icon icon-help" href="#" title="<%= l(:help_for_this_field) %>"
+     onclick="checkExpand('enabled_help_content'); return false;"></a><br/>
+<span id="enabled_help_content" class="help_content" style="display: none;"><%= l(:label_enabled_help_message) %></span>
+
+</p>
 </div>
 
 <%= wikitoolbar_for 'issue_template_description' %>

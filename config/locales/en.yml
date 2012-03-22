@@ -4,8 +4,7 @@ en:
   issue_template: Issue template
   issue_template_note: note
   label_enabled: Enable
-  label_disabled: Disable  
-  template_description: Template description
+  label_disabled: Disable
   label_help_meessage: About templates
   label_show_help_message: Show help message when create/update issues. 
   about_help_message: Each project can customize help message for templates.
@@ -18,3 +17,5 @@ en:
   issue_description: "Issue body"
   issue_title: "Issue title"
   label_applied_for_issue: "Fields applied for issue: "
+  help_for_issue_title: "If defined Issue title, this will also applied for issue when selecting template."
+  help_for_this_field: "Help for this field."
