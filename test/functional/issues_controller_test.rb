@@ -40,22 +40,32 @@ class IssuesControllerTest < ActionController::TestCase
     roles = Role.find(:all)
     roles.each {|role|
       role.permissions << :show_issue_templates
+      role.remove_permission! :edit_issue_templates
       role.save
     }
-    @request.session[:user_id] = 1
+    @request.session[:user_id] = 2
+    @project = Project.find(1)
   end
 
-  def test_index
-    get :index, :project_id => 1
-    assert_response :success
-    assert_select 'div#template_area select#issue_template', false, "Action index should not contain template select pulldown."
-    assert_select 'h4.template'
-  end
-  
   def test_index_without_project    
     get :index
     assert_response :success
-    assert_select 'h4.template', false
+    assert_select 'h3.template', false
+  end
+  
+  def test_index
+    get :index, :project_id => @project.id
+    assert_response :success
+    assert_select 'div#template_area select#issue_template', false, "Action index should not contain template select pulldown."
+    assert_select 'h3.template'
+    assert_select "a", {:href=>"/projects/#{@project}/issue_templates/new"}, false
+  end
+
+  def test_index_with_edit_permission
+    Role.find(1).add_permission! :edit_issue_templates    
+    get :index, :project_id => @project.id
+    assert_select 'h3.template'
+    assert_select "a", {:href=>"/projects/#{@project}/issue_templates/new"}
   end
   
   def test_new

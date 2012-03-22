@@ -6,8 +6,9 @@ class IssueTemplatesIssuesHook < Redmine::Hook::ViewListener
   
   def view_layouts_base_html_head(context = {})
     o = stylesheet_link_tag('issue_templates', :plugin => 'redmine_issue_templates')
-    if context[:controller].class.name == 'IssuesController' and 
-      context[:controller].action_name != 'index'
+    if (context[:controller].class.name == 'IssuesController' and 
+      context[:controller].action_name != 'index') or 
+      (context[:controller].class.name == 'IssueTemplatesController')
       o << javascript_include_tag('issue_templates', :plugin => 'redmine_issue_templates')
     end      
     return o
@@ -26,5 +27,5 @@ class IssueTemplatesIssuesHook < Redmine::Hook::ViewListener
     ) 
   end
   
-  render_on :view_issues_sidebar_issues_bottom, :partial => 'issue_templates/issue_template_link'
+  render_on :view_issues_sidebar_planning_bottom, :partial => 'issue_templates/issue_template_link'
 end
