@@ -19,3 +19,7 @@ en:
   label_applied_for_issue: "Fields applied for issue: "
   help_for_issue_title: "If defined Issue title, this will also applied for issue when selecting template."
   help_for_this_field: "Help for this field."
+  permission_manage_issue_templates: "Manage Templates"
+  permission_edit_issue_templates: "Edit Templates"
+  permission_show_issue_templates: "Show Templates"  
+  project_module_issue_templates: "Issue Templates"    
