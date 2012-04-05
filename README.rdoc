@@ -8,6 +8,13 @@ Plugin to generate and use issue templates for each project to assist issue crea
 2. Do migration task. (e.g. rake db:migrate_plugins RAILS_ENV=production)
 3. (Re)Start Redmine.
 
+=== Uninstall
+
+Try this:
+
+* rake db:migrate_plugins NAME=redmine_issue_templates VERSION=0 RAILS_ENV=production
+
+
 === Required Settings
 
 1. Login to your Redmine install as an Administrator
