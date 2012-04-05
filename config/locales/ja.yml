@@ -6,7 +6,6 @@ ja:
   label_disabled: "無効"
   label_help_message: "テンプレートについて"
   label_show_help_message: "ヘルプメッセージを有効にする"
-  field_enabled: "ヘルプメッセージを有効にする"
   about_help_message: "プロジェクト毎にテンプレートに関するヘルプを設定できます。"
   close_help: "ヘルプメッセージを閉じます。"
   about_template_help_message: "プロジェクト毎のテンプレートに関するヘルプを表示します。"

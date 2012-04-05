@@ -10,7 +10,7 @@
                              :html => {:id => 'issue_templates_settings' } do |f| %>
     <%= error_messages_for 'issue_templates_setting' %>
     <div class="box">
-    <p><%= f.check_box :enabled, :label => l(:field_enabled) %></p>     
+    <p><%= f.check_box :enabled, :label => l(:label_show_help_message) %></p>     
     <p><label><%=l(:label_help_message)%></label>
    <%=content_tag(:label, l(:label_help_message)) %>
    <%=text_area_tag 'settings[help_message]',  @issue_templates_setting['help_message'],  :size =>"50x5", 
@@ -28,7 +28,7 @@
 <div id="template_help_preview" class="wiki"></div>       
         
     </div>
-    <%= submit_tag l(:button_update) %>
+    <%= submit_tag l(:button_save) %>
 <% end %>
 </div>
 

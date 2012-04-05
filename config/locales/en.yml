@@ -5,7 +5,7 @@ en:
   issue_template_note: note
   label_enabled: Enable
   label_disabled: Disable
-  label_help_meessage: About templates
+  label_help_message: About templates
   label_show_help_message: Show help message when create/update issues. 
   about_help_message: Each project can customize help message for templates.
   close_help: Close help message.
