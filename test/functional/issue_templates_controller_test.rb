@@ -137,11 +137,6 @@ class IssueTemplatesControllerTest < ActionController::TestCase
         Role.find(1).add_permission! :show_issue_templates
         Role.find(1).add_permission! :edit_issue_templates          
       end
-  
-      def setup     
-        Role.find(1).add_permission! :show_issue_templates
-        Role.find(1).add_permission! :edit_issue_templates
-      end
 
       should "should edit template when request is post" do
         post :edit, :id => 2, 
