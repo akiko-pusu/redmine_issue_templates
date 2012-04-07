@@ -1,0 +1,26 @@
+# Bulgarian translation
+bg:
+  issue_templates: Шаблони
+  issue_template: Шаблони за задачи
+  issue_template_note: Описание на шаблона, което не се показва при създаване на задачите
+  label_enabled: "Активиране"
+  label_disabled: "Забранено"
+  label_help_message: "Кратко описание на работата с шаблоните в този проект"
+  label_show_help_message: "Показване на помощ при създаване на задачи"
+  about_help_message: "Всеки проект може да има свое помощно съобщение за шаблоните."
+  close_help: "Затваряне"
+  about_template_help_message: "Можете да видите инструкция за шаблоните на този проект"
+  label_enabled_help_message: "Активиране на шаблона. Ако този шаблон е все още недовършен, изключете това поле."
+  label_list_templates: "Списък"
+  label_new_templates: "Нов шаблон"
+  issue_template_name: "Наименование"
+  issue_description: "Описание на задачата"
+  issue_title: "Заглавие на задачата (поле \"Относно:\")"
+  label_applied_for_issue: "Полета, приложени към задачата: "
+  help_for_issue_title: "Ако дефинирате заглавие, то ще бъде приложено към полето \"Относно:\" при избиране на шаблона."
+  help_for_this_field: "Помощ за това поле"
+  permission_manage_issue_templates: "Управление на шаблони"
+  permission_edit_issue_templates: "Редактиране на шаблони"
+  permission_show_issue_templates: "Използване на шаблони"  
+  project_module_issue_templates: "Шаблони за задачи"  
+  
