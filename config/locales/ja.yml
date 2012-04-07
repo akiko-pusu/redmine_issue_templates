@@ -1,3 +1,4 @@
+# Japanese translation
 ja:
   issue_templates: テンプレート
   issue_template: チケットテンプレート
@@ -21,5 +22,5 @@ ja:
   permission_manage_issue_templates: "テンプレートの管理"
   permission_edit_issue_templates: "テンプレートの編集"
   permission_show_issue_templates: "テンプレートの表示"  
-  project_module_issue_templates: "チケットテンプレート"  
+  project_module_issue_templates: "チケットテンプレート"
   
