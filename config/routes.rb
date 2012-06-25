@@ -1,9 +1,7 @@
-# Routes
-ActionController::Routing::Routes.draw do |map|
-  map.connect 'projects/:project_id/issue_templates/:action', :controller => 'issue_templates'
-	map.connect 'projects/:project_id/issue_templates/:action/:id', :controller => 'issue_templates', :action => 'edit'
-  map.connect 'projects/:project_id/issue_templates_settings/:action', 
-    :controller => 'issue_templates_settings'
-  map.connect 'issue_templates/preview/:id', :controller => 'issue_templates', :action => 'preview'
-  map.connect 'projects/:project_id/issue_templates_settings/preview', :controller => 'issue_templates_settings', :action => 'preview', :conditions => {:method => :post }
+Rails.application.routes.draw do 
+  match 'projects/:project_id/issue_templates/:action', :to => 'issue_templates'
+  match 'projects/:project_id/issue_templates/:action/:id', :to => 'issue_templates#edit'
+  match 'projects/:project_id/issue_templates_settings/:action', :to => 'issue_templates_settings'
+  match 'issue_templates/preview/:id', :to => 'issue_templates#preview'
+  match 'projects/:project_id/issue_templates_settings/preview', :to => 'issue_templates_settings#preview', :via => [:get, :post]
 end

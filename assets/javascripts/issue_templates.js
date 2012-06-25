@@ -21,8 +21,8 @@ function load_template(evt, target_url, token) {
       {asynchronous:true, evalScripts:true, 
          onComplete:function(request){
            eval("var template = " + request.responseText);
-           $('issue_description').value = template.description
-           $('issue_subject').value = template.issue_title
+           $('issue_description').value = template.issue_template.description
+           $('issue_subject').value = template.issue_template.issue_title
          },
        parameters:'issue_template=' + encodeURIComponent(evt.target.value)
          + '&authenticity_token=' + encodeURIComponent(token)
