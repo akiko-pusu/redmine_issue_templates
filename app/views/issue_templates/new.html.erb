@@ -7,7 +7,7 @@
 <h2 class="template"><%=h "#{l(:issue_templates)} / #{l(:button_add)}" %></h2>
 <div class="box">
   <%= error_messages_for 'issue_template' %>
-  <% labelled_tabular_form_for :issue_template,  @issue_template, 
+  <% labelled_form_for :issue_template,  @issue_template, 
      :url => { :controller => 'issue_templates', :action => 'new', :project_id => @project },
      :html => { :id => 'issue_template-form',
      :class => nil, :multipart => false } do |f| %> 

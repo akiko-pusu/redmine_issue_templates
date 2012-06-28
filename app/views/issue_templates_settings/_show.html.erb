@@ -3,7 +3,7 @@
 @issue_templates_setting = IssueTemplateSetting.find_or_create(@project.id)
  %>
   <p><%= l(:about_help_message) %></p>  
-<% labelled_tabular_form_for :settings, @issue_templates_setting,
+<% labelled_form_for :settings, @issue_templates_setting,
                              :url => {:controller => 'issue_templates_settings',
                              :action => 'edit', :project_id => @project, :tab => 'issue_templates',
                              :setting_id => @issue_templates_setting.id}, 

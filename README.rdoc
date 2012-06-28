@@ -25,7 +25,7 @@ Try this:
    Manage issue templates: User can edit help message of templates for each project.
 
 3. Enable the module "Issue Template" on the project setting page.
-4. The link to the plugin should appear on that project’s navigation.
+4. The link to the plugin should appear on that project's navigation.
 
 === Note
 
