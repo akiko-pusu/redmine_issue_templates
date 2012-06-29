@@ -1,0 +1,26 @@
+# Simplified Chinese strings go here for Rails i18n
+zh:
+  issue_templates: 问题模板
+  issue_template: 问题模板
+  issue_template_note: 批注
+  label_enabled: 启用
+  label_disabled: 禁用
+  label_help_message: 关于模板
+  label_show_help_message: 当创建/修改问题时显示帮助信息。
+  about_help_message: 每个项目都可以自定义模板帮助信息。
+  close_help: 关闭帮助信息。
+  about_template_help_message: 您可以查看当前项目的问题模板指南。
+  label_enabled_help_message: 该复选框用于激活当前模板。若您只想将当前模板保存为草稿，请去除该复选框的选择。
+  label_list_templates: "模板列表"
+  label_new_templates: "新建模板"
+  issue_template_name: "模板名称"
+  issue_description: "模板内容"
+  issue_title: "问题标题"
+  label_applied_for_issue: "用于该问题的字段："
+  help_for_issue_title: "若在模板中已定义问题标题，则在使用该模板是，将自动应用相关标题信息。"
+  help_for_this_field: "当前字段的帮助。"
+  permission_manage_issue_templates: "管理模板"
+  permission_edit_issue_templates: "编辑模板"
+  permission_show_issue_templates: "显示模板"  
+  project_module_issue_templates: "问题模板"
+  
