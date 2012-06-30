@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class IssueTemplatesControllerTest < ActionController::TestCase
   fixtures :projects, :users, :roles, :trackers, :members, :member_roles, :enabled_modules, :issue_templates
@@ -54,14 +54,14 @@ class IssueTemplatesControllerTest < ActionController::TestCase
       should "return json hash" do
         get :load, :project_id => 1, :issue_template => 1
         assert_response :success
-        assert_equal "description1", json_response['description']
+        assert_equal "description1", json_response['issue_template']['description']
       end
       
       should "render pulldown" do
         get :set_pulldown, :project_id => 1, :issue_tracker_id => 1
         tracker = Tracker.find(1)
         assert_response :success
-        assert_template "issue_templates/_template_pulldown.html.erb"
+        assert_template "issue_templates/_template_pulldown"
         assert_select "optgroup[label=#{tracker.name}]"
       end
     end
@@ -123,9 +123,9 @@ class IssueTemplatesControllerTest < ActionController::TestCase
         assert_equal(count, IssueTemplate.find(:all).length)
       end
 
-      should "should preview template" do
+      should "preview template" do
         get :preview, {:issue_template => {:description=> "h1. Test data."}}
-        assert_template "common/_preview.html.erb"
+        assert_template "common/_preview"
         assert_select 'h1', /Test data\./, "#{@response.body}"
       end
     end
@@ -138,8 +138,8 @@ class IssueTemplatesControllerTest < ActionController::TestCase
         Role.find(1).add_permission! :edit_issue_templates          
       end
 
-      should "should edit template when request is post" do
-        post :edit, :id => 2, 
+      should "edit template when request is put" do
+        put :edit, :id => 2, 
           :issue_template => { :description => 'Update Test template2'}, 
           :project_id => 1
         project = Project.find 1
@@ -150,7 +150,7 @@ class IssueTemplatesControllerTest < ActionController::TestCase
         assert_equal 'Update Test template2', issue_template.description
       end
 
-      should "should destroy template when request is delete" do
+      should "destroy template when request is delete" do
         post :destroy, :id => 1, :project_id => 1
         project = Project.find 1
         assert_redirected_to :controller => 'issue_templates', 
@@ -159,7 +159,7 @@ class IssueTemplatesControllerTest < ActionController::TestCase
       end
 
       should "not be able to change project id and safe attributes" do
-        post :edit, :id => 2, 
+        put :edit, :id => 2, 
           :issue_template => { :description => 'Update Test template2', 
           :project_id => 2, :author_id => 2 }, 
           :project_id => 1

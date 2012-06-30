@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 require 'issues_controller'
 
 # Re-raise errors caught by the controller.
@@ -56,7 +56,8 @@ class IssuesControllerTest < ActionController::TestCase
   def test_index
     get :index, :project_id => @project.id
     assert_response :success
-    assert_select 'div#template_area select#issue_template', false, "Action index should not contain template select pulldown."
+    assert_select 'div#template_area select#issue_template', false, 
+      "Action index should not contain template select pulldown."
     assert_select 'h3.template'
     assert_select "a", {:href=>"/projects/#{@project}/issue_templates/new"}, false
   end
