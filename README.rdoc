@@ -1,11 +1,16 @@
 = Redmine Issue Templates Plugin 
 
 Plugin to generate and use issue templates for each project to assist issue creation. 
+For Redmine 2.0 or later, please use version 0.0.3 or higher.
+For Redmine 1.3 and 1.4, please use version 0.0.2. (or 0.0.2-stable)
+(https://bitbucket.org/akiko_pusu/redmine_issue_templates/src/4475e1668541)
 
 === Plugin installation
 
 1. Copy the plugin directory into the vendor/plugins directory.
-2. Do migration task. (e.g. rake db:migrate_plugins RAILS_ENV=production)
+2. Do migration task. 
+  e.g. rake db:migrate_plugins RAILS_ENV=production
+  e.g. rake redmine:plugins:migrate RAILS_ENV=production  (For Redmine 2.x)
 3. (Re)Start Redmine.
 
 === Uninstall
@@ -13,7 +18,6 @@ Plugin to generate and use issue templates for each project to assist issue crea
 Try this:
 
 * rake db:migrate_plugins NAME=redmine_issue_templates VERSION=0 RAILS_ENV=production
-
 
 === Required Settings
 

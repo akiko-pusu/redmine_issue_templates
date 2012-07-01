@@ -8,7 +8,7 @@
 <%= link_to_if_authorized l(:button_delete), 
   {:controller => 'issue_templates', :action => 'destroy', 
 	:id => @issue_template, :project_id => @project}, 
-        :confirm => l(:text_are_you_sure), :method => :post, :class => 'icon icon-del' %>
+    :data => {:confirm => l(:text_are_you_sure)}, :method => :post, :class => 'icon icon-del' %>
 <%= link_to(l(:label_list_templates),
               {:controller => :issue_templates,
               :action => :index,
@@ -19,7 +19,7 @@
 
 <% if authorize_for('issue_templates', 'edit') %>
 <div id="edit-issue_template" style="display:none;">
-<% labelled_form_for :issue_template, @issue_template, :url => { :controller => 'issue_templates', :action => 'edit', :project_id => @project, :id => @issue_template },
+<%= labelled_form_for :issue_template, @issue_template, :url => { :controller => 'issue_templates', :action => 'edit', :project_id => @project, :id => @issue_template },
        :html => { :id => 'issue_template-form',
        :class => nil,
        :multipart => false } do |f| %> 
@@ -69,7 +69,7 @@
 <p><label><%=  l(:field_author) %></label>
 <%= authoring @issue_template.created_on, @issue_template.author %>
 <% if @issue_template.created_on != @issue_template.updated_on %>
-  (<%= l(:label_updated_time, time_tag(@issue_template.updated_on)) %>)
+  (<%= l(:label_updated_time, time_tag(@issue_template.updated_on)).html_safe %>)
 <% end %>
 </p>
 

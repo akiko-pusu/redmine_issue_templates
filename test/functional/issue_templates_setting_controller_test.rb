@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class IssuteTemplatesSettingControllerTest < ActionController::TestCase
   fixtures :projects, 
@@ -60,9 +60,10 @@ class IssuteTemplatesSettingControllerTest < ActionController::TestCase
         end
         
         should "preview template setting" do
-          post :preview, :settings => { :help_message => "h1. Preview test.", :enabled => "1"},
+          post :preview, :settings => { :help_message => "h1. Preview test.", 
+            :enabled => "1"},
             :project_id => @project
-          assert_template "common/_preview.html.erb"
+          assert_template "common/_preview"
           assert_select 'h1', /Preview test\./, "#{@response.body}"
         end
         

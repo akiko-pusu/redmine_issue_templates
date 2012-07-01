@@ -7,10 +7,11 @@
 <h2 class="template"><%=h "#{l(:issue_templates)} / #{l(:button_add)}" %></h2>
 <div class="box">
   <%= error_messages_for 'issue_template' %>
-  <% labelled_form_for :issue_template,  @issue_template, 
+  <%= labelled_form_for :issue_template,  @issue_template, 
      :url => { :controller => 'issue_templates', :action => 'new', :project_id => @project },
      :html => { :id => 'issue_template-form',
-     :class => nil, :multipart => false } do |f| %> 
+     :class => nil, :multipart => false } do |f| %>
+      
   <%= render :partial => 'form', :locals => { :f => f } %>
   <%= submit_tag l(:button_apply) %>
   <% end %>
@@ -21,7 +22,7 @@
     :update => 'preview',
     :with => "Form.serialize('issue_template-form')"
     }, :accesskey => accesskey(:preview) %> |
-  <%= link_to l(:button_cancel), {:action => 'index'}, :confirm => l(:text_are_you_sure) %>
+  <%= link_to l(:button_cancel), {:action => 'index'}, :data => {:confirm => l(:text_are_you_sure)} %>
   <div id="preview" class="wiki"></div>
 	  
 </div>

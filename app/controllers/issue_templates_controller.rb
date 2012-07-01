@@ -41,7 +41,7 @@ class IssueTemplatesController < ApplicationController
   end
 
   def edit
-    if request.post?
+    if request.put?
       @issue_template.safe_attributes = params[:issue_template]
       if @issue_template.save
         flash[:notice] = l(:notice_successful_update)
@@ -76,7 +76,8 @@ class IssueTemplatesController < ApplicationController
       issue_templates.each { |x| group.push([x.title, x.id]) }
       @grouped_options.push([@tracker.name, group])
     end      
-    render :action => "issue_templates/_template_pulldown", :layout => false
+    render :action => "_template_pulldown", :layout => false
+    #render :action => "issue_templates/_template_pulldown", :layout => false
   end
 
   # preview

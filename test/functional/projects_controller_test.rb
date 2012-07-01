@@ -1,4 +1,4 @@
-require File.expand_path('../../test_helper', __FILE__)
+require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 require 'projects_controller'
 
 # Re-raise errors caught by the controller.

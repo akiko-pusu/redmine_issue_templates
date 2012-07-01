@@ -2,12 +2,12 @@
 <%
 @issue_templates_setting = IssueTemplateSetting.find_or_create(@project.id)
  %>
-  <p><%= l(:about_help_message) %></p>  
-<% labelled_form_for :settings, @issue_templates_setting,
+  <p><%= l(:about_help_message) %></p>
+<%= labelled_form_for :settings, @issue_templates_setting,
                              :url => {:controller => 'issue_templates_settings',
                              :action => 'edit', :project_id => @project, :tab => 'issue_templates',
                              :setting_id => @issue_templates_setting.id}, 
-                             :html => {:id => 'issue_templates_settings' } do |f| %>
+                             :html => {:id => 'issue_templates_settings' } do |f| %>    
     <%= error_messages_for 'issue_templates_setting' %>
     <div class="box">
     <p><%= f.check_box :enabled, :label => l(:label_show_help_message) %></p>     
