@@ -44,6 +44,12 @@ project has some format for issues.
 
 * http://www.r-labs.org/projects/issue-template (Project Page)
 
+=== Language and I18n contributors
+
+* Korean: Jaebok Oh
+* Chinese: Steven Wong
+* Bulgarian: Ivan Cenov
+
 
 === License
 

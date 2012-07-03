@@ -1,0 +1,25 @@
+# Korean translation
+ko:
+  issue_templates: 탬플릿
+  issue_template: 일감 탬플릿
+  issue_template_note: 메모
+  label_enabled: "활성화"
+  label_disabled: "비활성화"
+  label_help_message: "탬플릿에 대해서"
+  label_show_help_message: "도움말을 표시합니다."
+  about_help_message: "프로젝트마다 탬플릿에 관한 도움을 설정할 수 있습니다."
+  close_help: "도움말을 닫습니다."
+  about_template_help_message: "프로젝트마다 탬플릿에 대한 도움말을 표시합니다."
+  label_enabled_help_message: "활성화을 체크하면 탬플릿을 사용할 수 있습니다. 탬플릿이 미완성인 경우는 체크하지 마십시오."
+  label_list_templates: "목록"
+  label_new_templates: "신규작성"
+  issue_template_name: "탬플릿 이름"
+  issue_description: "일감 본문"
+  issue_title: "일감 제목"
+  label_applied_for_issue: "적용항목:"
+  help_for_issue_title: "일감 제목을 설정하면 탬플릿을 사용할 때 자동으로 일감 제목에 설정됩니다."
+  help_for_this_field: "도움말"
+  permission_manage_issue_templates: "탬플릿 관리"
+  permission_edit_issue_templates: "탬플릿 편집"
+  permission_show_issue_templates: "탬플릿 표시"
+  project_module_issue_templates: "일감 탬플릿"
