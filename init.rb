@@ -12,7 +12,7 @@ Redmine::Plugin.register :redmine_issue_templates do
   url 'https://bitbucket.org/akiko_pusu/redmine_issue_templates'
 
   project_module :issue_templates do
-    permission :edit_issue_templates, {:issue_templates => [:new, :edit, :destroy]}
+    permission :edit_issue_templates, {:issue_templates => [:new, :edit, :destroy, :move]}
     permission :show_issue_templates, {:issue_templates => [:index, :show, :load, :set_pulldown]}
     permission :manage_issue_templates, 
       {:issue_templates_settings => [:show, :edit]}, :require => :member
