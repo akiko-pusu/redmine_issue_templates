@@ -19,5 +19,11 @@ class IssueTemplateTest < ActiveSupport::TestCase
     @issue_template.save!
     enabled = @issue_template.enabled?
     assert_equal false, enabled, @issue_template.enabled?
+  end
+  
+  def test_sort_should_sort_by_position
+    a = IssueTemplate.new(:title => 'Template1', :position => 2, :project_id => 1, :tracker_id => 1)
+    b = IssueTemplate.new(:title => 'Template2', :position => 1, :project_id => 1, :tracker_id => 1)
+    assert_equal [b, a], [a, b].sort
   end  
 end
