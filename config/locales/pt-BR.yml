@@ -1,0 +1,25 @@
+# Brazilian strings go here for Rails i18n
+pt-BR:
+  issue_templates: Modelos
+  issue_template: Modelo de tarefas
+  issue_template_note: notas
+  label_enabled: Habilitado
+  label_disabled: Desabilitado
+  label_help_message: Sobre modelos
+  label_show_help_message: Visualizar mensagem de ajuda enquanto Criar/Atualizar tarefa. 
+  about_help_message: Cada projeto pode customizar mensagem de ajuda para os modelos.
+  close_help: Fechar mensagem de ajuda.
+  about_template_help_message: Poder visualizar instruÈãèes sobre modelos de tarefas neste projeto.
+  label_enabled_help_message: OpÈà¨o para ativar este modelo. Se deseja salvar este modelo como rascunho, desative esta opÈà¨o.
+  label_list_templates: "Lista de modelos"
+  label_new_templates: "Incluir modelo"
+  issue_template_name: "Nome do modelo"
+  issue_description: "Corpo da tarefa"
+  issue_title: "TÌtulo da tarefa"
+  label_applied_for_issue: "Campos aplicados para tarefa: "
+  help_for_issue_title: "Se definido o tÌtulo da Tarefa, este apenas ser· aplicado para a tarefa quando selecionado modelo."
+  help_for_this_field: "Ajuda sobre este campo."
+  permission_manage_issue_templates: "Gerenciar Modelos"
+  permission_edit_issue_templates: "Editar Modelos"
+  permission_show_issue_templates: "Visualizar Modelos"  
+  project_module_issue_templates: "Tarefas Modelos"

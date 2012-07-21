@@ -46,6 +46,7 @@ project has some format for issues.
 
 === Language and I18n contributors
 
+* Brazilian: Adriano Ceccarelli
 * Korean: Jaebok Oh
 * Chinese: Steven Wong
 * Bulgarian: Ivan Cenov
