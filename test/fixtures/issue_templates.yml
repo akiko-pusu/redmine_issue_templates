@@ -15,7 +15,8 @@ one:
   note: note1
   
   enabled: true
-
+  
+  position: 1
 
 two:
   id: 2
@@ -33,6 +34,8 @@ two:
   note: note2
   
   enabled: false
+
+  position: 1
   
 three:
   id: 3
@@ -50,6 +53,8 @@ three:
   note: note3
   
   enabled: true
+
+  position: 1
   
 four:
   id: 4
@@ -68,6 +73,8 @@ four:
   
   enabled: true   
 
+  position: 2
+
 five:
   id: 5
 
@@ -84,3 +91,6 @@ five:
   note: note5
   
   enabled: false
+
+  position: 3
+  

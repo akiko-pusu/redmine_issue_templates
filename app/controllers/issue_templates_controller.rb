@@ -1,23 +1,29 @@
 class IssueTemplatesController < ApplicationController
   unloadable
   layout 'base'
-  helper :sort
-  include SortHelper
   include IssueTemplatesHelper
   helper :issues
   include IssuesHelper
-  
   menu_item :issues
-  
-  before_filter :find_object, :only => [:show, :edit, :destroy]
-  before_filter :find_user, :find_project, :authorize, :except => [ :preview ]
-  before_filter :find_tracker, :only => [:set_pulldown]
-  
+  before_filter :find_object, :only => [ :show, :edit, :destroy ]
+  before_filter :find_user, :find_project, :authorize, 
+    :except => [ :preview, :move_order_higher, :move_order_lower, 
+                 :move_order_to_top, :move_order_to_bottom, :move ]
+  before_filter :find_tracker, :only => [ :set_pulldown ]
+
   def index
-    sort_init "id", 'desc'
-    sort_update ["id", "name", "tracker_id", "author_id", "updated_on", "enabled"] 
+    @template_map = Hash::new
+    @project.trackers.each do |tracker| 
+      templ = IssueTemplate.find(:all, 
+        :conditions => ['project_id = ? AND tracker_id = ? AND enabled = ?', 
+        @project.id, tracker.id, true],:order => 'position')
+      if templ.any?
+        @template_map[tracker] = templ
+      end
+    end
     @issue_templates = IssueTemplate.find(:all, 
-      :conditions => ['project_id = ?', @project.id], :order => sort_clause)
+      :conditions => ['project_id = ?', @project.id], 
+      :order => 'position')
     
     render :template => 'issue_templates/index.html.erb', :layout => !request.xhr? 
   end
@@ -34,9 +40,9 @@ class IssueTemplatesController < ApplicationController
       @issue_template.safe_attributes = params[:issue_template]
       if @issue_template.save
         flash[:notice] = l(:notice_successful_create)
-        redirect_to :action => "show", :id => @issue_template.id, :project_id => @project
+        redirect_to :action => "show", :id => @issue_template.id, 
+          :project_id => @project
       end
-      # In case failed to save, redirect to show.
     end
   end
 
@@ -45,7 +51,8 @@ class IssueTemplatesController < ApplicationController
       @issue_template.safe_attributes = params[:issue_template]
       if @issue_template.save
         flash[:notice] = l(:notice_successful_update)
-        redirect_to :action => "show", :id => @issue_template.id,  :project_id => @project
+        redirect_to :action => "show", :id => @issue_template.id, 
+          :project_id => @project
       end
     end
   end
@@ -69,7 +76,7 @@ class IssueTemplatesController < ApplicationController
   def set_pulldown
     issue_templates = IssueTemplate.find(:all, 
       :conditions => ['project_id = ? AND tracker_id = ? AND enabled = ?', 
-      @project.id, @tracker.id, true])
+      @project.id, @tracker.id, true],:order => 'position')
     @grouped_options = []
     group = []
     if issue_templates.size > 0
@@ -87,6 +94,11 @@ class IssueTemplatesController < ApplicationController
     render :partial => 'common/preview'
   end
   
+  # Reorder templates
+  def move
+    move_order(params[:to])
+  end
+    
   private
   def find_user
     @user = User.current
@@ -111,5 +123,13 @@ class IssueTemplatesController < ApplicationController
     end
   end
 
+  def move_order(method)
+    IssueTemplate.find(params[:id]).send "move_#{method}"
+    #flash[:notice] = l(:notice_successful_reorder_template)
+    respond_to do |format|
+      format.html { redirect_to :action => 'index' }
+      format.xml  { head :ok }
+    end
+  end
 end
 

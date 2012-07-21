@@ -10,7 +10,7 @@
    group = []
    tmpls = IssueTemplate.find(:all, 
       :conditions => ['tracker_id = ? AND project_id = ? AND enabled = ?',
-        tracker.id, @project.id, true])
+        tracker.id, @project.id, true], :order => 'position')
    if tmpls.size > 0
      tmpls.each { |x| group.push([x.title, x.id]) }
      grouprd_options.push([tracker.name, group])

@@ -172,6 +172,14 @@ class IssueTemplatesControllerTest < ActionController::TestCase
         assert_equal(1, issue_template.project.id)
         assert_equal(1, issue_template.author.id)     
       end
+      
+      should "move to bottom and top" do
+        issue_template = IssueTemplate.find(1)
+        get :move, :project_id => 1, :id => 1, :to => :to_bottom
+        assert_equal 3, issue_template.reload.position
+        get :move, :project_id => 1, :id => 1, :to => :to_top
+        assert_equal 1, issue_template.reload.position        
+      end
    end
   end
   
