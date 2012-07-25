@@ -1,0 +1,26 @@
+# Russian strings go here for Rails i18n
+ru:
+  issue_templates: Шаблоны
+  issue_template: Шаблон задачи
+  issue_template_note: Заметка
+  label_enabled: Вкл.
+  label_disabled: Выкл.
+  label_help_message: Подсказка по шаблонам
+  label_show_help_message: Показывать подсказку по шаблонам при создаии/редактировании задачи. 
+  about_help_message: У каждого проекта может быть своя подсказа по шаблонам
+  close_help: Закрыть подсказку
+  about_template_help_message: Вы можете посмотреть подсказку по работе с шаблонами для данного проекта
+  label_enabled_help_message: Checkbox to activate (enabled) to this template. If you hope to save this template as draft, turn this checkbox off.
+  label_list_templates: "Список шаблонов"
+  label_new_templates: "Добавить шаблон"
+  issue_template_name: "Название шаблона"
+  issue_description: "Шаблон текста задачи"
+  issue_title: "Заголовок задачи"
+  label_applied_for_issue: "Заполняемые поля задачи: "
+  help_for_issue_title: "Если установлено значение для 'Заголовок задачи', то оно будет автоматически вставляться в Тему задачи при выборе шаблона."
+  help_for_this_field: "Справка по данному полю"
+  permission_manage_issue_templates: "Управление шаблонами"
+  permission_edit_issue_templates: "Редактировать шаблоны"
+  permission_show_issue_templates: "Показывать шаблоны"  
+  project_module_issue_templates: "Использовать шаблоны"
+  

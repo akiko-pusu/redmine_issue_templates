@@ -50,6 +50,7 @@ project has some format for issues.
 * Korean: Jaebok Oh
 * Chinese: Steven Wong
 * Bulgarian: Ivan Cenov
+* Russian: Denny Brain
 
 
 === License
