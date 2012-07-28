@@ -9,15 +9,15 @@ pt-BR:
   label_show_help_message: Visualizar mensagem de ajuda enquanto Criar/Atualizar tarefa. 
   about_help_message: Cada projeto pode customizar mensagem de ajuda para os modelos.
   close_help: Fechar mensagem de ajuda.
-  about_template_help_message: Poder visualizar instru鋏es sobre modelos de tarefas neste projeto.
-  label_enabled_help_message: Op鈬o para ativar este modelo. Se deseja salvar este modelo como rascunho, desative esta op鈬o.
+  about_template_help_message: Poder visualizar instruções sobre modelos de tarefas neste projeto.
+  label_enabled_help_message: Opção para ativar este modelo. Se deseja salvar este modelo como rascunho, desative esta opção.
   label_list_templates: "Lista de modelos"
   label_new_templates: "Incluir modelo"
   issue_template_name: "Nome do modelo"
   issue_description: "Corpo da tarefa"
-  issue_title: "T�tulo da tarefa"
+  issue_title: "Título da tarefa"
   label_applied_for_issue: "Campos aplicados para tarefa: "
-  help_for_issue_title: "Se definido o t�tulo da Tarefa, este apenas ser� aplicado para a tarefa quando selecionado modelo."
+  help_for_issue_title: "Se definido o título da Tarefa, este apenas será aplicado para a tarefa quando selecionado modelo."
   help_for_this_field: "Ajuda sobre este campo."
   permission_manage_issue_templates: "Gerenciar Modelos"
   permission_edit_issue_templates: "Editar Modelos"
