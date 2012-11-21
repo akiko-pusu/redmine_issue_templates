@@ -15,8 +15,8 @@ class IssueTemplatesController < ApplicationController
     @template_map = Hash::new
     @project.trackers.each do |tracker| 
       templ = IssueTemplate.find(:all, 
-        :conditions => ['project_id = ? AND tracker_id = ? AND enabled = ?', 
-        @project.id, tracker.id, true],:order => 'position')
+        :conditions => ['project_id = ? AND tracker_id = ?', 
+        @project.id, tracker.id],:order => 'position')
       if templ.any?
         @template_map[tracker] = templ
       end
