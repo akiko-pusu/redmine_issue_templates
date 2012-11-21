@@ -75,8 +75,8 @@ class IssueTemplatesController < ApplicationController
   # update pulldown
   def set_pulldown
     issue_templates = IssueTemplate.find(:all, 
-      :conditions => ['project_id = ? AND tracker_id = ?', 
-      @project.id, @tracker.id],:order => 'position')
+      :conditions => ['project_id = ? AND tracker_id = ? AND enabled = ?', 
+      @project.id, @tracker.id, true],:order => 'position')
     @grouped_options = []
     group = []
     if issue_templates.size > 0
