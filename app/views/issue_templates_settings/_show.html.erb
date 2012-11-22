@@ -9,7 +9,7 @@
                              :setting_id => @issue_templates_setting.id}, 
                              :html => {:id => 'issue_templates_settings' } do |f| %>    
     <%= error_messages_for 'issue_templates_setting' %>
-    <div class="box">
+    <div class="box tabular">
     <p><%= f.check_box :enabled, :label => l(:label_show_help_message) %></p>     
     <p><label><%=l(:label_help_message)%></label>
    <%=content_tag(:label, l(:label_help_message)) %>
