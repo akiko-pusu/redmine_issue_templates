@@ -18,17 +18,15 @@
  %>
 
 <div id="template_area" style="margin-top: 4pt;">
-<label><%=h l(:issue_template)%></label>
+<p style="padding-bottom: 0; margin-bottom: 0;"><label><%=h l(:issue_template)%></label>
   <select id="issue_template" include_blank="true" length="150" name="issue_template">
     <option value="">---</option>
     <%= grouped_options_for_select(grouprd_options) %>
   </select>
-    
-  <% if @setting.enable_help? == true %>    
+  <% if @setting.enable_help? == true %>
   <a class="icon icon-help" href="#" title="<%= l(:about_template_help_message) %>"
      onclick="checkExpand('template_help_content');">
-<%= l(:label_help_message) %></a>    
-    <br/>   
+<%= l(:label_help_message) %></a></p>
   <% end %>
  <div class="template_help box" id="template_help_content" style="display: none;"><%= textilizable @setting.help_message %>
   <div id="template_help_hide"><a href="#" onClick="checkExpand('template_help_content');" title="<%= l(:close_help) %>">[x]</a></div>
@@ -42,8 +40,15 @@ load_url = '<%= url_for(:controller => 'issue_templates',
       :action => 'load', :project_id => @project) %>';
 pulldown_url = '<%= url_for(:controller => 'issue_templates', 
       :action => 'set_pulldown', :project_id => @project) %>';
-document.observe("dom:loaded", function() {
-   Event.observe('issue_tracker_id', 'change', function(e){ set_pulldown(e, pulldown_url, token); },false ); 
-   Event.observe('issue_template', 'change', function(e){ load_template(e, load_url, token); },false);
-});    
+$('#template_area').insertBefore($('#issue_subject').parent());
+$(document).ready(function() {
+    $("#issue_tracker_id").change(function(){
+        set_pulldown($(this).val(), pulldown_url, token);
+    });
+
+    $("#issue_template").change(function(){
+        load_template($(this).val(), load_url, token);
+    });
+});
+
 </script>

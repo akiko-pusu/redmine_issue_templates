@@ -4,7 +4,7 @@
     :project_id => @project},
     :class => 'icon icon-edit',
     :accesskey => accesskey(:edit),
-    :onclick => 'Element.show("edit-issue_template"); return false;' %>
+    :onclick => "$('#edit-issue_template').show(); return false;" %>
 <%= link_to_if_authorized l(:button_delete), 
   {:controller => 'issue_templates', :action => 'destroy', 
 	:id => @issue_template, :project_id => @project}, 
@@ -26,12 +26,9 @@
 <%= render :partial => 'form', :locals => { :f => f } %>
 <%= submit_tag l(:button_edit) %>
 <% end %>
-<%= link_to_remote l(:label_preview),
-                   { :url => { :controller => 'issue_templates', :action => 'preview', :id => @issue_template },
-                     :method => 'post',
-                     :update => 'preview',
-                     :with => "Form.serialize('issue_template-form')"
-                   }, :accesskey => accesskey(:preview) %> |
+  <%= preview_link url_for(:controller => 'issue_templates', :action => 'preview',
+                           :id => @issue_template),
+                   'issue_template_description', target='preview' %> |
 <%= link_to l(:button_cancel), {:action => 'index'}, :onclick => 'Element.hide("edit-issue_template"); return false;' %>
 <div id="preview" class="wiki"></div>
 <hr/>

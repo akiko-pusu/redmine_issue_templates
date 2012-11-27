@@ -9,36 +9,32 @@ function checkExpand(ch) {
 }
 
 // Change Location of pulldown.
-document.observe("dom:loaded", function() {
-    new Insertion.After($('issue_tracker_id'), $('template_area'));
-    //ConnectedSelect(['issue_tracker_id','issue_template']);    
+$(document).ready(function() {
+    $('#template_area').insertBefore($('#issue_subject').parent());
 });
 
-
-function load_template(evt, target_url, token) {
- if (evt.target.value != "") { 
-    new Ajax.Request(target_url,
-      {asynchronous:true, evalScripts:true, 
-         onComplete:function(request){
-           eval("var template = " + request.responseText);
-           $('issue_description').value = template.issue_template.description
-           $('issue_subject').value = template.issue_template.issue_title
-         },
-       parameters:'issue_template=' + encodeURIComponent(evt.target.value)
-         + '&authenticity_token=' + encodeURIComponent(token)
-      }
-     ); 
-    }  
+function load_template(template, target_url, token) {
+    if (template != "") {
+        $.ajax({
+            url:target_url,
+            async:true,
+            data:'issue_template=' + encodeURIComponent(template) + '&authenticity_token='
+                + encodeURIComponent(token)
+        }).done(function (html) {
+                eval("var template = " + html);
+                $('#issue_description').val(template.issue_template.description);
+                $('#issue_subject').val(template.issue_template.issue_title);
+            });
+    }
 }
 
-function set_pulldown(evt, target_url, token) {
-      new Ajax.Request(target_url,
-      {  asynchronous:true, evalScripts:true, 
-         onComplete:function(request){
-           Element.update('issue_template', request.responseText);
-         },        
-       parameters:'issue_tracker_id=' + encodeURIComponent(evt.target.value)
-         + '&authenticity_token=' + encodeURIComponent(token) 
-      }
-     ); 
+function set_pulldown(tracker, target_url, token) {
+    $.ajax({
+        url: target_url,
+        async: true,
+        data:"issue_tracker_id=" + encodeURIComponent(tracker) + '&authenticity_token='
+            + encodeURIComponent(token)
+    }).done(function( html ) {
+            $('#issue_template').html(html);
+    });
 }
