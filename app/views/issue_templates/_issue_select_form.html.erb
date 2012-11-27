@@ -34,7 +34,6 @@
 </div>
 <script type="text/javascript">
 //<![CDATA[
-
 token = '<%= form_authenticity_token %>';
 load_url = '<%= url_for(:controller => 'issue_templates', 
       :action => 'load', :project_id => @project) %>';
@@ -43,11 +42,11 @@ pulldown_url = '<%= url_for(:controller => 'issue_templates',
 $('#template_area').insertBefore($('#issue_subject').parent());
 $(document).ready(function() {
     $("#issue_tracker_id").change(function(){
-        set_pulldown($(this).val(), pulldown_url, token);
+        set_pulldown(pulldown_url, token);
     });
 
     $("#issue_template").change(function(){
-        load_template($(this).val(), load_url, token);
+        load_template(load_url, token);
     });
 });
 
