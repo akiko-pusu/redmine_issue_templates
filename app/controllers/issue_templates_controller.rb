@@ -84,7 +84,6 @@ class IssueTemplatesController < ApplicationController
       @grouped_options.push([@tracker.name, group])
     end      
     render :action => "_template_pulldown", :layout => false
-    #render :action => "issue_templates/_template_pulldown", :layout => false
   end
 
   # preview
