@@ -1,27 +1,13 @@
 <% return '' unless @project.module_enabled? :issue_templates %>
 <% return '' unless authorize_for('issue_templates', 'show') %>
  <%
-   # TODO: This code should be moved from vire template.
+   # TODO: This code should be moved from template.
    @setting = IssueTemplateSetting.find_or_create(@project.id)
-   grouprd_options = []
-   
-   # default set templates of first tracker
-   tracker = @project.trackers[0]
-   group = []
-   tmpls = IssueTemplate.find(:all, 
-      :conditions => ['tracker_id = ? AND project_id = ? AND enabled = ?',
-        tracker.id, @project.id, true], :order => 'position')
-   if tmpls.size > 0
-     tmpls.each { |x| group.push([x.title, x.id]) }
-     grouprd_options.push([tracker.name, group])
-   end 
  %>
-
 <div id="template_area" style="margin-top: 4pt;">
 <p style="padding-bottom: 0; margin-bottom: 0;"><label><%=h l(:issue_template)%></label>
   <select id="issue_template" include_blank="true" length="150" name="issue_template">
     <option value="">---</option>
-    <%= grouped_options_for_select(grouprd_options) %>
   </select>
   <% if @setting.enable_help? == true %>
   <a class="icon icon-help" href="#" title="<%= l(:about_template_help_message) %>"
@@ -39,14 +25,14 @@ load_url = '<%= url_for(:controller => 'issue_templates',
       :action => 'load', :project_id => @project) %>';
 pulldown_url = '<%= url_for(:controller => 'issue_templates', 
       :action => 'set_pulldown', :project_id => @project) %>';
+confirm_msg = '<%= escape_javascript(l(:confirm_replace_description_with_template)) %>'
+tracker =  '<%= @issue.tracker.id %>'
+set_pulldown(tracker, pulldown_url, token);
+
 $('#template_area').insertBefore($('#issue_subject').parent());
 $(document).ready(function() {
-    $("#issue_tracker_id").change(function(){
-        set_pulldown(pulldown_url, token);
-    });
-
     $("#issue_template").change(function(){
-        load_template(load_url, token);
+        load_template(load_url, token, confirm_msg);
     });
 });
 
