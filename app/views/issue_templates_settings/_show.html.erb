@@ -9,22 +9,16 @@
                              :setting_id => @issue_templates_setting.id}, 
                              :html => {:id => 'issue_templates_settings' } do |f| %>    
     <%= error_messages_for 'issue_templates_setting' %>
-    <div class="box">
+    <div class="box tabular">
     <p><%= f.check_box :enabled, :label => l(:label_show_help_message) %></p>     
     <p><label><%=l(:label_help_message)%></label>
    <%=content_tag(:label, l(:label_help_message)) %>
    <%=text_area_tag 'settings[help_message]',  @issue_templates_setting['help_message'],  :size =>"50x5", 
         :class => 'wiki-edit' ,:required => true  %><br/>
  <%= wikitoolbar_for "settings_help_message" %>
-   <%= link_to_remote l(:label_preview),
-                       { :url => { :controller => 'issue_templates_settings', 
-                         :action => 'preview', :project_id => @project},
-                         :method => 'post',
-                         :id => 'help_preview',
-                         :update => 'template_help_preview',
-                         :with => "Form.serialize('issue_templates_settings')",
-                         :complete => "Element.scrollTo('template_help_preview')"
-                       }, :accesskey => accesskey(:preview) %>
+ <%= preview_link url_for(:controller => 'issue_templates_settings', :action => 'preview',
+                          :project_id => @project),
+                  'settings_help_message', target='template_help_preview' %>
 <div id="template_help_preview" class="wiki"></div>       
         
     </div>

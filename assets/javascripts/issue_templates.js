@@ -9,36 +9,45 @@ function checkExpand(ch) {
 }
 
 // Change Location of pulldown.
-document.observe("dom:loaded", function() {
-    new Insertion.After($('issue_tracker_id'), $('template_area'));
-    //ConnectedSelect(['issue_tracker_id','issue_template']);    
+$(document).ready(function() {
+    $('#template_area').insertBefore($('#issue_subject').parent());
 });
 
+// TODO: When update description, confirmation dialog sould be appeared.
+function load_template(target_url, token, confirm_msg) {
+    var allow_overwrite = $('#allow_overwrite_description').prop('checked');
+    if ($("#issue_template").val() != "") {
+        $.ajax({
+            url:target_url,
+            async:true,
+            type:'post',
+            data:$.param({issue_template:$("#issue_template").val(), authenticity_token:token})
+        }).done(function (html) {
+                oldSubj = "";
+                oldVal = "";
+                eval('var template = ' + html);
+                if ($("#issue_description").val() != '') {
+                    oldVal = $("#issue_description").val() + "\n\n";
+                }
 
-function load_template(evt, target_url, token) {
- if (evt.target.value != "") { 
-    new Ajax.Request(target_url,
-      {asynchronous:true, evalScripts:true, 
-         onComplete:function(request){
-           eval("var template = " + request.responseText);
-           $('issue_description').value = template.issue_template.description
-           $('issue_subject').value = template.issue_template.issue_title
-         },
-       parameters:'issue_template=' + encodeURIComponent(evt.target.value)
-         + '&authenticity_token=' + encodeURIComponent(token)
-      }
-     ); 
-    }  
+                if ($("#issue_subject").val() != '') {
+                    oldSubj = $("#issue_subject").val() + ' ';
+                }
+                $("#issue_description").val(oldVal + template.issue_template.description);
+                $("#issue_subject").val(oldSubj + template.issue_template.issue_title);
+            });
+    }
 }
 
-function set_pulldown(evt, target_url, token) {
-      new Ajax.Request(target_url,
-      {  asynchronous:true, evalScripts:true, 
-         onComplete:function(request){
-           Element.update('issue_template', request.responseText);
-         },        
-       parameters:'issue_tracker_id=' + encodeURIComponent(evt.target.value)
-         + '&authenticity_token=' + encodeURIComponent(token) 
-      }
-     ); 
+function set_pulldown(tracker, target_url, token) {
+    var allow_overwrite = $('#allow_overwrite_description').prop('checked');
+    $.ajax({
+        url: target_url,
+        async: true,
+        type: 'post',
+        data: $.param({issue_tracker_id: tracker, authenticity_token: token})
+    }).done(function( html ) {
+        $('#issue_template').html(html);
+        $('#allow_overwrite_description').attr("checked", allow_overwrite);
+    });
 }
