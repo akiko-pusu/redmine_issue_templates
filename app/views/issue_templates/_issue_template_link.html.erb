@@ -5,6 +5,6 @@
               :action => :index,
               :project_id => @project) %><br />
  <%= link_to_if_authorized(l(:label_new_templates), 
-    {:controller => 'issue_templates', :action => 'new', :project_id => @project},:onclick => 'Element.show("add-template"); return false;') %>            
+    {:controller => 'issue_templates', :action => 'new', :project_id => @project}) %>            
 <p/>
 <%- end -%>
