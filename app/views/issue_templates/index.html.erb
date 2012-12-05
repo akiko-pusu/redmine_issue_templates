@@ -2,7 +2,7 @@
 <div class="contextual">
   <%= link_to_if_authorized(l(:label_new), 
     {:controller => 'issue_templates', :action => 'new', :project_id => @project}, 
-    :class => 'icon icon-add',:onclick => 'Element.show("add-template"); return false;') %>
+    :class => 'icon icon-add') %>
 </div>
 
 <% if @notice -%>
