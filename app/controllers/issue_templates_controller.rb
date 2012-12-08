@@ -13,18 +13,17 @@ class IssueTemplatesController < ApplicationController
 
   def index
     @template_map = Hash::new
-    @project.trackers.each do |tracker| 
-      templ = IssueTemplate.find(:all, 
-        :conditions => ['project_id = ? AND tracker_id = ?', 
-        @project.id, tracker.id],:order => 'position')
-      if templ.any?
-        @template_map[tracker] = templ
+    @project.trackers.each do |tracker|
+      templates = IssueTemplate.where('project_id = ? AND tracker_id = ?',
+                                              @project.id, tracker.id).order('position')
+      if templates.any?
+        @template_map[tracker] = templates
       end
     end
-    @issue_templates = IssueTemplate.find(:all, 
-      :conditions => ['project_id = ?', @project.id], 
-      :order => 'position')
-    
+
+    @issue_templates = IssueTemplate.where('project_id = ?',
+                          @project.id).order('position')
+
     render :template => 'issue_templates/index.html.erb', :layout => !request.xhr? 
   end
 
@@ -40,7 +39,7 @@ class IssueTemplatesController < ApplicationController
       @issue_template.safe_attributes = params[:issue_template]
       if @issue_template.save
         flash[:notice] = l(:notice_successful_create)
-        redirect_to :action => "show", :id => @issue_template.id, 
+        redirect_to :action => "show", :id => @issue_template.id,
           :project_id => @project
       end
     end
@@ -74,9 +73,8 @@ class IssueTemplatesController < ApplicationController
   
   # update pulldown
   def set_pulldown
-    issue_templates = IssueTemplate.find(:all, 
-      :conditions => ['project_id = ? AND tracker_id = ? AND enabled = ?', 
-      @project.id, @tracker.id, true],:order => 'position')
+    issue_templates = IssueTemplate.where('project_id = ? AND tracker_id = ? AND enabled = ?',
+                                            @project.id, @tracker.id, true).order('position')
     @grouped_options = []
     group = []
     if issue_templates.size > 0
@@ -124,7 +122,6 @@ class IssueTemplatesController < ApplicationController
 
   def move_order(method)
     IssueTemplate.find(params[:id]).send "move_#{method}"
-    #flash[:notice] = l(:notice_successful_reorder_template)
     respond_to do |format|
       format.html { redirect_to :action => 'index' }
       format.xml  { head :ok }
