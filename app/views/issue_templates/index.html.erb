@@ -20,6 +20,7 @@
       <th><%= l(:field_tracker) %></th>
       <th><%= l(:field_author) %></th> 
       <th><%= l(:field_updated_on) %></th>
+      <th><%= l(:field_is_default) %></th>
       <th><%= l(:label_enabled) %></th>
        <% if authorize_for("issue_templates", "edit") %>
       <th><%=l(:button_sort)%></th>
@@ -36,8 +37,9 @@
         <td><%=h issue_template.tracker.name %></td>
         <td><%=h issue_template.author %></td>
         <td><%= format_time(issue_template.updated_on)%> </td>
-        <td><%= image_tag('true.png') if issue_template.enabled? %></td>
-        
+        <td class="center"><%= checked_image issue_template.is_default? %></td>
+        <td class="center"><%= checked_image issue_template.enabled? %></td>
+
         <% if authorize_for("issue_templates", "edit") %>
         <td>
           <%= issue_template.first? ? '': 
