@@ -1,13 +1,16 @@
 = Redmine Issue Templates Plugin 
 
 Plugin to generate and use issue templates for each project to assist issue creation. 
-For Redmine 2.0 or later, please use version 0.0.3 or higher.
+For Redmine 2.1.x or later, please use version 0.0.4 or higher.
+For Redmine 2.0, please use version 0.0.3 or higher.
 For Redmine 1.3 and 1.4, please use version 0.0.2. (or 0.0.2-stable)
 (https://bitbucket.org/akiko_pusu/redmine_issue_templates/src/4475e1668541)
 
 === Plugin installation
 
 1. Copy the plugin directory into the vendor/plugins directory.
+   Please note that plugin's folder name should be "redmine_issue_templates".
+   If changed, some migration task will be failed.
 2. Do migration task. 
   e.g. rake db:migrate_plugins RAILS_ENV=production
   e.g. rake redmine:plugins:migrate RAILS_ENV=production  (For Redmine 2.x)
@@ -43,6 +46,17 @@ project has some format for issues.
 === WebPage
 
 * http://www.r-labs.org/projects/issue-template (Project Page)
+
+== Changelog
+
+=== 0.0.4
+
+* Support Redmine 2.1.x
+  (Now unsupport Redmine 2.0.x. Please use ver 0.0.3 for Redmine2.0.x)
+  Thak you so much, Viktor Muth, that gave me some feedback.
+
+* Now insert template text just after the text that is already in the
+  description field.  (#1115)
 
 === Language and I18n contributors
 
