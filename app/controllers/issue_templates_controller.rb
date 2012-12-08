@@ -77,6 +77,9 @@ class IssueTemplatesController < ApplicationController
                                             @project.id, @tracker.id, true).order('position')
     @grouped_options = []
     group = []
+
+    @default_template = IssueTemplate.where('project_id = ? AND tracker_id = ? AND enabled = ? AND is_default = ?',
+                                            @project.id, @tracker.id, true, true).first
     if issue_templates.size > 0
       issue_templates.each { |x| group.push([x.title, x.id]) }
       @grouped_options.push([@tracker.name, group])

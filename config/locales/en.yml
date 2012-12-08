@@ -23,4 +23,6 @@ en:
   permission_edit_issue_templates: "Edit Templates"
   permission_show_issue_templates: "Show Templates"  
   project_module_issue_templates: "Issue Templates"
+  label_isdefault_help_message: "If marked default, it applied automatically whenever an issue of the associated type (eg, bug) is opened."
+
   

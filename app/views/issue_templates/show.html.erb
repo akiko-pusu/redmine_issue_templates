@@ -59,8 +59,11 @@
 <p><label><%= l(:issue_template_note) %></label>
 <%= @issue_template.note.blank? ? l(:label_none) : @issue_template.note %>
 </p>
+<p><label><%= l(:field_is_default) %></label>
+  <%= checked_image @issue_template.is_default? %>
+</p>
 <p><label><%= l(:label_enabled) %></label>
-<%= @issue_template.enabled? ? l(:label_enabled) : l(:label_disabled) %>
+  <%= checked_image @issue_template.enabled? %>
 </p>
 
 <p><label><%=  l(:field_author) %></label>

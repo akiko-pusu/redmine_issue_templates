@@ -23,4 +23,5 @@ ja:
   permission_edit_issue_templates: "テンプレートの編集"
   permission_show_issue_templates: "テンプレートの表示"  
   project_module_issue_templates: "チケットテンプレート"
+  label_isdefault_help_message: "デフォルト値にチェックすると、チケットの新規登録時に、該当するトラッカーのテンプレートとして読み込まれます。"
   
