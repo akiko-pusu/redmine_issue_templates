@@ -1,3 +1,20 @@
+<%
+   # TODO: This code should be moved from template.
+   # TODO: When load default template, existing text should be completely replaced or not?
+   default_template = ""
+   if !@default_template.nil?
+     default_template = @default_template.id
+   end
+%>
     <option value="">---</option>
-    <%= grouped_options_for_select(@grouped_options) %>
-    
+    <%= grouped_options_for_select(@grouped_options, default_template) %>
+
+<% if !@default_template.nil? %>
+<script type="text/javascript">
+    //<![CDATA[
+    token = '<%= form_authenticity_token %>';
+    load_url = '<%= url_for(:controller => 'issue_templates',
+      :action => 'load', :project_id => @project) %>';
+    load_template(load_url, token, confirm_msg);
+</script>
+<% end %>
