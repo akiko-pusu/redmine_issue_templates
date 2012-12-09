@@ -1,7 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class IssueTemplatesControllerTest < ActionController::TestCase
-  fixtures :projects, :users, :roles, :trackers, :members, :member_roles, :enabled_modules, :issue_templates
+  fixtures :projects, :users, :roles, :trackers, :members, :member_roles, :enabled_modules,
+           :issue_templates,
+           :projects_trackers
   def setup
     @controller = IssueTemplatesController.new
     @request    = ActionController::TestRequest.new
