@@ -1,7 +1,5 @@
 .template {
-    background-image: url(../images/issue_templates.png); 
-    background-repeat: no-repeat;
-    background-position: 3px center;
+    background: url(../images/issue_templates.png) no-repeat 3px center;
     padding-top: 3px;
     padding-left: 18px;    
 }
@@ -67,6 +65,18 @@ div.issue_template {
 }
 
 span.help_content {
-     color: darkred;
+     color: #8b0000;
      padding: 6px;
 }
+
+#template_status-area .flash_message {
+    margin-top: 5pt;
+    margin-bottom: 5pt;
+    display: block;
+    color: #58718a;
+    font-style: italic;
+    padding-left: 20px;
+    background: #FFEBC1 url(../images/lamp.png) no-repeat 3px center;
+    color: #A6750C;
+    border: solid #FDBF3B 1px;
+}​

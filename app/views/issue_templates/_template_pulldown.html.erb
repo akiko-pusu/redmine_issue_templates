@@ -16,5 +16,11 @@
     load_url = '<%= url_for(:controller => 'issue_templates',
       :action => 'load', :project_id => @project) %>';
     load_template(load_url, token, confirm_msg);
+
+    $('#template_status-area').insertBefore('#issue_description');
+    $('#template_status-area').flash_message({
+        text: "<%= l(:defaulf_template_loaded, :tracker => @tracker.name) %>",
+        how: 'append'
+    });
 </script>
 <% end %>
