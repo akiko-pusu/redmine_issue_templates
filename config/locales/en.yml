@@ -24,5 +24,5 @@ en:
   permission_show_issue_templates: "Show Templates"  
   project_module_issue_templates: "Issue Templates"
   label_isdefault_help_message: "Check and you can use this as a default template of target tracker."
-
+  defaulf_template_loaded: "Loaded default template into description textarea. (Tracker: %{tracker})"
   
