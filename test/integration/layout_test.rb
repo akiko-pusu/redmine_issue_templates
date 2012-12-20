@@ -39,6 +39,6 @@ class LayoutTest < ActionController::IntegrationTest
                                 }
 
     get '/projects/ecookbook/issues/new'
-    assert_select 'div#template_area select#issue_template'
+    assert_select 'div#template_area'
   end
 end
