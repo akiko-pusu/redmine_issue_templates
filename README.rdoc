@@ -69,4 +69,4 @@ project has some format for issues.
 
 === License
 
-This software is licensed under the GNU GPL v2. See COPYRIGHT and COPYING for details. 
+This software is licensed under the GNU GPL v2.
