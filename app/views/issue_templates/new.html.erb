@@ -1,3 +1,4 @@
+
 <div class="contextual">
 <%= link_to(l(:label_list_templates),
               {:controller => :issue_templates,
@@ -5,6 +6,11 @@
               :project_id => @project}, :class => 'template') %> 
 </div>
 <h2 class="template"><%=h "#{l(:issue_templates)} / #{l(:button_add)}" %></h2>
+<% if @project.trackers.blank? %>
+    <div class="nodata">
+      <%= simple_format(l(:text_no_tracker_enabled)) %>
+    </div>
+<% else %>
 <div class="box">
   <%= error_messages_for 'issue_template' %>
   <% labelled_form_for :issue_template,  @issue_template, 
@@ -23,6 +29,5 @@
     }, :accesskey => accesskey(:preview) %> |
   <%= link_to l(:button_cancel), {:action => 'index'}, :confirm => l(:text_are_you_sure) %>
   <div id="preview" class="wiki"></div>
-	  
 </div>
-
+<% end %>
