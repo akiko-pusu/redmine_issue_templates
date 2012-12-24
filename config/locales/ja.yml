@@ -25,3 +25,4 @@ ja:
   project_module_issue_templates: "チケットテンプレート"
   label_isdefault_help_message: "デフォルト値にチェックすると、チケットの新規登録時に、該当するトラッカーのテンプレートとして読み込まれます。"
   defaulf_template_loaded: "デフォルトテンプレートが「詳細」テキストエリアにロードされました。(トラッカー: %{tracker})"
+  text_no_tracker_enabled: "テンプレートはトラッカー毎に設定します。\nプロジェクトが利用するトラッカーの設定が必要です。"

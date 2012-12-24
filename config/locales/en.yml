@@ -25,4 +25,4 @@ en:
   project_module_issue_templates: "Issue Templates"
   label_isdefault_help_message: "Check and you can use this as a default template of target tracker."
   defaulf_template_loaded: "Loaded default template into description textarea. (Tracker: %{tracker})"
-  
+  text_no_tracker_enabled: "Any trackers for this project have not been configured yet.\nPlease set them first because templates are assigned to project trackers. "

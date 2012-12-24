@@ -1,4 +1,9 @@
 <h2 class="template"><%=h "#{l(:issue_template)}" %></h2>
+<% if @project.trackers.blank? %>
+    <div class="nodata">
+      <%= simple_format(l(:text_no_tracker_enabled)) %>
+    </div>
+<% end %>
 <div class="contextual">
   <%= link_to_if_authorized(l(:label_new), 
     {:controller => 'issue_templates', :action => 'new', :project_id => @project}, 
