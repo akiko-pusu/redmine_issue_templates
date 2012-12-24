@@ -3,7 +3,7 @@
 Plugin to generate and use issue templates for each project to assist issue creation. 
 For Redmine 2.1.x or later, please use version 0.0.4 or higher.
 For Redmine 2.0, please use version 0.0.3 or higher.
-For Redmine 1.3 and 1.4, please use version 0.0.2. (or 0.0.2-stable)
+For Redmine 1.3 and 1.4, please use support_0.0.2 branch.
 (https://bitbucket.org/akiko_pusu/redmine_issue_templates/src/4475e1668541)
 
 === Plugin installation
@@ -48,6 +48,12 @@ project has some format for issues.
 * http://www.r-labs.org/projects/issue-template (Project Page)
 
 == Changelog
+
+=== 0.0.5
+
+* Load default template.  (#1088)
+* Show warning message in case no project trackers are assigned.
+* Change CSS style when showing template. (#1141)
 
 === 0.0.4
 
