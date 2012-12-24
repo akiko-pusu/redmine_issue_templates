@@ -21,9 +21,27 @@ class IssueTemplateTest < ActiveSupport::TestCase
     assert_equal false, enabled, @issue_template.enabled?
   end
   
-  def test_sort_should_sort_by_position
+  def test_sort_by_position
     a = IssueTemplate.new(:title => 'Template1', :position => 2, :project_id => 1, :tracker_id => 1)
     b = IssueTemplate.new(:title => 'Template2', :position => 1, :project_id => 1, :tracker_id => 1)
     assert_equal [b, a], [a, b].sort
-  end  
+  end
+
+  def test_is_default
+    # Reset default data
+    IssueTemplate.update_all(:is_default => false)
+    assert !@issue_template.is_default?
+
+    @issue_template.is_default = true
+    @issue_template.save!
+    assert @issue_template.is_default?
+
+    #
+    # TODO: Change find(:all) to where method
+    #
+    templates = IssueTemplate.where('project_id = 1 AND tracker_id = 1 AND id != 1')
+    templates.each do |template|
+      assert !template.is_default?
+    end
+  end
 end

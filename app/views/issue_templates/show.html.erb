@@ -24,7 +24,7 @@
        :class => nil,
        :multipart => false } do |f| %> 
 <%= render :partial => 'form', :locals => { :f => f } %>
-<%= submit_tag l(:button_edit) %>
+<%= submit_tag l(:button_save) %>
 <% end %>
   <%= preview_link url_for(:controller => 'issue_templates', :action => 'preview',
                            :id => @issue_template),
@@ -51,16 +51,19 @@
 <%= h @issue_template.issue_title %>
 </p>
 <p>
-<label for="issue_template_description"><%= l(:issue_description) %></label>
-<%=  textilizable(@issue_template.description) %>
+<strong style="margin-left: -100px;"><%= l(:issue_description) %></strong>
 </p>
+<div class="wiki issue_template"><%=  textilizable(@issue_template.description) %></div>
 </fieldset>
 
 <p><label><%= l(:issue_template_note) %></label>
 <%= @issue_template.note.blank? ? l(:label_none) : @issue_template.note %>
 </p>
+<p><label><%= l(:field_is_default) %></label>
+  <%= checked_image @issue_template.is_default? %>
+</p>
 <p><label><%= l(:label_enabled) %></label>
-<%= @issue_template.enabled? ? l(:label_enabled) : l(:label_disabled) %>
+  <%= checked_image @issue_template.enabled? %>
 </p>
 
 <p><label><%=  l(:field_author) %></label>

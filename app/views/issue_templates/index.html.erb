@@ -1,4 +1,9 @@
 <h2 class="template"><%=h "#{l(:issue_template)}" %></h2>
+<% if @project.trackers.blank? %>
+    <div class="nodata">
+      <%= simple_format(l(:text_no_tracker_enabled)) %>
+    </div>
+<% end %>
 <div class="contextual">
   <%= link_to_if_authorized(l(:label_new), 
     {:controller => 'issue_templates', :action => 'new', :project_id => @project}, 
@@ -20,6 +25,7 @@
       <th><%= l(:field_tracker) %></th>
       <th><%= l(:field_author) %></th> 
       <th><%= l(:field_updated_on) %></th>
+      <th><%= l(:field_is_default) %></th>
       <th><%= l(:label_enabled) %></th>
        <% if authorize_for("issue_templates", "edit") %>
       <th><%=l(:button_sort)%></th>
@@ -36,8 +42,9 @@
         <td><%=h issue_template.tracker.name %></td>
         <td><%=h issue_template.author %></td>
         <td><%= format_time(issue_template.updated_on)%> </td>
-        <td><%= image_tag('true.png') if issue_template.enabled? %></td>
-        
+        <td class="center"><%= checked_image issue_template.is_default? %></td>
+        <td class="center"><%= checked_image issue_template.enabled? %></td>
+
         <% if authorize_for("issue_templates", "edit") %>
         <td>
           <%= issue_template.first? ? '': 

@@ -2,6 +2,11 @@
 <%
 @issue_templates_setting = IssueTemplateSetting.find_or_create(@project.id)
  %>
+  <% if @project.trackers.blank? %>
+      <div class="nodata">
+        <%= simple_format(l(:text_no_tracker_enabled)) %>
+      </div>
+  <% end %>
   <p><%= l(:about_help_message) %></p>
 <%= labelled_form_for :settings, @issue_templates_setting,
                              :url => {:controller => 'issue_templates_settings',
