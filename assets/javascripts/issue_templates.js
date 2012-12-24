@@ -57,7 +57,7 @@ function set_pulldown(tracker, target_url, token) {
         // default
         options = $.extend({
             text: 'Done',
-            time: 1500,
+            time: 2000,
             how: 'before',
             class_name: ''
         }, options);
