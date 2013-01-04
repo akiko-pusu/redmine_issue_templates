@@ -35,12 +35,6 @@ function load_template(target_url, token, confirm_msg) {
                 }
                 $("#issue_description").val(oldVal + template.issue_template.description);
                 $("#issue_subject").val(oldSubj + template.issue_template.issue_title);
-                try {
-                    if (CKEDITOR.instances.issue_description)
-                        CKEDITOR.instances.issue_description.setData(oldVal + template.issue_template.description);
-                } catch(e) {
-                    // do nothing.
-                }
             });
     }
 }
