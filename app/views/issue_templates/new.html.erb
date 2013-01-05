@@ -18,13 +18,13 @@
      :class => nil, :multipart => false } do |f| %>
       
   <%= render :partial => 'form', :locals => { :f => f } %>
+  <div id="preview" class="wiki"></div>
+      <%= submit_tag l(:button_create) %>
+  <% end %>
   <%= preview_link url_for(:controller => 'issue_templates', :action => 'preview',
                            :id => @issue_template),
                    'issue_template_description', target='preview' %> |
   <%= link_to l(:button_cancel), {:action => 'index'}, :data => {:confirm => l(:text_are_you_sure)} %>
-  <div id="preview" class="wiki"></div>
-      <%= submit_tag l(:button_create) %>
-  <% end %>
 </div>
 <% end %>
 
