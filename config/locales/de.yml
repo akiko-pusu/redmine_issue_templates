@@ -1,0 +1,28 @@
+# German strings go here for Rails i18n
+de:
+  issue_templates: Vorlagen
+  issue_template: Tickketvorlage
+  issue_template_note: Notiz
+  label_enabled: aktivieren
+  label_disabled: deaktivieren
+  label_help_message: Hilfe
+  label_show_help_message: Hilfe Dialog im Vorlagenformular anzeigen.
+  about_help_message: Jedes Projekt kann die Onlinehilfe für ihre Vorlagen selbst schreiben.
+  close_help: Hilfedialog schließen.
+  about_template_help_message: Dies ist die Onlinehilfe für die Ticketvorlagen in diesem Projekt.
+  label_enabled_help_message: Diese Vorlage aktivieren. Deaktvieren sie diese Chekcbox um die Vorlage als Entwurf abzulegen.
+  label_list_templates: "Vorlagenliste"
+  label_new_templates: "Vorlage hinzufügen"
+  issue_template_name: "Vorlagenname"
+  issue_description: "Beschreibung"
+  issue_title: "Thema"
+  label_applied_for_issue: "aktive Felder für das Ticket: "
+  help_for_issue_title: "Definieren die das Thema für das Ticket. Dieser Name bezeichnet auch die Vorlage selbst."
+  help_for_this_field: "Hilfe."
+  permission_manage_issue_templates: "Vorlagen verwalten"
+  permission_edit_issue_templates: "Vorlagen ändern"
+  permission_show_issue_templates: "Vorlagen anzeigen"  
+  project_module_issue_templates: "Ticketvorlagen"
+  label_isdefault_help_message: "Aktvieren sie diese Option damit diese Vorlage als Standardvorlage für den Standardtracker verwendet wird."
+  defaulf_template_loaded: "Die Standardvorlage für den Tracker %{tracker} wurde in das Beschreibungsfeld übernommen."
+  text_no_tracker_enabled: "Bisher wurde keine Konfiguration der Tracker und Ticketvorlagen für dieses Projekt vorgenommen.\nBitte konfigurieren sie diese notwendige Einstellung um diese Funktion zu nutzen."
