@@ -22,6 +22,8 @@ Try this:
 
 * rake db:migrate_plugins NAME=redmine_issue_templates VERSION=0 RAILS_ENV=production
 
+See also: http://www.r-labs.org/projects/issue-template/wiki/About_en#Uninstall-plugin
+
 === Required Settings
 
 1. Login to your Redmine install as an Administrator
@@ -46,6 +48,10 @@ project has some format for issues.
 === WebPage
 
 * http://www.r-labs.org/projects/issue-template (Project Page)
+
+=== Description and usage info
+
+* http://www.r-labs.org/projects/issue-template/wiki/About_en
 
 == Changelog
 
