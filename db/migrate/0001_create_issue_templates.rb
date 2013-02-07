@@ -17,9 +17,9 @@ class CreateIssueTemplates < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :issue_templates
     remove_index :issue_templates, :author_id
     remove_index :issue_templates, :project_id
     remove_index :issue_templates, :tracker_id    
+    drop_table :issue_templates
   end
 end
