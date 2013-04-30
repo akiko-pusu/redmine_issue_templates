@@ -1,2 +1,5 @@
 ^coverage$
 ^rdoc$
+^doc$
+.yardoc$
+syntax: glob
