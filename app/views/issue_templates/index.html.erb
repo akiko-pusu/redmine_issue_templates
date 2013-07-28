@@ -69,5 +69,38 @@
     <% end %>
   </tbody>
 </table>
-<% end %>  
+<% end %>
 
+<% unless @inherit_templates.blank? %>
+<h3 class="template"><%=h "#{l(:label_inherited_templates)}" %></h3>
+
+        <table class="list issues">
+          <thead>
+          <tr>
+            <th>#</th>
+            <th><%= l(:issue_template_name) %></th>
+            <th><%= l(:field_tracker) %></th>
+            <th><%= l(:field_author) %></th>
+            <th><%= l(:field_updated_on) %></th>
+            <th><%= l(:field_is_default) %></th>
+            <th><%= l(:label_enabled) %></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @inherit_templates.each do |issue_template| %>
+              <tr class="<%= cycle("odd", "even") %> issue_template issue">
+                <td><%= link_to h(issue_template.id),  {:controller => 'issue_templates',
+                      :action => 'show', :id => issue_template.id,
+                      :project_id => issue_template.project_id }, {:title => issue_template.note } %></td>
+
+                <td><%= issue_template.title  %></td>
+                <td><%=h issue_template.tracker.name %></td>
+                <td><%=h issue_template.author %></td>
+                <td><%= format_time(issue_template.updated_on)%> </td>
+                <td class="center"><%= checked_image issue_template.is_default? %></td>
+                <td class="center"><%= checked_image issue_template.enabled? %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+ <% end %>

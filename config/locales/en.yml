@@ -27,3 +27,6 @@ en:
   defaulf_template_loaded: "Loaded default template into description textarea. (Tracker: %{tracker})"
   text_no_tracker_enabled: "Any trackers for this project have not been configured yet.\nPlease set them first because templates are assigned to project trackers. "
   label_enabled_sharing: "Enabled sharing with project tree."
+  label_inherit_templates: "Inherit templates"
+  label_inherit_templates_help_message: "Inherit templates from parent project. (Only parent's templates are listed which marked as enabled sharing with project tree.)"
+  label_inherited_templates: "Inherited Templates"

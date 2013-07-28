@@ -24,7 +24,18 @@ class IssueTemplatesController < ApplicationController
     @issue_templates = IssueTemplate.where('project_id = ?',
                           @project.id).order('position')
 
-    render :template => 'issue_templates/index.html.erb', :layout => !request.xhr? 
+    @setting = IssueTemplateSetting.find_or_create(@project.id)
+    inherit_template = @setting.enabled_inherit_templates?
+    @inherit_templates = nil
+
+    project_ids = inherit_template ? @project.ancestors.collect(&:id) : [@project.id]
+    if inherit_template
+      @inherit_templates = IssueTemplate.where('project_id in (?) AND enabled = ?
+           AND enabled_sharing = ?',
+           project_ids, true, true).order('position')
+    end
+
+    render :template => 'issue_templates/index.html.erb', :layout => !request.xhr?
   end
 
   def show
@@ -73,15 +84,29 @@ class IssueTemplatesController < ApplicationController
   
   # update pulldown
   def set_pulldown
+    @setting = IssueTemplateSetting.find_or_create(@project.id)
+    inherit_template = @setting.enabled_inherit_templates?
+
+    project_ids = inherit_template ? @project.ancestors.collect(&:id) : [@project.id]
     issue_templates = IssueTemplate.where('project_id = ? AND tracker_id = ? AND enabled = ?',
                                             @project.id, @tracker.id, true).order('position')
+
     @grouped_options = []
     group = []
 
-    @default_template = IssueTemplate.where('project_id = ? AND tracker_id = ? AND enabled = ? AND is_default = ?',
+    @default_template = IssueTemplate.where('project_id = ? AND tracker_id = ? AND enabled = ?
+                                            AND is_default = ?',
                                             @project.id, @tracker.id, true, true).first
     if issue_templates.size > 0
       issue_templates.each { |x| group.push([x.title, x.id]) }
+
+      if inherit_template
+        inherit_templates = IssueTemplate.where('project_id in (?) AND tracker_id = ? AND enabled = ?
+            AND enabled_sharing = ?',
+            project_ids, @tracker.id, true, true).order('position')
+        inherit_templates.each { |x| group.push([x.title, x.id]) }
+      end
+
       @grouped_options.push([@tracker.name, group])
     end      
     render :action => "_template_pulldown", :layout => false
