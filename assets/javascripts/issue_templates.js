@@ -8,6 +8,11 @@ function checkExpand(ch) {
     "none" == obj.style.display ?"" : "none"
 }
 
+function eraseSubjectAndDescription() {
+    $("#issue_description").val('');
+    $("#issue_subject").val('');
+}
+
 // Change Location of pulldown.
 $(document).ready(function() {
     $('#template_area').insertBefore($('#issue_subject').parent());

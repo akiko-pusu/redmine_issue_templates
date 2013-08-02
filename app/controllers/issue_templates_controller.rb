@@ -99,16 +99,16 @@ class IssueTemplatesController < ApplicationController
                                             @project.id, @tracker.id, true, true).first
     if issue_templates.size > 0
       issue_templates.each { |x| group.push([x.title, x.id]) }
+    end
 
-      if inherit_template
-        inherit_templates = IssueTemplate.where('project_id in (?) AND tracker_id = ? AND enabled = ?
-            AND enabled_sharing = ?',
-            project_ids, @tracker.id, true, true).order('position')
-        inherit_templates.each { |x| group.push([x.title, x.id]) }
-      end
+    if inherit_template
+      inherit_templates = IssueTemplate.where('project_id in (?) AND tracker_id = ? AND enabled = ?
+          AND enabled_sharing = ?',
+          project_ids, @tracker.id, true, true).order('position')
+      inherit_templates.each { |x| group.push([x.title, x.id, {:class => "inherited"}]) } if inherit_templates.any?
+    end
 
-      @grouped_options.push([@tracker.name, group])
-    end      
+    @grouped_options.push([@tracker.name, group]) if group.any?
     render :action => "_template_pulldown", :layout => false
   end
 
