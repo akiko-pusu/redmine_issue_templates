@@ -1,6 +1,6 @@
 # Japanese translation
 ja:
-  issue_templates: チケットテンプレート
+  issue_templates: テンプレート
   issue_template: チケットテンプレート
   issue_template_note: メモ
   label_enabled: "有効"
@@ -30,6 +30,3 @@ ja:
   label_inherit_templates: "親プロジェクトのテンプレートを継承"
   label_inherit_templates_help_message: "親プロジェクトのテンプレートを継承します。ただし、親プロジェクトのテンプレートで、プロジェクトツリーでの利用を許可しているものに限られます。"
   label_inherited_templates: "継承されたテンプレート"
-  no_issue_templates_for_this_project: "このプロジェクト用のテンプレートは未だ登録されていません。"
-  link_to_index_edit_template: "テンプレート一覧 / 編集"
-  erase_issue_subject_and_description: "タイトルと詳細をクリア"

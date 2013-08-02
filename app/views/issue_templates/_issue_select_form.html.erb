@@ -15,10 +15,6 @@
      onclick="checkExpand('template_help_content');">
 <%= l(:label_help_message) %></a>
   <% end %>
-
-  <a class="icon icon-erase" href="#" title="<%= l(:erase_issue_subject_and_description) %>"
-     onclick="eraseSubjectAndDescription();">
-    <%= l(:erase_issue_subject_and_description) %></a>
   <span id="template_status-area"></span>
 </p>
  <div class="template_help box" id="template_help_content" style="display: none;"><%= textilizable @setting.help_message %>

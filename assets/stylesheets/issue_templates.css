@@ -79,26 +79,4 @@ span.help_content {
     background: #FFEBC1 url(../images/lamp.png) no-repeat 3px center;
     color: #A6750C;
     border: solid #FDBF3B 1px;
-}
-
-option.inherited {
-    background-color: #FCFD8D;
-    font-style: oblique;
-}
-
-.template_tracker
-{
-    background: url(../images/ticket.png) no-repeat 3px center;
-    padding-top: 3px;
-    padding-left: 18px;
-}
-
-.template_box {
-padding: 6px;
-    margin-bottom: 10px;
-    color: rgb(80, 80, 80);
-    line-height: 1.5em;
-    border: 1px solid rgb(228, 228, 228);
-}
-
-.icon-erase { background-image: url(../images/eraser.png); }​
+}​

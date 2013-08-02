@@ -5,7 +5,7 @@
     </div>
 <% end %>
 <div class="contextual">
-  <%= link_to_if_authorized(l(:label_new_templates),
+  <%= link_to_if_authorized(l(:label_new), 
     {:controller => 'issue_templates', :action => 'new', :project_id => @project}, 
     :class => 'icon icon-add') %>
 </div>
@@ -14,16 +14,8 @@
   <div class="flash notice"><%= @notice -%></div>
 <% end -%>
 
-
-<% if @template_map.empty? %>
-    <div class="template_box">
-      <%= l(:no_issue_templates_for_this_project) %>
-    </div>
-<% end %>
-
 <% @template_map.each_key do |tracker| %>
-<div class="template_box">
-<h3 class="template_tracker"><%= tracker.name %></h3>
+<h3><%= tracker.name %></h3>
 
 <table class="list issues">
   <thead>
@@ -77,13 +69,10 @@
     <% end %>
   </tbody>
 </table>
-</div>
 <% end %>
 
-
 <% unless @inherit_templates.blank? %>
-<h2 class="template"><%=h "#{l(:label_inherited_templates)}" %></h2>
-  <div class="template_box">
+<h3 class="template"><%=h "#{l(:label_inherited_templates)}" %></h3>
 
         <table class="list issues">
           <thead>
@@ -114,5 +103,4 @@
           <% end %>
           </tbody>
         </table>
-    </div>
  <% end %>
