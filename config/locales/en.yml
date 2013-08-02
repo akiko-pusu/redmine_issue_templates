@@ -1,6 +1,6 @@
 # English strings go here for Rails i18n
 en:
-  issue_templates: Templates
+  issue_templates: Issue templates
   issue_template: Issue template
   issue_template_note: note
   label_enabled: Enable
@@ -29,4 +29,7 @@ en:
   label_enabled_sharing: "Enabled sharing with project tree."
   label_inherit_templates: "Inherit templates"
   label_inherit_templates_help_message: "Inherit templates from parent project. (Only parent's templates are listed which marked as enabled sharing with project tree.)"
-  label_inherited_templates: "Inherited Templates"
+  label_inherited_templates: "Inherited templates"
+  no_issue_templates_for_this_project: "No issue templates are defined for this project."
+  link_to_index_edit_template: "Issue templates list / edit templates"
+  erase_issue_subject_and_description: "Clear subject and description text."
