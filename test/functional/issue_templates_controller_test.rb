@@ -4,6 +4,9 @@ class IssueTemplatesControllerTest < ActionController::TestCase
   fixtures :projects, :users, :roles, :trackers, :members, :member_roles, :enabled_modules,
            :issue_templates,
            :projects_trackers
+
+  include Redmine::I18n
+
   def setup
     @controller = IssueTemplatesController.new
     @request    = ActionController::TestRequest.new
@@ -40,6 +43,7 @@ class IssueTemplatesControllerTest < ActionController::TestCase
       assert_template 'index'
       assert_not_nil assigns(:issue_templates)
     end
+
   end
   
   context "#show" do
@@ -183,8 +187,64 @@ class IssueTemplatesControllerTest < ActionController::TestCase
         assert_equal 1, issue_template.reload.position        
       end
    end
+ end
+
+  context "child project #index" do
+    setup do
+      @project = Project.find(3)
+      @project.enabled_modules << EnabledModule.new(:name => 'issue_templates')
+      @project.save!
+
+      # do as Admin
+      @request.session[:user_id] = 1
+    end
+
+    should "should get index" do
+      get :index, :project_id => 1
+      assert_response :success
+      assert_template 'index'
+      assert_select "h2", {:text => "#{l(:issue_template)}", :count => 1}
+      assert !@response.body.match(%r{<h3>#{l(:label_inherited_templates)}</h3>})
+      #assert_select "h3", {:text => "#{l(:label_inherited_templates)}", :count => 1}, "Inherit templates should not displayed."
+
+      get :index, :project_id => 3
+      assert_response :success
+      assert_template 'index'
+      assert_select "h2", :text => "#{l(:issue_template)}", :count => 1
+      assert !@response.body.match(%r{<h3>#{l(:label_inherited_templates)}</h3>})
+    end
+
+    should "should get index with inherit templates" do
+      setting = IssueTemplateSetting.find(3)
+      setting.inherit_templates = true
+      setting.save!
+
+      get :index, :project_id => 3
+      assert_response :success
+      assert_template 'index'
+      assert_select "h2", :text => "#{l(:issue_template)}", :count => 1
+      assert_select "h2:nth-of-type(2)", :text => "#{l(:label_inherited_templates)}"
+
+    end
+
+    should "render pulldown with parent template" do
+      setting = IssueTemplateSetting.find(3)
+      setting.inherit_templates = true
+      setting.save!
+
+      tracker = Tracker.find(1)
+      template = IssueTemplate.where('project_id in (?) AND tracker_id = ? AND enabled = ?
+            AND enabled_sharing = ?',1, tracker.id, true, true).first
+
+      get :set_pulldown, :project_id => 3, :issue_tracker_id => 1
+      assert_response :success
+      assert_template "issue_templates/_template_pulldown"
+      assert_select "optgroup[label=#{tracker.name}]"
+      assert_select 'option[value=1]'
+    end
+
   end
-  
+
   def json_response
     ActiveSupport::JSON.decode @response.body
   end

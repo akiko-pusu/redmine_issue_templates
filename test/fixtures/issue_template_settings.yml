@@ -8,6 +8,8 @@ one:
 
   enabled: true
 
+  inherit_templates: false
+
 two:
   id: 2
 
@@ -16,4 +18,17 @@ two:
   help_message: MyText
 
   enabled: false
+
+  inherit_templates: false
+
+three:
+  id: 3
+
+  project_id: 3
+
+  help_message: Project3 help
+
+  enabled: true
+
+  inherit_templates: false
 
