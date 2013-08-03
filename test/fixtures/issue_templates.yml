@@ -18,6 +18,8 @@ one:
   
   position: 1
 
+  enabled_sharing: true
+
 two:
   id: 2
 
@@ -36,6 +38,8 @@ two:
   enabled: false
 
   position: 1
+
+  enabled_sharing: false
   
 three:
   id: 3
@@ -93,4 +97,22 @@ five:
   enabled: false
 
   position: 3
-  
+
+six:
+  id: 6
+
+  project_id: 3
+
+  tracker_id: 1
+
+  author_id: 1
+
+  title: title6
+
+  description: description6
+
+  note: note5
+
+  enabled: true
+
+  position: 3

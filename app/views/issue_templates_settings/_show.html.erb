@@ -7,6 +7,18 @@
         <%= simple_format(l(:text_no_tracker_enabled)) %>
       </div>
   <% end %>
+
+  <h2><%= l(:link_to_index_edit_template) %></h2>
+  <p><%= link_to(l(:label_list_templates),
+              {:controller => :issue_templates,
+               :action => :index,
+               :project_id => @project}, :class => 'template') %>   |
+  <%= link_to_if_authorized(l(:label_new_templates),
+                            {:controller => 'issue_templates', :action => 'new', :project_id => @project},
+                            :class => 'icon icon-add') %></p>
+  <p></p>
+<div class="template_box">
+<h2>Optional settings</h2>
   <p><%= l(:about_help_message) %></p>
 <%= labelled_form_for :settings, @issue_templates_setting,
                              :url => {:controller => 'issue_templates_settings',
@@ -15,11 +27,18 @@
                              :html => {:id => 'issue_templates_settings' } do |f| %>    
     <%= error_messages_for 'issue_templates_setting' %>
     <div class="box tabular">
+
+      <p><%= f.check_box :inherit_templates, :label => l(:label_inherit_templates) %>
+        <a class="icon icon-help" href="#" title="<%= l(:help_for_this_field) %>"
+           onclick="checkExpand('inherit_templates_help_content'); return false;"><%= l(:help_for_this_field) %>
+        </a><br/>
+        <span id="inherit_templates_help_content" class="help_content" style="display: none;"><%= l(:label_inherit_templates_help_message) %></span>
+      </p>
     <p><%= f.check_box :enabled, :label => l(:label_show_help_message) %></p>     
     <p><label><%=l(:label_help_message)%></label>
    <%=content_tag(:label, l(:label_help_message)) %>
    <%=text_area_tag 'settings[help_message]',  @issue_templates_setting['help_message'],  :size =>"50x5", 
-        :class => 'wiki-edit' ,:required => true  %><br/>
+        :class => 'wiki-edit'  %><br/>
  <%= wikitoolbar_for "settings_help_message" %>
  <%= preview_link url_for(:controller => 'issue_templates_settings', :action => 'preview',
                           :project_id => @project),
@@ -30,4 +49,14 @@
     <%= submit_tag l(:button_save) %>
 <% end %>
 </div>
+</div>
+
+<script type="text/javascript">
+    //<![CDATA[
+    function checkExpand(ch) {
+        var obj=document.all && document.all(ch) || document.getElementById && document.getElementById(ch);
+        if(obj && obj.style) obj.style.display=
+                "none" == obj.style.display ?"" : "none"
+    }
+</script>
 

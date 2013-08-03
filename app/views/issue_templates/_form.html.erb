@@ -42,6 +42,14 @@ helpImg = baseurl + "/images/help.png"
 <span id="enabled_help_content" class="help_content" style="display: none;"><%= l(:label_enabled_help_message) %></span>
 
 </p>
+
+<p><%= f.check_box :enabled_sharing, :label => l(:label_enabled_sharing) %>
+  <a class="icon icon-help" href="#" title="<%= l(:help_for_this_field) %>"
+     onclick="checkExpand('enabledsharing_help_content'); return false;"><%= l(:help_for_this_field) %>
+  </a><br/>
+  <span id="enabledsharing_help_content" class="help_content" style="display: none;"><%= l(:label_enabledshaing_help_message) %></span>
+</p>
+
 </div>
 
 <%= wikitoolbar_for 'issue_template_description' %>

@@ -30,7 +30,7 @@ class IssuteTemplatesSettingControllerTest < ActionController::TestCase
         should "403 post" do
           project = Project.find 1
           post :edit, :project_id => project, 
-            :settings => { :enabled => "1", :help_message => "Hoo"},
+            :settings => { :enabled => "1", :help_message => "Hoo", :inherit_templates => true},
             :setting_id => 1, :tab => "issue_templates"
           assert_response 403
         end
@@ -45,14 +45,14 @@ class IssuteTemplatesSettingControllerTest < ActionController::TestCase
         should "non existing project return 404" do
           # set non existing project
           post :edit, :project_id => "dummy", 
-            :settings => { :enabled => "1", :help_message => "Hoo", :project_id => 2},
+            :settings => { :enabled => "1", :help_message => "Hoo", :project_id => 2, :inherit_templates => true},
             :setting_id => 1, :tab => "issue_templates"
           assert_response 404        
         end
         
         should "redirect post" do
           post :edit, :project_id => @project, 
-            :settings => { :enabled => "1", :help_message => "Hoo", :project_id => 2},
+            :settings => { :enabled => "1", :help_message => "Hoo", :project_id => 2, :inherit_templates => true},
             :setting_id => 1, :tab => "issue_templates"
           assert_response :redirect          
           assert_redirected_to :controller => 'projects', 

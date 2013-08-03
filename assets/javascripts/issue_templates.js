@@ -8,6 +8,11 @@ function checkExpand(ch) {
     "none" == obj.style.display ?"" : "none"
 }
 
+function eraseSubjectAndDescription() {
+    $("#issue_description").val('');
+    $("#issue_subject").val('');
+}
+
 // Change Location of pulldown.
 $(document).ready(function() {
     $('#template_area').insertBefore($('#issue_subject').parent());
@@ -33,6 +38,9 @@ function load_template(target_url, token, confirm_msg) {
                 if ($("#issue_subject").val() != '') {
                     oldSubj = $("#issue_subject").val() + ' ';
                 }
+                template.issue_template.description = (template.issue_template.description == null)? '' : template.issue_template.description;
+                template.issue_template.issue_title = (template.issue_template.issue_title == null)? '' : template.issue_template.issue_title;
+
                 $("#issue_description").val(oldVal + template.issue_template.description);
                 $("#issue_subject").val(oldSubj + template.issue_template.issue_title);
                 try {
