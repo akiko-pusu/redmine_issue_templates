@@ -55,6 +55,18 @@ project has some format for issues.
 
 == Changelog
 
+=== 0.0.6
+
+* Inherited templates from parent project.  (#1267)
+* Add links to template list/edit at project setting tab. (#1269)
+* Add link to erase issue subject and description text.
+* Replace :rubygems in Gemfile with 'https://rubygems.org'.
+  Thanks for JohnArcher.
+* Fixed invalid encoding. Thank you so much, Christoph. (#1178)
+* Fixed append "null" string to issue title field. (IssueID: #1268)
+* Prevent to load template when update and redirect with validation error.
+    (#1151, #1254)
+
 === 0.0.5
 
 * Load default template.  (#1088)

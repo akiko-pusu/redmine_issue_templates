@@ -65,6 +65,9 @@
 <p><label><%= l(:label_enabled) %></label>
   <%= checked_image @issue_template.enabled? %>
 </p>
+<p><label><%= l(:label_enabled_sharing) %></label>
+  <%= checked_image @issue_template.enabled_sharing? %>
+</p>
 
 <p><label><%=  l(:field_author) %></label>
 <%= authoring @issue_template.created_on, @issue_template.author %>
