@@ -11,6 +11,13 @@ function checkExpand(ch) {
 function eraseSubjectAndDescription() {
     $("#issue_description").val('');
     $("#issue_subject").val('');
+
+    try {
+        if (CKEDITOR.instances.issue_description)
+            CKEDITOR.instances.issue_description.setData('');
+    } catch(e) {
+        // do nothing.
+    }
 }
 
 // Change Location of pulldown.
