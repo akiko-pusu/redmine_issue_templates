@@ -9,11 +9,17 @@ helpImg = baseurl + "/images/help.png"
 
 <fieldset class="issue">
 <legend class="issue"><%= l(:label_applied_for_issue) %></legend>
-<p><%= f.select :tracker_id, template_target_trackers(@project, @issue_template),
-       :required => true,:label => l(:label_tracker), :selected => @issue_template.tracker.id %>
+<p>
+  <% if @issue_template.tracker.blank? %>
+  <%= f.select :tracker_id, template_target_trackers(@project, @issue_template),
+       :required => true,:label => l(:label_tracker)  %>
+　<% else %>
+      <%= f.select :tracker_id, template_target_trackers(@project, @issue_template),
+                   :required => true,:label => l(:label_tracker), :selected => @issue_template.tracker.id %>
   <% if !is_project_tracker(@issue_template.tracker.id, @project) %><br/>
   <%= non_project_tracker_msg(is_project_tracker(@issue_template.tracker.id, @project)) %>
   <% end %>
+<% end %>
 </p>
 <p><%= f.text_field :issue_title, :required => false, :size => 80, :label => l(:issue_title) %>
     <a class="icon icon-help" href="#" title="<%= l(:help_for_this_field) %>"

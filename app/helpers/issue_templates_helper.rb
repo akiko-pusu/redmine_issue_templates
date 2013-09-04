@@ -13,7 +13,10 @@ module IssueTemplatesHelper
 
   def template_target_trackers(project, issue_template)
     trackers = nil
-    trackers = project.trackers | [issue_template.tracker]
+    trackers = project.trackers
+    if !issue_template.tracker_id.blank?
+      trackers = trackers | [issue_template.tracker]
+    end
     trackers = trackers.collect {|t| [t.name, t.id]}
     return trackers
   end
