@@ -24,6 +24,7 @@
 <% @template_map.each_key do |tracker| %>
 <div class="template_box">
 <h3 class="template_tracker"><%= tracker.name %></h3>
+  <%= non_project_tracker_msg(is_project_tracker(tracker.id, @project)) %>
 
 <table class="list issues">
   <thead>

@@ -33,3 +33,4 @@ ja:
   no_issue_templates_for_this_project: "このプロジェクト用のテンプレートは未だ登録されていません。"
   link_to_index_edit_template: "テンプレート一覧 / 編集"
   erase_issue_subject_and_description: "タイトルと詳細をクリア"
+  unused_tracker_at_this_project: "このプロジェクトでは利用されていないトラッカーです。必要に応じて、トラッカーとテンプレートの関連付けを修正して下さい。"

@@ -45,6 +45,7 @@
 <legend class="issue"><%= l(:label_applied_for_issue) %></legend>
 <p><label><%= l(:label_tracker) %></label>
 <%= h @issue_template.tracker.name %>
+  <%= non_project_tracker_msg(is_project_tracker(@issue_template.tracker.id, @project)) %>
 </p>
 <p>
 <label><%= l(:issue_title) %></label>

@@ -86,6 +86,16 @@ option.inherited {
     font-style: oblique;
 }
 
+.non_project_tracker
+{
+    background: url(../images/lamp.png) no-repeat 3px center;
+    color: #dd8888;
+    font-style: italic;
+    font-weight: lighter;
+    padding-top: 3px;
+    padding-left: 20px;
+}
+
 .template_tracker
 {
     background: url(../images/ticket.png) no-repeat 3px center;
@@ -101,4 +111,5 @@ padding: 6px;
     border: 1px solid rgb(228, 228, 228);
 }
 
-.icon-erase { background-image: url(../images/eraser.png); }​
+.icon-erase { background-image: url(../images/eraser.png); }
+​
