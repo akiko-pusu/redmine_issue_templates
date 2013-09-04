@@ -12,12 +12,14 @@ class IssueTemplatesController < ApplicationController
   before_filter :find_tracker, :only => [ :set_pulldown ]
 
   def index
+    tracker_ids = IssueTemplate.where('project_id = ?', @project.id).pluck(:tracker_id)
+
     @template_map = Hash::new
-    @project.trackers.each do |tracker|
+    tracker_ids.each do |tracker_id|
       templates = IssueTemplate.where('project_id = ? AND tracker_id = ?',
-                                              @project.id, tracker.id).order('position')
+                                              @project.id, tracker_id).order('position')
       if templates.any?
-        @template_map[tracker] = templates
+        @template_map[Tracker.find(tracker_id)] = templates
       end
     end
 

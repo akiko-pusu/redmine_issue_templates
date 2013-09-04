@@ -33,3 +33,4 @@ en:
   no_issue_templates_for_this_project: "No issue templates are defined for this project."
   link_to_index_edit_template: "Issue templates list / edit templates"
   erase_issue_subject_and_description: "Clear subject and description text."
+  unused_tracker_at_this_project: "NOTE: This tracker is not defined to use for this project. Please re-define template setting if necessary."
