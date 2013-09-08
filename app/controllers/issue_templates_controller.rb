@@ -33,9 +33,11 @@ class IssueTemplatesController < ApplicationController
     project_ids = inherit_template ? @project.ancestors.collect(&:id) : [@project.id]
     if inherit_template
       # keep ordering
+      used_tracker_ids = @project.trackers.pluck(:tracker_id)
+
       project_ids.each do |i|
         @inherit_templates.concat(IssueTemplate.where('project_id = ? AND enabled = ?
-          AND enabled_sharing = ?', i, true, true).order('position'))
+          AND enabled_sharing = ? AND tracker_id IN (?)', i, true, true, used_tracker_ids).order('position'))
       end
     end
 
