@@ -6,7 +6,7 @@ class IssueTemplateSetting < ActiveRecord::Base
   validates_uniqueness_of :project_id
   validates_presence_of :project_id
 
-  safe_attributes 'help_message', 'enabled', 'inherit_templates'
+  safe_attributes 'help_message', 'enabled', 'inherit_templates', 'should_replaced'
 	
   def self.find_or_create(project_id)	
     setting = IssueTemplateSetting.find(:first, :conditions => ['project_id = ?', project_id])

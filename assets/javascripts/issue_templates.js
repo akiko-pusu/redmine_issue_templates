@@ -26,7 +26,7 @@ $(document).ready(function() {
 });
 
 // TODO: When update description, confirmation dialog should be appeared.
-function load_template(target_url, token, confirm_msg) {
+function load_template(target_url, token, confirm_msg, should_replaced) {
     var allow_overwrite = $('#allow_overwrite_description').prop('checked');
     if ($("#issue_template").val() != "") {
         $.ajax({
@@ -38,11 +38,11 @@ function load_template(target_url, token, confirm_msg) {
                 oldSubj = "";
                 oldVal = "";
                 eval('var template = ' + html);
-                if ($("#issue_description").val() != '') {
+                if ($("#issue_description").val() != '' && should_replaced == 'false') {
                     oldVal = $("#issue_description").val() + "\n\n";
                 }
 
-                if ($("#issue_subject").val() != '') {
+                if ($("#issue_subject").val() != '' && should_replaced == 'false') {
                     oldSubj = $("#issue_subject").val() + ' ';
                 }
                 template.issue_template.description = (template.issue_template.description == null)? '' : template.issue_template.description;

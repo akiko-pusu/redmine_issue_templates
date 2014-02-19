@@ -33,6 +33,7 @@ load_url = '<%= url_for(:controller => 'issue_templates',
       :action => 'load', :project_id => @project) %>';
 pulldown_url = '<%= url_for(:controller => 'issue_templates', 
       :action => 'set_pulldown', :project_id => @project) %>';
+should_replaced = '<%= @setting.should_replaced %>';
 confirm_msg = '<%= escape_javascript(l(:confirm_replace_description_with_template)) %>'
 tracker =  '<%= @issue.tracker.id %>'
 set_pulldown(tracker, pulldown_url, token);
@@ -40,7 +41,7 @@ set_pulldown(tracker, pulldown_url, token);
 $('#template_area').insertBefore($('#issue_subject').parent());
 $(document).ready(function() {
     $("#issue_template").change(function(){
-        load_template(load_url, token, confirm_msg);
+        load_template(load_url, token, confirm_msg, should_replaced);
     });
 });
 
