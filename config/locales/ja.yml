@@ -34,3 +34,4 @@ ja:
   link_to_index_edit_template: "テンプレート一覧 / 編集"
   erase_issue_subject_and_description: "タイトルと詳細をクリア"
   unused_tracker_at_this_project: "このプロジェクトでは利用されていないトラッカーです。必要に応じて、トラッカーとテンプレートの関連付けを修正して下さい。"
+  label_enabledshaing_help_message: "オプションをチェックすると、子プロジェクトでの利用を許可します。（子プロジェクト側での『テンプレートの継承』を設定した場合）"
