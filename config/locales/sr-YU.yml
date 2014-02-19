@@ -1,0 +1,37 @@
+# English strings go here for Rails i18n
+sr:
+  issue_templates: Šabloni problema
+  issue_template: Šablon problema
+  issue_template_note: nota
+  label_enabled: Aktivno
+  label_disabled: Neaktivno
+  label_help_message: O šablonu
+  label_show_help_message: Prikaži poruku za pomoć prilikom kreiranja ili ažuriranja problema.
+  about_help_message: Za svaki projekat se može prilagoditi poruka za pomoć za upotrebu šablona.
+  close_help: Zatvori poruku za pomoć.
+  about_template_help_message: Možete videti instrukcije o korišćenju šablona na ovom projektu.
+  label_enabled_help_message: Aktivira šablon. Ukoliko i dalje razvijate ovaj šablon, ostavite ga deaktiviranim dok nije završen.
+  label_list_templates: "Lista šablona"
+  label_new_templates: "Dodaj šablon"
+  issue_template_name: "Ime šablona"
+  issue_description: "Opis"
+  issue_title: "Predmet"
+  label_applied_for_issue: "Polja problema za koja se šablon odnosi"
+  help_for_issue_title: "Ukoliko je definisan predmet problema on će takođe biti primenjen prilikom selekcije šablona."
+  help_for_this_field: "Pomoć za ovo polje"
+  permission_manage_issue_templates: "Upravljanje šablonima"
+  permission_edit_issue_templates: "Ažuriraj šablon"
+  permission_show_issue_templates: "Prikaži šablon"
+  project_module_issue_templates: "Šabloni problema"
+  label_isdefault_help_message: "Ukoliko je aktivirano, ovaj šablon će biti podrazumevani (default) za dato praćenje (tracker) problema."
+  defaulf_template_loaded: "Učitan je podrazumevani šablon za ovo praćenje problema u polje za opis. (Praćenje: %{tracker})"
+  text_no_tracker_enabled: "Još uvek nisu konfigurisani pratioci (tracker) za ovaj projekat."
+  label_enabled_sharing: "Omogući deljenje sa stablom projekta"
+  label_enabledshaing_help_message: "Aktiviraj da bi subprojekti nasledili šablone."
+  label_inherit_templates: "Nasledi šablon"
+  label_inherit_templates_help_message: "Nasledi šablon od majke projekta"
+  label_inherited_templates: "Nasleđeni šabloni"
+  no_issue_templates_for_this_project: "Nema definisanih šablona za ovaj projekat."
+  link_to_index_edit_template: "Lista šablona problema / ažuriraj šablone."
+  erase_issue_subject_and_description: "Obriši naslov i opis"
+  unused_tracker_at_this_project: "NOTA: Ovo praćenje problema (tracker) se ne koristi u ovom projektu."
