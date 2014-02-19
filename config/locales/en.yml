@@ -34,3 +34,6 @@ en:
   link_to_index_edit_template: "Issue templates list / edit templates"
   erase_issue_subject_and_description: "Clear subject and description text."
   unused_tracker_at_this_project: "NOTE: This tracker is not defined to use for this project. Please re-define template setting if necessary."
+  label_enabledshaing_help_message: "If true, this template can be shared with descendant projects. (You also have to activate Inherited template option at child project.)"
+  label_should_replaced: "Replace subject and description"
+  label_should_replaced_help_message: "If true, existing subject and description are cleared and replaced with template text.（Default is false, and appended text.)"

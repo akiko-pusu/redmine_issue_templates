@@ -55,6 +55,20 @@ project has some format for issues.
 
 == Changelog
 
+=== 0.0.7
+
+NOTE: Please run "rake redmine:plugins:migrate" task because new column
+  is added.
+
+* Fix some bugs.
+* Compatible with CKEditor.  (#1280)
+* Add feature to show warning message for orphaned templates. (#1278)
+* Inherited templates only should be listed which tracker is the same to 
+  child project use. (#1278)
+* Add French translation file. (Bitbucket IssueID:33)
+* Add Serbian translation. Thank you so much, Miodrag Milic. (Bitbucket IssueID:34)
+* Add option to change append or replace with template. (#1176)
+
 === 0.0.6
 
 * Inherited templates from parent project.  (#1267)
@@ -90,6 +104,8 @@ project has some format for issues.
 * Bulgarian: Ivan Cenov
 * Russian: Denny Brain
 * German: Terence Miller and anonymous contributor
+* French: Anonymous one
+* Serbian: Miodrag Milic 
 
 
 === License

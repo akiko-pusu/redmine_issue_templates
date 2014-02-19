@@ -34,6 +34,14 @@
         </a><br/>
         <span id="inherit_templates_help_content" class="help_content" style="display: none;"><%= l(:label_inherit_templates_help_message) %></span>
       </p>
+
+      <p><%= f.check_box :should_replaced, :label => l(:label_should_replaced) %>
+        <a class="icon icon-help" href="#" title="<%= l(:help_for_this_field) %>"
+           onclick="checkExpand('should_replaced_help_content'); return false;"><%= l(:help_for_this_field) %>
+        </a><br/>
+        <span id="should_replaced_help_content" class="help_content" style="display: none;"><%= l(:label_should_replaced_help_message) %></span>
+      </p>
+
     <p><%= f.check_box :enabled, :label => l(:label_show_help_message) %></p>     
     <p><label><%=l(:label_help_message)%></label>
    <%=content_tag(:label, l(:label_help_message)) %>
