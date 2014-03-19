@@ -12,7 +12,14 @@ class GlobalIssueTemplate < ActiveRecord::Base
   has_and_belongs_to_many :projects
 
   # author and project should be stable.
-  safe_attributes 'title', 'description', 'tracker_id', 'note', 'enabled', 'issue_title','is_default'
+  safe_attributes 'title',
+                  'description',
+                  'tracker_id',
+                  'note',
+                  'enabled',
+                  'issue_title',
+                  'is_default',
+                  'project_ids'
 
   def enabled?
     self.enabled == true

@@ -31,6 +31,9 @@ Redmine::Plugin.register :redmine_issue_templates do
   requires_redmine :version_or_higher => '2.1.0'
   url 'https://bitbucket.org/akiko_pusu/redmine_issue_templates'
 
+  menu :admin_menu, :redmine_issue_templates, { :controller => 'global_issue_templates', :action => 'index' },
+       :caption => :issue_templates
+
   project_module :issue_templates do
     permission :edit_issue_templates, {:issue_templates => [:new, :edit, :destroy, :move]}
     permission :show_issue_templates, {:issue_templates => [:index, :show, :load, :set_pulldown]}

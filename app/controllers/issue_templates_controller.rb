@@ -41,6 +41,9 @@ class IssueTemplatesController < ApplicationController
       end
     end
 
+    @globalIssueTemplates = GlobalIssueTemplate.find(:all,:include => [:projects],
+                                                      :conditions => ["projects.id = ?", @project.id] )
+
     render :template => 'issue_templates/index.html.erb', :layout => !request.xhr?
   end
 
@@ -84,7 +87,11 @@ class IssueTemplatesController < ApplicationController
 
   # load template description
   def load
-    @issue_template = IssueTemplate.find(params[:issue_template])
+    if params[:template_type] != nil && params[:template_type]== 'global'
+      @issue_template = GlobalIssueTemplate.find(params[:issue_template])
+    else
+      @issue_template = IssueTemplate.find(params[:issue_template])
+    end
     render :text => @issue_template.to_json
   end
   
@@ -136,6 +143,20 @@ class IssueTemplatesController < ApplicationController
       end
     end
 
+    @globalIssueTemplates = GlobalIssueTemplate.find(:all,:include => [:projects],
+                        :conditions => [" tracker_id = ? AND projects.id = ?", @tracker.id, @project.id] )
+
+    if @globalIssueTemplates.any?
+      @globalIssueTemplates.each do |x|
+        group.push([x.title, x.id, {:class => "global"}])
+        if x.is_default == true
+          if project_default_template.blank?
+            @default_template = x
+          end
+        end
+      end
+    end
+
     @grouped_options.push([@tracker.name, group]) if group.any?
     render :action => "_template_pulldown", :layout => false
   end
@@ -181,6 +202,15 @@ class IssueTemplatesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to :action => 'index' }
       format.xml  { head :ok }
+    end
+  end
+
+  def find_global_template
+    begin
+      @globalIssueTemplates = GlobalIssueTemplates.find(:all,:include => [:projects],
+          :conditions => ["project.id = ?", params[:project_id]] )
+    rescue ActiveRecord::RecordNotFound
+      render_404
     end
   end
 end

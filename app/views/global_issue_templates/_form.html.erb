@@ -60,17 +60,18 @@
                  'global_issue_template_description', target='preview' %> |
 <%= link_to l(:button_cancel), {:action => 'index'}, :data => {:confirm => l(:text_are_you_sure)} %>
 
-< class="box tabular" >
+<div class="box" >
   <% if @projects.any? %>
-      <fieldset class="box" id="template_project_ids"><legend><%= l(:label_project_plural) %></legend>
+      <fieldset class="box" id="global_issue_template_project_ids"><legend><%= l(:label_project_plural) %></legend>
         <%= render_project_nested_lists(@projects) do |p|
-          content_tag('label', check_box_tag('template[project_ids][]', p.id, @template.projects.to_a.include?(p), :id => nil) + ' ' + h(p))
+          content_tag('label', check_box_tag('global_issue_template[project_ids][]', p.id, @global_issue_template.projects.to_a.include?(p), :id => nil) + ' ' + h(p))
         end %>
-        <%= hidden_field_tag('template[project_ids][]', '', :id => nil) %>
-        <p><%= check_all_links 'template_project_ids' %></p>
+        <p><%= check_all_links 'global_issue_template_project_ids' %></p>
       </fieldset>
   <% end %>
+  <%= hidden_field_tag 'global_issue_template[project_ids][]', '' %>
 </div>
+
 
 <%= submit_tag l(@global_issue_template.new_record? ? :button_create : :button_save) %>
 

@@ -117,3 +117,36 @@
         </table>
     </div>
  <% end %>
+
+<% unless  @globalIssueTemplates.blank? %>
+    <h2 class="template"><%=h "#{l(:label_global_templates)}" %></h2>
+    <div class="template_box">
+
+      <table class="list issues">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th><%= l(:issue_template_name) %></th>
+          <th><%= l(:field_tracker) %></th>
+          <th><%= l(:field_author) %></th>
+          <th><%= l(:field_updated_on) %></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @globalIssueTemplates.each do |issue_template| %>
+            <tr class="<%= cycle("odd", "even") %> issue_template issue">
+              <td><%= link_to h(issue_template.id),  {:controller => 'global_issue_templates',
+                                                      :action => 'show', :id => issue_template.id,
+                                                      }, {:title => issue_template.note } %></td>
+
+              <td><%= issue_template.title  %></td>
+              <td><%=h issue_template.tracker.name %></td>
+              <td><%=h issue_template.author %></td>
+              <td><%= format_time(issue_template.updated_on)%> </td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+
+    </div>
+<% end %>

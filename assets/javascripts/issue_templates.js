@@ -2,6 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+changeType = "";
+
 function checkExpand(ch) {
     var obj=document.all && document.all(ch) || document.getElementById && document.getElementById(ch);
     if(obj && obj.style) obj.style.display=
@@ -29,11 +31,15 @@ $(document).ready(function() {
 function load_template(target_url, token, confirm_msg, should_replaced) {
     var allow_overwrite = $('#allow_overwrite_description').prop('checked');
     if ($("#issue_template").val() != "") {
+        var template_type = "";
+        if($("select[name=issue_template] option:selected").hasClass('global')){
+            template_type = "global";
+        }
         $.ajax({
             url:target_url,
             async:true,
             type:'post',
-            data:$.param({issue_template:$("#issue_template").val(), authenticity_token:token})
+            data:$.param({issue_template:$("#issue_template").val(), authenticity_token:token, template_type:template_type})
         }).done(function (html) {
                 oldSubj = "";
                 oldVal = "";
@@ -45,16 +51,18 @@ function load_template(target_url, token, confirm_msg, should_replaced) {
                 if ($("#issue_subject").val() != '' && should_replaced == 'false') {
                     oldSubj = $("#issue_subject").val() + ' ';
                 }
-                template.issue_template.description = (template.issue_template.description == null)? '' : template.issue_template.description;
-                template.issue_template.issue_title = (template.issue_template.issue_title == null)? '' : template.issue_template.issue_title;
+                for(var issue_template in template) {
+                    template[issue_template].description = (template[issue_template].description == null)? '' : template[issue_template].description;
+                    template[issue_template].issue_title = (template[issue_template].issue_title == null)? '' : template[issue_template].issue_title;
 
-                $("#issue_description").val(oldVal + template.issue_template.description);
-                $("#issue_subject").val(oldSubj + template.issue_template.issue_title);
-                try {
-                    if (CKEDITOR.instances.issue_description)
-                        CKEDITOR.instances.issue_description.setData(oldVal + template.issue_template.description);
-                } catch(e) {
-                    // do nothing.
+                    $("#issue_description").val(oldVal + template[issue_template].description);
+                    $("#issue_subject").val(oldSubj + template[issue_template].issue_title);
+                    try {
+                        if (CKEDITOR.instances.issue_description)
+                            CKEDITOR.instances.issue_description.setData(oldVal + template[issue_template].description);
+                    } catch(e) {
+                        // do nothing.
+                    }
                 }
             });
     }
