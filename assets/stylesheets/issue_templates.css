@@ -86,6 +86,12 @@ option.inherited {
     font-style: oblique;
 }
 
+option.global {
+    background-color: #FCFD8D;
+    color: darkred;
+    font-style: oblique;
+}
+
 .non_project_tracker
 {
     background: url(../images/lamp.png) no-repeat 3px center;
