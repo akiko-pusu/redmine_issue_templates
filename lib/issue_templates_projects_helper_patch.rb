@@ -22,6 +22,5 @@ module ProjectsHelperMethodsIssueTemplates
   end
 end
 
-ProjectsHelper.send(:include, IssueTemplatesProjectsHelperPatch)
 
 
