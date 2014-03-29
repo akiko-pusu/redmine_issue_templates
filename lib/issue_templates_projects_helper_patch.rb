@@ -1,8 +1,8 @@
 require_dependency 'projects_helper'
 
 module IssueTemplatesProjectsHelperPatch
-  def self.included base
-    base.send :include, ProjectsHelperMethodsIssueTemplates
+  def self.included(base)
+    base.send(:include, ProjectsHelperMethodsIssueTemplates)
     base.class_eval do
       alias_method_chain :project_settings_tabs, :issue_templates
     end
@@ -22,6 +22,5 @@ module ProjectsHelperMethodsIssueTemplates
   end
 end
 
-ProjectsHelper.send(:include, IssueTemplatesProjectsHelperPatch)
 
 
