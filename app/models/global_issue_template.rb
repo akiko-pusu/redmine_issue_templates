@@ -3,7 +3,6 @@ class GlobalIssueTemplate < ActiveRecord::Base
   unloadable
   belongs_to :author, :class_name => 'User', :foreign_key => 'author_id'
   belongs_to :tracker
-  before_save :check_default
   validates :title, :presence => true
   validates :tracker, :presence => true
   validates_uniqueness_of :title, :scope => :tracker_id
@@ -18,7 +17,6 @@ class GlobalIssueTemplate < ActiveRecord::Base
                   'note',
                   'enabled',
                   'issue_title',
-                  'is_default',
                   'project_ids'
 
   def enabled?
@@ -27,15 +25,5 @@ class GlobalIssueTemplate < ActiveRecord::Base
 
   def <=>(issue_template)
     position <=> global_issue_template.position
-  end
-
-  #
-  # In case set is_default and updated, others are also updated.
-  #
-  def check_default
-    if is_default? && is_default_changed?
-      GlobalIssueTemplate.update_all({:is_default => false},
-                               ['racker_id = ?', tracker_id])
-    end
   end
 end

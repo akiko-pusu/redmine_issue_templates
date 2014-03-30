@@ -36,12 +36,6 @@
                     :label => l(:issue_template_note), :style => "overflow:auto;" %>
   </p>
 
-  <p><%= f.check_box :is_default, :label => l(:field_is_default) %>
-    <a class="icon icon-help" href="#" title="<%= l(:help_for_this_field) %>"
-       onclick="checkExpand('isdefault_help_content'); return false;"><%= l(:help_for_this_field) %>
-    </a><br/>
-    <span id="isdefault_help_content" class="help_content" style="display: none;"><%= l(:label_isdefault_help_message) %></span>
-  </p>
   <p><%= f.check_box :enabled, :label => l(:label_enabled) %>
     <a class="icon icon-help" href="#" title="<%= l(:help_for_this_field) %>"
        onclick="checkExpand('enabled_help_content'); return false;"><%= l(:help_for_this_field) %>
@@ -52,7 +46,7 @@
 
 </div>
 
-<%= wikitoolbar_for 'issue_template_description' %>
+<%= wikitoolbar_for 'global_issue_template_description' %>
 
 <div id="preview" class="wiki"></div>
 <%= preview_link url_for(:controller => 'global_issue_templates', :action => 'preview',
