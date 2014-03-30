@@ -37,4 +37,5 @@ en:
   label_enabledshaing_help_message: "If true, this template can be shared with descendant projects. (You also have to activate Inherited template option at child project.)"
   label_should_replaced: "Replace subject and description"
   label_should_replaced_help_message: "If true, existing subject and description are cleared and replaced with template text.（Default is false, and appended text.)"
-  label_global_templates: "Global Issue Templates"
+  global_issue_templates: "Global Issue Templates"
+  no_issue_templates_for_this_redmine: "No global issue templates are defined for this redmine."

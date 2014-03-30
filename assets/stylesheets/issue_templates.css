@@ -118,4 +118,14 @@ padding: 6px;
 }
 
 .icon-erase { background-image: url(../images/eraser.png); }
+
+#admin-menu a.redmine-issue-templates {
+    background-image: url(../images/issue_templates.png);
+}
+
+label {
+      display: inline-block;
+      width: 5em;
+}
+
 ​

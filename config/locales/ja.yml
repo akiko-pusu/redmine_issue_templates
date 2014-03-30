@@ -37,4 +37,5 @@ ja:
   label_enabledshaing_help_message: "オプションをチェックすると、子プロジェクトでの利用を許可します。（子プロジェクト側での『テンプレートの継承』を設定した場合）"
   label_should_replaced: "テンプレート読み込みの際に本文とタイトルを上書き"
   label_should_replaced_help_message: "オプションをチェックすると、テンプレートを適用する際に、入力済みの本文とタイトルを上書きします。（デフォルトはOFFです）"
-  label_global_templates: "グローバルテンプレート"
+  global_issue_templates: "グローバル チケットテンプレート"
+  no_issue_templates_for_this_redmine: "このRedmineにはグローバルチケットテンプレートは定義されていません。"
