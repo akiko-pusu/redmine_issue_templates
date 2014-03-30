@@ -32,7 +32,7 @@ Redmine::Plugin.register :redmine_issue_templates do
   url 'https://bitbucket.org/akiko_pusu/redmine_issue_templates'
 
   menu :admin_menu, :redmine_issue_templates, { :controller => 'global_issue_templates', :action => 'index' },
-       :caption => :issue_templates
+       :caption => :global_issue_templates
 
   project_module :issue_templates do
     permission :edit_issue_templates, {:issue_templates => [:new, :edit, :destroy, :move]}
