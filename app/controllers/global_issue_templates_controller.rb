@@ -27,7 +27,7 @@ class GlobalIssueTemplatesController < ApplicationController
       @global_issue_template.safe_attributes = params[:global_issue_template]
       if @global_issue_template.save
         flash[:notice] = l(:notice_successful_create)
-        redirect_to :action => "show", :id => @global_issue_template.idd
+        redirect_to :action => "show", :id => @global_issue_template.id
       end
     end
   end
