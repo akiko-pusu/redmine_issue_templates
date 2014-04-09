@@ -46,8 +46,9 @@
       <tr class="<%= cycle("odd", "even") %> issue_template issue">
         <td><%= link_to h(issue_template.id),  {:controller => 'issue_templates', 
                  :action => 'show', :id => issue_template.id, :project_id => @project}, {:title => issue_template.note } %></td>
-        <td><%= link_to h(issue_template.title),  {:controller => 'issue_templates', 
-                 :action => 'show', :id => issue_template.id, :project_id => @project}, {:title => issue_template.note } %></td>
+        <td><%= link_to h(issue_template.title),  {:controller => 'issue_templates',
+                 :id => issue_template.id, :action => 'show'},
+                 title: textilizable(issue_template.description), class: "tooltip" %></td>
         <td><%=h issue_template.tracker.name %></td>
         <td><%=h issue_template.author %></td>
         <td><%= format_time(issue_template.updated_on)%> </td>
@@ -105,7 +106,9 @@
                       :action => 'show', :id => issue_template.id,
                       :project_id => issue_template.project_id }, {:title => issue_template.note } %></td>
 
-                <td><%= issue_template.title  %></td>
+                <td><%= link_to h(issue_template.title),  {:controller => 'issue_templates',
+                      :id => issue_template.id, :action => 'show'},
+                      title: textilizable(issue_template.description), class: "tooltip" %></td>td>
                 <td><%=h issue_template.tracker.name %></td>
                 <td><%=h issue_template.author %></td>
                 <td><%= format_time(issue_template.updated_on)%> </td>
@@ -122,6 +125,7 @@
     <h2 class="template"><%=h "#{l(:global_issue_templates)}" %></h2>
     <div class="template_box">
 
+      <%= l(:only_admin_can_associate_global_template) %>
       <table class="list issues">
         <thead>
         <tr>
@@ -135,13 +139,20 @@
         <tbody>
         <% @globalIssueTemplates.each do |issue_template| %>
             <tr class="<%= cycle("odd", "even") %> issue_template issue">
-              <td><%= link_to h(issue_template.id),  {:controller => 'global_issue_templates',
+              <td>
+                <% if User.current.admin? %>
+                     <%= link_to h(issue_template.id),  {:controller => 'global_issue_templates',
                                                       :action => 'show', :id => issue_template.id,
-                                                      }, {:title => issue_template.note } %></td>
+                                                      }, {:title => issue_template.note } %>
+                <% else %>
+                    <%=h issue_template.id %>
+                <% end %>
+               </td>
 
               <td>
                 <%= link_to h(issue_template.title),  {:controller => 'global_issue_templates',
-                    :id => issue_template.id, :action => 'show'}, title: textilizable(issue_template.description), class: "tooltip" %>
+                    :id => issue_template.id, :action => 'show'},
+                    title: textilizable(issue_template.description), class: "tooltip" %>
               </td>
               <td><%=h issue_template.tracker.name %></td>
               <td><%=h issue_template.author %></td>

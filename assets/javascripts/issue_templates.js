@@ -8,7 +8,7 @@ $(function () {
     $(".tooltip").tooltip({
         position: {
             my: "left top",
-            at: "left bottom"
+            at: "right bottom"
         },
         content: function () {
             return $(this).prop('title');
