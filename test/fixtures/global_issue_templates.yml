@@ -1,0 +1,51 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+one:
+  id: 1
+  
+  tracker_id: 1
+  
+  author_id: 1
+
+  title: global_title1
+
+  description: "global description1"
+
+  note: note1
+  
+  enabled: true
+
+  position: 1
+
+two:
+  id: 2
+
+  tracker_id: 3
+  
+  author_id: 1
+
+  title: titel2
+
+  description: "global description2"
+
+  note: note2
+  
+  enabled: false
+
+  position: 1
+  
+three:
+  id: 3
+
+  tracker_id: 2
+  
+  author_id: 1
+
+  title: titel3
+
+  description: "global description3"
+
+  note: note3
+  
+  enabled: true
+
+  position: 1
