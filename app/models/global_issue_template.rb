@@ -23,7 +23,7 @@ class GlobalIssueTemplate < ActiveRecord::Base
     self.enabled == true
   end
 
-  def <=>(issue_template)
+  def <=>(global_issue_template)
     position <=> global_issue_template.position
   end
 end
