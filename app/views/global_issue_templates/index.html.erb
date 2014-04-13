@@ -1,5 +1,9 @@
 <h2 class="template"><%=h "#{l(:global_issue_templates)}" %></h2>
-
+<% if @trackers.blank? %>
+    <div class="nodata">
+      <%= simple_format(l(:text_no_tracker_enabled_for_global)) %>
+    </div>
+<% end %>
 <div class="contextual">
   <%= link_to(l(:label_new_templates),
               {:controller => 'global_issue_templates', :action => 'new'},

@@ -12,6 +12,7 @@ class GlobalIssueTemplatesController < ApplicationController
   # Action for global template : Admin right is required.
   #
   def index
+    @trackers = Tracker.all
     @global_issue_templates = GlobalIssueTemplate.all
     render :template => 'global_issue_templates/index.html.erb', :layout => !request.xhr?
   end
@@ -48,6 +49,15 @@ class GlobalIssueTemplatesController < ApplicationController
         respond_to do |format|
           format.html { render :action => 'show' }
         end
+      end
+    end
+  end
+
+  def destroy
+    if request.post?
+      if @global_issue_template.destroy
+        flash[:notice] = l(:notice_successful_delete)
+        redirect_to :action => "index"
       end
     end
   end
