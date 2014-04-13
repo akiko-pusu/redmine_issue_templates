@@ -202,14 +202,5 @@ class IssueTemplatesController < ApplicationController
       format.xml  { head :ok }
     end
   end
-
-  def find_global_template
-    begin
-      @globalIssueTemplates = GlobalIssueTemplates.find(:all,:include => [:projects],
-          :conditions => ["project.id = ?", params[:project_id]] )
-    rescue ActiveRecord::RecordNotFound
-      render_404
-    end
-  end
 end
 

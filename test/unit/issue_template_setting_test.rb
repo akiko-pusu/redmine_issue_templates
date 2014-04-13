@@ -33,5 +33,11 @@ class IssueTemplateSettingTest < ActiveSupport::TestCase
     issue_template_setting = IssueTemplateSetting.find(2)
     enable_help = issue_template_setting.enable_help?
     assert_equal(false, enable_help)
-  end  
+  end
+
+  def test_find_template_setting
+    # for Project 6
+    issue_template_setting = IssueTemplateSetting.find_or_create(6)
+    assert_kind_of IssueTemplateSetting, issue_template_setting
+  end
 end

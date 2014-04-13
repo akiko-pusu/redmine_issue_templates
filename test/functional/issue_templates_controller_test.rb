@@ -17,6 +17,7 @@ class IssueTemplatesControllerTest < ActionController::TestCase
     @project = Project.find(1)
     @project.enabled_modules << EnabledModule.new(:name => 'issue_templates')
     @project.save!
+
   end
 
   context "#index" do
@@ -61,6 +62,12 @@ class IssueTemplatesControllerTest < ActionController::TestCase
         get :load, :project_id => 1, :issue_template => 1
         assert_response :success
         assert_equal "description1", json_response['issue_template']['description']
+      end
+
+      should "return json hash of global" do
+        get :load, :project_id => 1, :issue_template => 1, :template_type => 'global'
+        assert_response :success
+        assert_equal "global description1", json_response['global_issue_template']['description']
       end
       
       should "render pulldown" do
@@ -237,10 +244,11 @@ class IssueTemplatesControllerTest < ActionController::TestCase
             AND enabled_sharing = ?',1, tracker.id, true, true).first
 
       get :set_pulldown, :project_id => 3, :issue_tracker_id => 1
-      assert_response :success
+      #assert_response :succes
       assert_template "issue_templates/_template_pulldown"
       assert_select "optgroup[label=#{tracker.name}]"
       assert_select 'option[value=1]'
+      assert_select 'option[class=global]'
     end
 
   end
