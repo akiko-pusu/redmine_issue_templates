@@ -1,0 +1,19 @@
+<div class="contextual">
+  <%= link_to(l(:label_list_templates),
+              {:controller => :global_issue_templates, :action => 'index'
+              }, :class => 'template') %>
+</div>
+<h2 class="template"><%=h "#{l(:issue_templates)} / #{l(:button_add)}" %></h2>
+
+<div class="box">
+  <%= error_messages_for 'global_issue_template' %>
+  <%= labelled_form_for :global_issue_template,  @global_issue_template,
+                        :url => { :controller => 'global_issue_templates', :action => 'new' },
+                        :html => { :id => 'global_issue_template-form',
+                                   :class => nil, :multipart => false } do |f| %>
+
+      <%= render :partial => 'form', :locals => { :f => f } %>
+  <% end %>
+</div>
+
+

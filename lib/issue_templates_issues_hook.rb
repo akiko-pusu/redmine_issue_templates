@@ -8,7 +8,8 @@ class IssueTemplatesIssuesHook < Redmine::Hook::ViewListener
     o = stylesheet_link_tag('issue_templates', :plugin => 'redmine_issue_templates')
     if (context[:controller].class.name == 'IssuesController' and 
       context[:controller].action_name != 'index') or 
-      (context[:controller].class.name == 'IssueTemplatesController')
+      (context[:controller].class.name == 'IssueTemplatesController') or
+      (context[:controller].class.name == 'GlobalIssueTemplatesController')
       o << javascript_include_tag('issue_templates', :plugin => 'redmine_issue_templates')
     end      
     return o

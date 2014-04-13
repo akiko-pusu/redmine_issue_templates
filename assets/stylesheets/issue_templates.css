@@ -86,6 +86,12 @@ option.inherited {
     font-style: oblique;
 }
 
+option.global {
+    background-color: #FCFD8D;
+    color: darkred;
+    font-style: oblique;
+}
+
 .non_project_tracker
 {
     background: url(../images/lamp.png) no-repeat 3px center;
@@ -112,4 +118,20 @@ padding: 6px;
 }
 
 .icon-erase { background-image: url(../images/eraser.png); }
+
+#admin-menu a.redmine-issue-templates {
+    background-image: url(../images/issue_templates.png);
+}
+
+label {
+      display: inline-block;
+      width: 5em;
+}
+
+.tooltip {
+    background: url(../images/preview.png) no-repeat 3px center;
+    padding-top: 3px;
+    padding-left: 24px;
+}
+
 ​

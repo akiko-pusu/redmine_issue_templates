@@ -1,0 +1,72 @@
+<h2 class="template"><%=h "#{l(:global_issue_templates)}" %></h2>
+<% if @trackers.blank? %>
+    <div class="nodata">
+      <%= simple_format(l(:text_no_tracker_enabled_for_global)) %>
+    </div>
+<% end %>
+<div class="contextual">
+  <%= link_to(l(:label_new_templates),
+              {:controller => 'global_issue_templates', :action => 'new'},
+              :class => 'icon icon-add') %>
+</div>
+
+<% if @global_issue_templates.blank? %>
+    <div class="template_box">
+      <%= l(:no_issue_templates_for_this_redmine) %>
+    </div>
+<% end %>
+
+<div class="template_box">
+
+  <table class="list issues">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th><%= l(:issue_template_name) %></th>
+      <th><%= l(:field_tracker) %></th>
+      <th><%= l(:field_author) %></th>
+      <th><%= l(:field_updated_on) %></th>
+      <th><%= l(:label_enabled) %></th>
+      <% if authorize_for("global_issue_templates", "edit") %>
+          <th><%=l(:button_sort)%></th>
+      <% end %>
+    </tr>
+    </thead>
+    <tbody>
+    <% @global_issue_templates.each do |issue_template| %>
+        <tr class="<%= cycle("odd", "even") %> issue_template issue">
+          <td><%= link_to h(issue_template.id),  {:controller => 'global_issue_templates',
+                                                  :id => issue_template.id, :action => 'show'}, title: issue_template.title, tooltip: issue_template.note %></td>
+          <td><%= link_to h(issue_template.title),  {:controller => 'global_issue_templates',
+                                                     :id => issue_template.id, :action => 'show'}, title: textilizable(issue_template.description), class: "tooltip" %></td>
+          <td><%=h issue_template.tracker.name %></td>
+          <td><%=h issue_template.author %></td>
+          <td><%= format_time(issue_template.updated_on)%> </td>
+          <td class="center"><%= checked_image issue_template.enabled? %></td>
+
+          <% if authorize_for("issue_templates", "edit") %>
+              <td>
+                <%= issue_template.first? ? '':
+                            link_to(image_tag('2uparrow.png', :alt => l(:label_sort_highest)),
+                                    {:action => :move, :id => issue_template, :to => :to_top},
+                                    {:title => l(:label_sort_highest)}) %>
+                <%= issue_template.first? ? '':
+                            link_to(image_tag('1uparrow.png',   :alt => l(:label_sort_higher)),
+                                    {:action => :move, :id => issue_template, :to => :higher},
+                                    {:title => l(:label_sort_higher)})  %>
+                <%= issue_template.last? ? '':
+                            link_to(image_tag('1downarrow.png', :alt => l(:label_sort_lower)),
+                                    {:action => :move, :id => issue_template, :to => :lower},
+                                    {:title => l(:label_sort_lower)}) %>
+                <%= issue_template.last? ? '':
+                            link_to(image_tag('2downarrow.png', :alt => l(:label_sort_lowest)),
+                                    {:action => :move, :id => issue_template, :to => :to_bottom},
+                                    {:title => l(:label_sort_lowest)}) %>
+              </td>
+          <% end %>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+

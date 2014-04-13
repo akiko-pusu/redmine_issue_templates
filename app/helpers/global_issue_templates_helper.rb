@@ -1,0 +1,2 @@
+module GlobalIssueTemplatesHelper
+end

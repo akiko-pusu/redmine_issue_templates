@@ -1,6 +1,7 @@
 <div id="issue_templates_settings">
 <%
 @issue_templates_setting = IssueTemplateSetting.find_or_create(@project.id)
+@global_issue_templates = GlobalIssueTemplate.all
  %>
   <% if @project.trackers.blank? %>
       <div class="nodata">
@@ -54,6 +55,7 @@
 <div id="template_help_preview" class="wiki"></div>       
         
     </div>
+
     <%= submit_tag l(:button_save) %>
 <% end %>
 </div>

@@ -1,0 +1,71 @@
+<%-
+    baseurl = Redmine::Utils.relative_url_root
+    helpImg = baseurl + "/images/help.png"
+%>
+<%= error_messages_for 'issue_template' %>
+<div class="box tabular" style="background-color: white;">
+  <p><%= f.text_field :title, :required => true, :size => 80, :label => l(:issue_template_name) %> </p>
+
+  <fieldset class="issue">
+    <legend class="issue"><%= l(:label_applied_for_issue) %></legend>
+    <p>
+      <% if @global_issue_template.tracker.blank? %>
+          <%= f.select :tracker_id, @trackers.collect {|t| [t.name, t.id]}, {:required => true},
+                       :required => true,:label => l(:label_tracker)  %>
+          　<% else %>
+          <%= f.select :tracker_id, @trackers.collect {|t| [t.name, t.id]}, {:required => true},
+                       :required => true,:label => l(:label_tracker), :selected => @global_issue_template.tracker.id %>
+      <% end %>
+    </p>
+    <p><%= f.text_field :issue_title, :required => false, :size => 80, :label => l(:issue_title) %>
+      <a class="icon icon-help" href="#" title="<%= l(:help_for_this_field) %>"
+         onclick="checkExpand('issue_title_help_content');"><%= l(:help_for_this_field) %></a><br/>
+<span id="issue_title_help_content" class="help_content" style="display: none;">
+  <%= l(:help_for_issue_title) %>
+</span>
+    </p>
+    <p>
+      <%= f.text_area :description,:cols => 78, :rows => 12,
+                      :required => true,
+                      :label => l(:issue_description), :style => "overflow:auto;" %>
+    </p>
+  </fieldset>
+  <p>
+    <%= f.text_area :note,:cols => 70, :rows => 3,
+                    :required => false,
+                    :label => l(:issue_template_note), :style => "overflow:auto;" %>
+  </p>
+
+  <p><%= f.check_box :enabled, :label => l(:label_enabled) %>
+    <a class="icon icon-help" href="#" title="<%= l(:help_for_this_field) %>"
+       onclick="checkExpand('enabled_help_content'); return false;"><%= l(:help_for_this_field) %>
+    </a><br/>
+    <span id="enabled_help_content" class="help_content" style="display: none;"><%= l(:label_enabled_help_message) %></span>
+
+  </p>
+
+</div>
+
+<%= wikitoolbar_for 'global_issue_template_description' %>
+
+<div id="preview" class="wiki"></div>
+<%= preview_link url_for(:controller => 'global_issue_templates', :action => 'preview',
+                         :id => @global_issue_template),
+                 'global_issue_template_description', target='preview' %> |
+<%= link_to l(:button_cancel), {:action => 'index'}, :data => {:confirm => l(:text_are_you_sure)} %>
+
+<div class="box" >
+  <% if @projects.any? %>
+      <fieldset class="box" id="global_issue_template_project_ids"><legend><%= l(:label_project_plural) %></legend>
+        <%= render_project_nested_lists(@projects) do |p|
+          content_tag('label', check_box_tag('global_issue_template[project_ids][]', p.id, @global_issue_template.projects.to_a.include?(p), :id => nil) + ' ' + h(p))
+        end %>
+        <p><%= check_all_links 'global_issue_template_project_ids' %></p>
+      </fieldset>
+  <% end %>
+  <%= hidden_field_tag 'global_issue_template[project_ids][]', '' %>
+</div>
+
+
+<%= submit_tag l(@global_issue_template.new_record? ? :button_create : :button_save) %>
+

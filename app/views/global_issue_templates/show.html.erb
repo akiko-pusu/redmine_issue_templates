@@ -1,0 +1,21 @@
+<div class="contextual">
+<%= link_to l(:button_delete),
+  {:controller => 'global_issue_templates', :action => 'destroy',
+	:id => @global_issue_template},
+    :data => {:confirm => l(:text_are_you_sure)}, :method => :post, :class => 'icon icon-del' %>
+<%= link_to(l(:label_list_templates),
+              {:controller => :global_issue_templates,
+              :action => :index}, :class => 'template') %>
+</div>
+
+<h2 class="template"><%= l(:global_issue_templates) %>: #<%= @global_issue_template.id %> <%= @global_issue_template.title %> <%= avatar(@global_issue_template.author, :size => "24") %></h2>
+
+<div class="box">
+  <%= error_messages_for 'global_issue_template' %>
+<%= labelled_form_for :global_issue_template, @global_issue_template, :url => { :controller => 'global_issue_templates', :action => 'edit', :id => @global_issue_template },
+       :html => { :id => 'global_issue_template-form',
+       :class => nil,
+       :multipart => false } do |f| %> 
+<%= render :partial => 'form', :locals => { :f => f } %>
+<% end %>
+</div>

@@ -55,6 +55,23 @@ project has some format for issues.
 
 == Changelog
 
+=== 0.0.8
+
+NOTE: Please run "rake redmine:plugins:migrate" task because new column
+  is added.
+
+* Fix some bugs.
+* Support global issue templates.
+* Try to use JQueryUI's tooltip.
+* Add Chinese / zh-TW translation file. Thank you so much, Chinese Spporter!
+
+Known issue:
+
+* Template loads every time Status is changed
+ * https://bitbucket.org/akiko_pusu/redmine_issue_templates/issue/36
+ * Only happned in case using default template.
+
+
 === 0.0.7
 
 NOTE: Please run "rake redmine:plugins:migrate" task because new column
