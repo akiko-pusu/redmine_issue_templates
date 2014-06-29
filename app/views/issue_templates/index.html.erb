@@ -48,7 +48,7 @@
                  :action => 'show', :id => issue_template.id, :project_id => @project}, {:title => issue_template.note } %></td>
         <td><%= link_to h(issue_template.title),  {:controller => 'issue_templates',
                  :id => issue_template.id, :action => 'show'},
-                 title: textilizable(issue_template.description), class: "tooltip" %></td>
+                 title: "#{html_escape(issue_template.note)}", class: "tooltip" %></td>
         <td><%=h issue_template.tracker.name %></td>
         <td><%=h issue_template.author %></td>
         <td><%= format_time(issue_template.updated_on)%> </td>
