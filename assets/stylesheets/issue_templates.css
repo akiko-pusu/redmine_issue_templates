@@ -123,15 +123,8 @@ padding: 6px;
     background-image: url(../images/issue_templates.png);
 }
 
-label {
-      display: inline-block;
-      width: 5em;
-}
-
 .tooltip {
     background: url(../images/preview.png) no-repeat 3px center;
     padding-top: 3px;
     padding-left: 24px;
 }
-
-​
