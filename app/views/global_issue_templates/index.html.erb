@@ -38,7 +38,7 @@
           <td><%= link_to h(issue_template.id),  {:controller => 'global_issue_templates',
                                                   :id => issue_template.id, :action => 'show'}, title: issue_template.title, tooltip: issue_template.note %></td>
           <td><%= link_to h(issue_template.title),  {:controller => 'global_issue_templates',
-                                                     :id => issue_template.id, :action => 'show'}, title: textilizable(issue_template.description), class: "tooltip" %></td>
+                                                     :id => issue_template.id, :action => 'show'}, title: textilizable(issue_template.description), class: "template_tooltip" %></td>
           <td><%=h issue_template.tracker.name %></td>
           <td><%=h issue_template.author %></td>
           <td><%= format_time(issue_template.updated_on)%> </td>

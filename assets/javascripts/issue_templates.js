@@ -5,7 +5,7 @@
 changeType = "";
 
 $(function () {
-    $(".tooltip").tooltip({
+    $(".template_tooltip").tooltip({
         position: {
             my: "left top",
             at: "right bottom"
