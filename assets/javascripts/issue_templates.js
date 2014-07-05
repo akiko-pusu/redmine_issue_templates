@@ -4,19 +4,6 @@
  */
 changeType = "";
 
-$(function () {
-    $(".template_tooltip").tooltip({
-        position: {
-            my: "left top",
-            at: "right bottom"
-        },
-        content: function () {
-            return $(this).prop('title');
-
-        }
-    });
-});
-
 function checkExpand(ch) {
     var obj=document.all && document.all(ch) || document.getElementById && document.getElementById(ch);
     if(obj && obj.style) obj.style.display=
