@@ -36,9 +36,13 @@
     <% @global_issue_templates.each do |issue_template| %>
         <tr class="<%= cycle("odd", "even") %> issue_template issue">
           <td><%= link_to h(issue_template.id),  {:controller => 'global_issue_templates',
-                                                  :id => issue_template.id, :action => 'show'}, title: issue_template.title, tooltip: issue_template.note %></td>
+                                                  :id => issue_template.id, :action => 'show'},
+                          title: issue_template.title, tooltip: issue_template.note %></td>
           <td><%= link_to h(issue_template.title),  {:controller => 'global_issue_templates',
-                                                     :id => issue_template.id, :action => 'show'}, title: textilizable(issue_template.description), class: "template_tooltip" %></td>
+                                                      :id => issue_template.id, :action => 'show'},
+                           title: "#{html_escape(issue_template.note)}" %>
+            <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"
+               onclick="checkExpand('global_template_description-<%= issue_template.id %>');"></a></td>
           <td><%=h issue_template.tracker.name %></td>
           <td><%=h issue_template.author %></td>
           <td><%= format_time(issue_template.updated_on)%> </td>
@@ -64,6 +68,10 @@
                                     {:title => l(:label_sort_lowest)}) %>
               </td>
           <% end %>
+        </tr>
+        <tr class="<%= current_cycle %>" style="display: none;" id="global_template_description-<%= issue_template.id %>">
+          <td class="description" colspan="8">
+            <div class="wiki"><%= textilizable(issue_template.description) %></div></td>
         </tr>
     <% end %>
     </tbody>

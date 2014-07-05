@@ -48,7 +48,11 @@
                  :action => 'show', :id => issue_template.id, :project_id => @project}, {:title => issue_template.note } %></td>
         <td><%= link_to h(issue_template.title),  {:controller => 'issue_templates',
                  :id => issue_template.id, :action => 'show'},
-                 title: "#{html_escape(issue_template.note)}", class: "template_tooltip" %></td>
+                 title: "#{html_escape(issue_template.note)}" %>
+
+          <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"
+             onclick="checkExpand('template_description-<%= issue_template.id %>');"></a>
+        </td>
         <td><%=h issue_template.tracker.name %></td>
         <td><%=h issue_template.author %></td>
         <td><%= format_time(issue_template.updated_on)%> </td>
@@ -76,6 +80,11 @@
         </td>
       <% end %>
       </tr>
+      <tr class="<%= current_cycle %>" style="display: none;" id="template_description-<%= issue_template.id %>">
+        <td class="description" colspan="8">
+          <div class="wiki"><%= textilizable(issue_template.description) %></div></td>
+      </tr>
+
     <% end %>
   </tbody>
 </table>
@@ -105,15 +114,22 @@
                 <td><%= link_to h(issue_template.id),  {:controller => 'issue_templates',
                       :action => 'show', :id => issue_template.id,
                       :project_id => issue_template.project_id }, {:title => issue_template.note } %></td>
-
                 <td><%= link_to h(issue_template.title),  {:controller => 'issue_templates',
-                      :id => issue_template.id, :action => 'show'},
-                      title: textilizable(issue_template.description), class: "template_tooltip" %></td>td>
+                                                           :id => issue_template.id, :action => 'show'},
+                                title: "#{html_escape(issue_template.note)}" %>
+
+                  <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"
+                     onclick="checkExpand('template_description-<%= issue_template.id %>');"></a>
+                </td>
                 <td><%=h issue_template.tracker.name %></td>
                 <td><%=h issue_template.author %></td>
                 <td><%= format_time(issue_template.updated_on)%> </td>
                 <td class="center"><%= checked_image issue_template.is_default? %></td>
                 <td class="center"><%= checked_image issue_template.enabled? %></td>
+              </tr>
+              <tr class="<%= current_cycle %>" style="display: none;" id="template_description-<%= issue_template.id %>">
+                <td class="description" colspan="8">
+                  <div class="wiki"><%= textilizable(issue_template.description) %></div></td>
               </tr>
           <% end %>
           </tbody>
@@ -151,12 +167,18 @@
 
               <td>
                 <%= link_to h(issue_template.title),  {:controller => 'global_issue_templates',
-                    :id => issue_template.id, :action => 'show'},
-                    title: textilizable(issue_template.description), class: "template_tooltip" %>
+                                                       :id => issue_template.id, :action => 'show'},
+                            title: "#{html_escape(issue_template.note)}" %>
+                <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"
+                   onclick="checkExpand('global_template_description-<%= issue_template.id %>');"></a>
               </td>
               <td><%=h issue_template.tracker.name %></td>
               <td><%=h issue_template.author %></td>
               <td><%= format_time(issue_template.updated_on)%> </td>
+            </tr>
+            <tr class="<%= current_cycle %>" style="display: none;" id="global_template_description-<%= issue_template.id %>">
+              <td class="description" colspan="8">
+                <div class="wiki"><%= textilizable(issue_template.description) %></div></td>
             </tr>
         <% end %>
         </tbody>
