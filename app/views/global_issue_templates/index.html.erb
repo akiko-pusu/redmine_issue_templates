@@ -40,7 +40,7 @@
                           title: issue_template.title, tooltip: issue_template.note %></td>
           <td><%= link_to h(issue_template.title),  {:controller => 'global_issue_templates',
                                                       :id => issue_template.id, :action => 'show'},
-                           title: "#{html_escape(issue_template.note)}" %>
+                          {:title => "#{html_escape(issue_template.note)}"} %>
             <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"
                onclick="checkExpand('global_template_description-<%= issue_template.id %>');"></a></td>
           <td><%=h issue_template.tracker.name %></td>
