@@ -55,6 +55,15 @@ project has some format for issues.
 
 == Changelog
 
+=== 0.0.9
+
+Bug fix relase.
+
+* Fix bug on ruby 1.8. (#52)
+* Remove feature to use JQuery tooltip to preview description, because useless. (#50)
+* Change css definition to avoide conflict with Redmine's base style. (#45)
+* Correct migration file to prevent uninstall error. (Related: #54)
+
 === 0.0.8
 
 NOTE: Please run "rake redmine:plugins:migrate" task because new column
