@@ -1,0 +1,43 @@
+# English strings go here for Rails i18n
+pl:
+  issue_templates: Szablony zadań
+  issue_template: Szablon zadania
+  issue_template_note: Uwagi
+  label_enabled: Włączony
+  label_disabled: Wyłączony
+  label_help_message: O szablonach
+  label_show_help_message: Pokaż informację pomocy podczas tworzenia/aktualizacji zadania
+  about_help_message: Każdy projekt może zmieniać informację pomocy o szablonach
+  close_help: Zamknij informację pomocy
+  about_template_help_message: Przeczytaj informację pomocy o szablonach w tym projekcie
+  label_enabled_help_message: Aktywuj (włącz) ten szablon. Jeśli chcesz zachować szablon jedynie jako szkic, odznacz opcję.
+  label_list_templates: "Lista szablonów"
+  label_new_templates: "Dodaj szablon"
+  issue_template_name: "Nazwa szablonu"
+  issue_description: "Opis zadania"
+  issue_title: "Tytuł zadania"
+  label_applied_for_issue: "Pola zawarte w zadaniu: "
+  help_for_issue_title: "Tytuł zadania zostanie zastosowany z szablonu jeśli został w szablonie zdefiniowany."
+  help_for_this_field: "Pomoc dla tego pola"
+  permission_manage_issue_templates: "Zarządzaj szablonami"
+  permission_edit_issue_templates: "Edytu szablony"
+  permission_show_issue_templates: "Pokaż szablony"  
+  project_module_issue_templates: "Szablony zadań"
+  label_isdefault_help_message: "Zaznacz by używać jako domyślnego szablonu dla danego typu zadania."
+  defaulf_template_loaded: "Załadowany domyślny szablon do opisu dla (Typ zadania: %{tracker})"
+  text_no_tracker_enabled: "Dla tego projektu nie ma zdefiniowanych typów zadania.\nUstaw najpierw typ zadania ponieważ szablony są przypisawane do typów zadania w projekcie. "
+  label_enabled_sharing: "Współdziel szablony z podprojektami."
+  label_inherit_templates: "Dziedzicz szablony"
+  label_inherit_templates_help_message: "Dziedzicz szablony z projektu nadrzędnego (będą wyświetlone na liście tylko te szablony z projektu nadrzędnega, które są oznaczone do współdzielenia z podprojektami)."
+  label_inherited_templates: "Odziedziczone szablony"
+  no_issue_templates_for_this_project: "Brak zdefiniowanych szablonów zadań dla tego projektu."
+  link_to_index_edit_template: "Lista szablonów zadań / edycja szablonów"
+  erase_issue_subject_and_description: "Wyczyść tytuł i opis"
+  unused_tracker_at_this_project: "UWAGA: Ten typ zadania jest niezdefiniowany dla tego projektu. Proszę przedefuniuj ustawienia szablonu jeśli to potrzebne."
+  label_enabledshaing_help_message: "Jeśli pole zaznaczone, wówczas ten szablon może być współdzielony z podprojektami (trzeba jeszcze aktywować opcję Dziedzicz szablony w podprojekcie)."
+  label_should_replaced: "Podmień tytuł i opis"
+  label_should_replaced_help_message: "Jeśli pole jest zaznaczone, istiejący tytuł i opis będą zamienione z tekstem w szablonie (domyślnie jest dopisz nie zmamień)."
+  global_issue_templates: "Globalne Szablony Zadań"
+  no_issue_templates_for_this_redmine: "Brak zdefiniowanych globalnych szablonów."
+  only_admin_can_associate_global_template: "Tylko administrator może przydzielić globalne szablony zadań do tego projektu."
+  text_no_tracker_enabled_for_global: "Nie zdefiniowano żadnych typów zadań.\nUstaw najpierw typ zadania ponieważ szablony są przypisawane do typów zadania."
