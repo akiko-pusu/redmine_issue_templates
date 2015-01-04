@@ -3,7 +3,7 @@ class AddIssueTitleToIssueTemplates < ActiveRecord::Migration
     add_column :issue_templates, :issue_title, :string
     
     IssueTemplate.reset_column_information
-    issue_templates = IssueTemplate.find(:all)
+    issue_templates = IssueTemplate.all
     issue_templates.each do |t|
        t.issue_title = t.title
        t.save

@@ -1,7 +1,5 @@
 source 'https://rubygems.org'
 
 group :test do
-  gem "simplecov"
-  gem "simplecov-rcov"
-  gem "yard"
+  gem 'simplecov-rcov', :require => false
 end
