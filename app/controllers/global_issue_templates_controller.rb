@@ -14,7 +14,7 @@ class GlobalIssueTemplatesController < ApplicationController
   def index
     @trackers = Tracker.all
     @global_issue_templates = GlobalIssueTemplate.all
-    render :template => 'global_issue_templates/index.html.erb', :layout => !request.xhr?
+    render :layout => !request.xhr?
   end
 
   def new

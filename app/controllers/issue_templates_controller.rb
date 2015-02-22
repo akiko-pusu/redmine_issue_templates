@@ -43,7 +43,7 @@ class IssueTemplatesController < ApplicationController
 
     @globalIssueTemplates = GlobalIssueTemplate.joins(:projects).where(["projects.id = ?", @project.id])
 
-    render :template => 'issue_templates/index.html.erb', :layout => !request.xhr?
+    render :layout => !request.xhr?
   end
 
   def show

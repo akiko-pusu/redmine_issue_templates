@@ -104,15 +104,15 @@ class IssueTemplatesControllerTest < ActionController::TestCase
 
       # do post
       should "insert new template record when request is post" do
-        count = IssueTemplate.find(:all).length
+        num = IssueTemplate.count
         post :new, :issue_template => {:title => "newtitle", :note => "note", 
           :description => "description", :tracker_id => 1, :enabled => 1, :author_id => 3 
           }, :project_id => 1
 
-        template = IssueTemplate.first(:order => 'id DESC')
+        template = assigns(:issue_template)
         assert_response :redirect # show
 
-        assert_equal(count + 1, IssueTemplate.find(:all).length)
+        assert_equal(num + 1, IssueTemplate.count)
 
         assert_not_nil template
         assert_equal("newtitle", template.title)
@@ -125,7 +125,7 @@ class IssueTemplatesControllerTest < ActionController::TestCase
 
       # fail check
       should "not be able to save if title is empty" do
-        count = IssueTemplate.find(:all).length
+        num = IssueTemplate.count
 
         # when title blank, validation bloks to save.
         post :new, :issue_template => {:title => "", :note => "note", 
@@ -133,7 +133,7 @@ class IssueTemplatesControllerTest < ActionController::TestCase
           :author_id => 1 }, :project_id => 1
 
         assert_response :success
-        assert_equal(count, IssueTemplate.find(:all).length)
+        assert_equal(num, IssueTemplate.count)
       end
 
       should "preview template" do

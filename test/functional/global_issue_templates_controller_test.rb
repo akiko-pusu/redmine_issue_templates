@@ -62,7 +62,7 @@ class GlobalIssueTemplatesControllerTest < ActionController::TestCase
       end
 
       should "return new global template instance when request is get" do
-        get :new, :author_id => 1
+        get :new
         assert_response :success
 
         template = assigns(:global_issue_template)
@@ -76,16 +76,16 @@ class GlobalIssueTemplatesControllerTest < ActionController::TestCase
 
       # do post
       should "insert new global template record when request is post" do
-        count = GlobalIssueTemplate.find(:all).length
+        num = GlobalIssueTemplate.count
         post :new, :global_issue_template => {:title => "Global Template newtitle for creation test", :note => "Global note for creation test",
                                        :description => "Global Template description for creation test",
                                        :tracker_id => 1, :enabled => 1, :author_id => 1
         }
 
-        template = GlobalIssueTemplate.first(:order => 'id DESC')
+        template = GlobalIssueTemplate.order('id DESC').first
         assert_response :redirect # show
 
-        assert_equal(count + 1, GlobalIssueTemplate.find(:all).length)
+        assert_equal(num + 1, GlobalIssueTemplate.count)
 
         assert_not_nil template
         assert_equal("Global Template newtitle for creation test", template.title)
@@ -97,7 +97,7 @@ class GlobalIssueTemplatesControllerTest < ActionController::TestCase
 
       # fail check
       should "not be able to save if title is empty" do
-        count = GlobalIssueTemplate.find(:all).length
+        num = GlobalIssueTemplate.count
 
         # when title blank, validation bloks to save.
         post :new, :global_issue_template => {:title => "", :note => "note",
@@ -105,7 +105,7 @@ class GlobalIssueTemplatesControllerTest < ActionController::TestCase
                                        :author_id => 1 }
 
         assert_response :success
-        assert_equal(count, GlobalIssueTemplate.find(:all).length)
+        assert_equal(num, GlobalIssueTemplate.count)
       end
 
       should "preview template" do
