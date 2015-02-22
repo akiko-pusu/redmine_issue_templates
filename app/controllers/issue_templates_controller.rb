@@ -41,8 +41,7 @@ class IssueTemplatesController < ApplicationController
       end
     end
 
-    @globalIssueTemplates = GlobalIssueTemplate.find(:all,:include => [:projects],
-                                                      :conditions => ["projects.id = ?", @project.id] )
+    @globalIssueTemplates = GlobalIssueTemplate.joins(:projects).where(["projects.id = ?", @project.id])
 
     render :template => 'issue_templates/index.html.erb', :layout => !request.xhr?
   end
@@ -52,10 +51,8 @@ class IssueTemplatesController < ApplicationController
 
   def new
     # create empty instance
-    @issue_template = IssueTemplate.new(:author => @user, :project => @project, 
-      :tracker => @tracker)
+    @issue_template ||= IssueTemplate.new(:author => @user, :project => @project)
     if request.post?
-      # Case post, set attributes passed as parameters.
       @issue_template.safe_attributes = params[:issue_template]
       if @issue_template.save
         flash[:notice] = l(:notice_successful_create)
@@ -66,7 +63,8 @@ class IssueTemplatesController < ApplicationController
   end
 
   def edit
-    if request.put?
+    # Change from request.post to request.patch for Rails4.
+    if request.patch? || request.put?
       @issue_template.safe_attributes = params[:issue_template]
       if @issue_template.save
         flash[:notice] = l(:notice_successful_update)
@@ -92,7 +90,7 @@ class IssueTemplatesController < ApplicationController
     else
       @issue_template = IssueTemplate.find(params[:issue_template])
     end
-    render :text => @issue_template.to_json
+    render :text => @issue_template.to_json(:root => true)
   end
   
   # update pulldown
@@ -141,8 +139,10 @@ class IssueTemplatesController < ApplicationController
       end
     end
 
-    @globalIssueTemplates = GlobalIssueTemplate.find(:all,:include => [:projects],
-                                                     :conditions => [" tracker_id = ? AND projects.id = ?", @tracker.id, @project.id] )
+    @globalIssueTemplates = GlobalIssueTemplate.joins(:projects).where(["tracker_id = ? AND projects.id = ?",
+                                                                        @tracker.id, @project.id])
+
+
     if @globalIssueTemplates.any?
       @globalIssueTemplates.each do |x|
         group.push([x.title, x.id, {:class => "global"}])

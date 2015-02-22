@@ -18,6 +18,7 @@ class GlobalIssueTemplate < ActiveRecord::Base
                   'enabled',
                   'issue_title',
                   'project_ids'
+  attr_accessible :title, :tracker_id, :issue_title, :description, :note, :enabled, :project_ids
 
   def enabled?
     self.enabled == true
