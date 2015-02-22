@@ -14,7 +14,7 @@ class GlobalIssueTemplatesController < ApplicationController
   def index
     @trackers = Tracker.all
     @global_issue_templates = GlobalIssueTemplate.all
-    render :template => 'global_issue_templates/index.html.erb', :layout => !request.xhr?
+    render :layout => !request.xhr?
   end
 
   def new
@@ -39,7 +39,8 @@ class GlobalIssueTemplatesController < ApplicationController
 
   def edit
     @projects = Project.all
-    if request.put?
+    # Change from request.post to request.patch for Rails4.
+    if request.patch? || request.put?
       @global_issue_template.safe_attributes = params[:global_issue_template]
       if @global_issue_template.save
         flash[:notice] = l(:notice_successful_update)
