@@ -41,7 +41,7 @@ class IssueTemplatesController < ApplicationController
       end
     end
 
-    @globalIssueTemplates = GlobalIssueTemplate.joins(:projects).where(["projects.id = ?", @project.id])
+    @globalIssueTemplates = GlobalIssueTemplate.joins(:projects).where(["projects.id = ?", @project.id]).order('position')
 
     render :layout => !request.xhr?
   end
@@ -140,7 +140,7 @@ class IssueTemplatesController < ApplicationController
     end
 
     @globalIssueTemplates = GlobalIssueTemplate.joins(:projects).where(["tracker_id = ? AND projects.id = ?",
-                                                                        @tracker.id, @project.id])
+                                                                        @tracker.id, @project.id]).order('position')
 
 
     if @globalIssueTemplates.any?
@@ -165,7 +165,7 @@ class IssueTemplatesController < ApplicationController
     @issue_template = IssueTemplate.find(params[:id]) if params[:id]
     render :partial => 'common/preview'
   end
-  
+
   # Reorder templates
   def move
     move_order(params[:to])
