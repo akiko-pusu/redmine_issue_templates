@@ -9,14 +9,16 @@
               {:controller => 'global_issue_templates', :action => 'new'},
               :class => 'icon icon-add') %>
 </div>
+<div style="clear:both;"></div>
 
-<% if @global_issue_templates.blank? %>
+<% if @template_map.blank? %>
     <div class="template_box">
       <%= l(:no_issue_templates_for_this_redmine) %>
     </div>
 <% end %>
-
-<div class="template_box">
+  <% @template_map.each_key do |tracker| %>
+    <div class="template_box">
+        <h3 class="template_tracker"><%= tracker.name %></h3>
 
   <table class="list issues">
     <thead>
@@ -27,13 +29,11 @@
       <th><%= l(:field_author) %></th>
       <th><%= l(:field_updated_on) %></th>
       <th><%= l(:label_enabled) %></th>
-      <% if authorize_for("global_issue_templates", "edit") %>
           <th><%=l(:button_sort)%></th>
-      <% end %>
     </tr>
     </thead>
     <tbody>
-    <% @global_issue_templates.each do |issue_template| %>
+    <% @template_map[tracker].each do |issue_template| %>
         <tr class="<%= cycle("odd", "even") %> issue_template issue">
           <td><%= link_to h(issue_template.id),  {:controller => 'global_issue_templates',
                                                   :id => issue_template.id, :action => 'show'},
@@ -48,7 +48,6 @@
           <td><%= format_time(issue_template.updated_on)%> </td>
           <td class="center"><%= checked_image issue_template.enabled? %></td>
 
-          <% if authorize_for("issue_templates", "edit") %>
               <td>
                 <%= issue_template.first? ? '':
                             link_to(image_tag('2uparrow.png', :alt => l(:label_sort_highest)),
@@ -67,7 +66,6 @@
                                     {:action => :move, :id => issue_template, :to => :to_bottom},
                                     {:title => l(:label_sort_lowest)}) %>
               </td>
-          <% end %>
         </tr>
         <tr class="<%= current_cycle %>" style="display: none;" id="global_template_description-<%= issue_template.id %>">
           <td class="description" colspan="8">
@@ -76,5 +74,6 @@
     <% end %>
     </tbody>
   </table>
-</div>
+        </div>
 
+<% end %>

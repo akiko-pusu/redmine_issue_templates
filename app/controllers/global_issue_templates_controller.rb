@@ -13,7 +13,14 @@ class GlobalIssueTemplatesController < ApplicationController
   #
   def index
     @trackers = Tracker.all
-    @global_issue_templates = GlobalIssueTemplate.all
+    @template_map = Hash::new
+    @trackers.each do |tracker|
+      templates = GlobalIssueTemplate.where('tracker_id = ?',
+                                      tracker.id).order('position')
+      if templates.any?
+        @template_map[Tracker.find(tracker.id)] = templates
+      end
+    end
     render :layout => !request.xhr?
   end
 
@@ -70,7 +77,13 @@ class GlobalIssueTemplatesController < ApplicationController
     render :partial => 'common/preview'
   end
 
+  def move
+    move_order(params[:to])
+  end
+
   private
+
+  # Reorder templates
   def find_user
     @user = User.current
   end
@@ -80,5 +93,13 @@ class GlobalIssueTemplatesController < ApplicationController
     @global_issue_template = GlobalIssueTemplate.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     render_404
+  end
+
+  def move_order(method)
+    GlobalIssueTemplate.find(params[:id]).send "move_#{method}"
+    respond_to do |format|
+      format.html { redirect_to :action => 'index' }
+      format.xml  { head :ok }
+    end
   end
 end
