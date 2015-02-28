@@ -55,6 +55,15 @@ project has some format for issues.
 
 == Changelog
 
+=== 0.1.0
+
+NOTE: Please run "rake redmine:plugins:migrate" task because new column
+  is added.
+
+* Support Redmine 3.0. (r-labs: #1366)
+* Add Sort to Global Templates. (r-labs: #1364)
+* Add Polish translation file. (r-labs: #1354)
+
 === 0.0.9
 
 Bug fix relase.
@@ -131,7 +140,8 @@ NOTE: Please run "rake redmine:plugins:migrate" task because new column
 * Russian: Denny Brain
 * German: Terence Miller and anonymous contributor
 * French: Anonymous one
-* Serbian: Miodrag Milic 
+* Serbian: Miodrag Milic
+* Polish: Paweł Budikom and Krzysztof Wosinski
 
 
 === License
