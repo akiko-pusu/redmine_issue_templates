@@ -24,11 +24,11 @@ class GlobalIssueTemplatesControllerTest < ActionController::TestCase
     setup do
     end
 
-    should "should get index" do
+    should "get index" do
       get :index
       assert_response :success
       assert_template 'index'
-      assert_not_nil assigns(:global_issue_templates)
+      assert_not_nil assigns(:template_map)
     end
   end
 
@@ -53,7 +53,15 @@ class GlobalIssueTemplatesControllerTest < ActionController::TestCase
                              :action => "index"
         assert_raise(ActiveRecord::RecordNotFound) {GlobalIssueTemplate.find(2)}
       end
-     end
+
+      should "move to bottom and top" do
+        global_issue_template = GlobalIssueTemplate.find(1)
+        get :move, :tracler_id => 1, :id => 1, :to => :to_bottom
+        assert_equal 3, global_issue_template.reload.position
+        get :move, :tracler_id => 1, :id => 1, :to => :to_top
+        assert_equal 1, global_issue_template.reload.position
+      end
+    end
   end
 
   context "#new" do
