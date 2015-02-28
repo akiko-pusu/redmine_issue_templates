@@ -13,8 +13,15 @@ class GlobalIssueTemplatesController < ApplicationController
   #
   def index
     @trackers = Tracker.all
-    @global_issue_templates = GlobalIssueTemplate.all
-    render :template => 'global_issue_templates/index.html.erb', :layout => !request.xhr?
+    @template_map = Hash::new
+    @trackers.each do |tracker|
+      templates = GlobalIssueTemplate.where('tracker_id = ?',
+                                      tracker.id).order('position')
+      if templates.any?
+        @template_map[Tracker.find(tracker.id)] = templates
+      end
+    end
+    render :layout => !request.xhr?
   end
 
   def new
@@ -39,7 +46,8 @@ class GlobalIssueTemplatesController < ApplicationController
 
   def edit
     @projects = Project.all
-    if request.put?
+    # Change from request.post to request.patch for Rails4.
+    if request.patch? || request.put?
       @global_issue_template.safe_attributes = params[:global_issue_template]
       if @global_issue_template.save
         flash[:notice] = l(:notice_successful_update)
@@ -69,7 +77,13 @@ class GlobalIssueTemplatesController < ApplicationController
     render :partial => 'common/preview'
   end
 
+  def move
+    move_order(params[:to])
+  end
+
   private
+
+  # Reorder templates
   def find_user
     @user = User.current
   end
@@ -79,5 +93,13 @@ class GlobalIssueTemplatesController < ApplicationController
     @global_issue_template = GlobalIssueTemplate.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     render_404
+  end
+
+  def move_order(method)
+    GlobalIssueTemplate.find(params[:id]).send "move_#{method}"
+    respond_to do |format|
+      format.html { redirect_to :action => 'index' }
+      format.xml  { head :ok }
+    end
   end
 end

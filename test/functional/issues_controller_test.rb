@@ -37,7 +37,7 @@ class IssuesControllerTest < ActionController::TestCase
     enabled_module.project_id = 1
     enabled_module.name = 'issue_templates'
     enabled_module.save
-    roles = Role.find(:all)
+    roles = Role.all
     roles.each {|role|
       role.permissions << :show_issue_templates
       role.remove_permission! :edit_issue_templates
