@@ -12,16 +12,21 @@
 <% if !@default_template.nil? %>
 <script type="text/javascript">
     //<![CDATA[
-    token = '<%= form_authenticity_token %>';
-    load_url = '<%= url_for(:controller => 'issue_templates',
-      :action => 'load', :project_id => @project) %>';
-    should_replaced = '<%= @setting.should_replaced %>';
-    load_template(load_url, token, confirm_msg, should_replaced);
+    // NOTE: Workaround for https://bitbucket.org/akiko_pusu/redmine_issue_templates/issues/36
+    // To avoid default template loads and overwrite description
+    // every time Status is changed.
+    if ($('#issue_description').val() == '') {
+        token = '<%= form_authenticity_token %>';
+        load_url = '<%= url_for(:controller => 'issue_templates',
+        :action => 'load', :project_id => @project) %>';
+        should_replaced = '<%= @setting.should_replaced %>';
+        load_template(load_url, token, confirm_msg, should_replaced);
 
-    $('#template_status-area').insertBefore('#issue_description');
-    $('#template_status-area').flash_message({
-        text: "<%= l(:defaulf_template_loaded, :tracker => @tracker.name) %>",
-        how: 'append'
-    });
+        $('#template_status-area').insertBefore('#issue_description');
+        $('#template_status-area').flash_message({
+            text: "<%= l(:defaulf_template_loaded, :tracker => @tracker.name) %>",
+            how: 'append'
+        });
+    }
 </script>
 <% end %>
