@@ -1,3 +1,8 @@
+<% if @grouped_options.length == 0 %>
+    <script type="text/javascript">
+        $('#template_area').toggle();
+    </script>
+<% end %>
 <%
    # TODO: This code should be moved from template.
    # TODO: When load default template, existing text should be completely replaced or not?
