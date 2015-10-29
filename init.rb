@@ -26,9 +26,9 @@ Redmine::Plugin.register :redmine_issue_templates do
   name 'Redmine Issue Templates plugin'
   author 'Akiko Takano'
   description 'Plugin to generate and use issue templates for each project to assist issue creation.'
-  version '0.1.0-dev'
+  version '0.1.0'
   author_url 'http://twitter.com/akiko_pusu'
-  requires_redmine :version_or_higher => '2.6'
+  requires_redmine :version_or_higher => '2.5'
   url 'https://bitbucket.org/akiko_pusu/redmine_issue_templates'
 
   menu :admin_menu, :redmine_issue_templates, { :controller => 'global_issue_templates', :action => 'index' },
