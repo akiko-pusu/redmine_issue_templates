@@ -74,5 +74,11 @@ class IssuesControllerTest < ActionController::TestCase
     assert_response :success
     assert_select 'div#template_area select#issue_template'
   end
-  
+
+  # NOTE: When copy, template area should not be displayed.
+  def test_copy
+    get :new, :project_id => 1, :copy_from => 1
+    assert_response :success
+    assert_select 'div#template_area', false
+  end
 end
