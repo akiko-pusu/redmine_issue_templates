@@ -41,6 +41,13 @@ See also: http://www.r-labs.org/projects/issue-template/wiki/About_en#Uninstall-
 This plugin aims to assist contributor's feedback by using template if the 
 project has some format for issues.
 
+=== Troubleshoot for bundle intall and startup problem
+
+This plugin repository includes some test code and gem settiing.
+If you have some trouble related "bundle intall", please try --without option.
+
+  Exp. bundle install --without test
+
 === Repository
 
 * https://bitbucket.org/akiko_pusu/redmine_issue_templates
@@ -55,6 +62,18 @@ project has some format for issues.
 
 == Changelog
 
+=== 0.1.1
+
+Bugfix release.
+
+* Update Brazilian translation file. (Bitbucket Pull Request: #4)
+* Removed deprecation warnings and adjusted gemfile to redmine 3.1.x (Bitbucket Pull Request: #5)
+* Bug fix, prevent load template and overwrite description when status changed. (Bitbucket Issue: #36)
+* Hide templates Element on Trackers without Issue Template. (Bitbucket Issue: #57)
+* Bug fix, when issue create issue from copy, template should not overwrite description. (Bitbucket Issue: #70)
+
+Special thanks all contributors, and Mattani-san, to this release.
+
 === 0.1.0
 
 NOTE: Please run "rake redmine:plugins:migrate" task because new column
@@ -66,7 +85,7 @@ NOTE: Please run "rake redmine:plugins:migrate" task because new column
 
 === 0.0.9
 
-Bug fix relase.
+Bug fix release.
 
 * Fix bug on ruby 1.8. (#52)
 * Remove feature to use JQuery tooltip to preview description, because useless. (#50)
@@ -133,7 +152,7 @@ NOTE: Please run "rake redmine:plugins:migrate" task because new column
 
 === Language and I18n contributors
 
-* Brazilian: Adriano Ceccarelli
+* Brazilian: Adriano Ceccarelli / Pedro Moritz de Carvalho Neto
 * Korean: Jaebok Oh
 * Chinese: Steven Wong
 * Bulgarian: Ivan Cenov
