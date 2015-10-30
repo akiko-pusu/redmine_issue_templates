@@ -20,6 +20,8 @@ class IssueTemplatesIssuesHook < Redmine::Hook::ViewListener
     project_id = context[:request].parameters[:project_id]
     issue_id =  context[:request].parameters[:id]
 
+    copy_from = context[:request].parameters[:copy_from]
+    return '' if !copy_from.blank?
     return '' unless (action == 'new' or action == 'update_form' or action == 'create') && !project_id.blank? && issue_id.blank?
     context[:controller].send(
       :render_to_string,
