@@ -8,7 +8,7 @@ For Redmine 1.3 and 1.4, please use support_0.0.2 branch.
 
 === Plugin installation
 
-1. Copy the plugin directory into the vendor/plugins directory.
+1. Copy the plugin directory into the $REDMINE_ROOT/plugins directory.
    Please note that plugin's folder name should be "redmine_issue_templates".
    If changed, some migration task will be failed.
 2. Do migration task. 
