@@ -2,28 +2,28 @@
 en:
   issue_templates: Issue templates
   issue_template: Issue template
-  issue_template_note: note
+  issue_template_note: Note
   label_enabled: Enable
   label_disabled: Disable
   label_help_message: About templates
-  label_show_help_message: Show help message when create/update issues. 
-  about_help_message: Each project can customize help message for templates.
+  label_show_help_message: Show help message when creating/updating issues. 
+  about_help_message: Each project can have custom help messages for templates.
   close_help: Close help message.
   about_template_help_message: You can see the instruction of issue templates on this project.
-  label_enabled_help_message: Checkbox to activate (enabled) to this template. If you hope to save this template as draft, turn this checkbox off.
+  label_enabled_help_message: Checkbox to activate this template. If you would like to save this template as a draft, un-check this box.
   label_list_templates: "Template list"
   label_new_templates: "Add template"
   issue_template_name: "Template name"
   issue_description: "Issue body"
   issue_title: "Issue title"
   label_applied_for_issue: "Fields applied for issue: "
-  help_for_issue_title: "If defined Issue title, this will also applied for issue when selecting template."
+  help_for_issue_title: "If the Issue title is defined, it will be applied to the Subject of an issue when selecting this template."
   help_for_this_field: "Help for this field."
   permission_manage_issue_templates: "Manage Templates"
   permission_edit_issue_templates: "Edit Templates"
   permission_show_issue_templates: "Show Templates"  
   project_module_issue_templates: "Issue Templates"
-  label_isdefault_help_message: "Check and you can use this as a default template of target tracker."
+  label_isdefault_help_message: "Check and you can use this as a default template for the target tracker."
   defaulf_template_loaded: "Loaded default template into description textarea. (Tracker: %{tracker})"
   text_no_tracker_enabled: "Any trackers for this project have not been configured yet.\nPlease set them first because templates are assigned to project trackers. "
   label_enabled_sharing: "Enabled sharing with project tree."
@@ -38,6 +38,6 @@ en:
   label_should_replaced: "Replace subject and description"
   label_should_replaced_help_message: "If true, existing subject and description are cleared and replaced with template text.（Default is false, and appended text.)"
   global_issue_templates: "Global Issue Templates"
-  no_issue_templates_for_this_redmine: "No global issue templates are defined for this redmine."
+  no_issue_templates_for_this_redmine: "No global issue templates are defined for this Redmine site."
   only_admin_can_associate_global_template: "Only Redmine administrator can associate global templates with this project."
-  text_no_tracker_enabled_for_global: "Any trackers are not defined yet.\nPlease set them first because templates are assigned to trackers."
+  text_no_tracker_enabled_for_global: "Trackers are not defined yet.\nPlease set them first because templates are assigned to trackers."
