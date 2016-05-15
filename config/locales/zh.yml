@@ -1,26 +1,44 @@
 # Simplified Chinese strings go here for Rails i18n
 zh:
-  issue_templates: 问题模板
-  issue_template: 问题模板
+  issue_templates: ISSUE模板管理
+  issue_template: ISSUE模板管理
   issue_template_note: 批注
   label_enabled: 启用
   label_disabled: 禁用
-  label_help_message: 关于模板
-  label_show_help_message: 当创建/修改问题时显示帮助信息。
-  about_help_message: 每个项目都可以自定义模板帮助信息。
+  label_help_message: 关于ISSUE模板
+  label_show_help_message: 当创建/修改问题时显示对应的帮助信息。
+  about_help_message: 每个项目都可以自定义ISSUE模板帮助信息。
   close_help: 关闭帮助信息。
-  about_template_help_message: 您可以查看当前项目的问题模板指南。
-  label_enabled_help_message: 该复选框用于激活当前模板。若您只想将当前模板保存为草稿，请去除该复选框的选择。
-  label_list_templates: "模板列表"
-  label_new_templates: "新建模板"
-  issue_template_name: "模板名称"
-  issue_description: "模板内容"
-  issue_title: "问题标题"
-  label_applied_for_issue: "用于该问题的字段："
-  help_for_issue_title: "若在模板中已定义问题标题，则在使用该模板是，将自动应用相关标题信息。"
-  help_for_this_field: "当前字段的帮助。"
-  permission_manage_issue_templates: "管理模板"
-  permission_edit_issue_templates: "编辑模板"
-  permission_show_issue_templates: "显示模板"  
-  project_module_issue_templates: "问题模板"
+  about_template_help_message: 您可以查看当前项目ISSUE模板的帮助指南。
+  label_enabled_help_message: 该复选框用于激活当前ISSUE模板。若您只想将ISSUE模板保存为草稿，请取消该复选框的勾选。
+  label_list_templates: "ISSUE模板列表"
+  label_new_templates: "新建ISSUE模板"
+  issue_template_name: "ISSUE模板名称"
+  issue_description: "ISSUE模板内容"
+  issue_title: "ISSUE主题"
+  label_applied_for_issue: "应用于该ISSUE的字段："
+  help_for_issue_title: "若在ISSUE模板中已定义了主题，则在使用该ISSUE模板时，将自动替换为对应的主题信息。"
+  help_for_this_field: "当前字段帮助信息"
+  permission_manage_issue_templates: "管理ISSUE模板"
+  permission_edit_issue_templates: "编辑ISSUE模板"
+  permission_show_issue_templates: "显示ISSUE模板"  
+  project_module_issue_templates: "ISSUE模板管理"
+  label_isdefault_help_message: "勾选后，设置当前ISSUE模板为指定跟踪类型对应的默认模板。"
+  defaulf_template_loaded: "在描述区域内加载模板默认信息。 (跟踪类型：%{tracker})"
+  text_no_tracker_enabled: "当前项目中尚未配置跟踪类型。\n请在使用ISSUE模板前，先配置项目跟踪类型。"
+  label_enabled_sharing: "启用向下继承（在当前项目的子项目中使用该ISSUE模板）"
+  label_inherit_templates: "继承ISSUE模板"
+  label_inherit_templates_help_message: "从父项目中继承ISSUE模板。(仅限在父项目中使用，且标记为向下继承的ISSUE模板。)"
+  label_inherited_templates: "继承ISSUE模板"
+  no_issue_templates_for_this_project: "当前项目中未定义ISSUE模板信息。"
+  link_to_index_edit_template: "ISSUE模板列表 / 编辑ISSUE模板"
+  erase_issue_subject_and_description: "点击清除主题及描述信息。"
+  unused_tracker_at_this_project: "注意：当前项目中未定义可用的跟踪类型。请根据实际需要，重新配置ISSUE模板。"
+  label_enabledshaing_help_message: "若选中，则当前ISSUE模板可以向下继承，与子项目共享使用。(您需在子项目中激活ISSUE模板继承选项便可使用。)"
+  label_should_replaced: "替换主题及描述信息"
+  label_should_replaced_help_message: "若选中，现有主题及描述信息将被自动清除，并替换为ISSUE模板中定义的内容。（默认不选中，则在现有内容后扩展模板内定义的信息。)"
+  global_issue_templates: "全局ISSUE模板管理"
+  no_issue_templates_for_this_redmine: "当前未定义全局ISSUE模板。请联系Redmine系统管理员。"
+  only_admin_can_associate_global_template: "只有Redmine系统管理员才能在当前项目中关联全局ISSUE模板。"
+  text_no_tracker_enabled_for_global: "未指定跟踪类型。\n在使用ISSUE模板前，请先指定模板适用的跟踪类型。"
   
