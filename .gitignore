@@ -1,1 +1,4 @@
-*/coverage/*
+coverage/
+doc/
+.yardoc/
+Gemfile.lock

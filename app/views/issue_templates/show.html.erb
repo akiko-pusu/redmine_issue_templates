@@ -1,5 +1,8 @@
 <div class="contextual">
-  <%= link_to_if_authorized l(:button_edit), class: 'icon icon-edit', accesskey: accesskey(:edit),
+  <%= link_to_if_authorized l(:button_edit),
+                            { controller: 'issue_templates', action: 'edit', id: @issue_template,
+                              project_id: @project },
+                            class: 'icon icon-edit', accesskey: accesskey(:edit),
                             onclick: "$('#edit-issue_template').show(); return false;" %>
   <%= link_to_if_authorized l(:button_delete),
                             { controller: 'issue_templates', action: 'destroy',
