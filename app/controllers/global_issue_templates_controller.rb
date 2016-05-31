@@ -5,8 +5,8 @@ class GlobalIssueTemplatesController < ApplicationController
   helper :issues
   include IssuesHelper
   menu_item :issues
-  before_filter :find_object, :only => [ :show, :edit, :destroy ]
-  before_filter :require_admin, :find_user, :only => [ :index, :new, :show ], :except => [ :preview ]
+  before_filter :find_object, only: [ :show, :edit, :destroy ]
+  before_filter :require_admin, :find_user, only: [ :index, :new, :show ], excep: [ :preview ]
 
   #
   # Action for global template : Admin right is required.
@@ -21,21 +21,20 @@ class GlobalIssueTemplatesController < ApplicationController
         @template_map[Tracker.find(tracker.id)] = templates
       end
     end
-    render :layout => !request.xhr?
+    render layout: !request.xhr?
   end
 
   def new
     # create empty instance
     @trackers = Tracker.all
     @projects = Project.all
-    @global_issue_template = GlobalIssueTemplate.new(:author => @user,
-                                        :tracker => @tracker)
+    @global_issue_template = GlobalIssueTemplate.new(author: @user, tracker: @tracker)
     if request.post?
       # Case post, set attributes passed as parameters.
       @global_issue_template.safe_attributes = params[:global_issue_template]
       if @global_issue_template.save
         flash[:notice] = l(:notice_successful_create)
-        redirect_to :action => "show", :id => @global_issue_template.id
+        redirect_to action: "show", id: @global_issue_template.id
       end
     end
   end
@@ -51,11 +50,11 @@ class GlobalIssueTemplatesController < ApplicationController
       @global_issue_template.safe_attributes = params[:global_issue_template]
       if @global_issue_template.save
         flash[:notice] = l(:notice_successful_update)
-        redirect_to :action => "show", :id => @global_issue_template.id
+        redirect_to action: "show", id: @global_issue_template.id
 
       else
         respond_to do |format|
-          format.html { render :action => 'show' }
+          format.html { render action: 'show' }
         end
       end
     end
@@ -65,7 +64,7 @@ class GlobalIssueTemplatesController < ApplicationController
     if request.post?
       if @global_issue_template.destroy
         flash[:notice] = l(:notice_successful_delete)
-        redirect_to :action => "index"
+        redirect_to action: "index"
       end
     end
   end
@@ -74,7 +73,7 @@ class GlobalIssueTemplatesController < ApplicationController
   def preview
     @text = (params[:global_issue_template] ? params[:global_issue_template][:description] : nil)
     @global_issue_template = GlobalIssueTemplate.find(params[:id]) if params[:id]
-    render :partial => 'common/preview'
+    render partial: 'common/preview'
   end
 
   def move
@@ -98,7 +97,7 @@ class GlobalIssueTemplatesController < ApplicationController
   def move_order(method)
     GlobalIssueTemplate.find(params[:id]).send "move_#{method}"
     respond_to do |format|
-      format.html { redirect_to :action => 'index' }
+      format.html { redirect_to action: 'index' }
       format.xml  { head :ok }
     end
   end

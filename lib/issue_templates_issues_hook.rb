@@ -6,13 +6,13 @@ class IssueTemplatesIssuesHook < Redmine::Hook::ViewListener
   
   def view_layouts_base_html_head(context = {})
     o = stylesheet_link_tag('issue_templates', :plugin => 'redmine_issue_templates')
-    if (context[:controller].class.name == 'IssuesController' and 
-      context[:controller].action_name != 'index') or 
-      (context[:controller].class.name == 'IssueTemplatesController') or
+    if (context[:controller].class.name == 'IssuesController' &&
+        context[:controller].action_name != 'index') ||
+      (context[:controller].class.name == 'IssueTemplatesController') ||
       (context[:controller].class.name == 'GlobalIssueTemplatesController')
       o << javascript_include_tag('issue_templates', :plugin => 'redmine_issue_templates')
-    end      
-    return o
+    end
+    o
   end
   
   def view_issues_form_details_top(context={})

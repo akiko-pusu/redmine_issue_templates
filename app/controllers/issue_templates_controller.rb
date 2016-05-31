@@ -5,11 +5,10 @@ class IssueTemplatesController < ApplicationController
   helper :issues
   include IssuesHelper
   menu_item :issues
-  before_filter :find_object, :only => [ :show, :edit, :destroy ]
+  before_filter :find_object, only: [ :show, :edit, :destroy ]
   before_filter :find_user, :find_project, :authorize, 
-    :except => [ :preview, :move_order_higher, :move_order_lower, 
-                 :move_order_to_top, :move_order_to_bottom, :move ]
-  before_filter :find_tracker, :only => [ :set_pulldown ]
+    except: [ :preview, :move_order_higher, :move_order_lower, :move_order_to_top, :move_order_to_bottom, :move ]
+  before_filter :find_tracker, only: [ :set_pulldown ]
 
   def index
     tracker_ids = IssueTemplate.where('project_id = ?', @project.id).pluck(:tracker_id)
@@ -41,9 +40,9 @@ class IssueTemplatesController < ApplicationController
       end
     end
 
-    @globalIssueTemplates = GlobalIssueTemplate.joins(:projects).where(["projects.id = ?", @project.id]).order('position')
+    @global_issue_templates = GlobalIssueTemplate.joins(:projects).where(["projects.id = ?", @project.id]).order('position')
 
-    render :layout => !request.xhr?
+    render layout: !request.xhr?
   end
 
   def show
@@ -51,13 +50,12 @@ class IssueTemplatesController < ApplicationController
 
   def new
     # create empty instance
-    @issue_template ||= IssueTemplate.new(:author => @user, :project => @project)
+    @issue_template ||= IssueTemplate.new(author: @user, project: @project)
     if request.post?
       @issue_template.safe_attributes = params[:issue_template]
       if @issue_template.save
         flash[:notice] = l(:notice_successful_create)
-        redirect_to :action => "show", :id => @issue_template.id,
-          :project_id => @project
+        redirect_to action: 'show', id: @issue_template.id, project_id: @project
       end
     end
   end
@@ -68,8 +66,7 @@ class IssueTemplatesController < ApplicationController
       @issue_template.safe_attributes = params[:issue_template]
       if @issue_template.save
         flash[:notice] = l(:notice_successful_update)
-        redirect_to :action => "show", :id => @issue_template.id, 
-          :project_id => @project
+        redirect_to action: 'show', id: @issue_template.id, project_id: @project
       end
     end
   end
@@ -78,19 +75,19 @@ class IssueTemplatesController < ApplicationController
     if request.post?
       if @issue_template.destroy
         flash[:notice] = l(:notice_successful_delete)
-        redirect_to :action => "index", :project_id => @project
+        redirect_to action: 'index', project_id: @project
       end
     end
   end
 
   # load template description
   def load
-    if params[:template_type] != nil && params[:template_type]== 'global'
+    if params[:template_type] != nil && params[:template_type] == 'global'
       @issue_template = GlobalIssueTemplate.find(params[:issue_template])
     else
       @issue_template = IssueTemplate.find(params[:issue_template])
     end
-    render :text => @issue_template.to_json(:root => true)
+    render text: @issue_template.to_json(root: true)
   end
   
   # update pulldown
@@ -167,14 +164,14 @@ class IssueTemplatesController < ApplicationController
   def preview
     @text = (params[:issue_template] ? params[:issue_template][:description] : nil)
     @issue_template = IssueTemplate.find(params[:id]) if params[:id]
-    render :partial => 'common/preview'
+    render partial: 'common/preview'
   end
 
   # Reorder templates
   def move
     move_order(params[:to])
   end
-    
+
   private
   def find_user
     @user = User.current
@@ -202,7 +199,7 @@ class IssueTemplatesController < ApplicationController
   def move_order(method)
     IssueTemplate.find(params[:id]).send "move_#{method}"
     respond_to do |format|
-      format.html { redirect_to :action => 'index' }
+      format.html { redirect_to action: 'index' }
       format.xml  { head :ok }
     end
   end

@@ -1,7 +1,7 @@
 <% if @grouped_options.length == 0 %>
-    <script type="text/javascript">
-        $('#template_area').toggle();
-    </script>
+  <script type="text/javascript">
+    $('#template_area').toggle();
+  </script>
 <% end %>
 <option value="">---</option>
 <%= grouped_options_for_select(@grouped_options, default_template) %>

@@ -11,7 +11,7 @@ class IssueTemplateSetting < ActiveRecord::Base
 
 
   def self.find_or_create(project_id)	
-    setting = IssueTemplateSetting.where(['project_id = ?', project_id]).first()
+    setting = IssueTemplateSetting.where(['project_id = ?', project_id]).first
     unless setting.present?
       setting = IssueTemplateSetting.new
       setting.project_id = project_id
@@ -24,13 +24,13 @@ class IssueTemplateSetting < ActiveRecord::Base
     if self.enabled == true && !self.help_message.blank?
       return true
     end
-    return false
+    false
   end
 
   def enabled_inherit_templates?
-    if self.inherit_templates == true
+    if self.inherit_templates
       return true
     end
-    return false
+    false
   end
 end

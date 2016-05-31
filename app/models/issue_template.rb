@@ -17,7 +17,7 @@ class IssueTemplate < ActiveRecord::Base
   attr_accessible :title, :tracker_id, :issue_title, :description, :note,
                   :is_default, :enabled, :enabled_sharing, :author, :project, :position
   def enabled?
-    self.enabled == true
+    self.enabled
   end
   
   def <=>(issue_template)
