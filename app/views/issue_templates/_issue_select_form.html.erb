@@ -1,48 +1,47 @@
 <% return '' unless @project.module_enabled? :issue_templates %>
 <% return '' unless authorize_for('issue_templates', 'show') %>
- <%
-   # TODO: This code should be moved from template.
-   @setting = IssueTemplateSetting.find_or_create(@project.id)
-   issue = @issue.errors.messages
- %>
 <div id="template_area" style="margin-top: 4pt;">
-<p style="padding-bottom: 0; margin-bottom: 0;"><label><%=h l(:issue_template)%></label>
-  <select id="issue_template" include_blank="true" length="150" name="issue_template">
-    <option value="">---</option>
-  </select>
-  <% if @setting.enable_help? == true %>
-  <a class="icon icon-help" href="#" title="<%= l(:about_template_help_message) %>"
-     onclick="checkExpand('template_help_content');">
-<%= l(:label_help_message) %></a>
-  <% end %>
+  <p style="padding-bottom: 0; margin-bottom: 0;"><label for="issue_template"><%=h l(:issue_template)%></label>
+    <select id="issue_template" name="issue_template">
+      <option value="">---</option>
+    </select>
+    <% if setting.enable_help? %>
+        <a class="icon icon-help" href="#" title="<%= l(:about_template_help_message) %>"
+           onclick="checkExpand('template_help_content');">
+          <%= l(:label_help_message) %>
+        </a>
+    <% end %>
 
-  <a class="icon icon-erase" href="#" title="<%= l(:erase_issue_subject_and_description) %>"
-     onclick="eraseSubjectAndDescription();">
-    <%= l(:erase_issue_subject_and_description) %></a>
-  <span id="template_status-area"></span>
-</p>
- <div class="template_help box" id="template_help_content" style="display: none;"><%= textilizable @setting.help_message %>
-  <div id="template_help_hide"><a href="#" onClick="checkExpand('template_help_content');" title="<%= l(:close_help) %>">[x]</a></div>
+    <a class="icon icon-erase" href="#" title="<%= l(:erase_issue_subject_and_description) %>"
+       onclick="eraseSubjectAndDescription();">
+      <%= l(:erase_issue_subject_and_description) %>
+    </a>
+    <span id="template_status-area"></span>
+  </p>
+  <div class="template_help box" id="template_help_content" style="display: none;">
+    <%= textilizable setting.help_message %>
+    <div id="template_help_hide">
+      <a href="#" onClick="checkExpand('template_help_content');" title="<%= l(:close_help) %>">[x]</a>
+    </div>
+  </div>
 </div>
-</div>
-<% return '' if !issue[:subject].blank? %>
 <script type="text/javascript">
-//<![CDATA[
-token = '<%= form_authenticity_token %>';
-load_url = '<%= url_for(:controller => 'issue_templates', 
-      :action => 'load', :project_id => @project) %>';
-pulldown_url = '<%= url_for(:controller => 'issue_templates', 
-      :action => 'set_pulldown', :project_id => @project) %>';
-should_replaced = '<%= @setting.should_replaced %>';
-confirm_msg = '<%= escape_javascript(l(:confirm_replace_description_with_template)) %>'
-tracker =  '<%= @issue.tracker.id %>'
-set_pulldown(tracker, pulldown_url, token);
+  //<![CDATA[
+  token = '<%= form_authenticity_token %>';
+  is_triggered_by_status = '<%= is_triggered_by_status %>';
+  load_url = '<%= url_for(controller: 'issue_templates', action: 'load',
+        project_id: @project, is_triggered_by_status: is_triggered_by_status) %>';
+  pulldown_url = '<%= url_for(controller: 'issue_templates',
+        action:'set_pulldown', project_id: @project, is_triggered_by_status: is_triggered_by_status) %>';
+  should_replaced = '<%= setting.should_replaced %>';
+  confirm_msg = '<%= escape_javascript(l(:confirm_replace_description_with_template)) %>';
+  tracker =  '<%= @issue.tracker.id %>';
+  set_pulldown(tracker, pulldown_url, token);
 
-$('#template_area').insertBefore($('#issue_subject').parent());
-$(document).ready(function() {
+  $('#template_area').insertBefore($('#issue_subject').parent());
+  $(document).ready(function() {
     $("#issue_template").change(function(){
-        load_template(load_url, token, confirm_msg, should_replaced);
+      load_template(load_url, token, confirm_msg, should_replaced, is_triggered_by_status);
     });
-});
-
+  });
 </script>

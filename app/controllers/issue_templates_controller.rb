@@ -97,9 +97,9 @@ class IssueTemplatesController < ApplicationController
   def set_pulldown
     @grouped_options = []
     group = []
-    @default_template = nil
-    @setting = IssueTemplateSetting.find_or_create(@project.id)
-    inherit_template = @setting.enabled_inherit_templates?
+    default_template = nil
+    setting = IssueTemplateSetting.find_or_create(@project.id)
+    inherit_template = setting.enabled_inherit_templates?
 
     project_ids = inherit_template ? @project.ancestors.collect(&:id) : [@project.id]
     issue_templates = IssueTemplate.where('project_id = ? AND tracker_id = ? AND enabled = ?',
@@ -110,7 +110,7 @@ class IssueTemplatesController < ApplicationController
                                                   @project.id, @tracker.id, true, true).first
 
     unless project_default_template.blank?
-       @default_template = project_default_template
+       default_template = project_default_template.id
     end
 
     if issue_templates.size > 0
@@ -129,34 +129,38 @@ class IssueTemplatesController < ApplicationController
 
       if inherit_templates.any?
         inherit_templates.each do |x|
-          group.push([x.title, x.id, {:class => "inherited"}])
+          group.push([x.title, x.id, { class: 'inherited' }])
           if x.is_default == true
              if project_default_template.blank?
-              @default_template = x
+              default_template = x
             end
           end
         end
       end
     end
 
-    @globalIssueTemplates = GlobalIssueTemplate.joins(:projects).where(["tracker_id = ? AND projects.id = ?",
-                                                                        @tracker.id, @project.id]).order('position')
+    global_issue_templates = GlobalIssueTemplate.joins(:projects).where(['tracker_id = ? AND projects.id = ?',
+                                                                         @tracker.id, @project.id]).order('position')
 
 
-    if @globalIssueTemplates.any?
-      @globalIssueTemplates.each do |x|
-        group.push([x.title, x.id, {:class => "global"}])
+    if global_issue_templates.any?
+      global_issue_templates.each do |x|
+        group.push([x.title, x.id, { class: 'global' }])
         # Using global template as default template is now disabled.
         # if x.is_default == true
         #   if project_default_template.blank?
-        #     @default_template = x
+        #     default_template = x
         #   end
         # end
       end
     end
 
+    is_triggered_by_status = request.parameters[:is_triggered_by_status]
     @grouped_options.push([@tracker.name, group]) if group.any?
-    render :action => "_template_pulldown", :layout => false
+    render action: '_template_pulldown', layout: false,
+           locals: { is_triggered_by_status: is_triggered_by_status,
+                     should_replaced: setting.should_replaced,
+                     default_template: default_template }
   end
 
   # preview
