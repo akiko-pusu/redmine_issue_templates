@@ -30,7 +30,7 @@ Metrics/PerceivedComplexity:
 # Avoid methods longer than 10 lines of code
 MethodLength:
   CountComments: true  # count full line comments?
-  Max: 20 
+  Max: 45 
 
 # Aboid Missing top-level module documentation comment.
 Documentation:
