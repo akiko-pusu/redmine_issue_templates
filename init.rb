@@ -35,16 +35,16 @@ Redmine::Plugin.register :redmine_issue_templates do
        caption: :global_issue_templates
 
   project_module :issue_templates do
-    permission :edit_issue_templates, { issue_templates: [:new, :edit, :destroy, :move] }
-    permission :show_issue_templates, { issue_templates: [:index, :show, :load, :set_pulldown] }
-    permission :manage_issue_templates, 
-      { issue_templates_settings: [:show, :edit] }, require: :member
+    permission :edit_issue_templates, issue_templates: [:new, :edit, :destroy, :move]
+    permission :show_issue_templates, issue_templates: [:index, :show, :load, :set_pulldown]
+    permission :manage_issue_templates,
+               { issue_templates_settings: [:show, :edit] }, require: :member
   end
 
   Rails.configuration.to_prepare do
     require_dependency 'projects_helper'
     unless ProjectsHelper.included_modules.include? IssueTemplatesProjectsHelperPatch
-      ProjectsHelper.send(:include, IssueTemplatesProjectsHelperPatch)  
-    end 
-  end 
+      ProjectsHelper.send(:include, IssueTemplatesProjectsHelperPatch)
+    end
+  end
 end

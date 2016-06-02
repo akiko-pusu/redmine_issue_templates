@@ -13,7 +13,7 @@ Metrics/AbcSize:
 # Offense count: 1
 # Configuration parameters: CountComments.
 Metrics/ClassLength:
-  Max: 154
+  Max: 200 
 
 # "Line is too long"を無効
 Metrics/LineLength:
@@ -29,7 +29,8 @@ Metrics/PerceivedComplexity:
 
 # Avoid methods longer than 10 lines of code
 MethodLength:
-  Enabled: false
+  CountComments: true  # count full line comments?
+  Max: 20 
 
 # Aboid Missing top-level module documentation comment.
 Documentation:

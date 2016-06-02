@@ -1,9 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 require 'issues_controller'
 
-# Re-raise errors caught by the controller.
-class IssuesController; def rescue_action(e) raise e end; end
-
 # Test for view hooks.
 class IssuesControllerTest < ActionController::TestCase
   fixtures :projects,
@@ -28,7 +25,7 @@ class IssuesControllerTest < ActionController::TestCase
            :journals,
            :journal_details,
            :issue_templates
-  
+
   def setup
     @controller = IssuesController.new
     @request    = ActionController::TestRequest.new
@@ -39,46 +36,46 @@ class IssuesControllerTest < ActionController::TestCase
     enabled_module.name = 'issue_templates'
     enabled_module.save
     roles = Role.all
-    roles.each {|role|
+    roles.each do |role|
       role.permissions << :show_issue_templates
       role.remove_permission! :edit_issue_templates
       role.save
-    }
+    end
     @request.session[:user_id] = 2
     @project = Project.find(1)
   end
 
-  def test_index_without_project    
+  def test_index_without_project
     get :index
     assert_response :success
     assert_select 'h3.template', false
   end
-  
+
   def test_index
-    get :index, :project_id => @project.id
+    get :index, project_id: @project.id
     assert_response :success
-    assert_select 'div#template_area select#issue_template', false, 
-      "Action index should not contain template select pulldown."
+    assert_select 'div#template_area select#issue_template', false,
+                  'Action index should not contain template select pulldown.'
     assert_select 'h3.template'
-    assert_select "a", {:href=>"/projects/#{@project}/issue_templates/new"}, false
+    assert_select 'a', { href: "/projects/#{@project}/issue_templates/new" }, false
   end
 
   def test_index_with_edit_permission
-    Role.find(1).add_permission! :edit_issue_templates    
-    get :index, :project_id => @project.id
+    Role.find(1).add_permission! :edit_issue_templates
+    get :index, project_id: @project.id
     assert_select 'h3.template'
-    assert_select "a", {:href=>"/projects/#{@project}/issue_templates/new"}
+    assert_select 'a', href: "/projects/#{@project}/issue_templates/new"
   end
-  
+
   def test_new
-    get :new, :project_id => 1
+    get :new, project_id: 1
     assert_response :success
     assert_select 'div#template_area select#issue_template'
   end
 
   # NOTE: When copy, template area should not be displayed.
   def test_copy
-    get :new, :project_id => 1, :copy_from => 1
+    get :new, project_id: 1, copy_from: 1
     assert_response :success
     assert_select 'div#template_area', false
   end
