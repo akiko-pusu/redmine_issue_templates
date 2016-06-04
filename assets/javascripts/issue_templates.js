@@ -66,9 +66,21 @@ function load_template(target_url, token, confirm_msg, should_replaced) {
                 } catch(e) {
                     // do nothing.
                 }
+                // show message just after default template loaded.
+                if (confirm_msg)
+                    show_loaded_message(confirm_msg, issue_description);
             }
         });
     }
+}
+
+function show_loaded_message(confirm_msg, target) {
+    var template_status_area = $('#template_status-area');
+    template_status_area.insertBefore(target);
+    template_status_area.flash_message({
+        text: confirm_msg,
+        how: 'append'
+    });
 }
 
 function set_pulldown(tracker, target_url, token) {

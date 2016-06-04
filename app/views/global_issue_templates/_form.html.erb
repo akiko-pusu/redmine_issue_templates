@@ -1,5 +1,5 @@
 <%= error_messages_for 'issue_template' %>
-<div class="box tabular" style="background-color: white;">
+<div class="box tabular box-white">
   <p><%= f.text_field :title, required: true, size: 80, label: l(:issue_template_name) %> </p>
 
   <fieldset class="issue">
@@ -55,7 +55,7 @@
 
 <div class="box" >
   <% if @projects.any? %>
-      <fieldset class="box" id="global_issue_template_project_ids">
+      <fieldset class="box box-white" id="global_issue_template_project_ids">
         <legend><%= l(:label_project_plural) %></legend>
         <%= render_project_nested_lists(@projects) do |p|
           content_tag('label', check_box_tag('global_issue_template[project_ids][]',

@@ -1,7 +1,8 @@
 <% return '' unless @project.module_enabled? :issue_templates %>
 <% return '' unless authorize_for('issue_templates', 'show') %>
-<div id="template_area" style="margin-top: 4pt;">
-  <p style="padding-bottom: 0; margin-bottom: 0;"><label for="issue_template"><%=h l(:issue_template)%></label>
+<div id="template_area">
+  <p>
+    <label for="issue_template"><%=h l(:issue_template)%></label>
     <select id="issue_template" name="issue_template">
       <option value="">---</option>
     </select>
@@ -27,21 +28,21 @@
 </div>
 <script type="text/javascript">
   //<![CDATA[
-  token = '<%= form_authenticity_token %>';
-  is_triggered_by_status = '<%= is_triggered_by_status %>';
-  load_url = '<%= url_for(controller: 'issue_templates', action: 'load',
-        project_id: @project, is_triggered_by_status: is_triggered_by_status) %>';
-  pulldown_url = '<%= url_for(controller: 'issue_templates',
+  var token = '<%= form_authenticity_token %>';
+  var pulldown_url = '<%= url_for(controller: 'issue_templates',
         action:'set_pulldown', project_id: @project, is_triggered_by_status: is_triggered_by_status) %>';
-  should_replaced = '<%= setting.should_replaced %>';
-  confirm_msg = '<%= escape_javascript(l(:confirm_replace_description_with_template)) %>';
-  tracker =  '<%= @issue.tracker.id %>';
+  var tracker =  '<%= @issue.tracker.id %>';
   set_pulldown(tracker, pulldown_url, token);
 
   $('#template_area').insertBefore($('#issue_subject').parent());
   $(document).ready(function() {
     $("#issue_template").change(function(){
-      load_template(load_url, token, confirm_msg, should_replaced, is_triggered_by_status);
+      var is_triggered_by_status = '<%= is_triggered_by_status %>';
+      var load_url = '<%= url_for(controller: 'issue_templates', action: 'load',
+        project_id: @project, is_triggered_by_status: is_triggered_by_status) %>';
+      var should_replaced = '<%= setting.should_replaced %>';
+
+      load_template(load_url, token, undefined, should_replaced, is_triggered_by_status);
     });
   });
 </script>

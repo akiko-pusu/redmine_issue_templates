@@ -1,8 +1,5 @@
-<%- 
-baseurl = Redmine::Utils.relative_url_root
-%>
 <%= error_messages_for 'issue_template' %>
-<div class="box tabular" style="background-color: white;">
+<div class="box tabular box-white">
   <p><%= f.text_field :title, required: true, size: 80, label: l(:issue_template_name) %></p>
 
   <fieldset class="issue">
@@ -30,13 +27,13 @@ baseurl = Redmine::Utils.relative_url_root
     <p>
       <%= f.text_area :description, cols: 78, rows: 12,
                       required: true,
-                      label: l(:issue_description), style: 'overflow:auto;' %>
+                      label: l(:issue_description) %>
     </p>
   </fieldset>
   <p>
     <%= f.text_area :note, cols: 70, rows: 3,
                     required: false,
-                    label: l(:issue_template_note), style: 'overflow:auto;' %>
+                    label: l(:issue_template_note) %>
   </p>
 
   <p><%= f.check_box :is_default, label: l(:field_is_default) %>

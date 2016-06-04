@@ -5,6 +5,12 @@
 }
 
 #template_area {
+    margin-top: 4pt;
+}
+
+#template_area > p {
+    padding-bottom: 0;
+    margin-bottom: 0;
 }
 
 .template_help {
@@ -17,6 +23,7 @@
 }
 
 #template_help_content {
+    // display: none;
     position:relative;
     text-align: left;
     margin-left: 0.5em;
@@ -122,4 +129,12 @@ a.template_tooltip  {
     background: url(../images/preview.png) no-repeat 3px center;
     padding-top: 3px;
     padding-left: 24px;
+}
+
+#issue_template-form textarea {
+    overflow:auto;
+}
+
+.box-white {
+    background-color: white;
 }
