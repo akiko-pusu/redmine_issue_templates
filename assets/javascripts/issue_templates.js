@@ -7,7 +7,7 @@ changeType = "";
 function checkExpand(ch) {
     var obj=document.all && document.all(ch) || document.getElementById && document.getElementById(ch);
     if(obj && obj.style) obj.style.display=
-    "none" == obj.style.display ?"" : "none"
+        "none" == obj.style.display ?"" : "none"
 }
 
 function eraseSubjectAndDescription() {
@@ -29,42 +29,45 @@ $(document).ready(function() {
 
 // TODO: When update description, confirmation dialog should be appeared.
 function load_template(target_url, token, confirm_msg, should_replaced) {
-    var allow_overwrite = $('#allow_overwrite_description').prop('checked');
-    if ($("#issue_template").val() != "") {
+    var selected_template = $("#issue_template");
+    if (selected_template.val() != "") {
         var template_type = "";
-        if($("select[name=issue_template] option:selected").hasClass('global')){
+        if(selected_template.hasClass('global')){
             template_type = "global";
         }
         $.ajax({
             url:target_url,
             async:true,
             type:'post',
-            data:$.param({issue_template:$("#issue_template").val(), authenticity_token:token, template_type:template_type})
+            data:$.param({issue_template:selected_template.val(), authenticity_token:token, template_type:template_type})
         }).done(function (html) {
-                oldSubj = "";
-                oldVal = "";
-                eval('var template = ' + html);
-                if ($("#issue_description").val() != '' && should_replaced == 'false') {
-                    oldVal = $("#issue_description").val() + "\n\n";
-                }
+            var oldSubj = "";
+            var oldVal = "";
+            var issue_subject = $("#issue_subject");
+            var issue_description = $("#issue_description");
 
-                if ($("#issue_subject").val() != '' && should_replaced == 'false') {
-                    oldSubj = $("#issue_subject").val() + ' ';
-                }
-                for(var issue_template in template) {
-                    template[issue_template].description = (template[issue_template].description == null)? '' : template[issue_template].description;
-                    template[issue_template].issue_title = (template[issue_template].issue_title == null)? '' : template[issue_template].issue_title;
+            eval('var template = ' + html);
+            if (issue_description.val() != '' && should_replaced == 'false') {
+                oldVal = issue_description.val() + "\n\n";
+            }
 
-                    $("#issue_description").val(oldVal + template[issue_template].description);
-                    $("#issue_subject").val(oldSubj + template[issue_template].issue_title);
-                    try {
-                        if (CKEDITOR.instances.issue_description)
-                            CKEDITOR.instances.issue_description.setData(oldVal + template[issue_template].description);
-                    } catch(e) {
-                        // do nothing.
-                    }
+            if (issue_subject.val() != '' && should_replaced == 'false') {
+                oldSubj = issue_subject.val() + ' ';
+            }
+            for(var issue_template in template) {
+                template[issue_template].description = (template[issue_template].description == null)? '' : template[issue_template].description;
+                template[issue_template].issue_title = (template[issue_template].issue_title == null)? '' : template[issue_template].issue_title;
+
+                issue_description.val(oldVal + template[issue_template].description);
+                issue_subject.val(oldSubj + template[issue_template].issue_title);
+                try {
+                    if (CKEDITOR.instances.issue_description)
+                        CKEDITOR.instances.issue_description.setData(oldVal + template[issue_template].description);
+                } catch(e) {
+                    // do nothing.
                 }
-            });
+            }
+        });
     }
 }
 
@@ -94,7 +97,7 @@ function set_pulldown(tracker, target_url, token) {
         return $(this).each(function() {
             if ($(this).parent().find('.flash_message').get(0)) return;
 
-             var message = $('<div />', {
+            var message = $('<div></div>', {
                 'class': 'flash_message ' + options.class_name,
                 text: options.text
                 // display with fade in

@@ -90,7 +90,7 @@ class IssueTemplatesController < ApplicationController
 
   # update pulldown
   def set_pulldown
-    @grouped_options = []
+    grouped_options = []
     group = []
     default_template = nil
     setting = IssueTemplateSetting.find_or_create(@project.id)
@@ -140,9 +140,9 @@ class IssueTemplatesController < ApplicationController
     end
 
     is_triggered_by_status = request.parameters[:is_triggered_by_status]
-    @grouped_options.push([@tracker.name, group]) if group.any?
+    grouped_options.push([@tracker.name, group]) if group.any?
     render action: '_template_pulldown', layout: false,
-           locals: { is_triggered_by_status: is_triggered_by_status,
+           locals: { is_triggered_by_status: is_triggered_by_status, grouped_options: grouped_options,
                      should_replaced: setting.should_replaced, default_template: default_template }
   end
 

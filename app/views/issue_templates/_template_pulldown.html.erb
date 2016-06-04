@@ -1,10 +1,10 @@
-<% if @grouped_options.length == 0 %>
+<% if grouped_options.length == 0 %>
   <script type="text/javascript">
     $('#template_area').toggle();
   </script>
 <% end %>
 <option value="">---</option>
-<%= grouped_options_for_select(@grouped_options, default_template) %>
+<%= grouped_options_for_select(grouped_options, default_template) %>
 
 <% if !default_template.nil? && is_triggered_by_status == 'false' %>
     <script type="text/javascript">
