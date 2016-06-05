@@ -28,17 +28,6 @@ class IssueTemplatesController < ApplicationController
     if inherit_template
       # keep ordering
       used_tracker_ids = @project.trackers.pluck(:tracker_id)
-=begin
-      project_ids.each do |i|
-        @inherit_templates.concat(
-            IssueTemplate.search_by_project(i)
-                .search_by_tracker(used_tracker_ids)
-                .enabled
-                .enabled_sharing
-                .order_by_position
-        )
-      end
-=end
       @inherit_templates = get_inherit_templates(project_ids, used_tracker_ids)
     end
 

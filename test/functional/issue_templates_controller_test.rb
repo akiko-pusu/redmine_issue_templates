@@ -36,12 +36,12 @@ class IssueTemplatesControllerTest < ActionController::TestCase
       assert_response 403
     end
 
-    should 'should get index' do
+    should 'get index with status code 200' do
       Role.find(1).add_permission! :show_issue_templates
       get :index, project_id: 1
       assert_response :success
       assert_template 'index'
-      assert_not_nil assigns(:issue_templates)
+      assert_not_nil assigns(:global_issue_templates)
     end
   end
 
