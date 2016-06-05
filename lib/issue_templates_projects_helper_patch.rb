@@ -13,6 +13,7 @@ module ProjectsHelperMethodsIssueTemplates
   # Append tab for issue templates to project settings tabs.
   def project_settings_tabs_with_issue_templates
     tabs = project_settings_tabs_without_issue_templates
+    @issue_templates_setting = IssueTemplateSetting.find_or_create(@project.id)
     action = { name: 'issue_templates',
                controller: 'issue_templates_settings',
                action: :show,

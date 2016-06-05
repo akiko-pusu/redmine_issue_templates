@@ -42,11 +42,7 @@ class IssueTemplate < ActiveRecord::Base
   #
   def check_default
     if is_default? && is_default_changed?
-
-      # for Rails4
-      IssueTemplate.where(['project_id = ? AND tracker_id = ?', project_id, tracker_id]).update_all(is_default: false)
-      # IssueTemplate.update_all({:is_default => false},
-      #                          ['project_id = ? AND tracker_id = ?', project_id, tracker_id])
+      IssueTemplate.search_by_project(project_id).search_by_tracker(tracker_id).update_all(is_default: false)
     end
   end
 end
