@@ -4,10 +4,13 @@
     padding-left: 18px;    
 }
 
-#template_help_message {
+#template_area {
+    margin-top: 4pt;
 }
 
-#template_area {
+#template_area > p {
+    padding-bottom: 0;
+    margin-bottom: 0;
 }
 
 .template_help {
@@ -20,6 +23,7 @@
 }
 
 #template_help_content {
+    // display: none;
     position:relative;
     text-align: left;
     margin-left: 0.5em;
@@ -72,7 +76,6 @@ span.help_content {
     margin-top: 5pt;
     margin-bottom: 5pt;
     display: block;
-    color: #58718a;
     font-style: italic;
     padding-left: 20px;
     background: #FFEBC1 url(../images/lamp.png) no-repeat 3px center;
@@ -126,4 +129,12 @@ a.template_tooltip  {
     background: url(../images/preview.png) no-repeat 3px center;
     padding-top: 3px;
     padding-left: 24px;
+}
+
+#issue_template-form textarea {
+    overflow:auto;
+}
+
+.box-white {
+    background-color: white;
 }

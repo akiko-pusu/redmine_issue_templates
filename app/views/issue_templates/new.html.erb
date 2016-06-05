@@ -1,8 +1,7 @@
 <div class="contextual">
-<%= link_to(l(:label_list_templates),
-              {:controller => :issue_templates,
-              :action => :index,
-              :project_id => @project}, :class => 'template') %> 
+  <%= link_to(l(:label_list_templates),
+              { controller: 'issue_templates',
+                action: 'index', project_id: @project }, class: 'template') %>
 </div>
 <h2 class="template"><%=h "#{l(:issue_templates)} / #{l(:button_add)}" %></h2>
 <% if @project.trackers.blank? %>
@@ -10,21 +9,19 @@
       <%= simple_format(l(:text_no_tracker_enabled)) %>
     </div>
 <% else %>
-<div class="box">
-  <%= error_messages_for 'issue_template' %>
-  <%= labelled_form_for :issue_template,  @issue_template, 
-     :url => { :controller => 'issue_templates', :action => 'new', :project_id => @project },
-     :html => { :id => 'issue_template-form',
-     :class => nil, :multipart => false } do |f| %>
-      
-  <%= render :partial => 'form', :locals => { :f => f } %>
-  <div id="preview" class="wiki"></div>
-      <%= submit_tag l(:button_create) %>
-  <% end %>
-  <%= preview_link url_for(:controller => 'issue_templates', :action => 'preview',
-                           :id => @issue_template),
-                   'issue_template_description', target='preview' %> |
-  <%= link_to l(:button_cancel), {:action => 'index'}, :data => {:confirm => l(:text_are_you_sure)} %>
-</div>
+    <div class="box">
+      <%= error_messages_for 'issue_template' %>
+      <%= labelled_form_for :issue_template,  @issue_template,
+                            url: { controller: 'issue_templates', action: 'new', project_id: @project },
+                            html: { id: 'issue_template-form', class: nil, multipart: false } do |f| %>
+
+          <%= render partial: 'form', locals: { f: f } %>
+          <div id="preview" class="wiki"></div>
+          <%= submit_tag l(:button_create) %>
+      <% end %>
+      <%= preview_link url_for( controller: 'issue_templates', action: 'preview', id: @issue_template ),
+                       'issue_template_description', target='preview' %> |
+      <%= link_to l(:button_cancel), { action: 'index'}, data: { confirm: l(:text_are_you_sure) } %>
+    </div>
 <% end %>
 
