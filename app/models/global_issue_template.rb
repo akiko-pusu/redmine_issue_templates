@@ -22,8 +22,8 @@ class GlobalIssueTemplate < ActiveRecord::Base
   attr_accessible :title, :tracker_id, :issue_title, :description, :note,
                   :enabled, :project_ids, :position, :author
 
-  scope :enabled, lambda { where(enabled: true) }
-  scope :order_by_position, lambda { order(:position) }
+  scope :enabled, -> { where(enabled: true) }
+  scope :order_by_position, -> { order(:position) }
   scope :search_by_tracker, lambda { |tracker_id|
     where(tracker_id: tracker_id)
   }
@@ -32,7 +32,7 @@ class GlobalIssueTemplate < ActiveRecord::Base
   }
 
   def enabled?
-    self.enabled
+    enabled
   end
 
   def <=>(global_issue_template)
