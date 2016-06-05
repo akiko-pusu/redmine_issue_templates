@@ -32,9 +32,8 @@ class IssueTemplatesController < ApplicationController
     end
 
     @global_issue_templates = GlobalIssueTemplate.joins(:projects)
-                                 .search_by_project(@project.id)
-                                 .order_by_position
-
+                                                 .search_by_project(@project.id)
+                                                 .order_by_position
 
     render layout: !request.xhr?
   end
@@ -94,8 +93,8 @@ class IssueTemplatesController < ApplicationController
 
     project_ids = inherit_template ? @project.ancestors.collect(&:id) : [@project.id]
     issue_templates = IssueTemplate.search_by_project(@project.id)
-                          .search_by_tracker(@tracker.id)
-                          .enabled.order_by_position
+                                   .search_by_tracker(@tracker.id)
+                                   .enabled.order_by_position
 
     project_default_template = issue_templates.is_default.first
 
@@ -108,16 +107,6 @@ class IssueTemplatesController < ApplicationController
     end
 
     if inherit_template
-=begin
-      project_ids.each do |i|
-        inherit_templates.concat(
-            IssueTemplate.search_by_project(i)
-                .search_by_tracker(@tracker.id)
-                .enabled.enabled_sharing
-                .order_by_position
-        )
-      end
-=end
       inherit_templates = get_inherit_templates(project_ids, @tracker.id)
 
       if inherit_templates.any?
@@ -130,9 +119,9 @@ class IssueTemplatesController < ApplicationController
     end
 
     global_issue_templates = GlobalIssueTemplate.joins(:projects)
-                                 .search_by_tracker(@tracker.id)
-                                 .search_by_project(@project.id)
-                                 .order_by_position
+                                                .search_by_tracker(@tracker.id)
+                                                .search_by_project(@project.id)
+                                                .order_by_position
 
     if global_issue_templates.any?
       global_issue_templates.each do |x|
@@ -200,8 +189,7 @@ class IssueTemplatesController < ApplicationController
                                    .search_by_tracker(tracker_id)
                                    .enabled
                                    .enabled_sharing
-                                   .order_by_position
-      )
+                                   .order_by_position)
     end
     inherit_templates
   end
