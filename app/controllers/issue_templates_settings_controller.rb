@@ -30,7 +30,7 @@ class IssueTemplatesSettingsController < ApplicationController
   end
 
   def update_template_setting
-    issue_templates_setting = IssueTemplateSetting.find_or_create(params[:project_id])
+    issue_templates_setting = IssueTemplateSetting.find_or_create(@project.id)
     attribute = params[:settings]
     issue_templates_setting.update_attributes(enabled: attribute[:enabled],
                                               help_message: attribute[:help_message],

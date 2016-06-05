@@ -22,6 +22,15 @@ class GlobalIssueTemplate < ActiveRecord::Base
   attr_accessible :title, :tracker_id, :issue_title, :description, :note,
                   :enabled, :project_ids, :position, :author
 
+  scope :enabled, lambda { where(enabled: true) }
+  scope :order_by_position, lambda { order(:position) }
+  scope :search_by_tracker, lambda { |tracker_id|
+    where(tracker_id: tracker_id)
+  }
+  scope :search_by_project, lambda { |project_id|
+    joins(:projects).where(projects: { id: project_id })
+  }
+
   def enabled?
     self.enabled
   end

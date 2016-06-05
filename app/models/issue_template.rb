@@ -16,6 +16,19 @@ class IssueTemplate < ActiveRecord::Base
                   'enabled_sharing','visible_children', 'position'
   attr_accessible :title, :tracker_id, :issue_title, :description, :note,
                   :is_default, :enabled, :enabled_sharing, :author, :project, :position
+
+  scope :enabled_sharing, lambda { where(enabled_sharing: true) }
+  scope :enabled, lambda { where(enabled: true) }
+  scope :is_default, lambda { where(is_default: true) }
+  scope :not_default, lambda { where(is_default: false) }
+  scope :order_by_position, lambda { order(:position) }
+  scope :search_by_project, lambda { |prolect_id|
+    where(project_id: prolect_id)
+  }
+  scope :search_by_tracker, lambda { |tracker_id|
+    where(tracker_id: tracker_id)
+  }
+
   def enabled?
     self.enabled
   end

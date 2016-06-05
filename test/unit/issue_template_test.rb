@@ -36,7 +36,7 @@ class IssueTemplateTest < ActiveSupport::TestCase
     @issue_template.save!
     assert @issue_template.is_default?
 
-    templates = IssueTemplate.where('project_id = 1 AND tracker_id = 1 AND id != 1')
+    templates = IssueTemplate.search_by_project(1).search_by_tracker(1).not_default
     templates.each do |template|
       assert !template.is_default?
     end

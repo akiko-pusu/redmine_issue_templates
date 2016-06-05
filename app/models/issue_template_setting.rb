@@ -10,7 +10,7 @@ class IssueTemplateSetting < ActiveRecord::Base
   attr_accessible :help_message, :enabled, :inherit_templates, :should_replaced
 
 
-  def self.find_or_create(project_id)	
+  def self.find_or_create(project_id)
     setting = IssueTemplateSetting.where(['project_id = ?', project_id]).first
     unless setting.present?
       setting = IssueTemplateSetting.new
