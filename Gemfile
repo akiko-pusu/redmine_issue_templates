@@ -6,4 +6,5 @@ group :test do
   # TODO: change test not to use shoulda.
   #
   gem "shoulda"
+  gem "rubocop", :require => false
 end
