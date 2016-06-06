@@ -1,8 +1,4 @@
 <div id="issue_templates_settings">
-  <%
-     @issue_templates_setting = IssueTemplateSetting.find_or_create(@project.id)
-     @global_issue_templates = GlobalIssueTemplate.all
-  %>
   <% if @project.trackers.blank? %>
       <div class="nodata">
         <%= simple_format(l(:text_no_tracker_enabled)) %>
