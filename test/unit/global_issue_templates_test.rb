@@ -1,7 +1,7 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class GlobalIssueTemplatesTest < ActiveSupport::TestCase
-  fixtures :global_issue_templates,:users, :trackers
+  fixtures :global_issue_templates, :users, :trackers
 
   def setup
     @global_issue_template = GlobalIssueTemplate.find(1)
@@ -22,8 +22,8 @@ class GlobalIssueTemplatesTest < ActiveSupport::TestCase
   end
 
   def test_sort_by_position
-     a = GlobalIssueTemplate.new(:title => 'Template4', :position => 2, :tracker_id => 1)
-     b = GlobalIssueTemplate.new(:title => 'Template5', :position => 1, :tracker_id => 1)
-     assert_equal [b, a], [a, b].sort
+    a = GlobalIssueTemplate.new(title: 'Template4', position: 2, tracker_id: 1)
+    b = GlobalIssueTemplate.new(title: 'Template5', position: 1, tracker_id: 1)
+    assert_equal [b, a], [a, b].sort
   end
 end

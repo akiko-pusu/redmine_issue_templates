@@ -1,0 +1,43 @@
+box: ruby
+build:
+  steps:
+    - script:
+        name: check directory
+        code: |
+          pwd
+          ls -la .
+    - script:
+        name: download Redmine trunk
+        code: |
+          sh ./redmine-ready.sh
+    - script:
+        name: 'Install & Update bundler'
+        code: |
+          gem install simplecov simplecov-rcov yard --no-rdoc --no-ri
+          gem update bundler
+    - script:
+        name: check directory again
+        code: |
+          ls -la .
+          ls -la plugins/
+    - script:
+        name: 'Bundle'
+        code: |
+          bundle install --path vendor/bundle --without mysql postgreql rmagick --with test
+    - script:
+        name: 'Migrate DB'
+        code:
+          bundle exec rake db:migrate RAILS_ENV=test
+
+    - script:
+        name: 'Migrate Plugin'
+        code:
+          bundle exec rake redmine:plugins:migrate RAILS_ENV=test
+    - script:
+        name: 'Run Plugin tests'
+        code: |
+          bundle exec rake redmine:plugins:test PLUGIN=${PLUGIN_NAME}
+    - script:
+        name: 'Uninstall Schema tests'
+        code: |
+          bundle exec rake redmine:plugins:migrate NAME=${PLUGIN_NAME} VERSION=0 RAILS_ENV=test
