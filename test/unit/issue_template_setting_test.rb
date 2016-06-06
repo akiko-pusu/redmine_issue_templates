@@ -5,12 +5,12 @@ class IssueTemplateSettingTest < ActiveSupport::TestCase
 
   def setup
     @issue_template_setting = IssueTemplateSetting.find(1)
-  end    
+  end
 
   def test_truth
-   assert_kind_of IssueTemplateSetting, @issue_template_setting
+    assert_kind_of IssueTemplateSetting, @issue_template_setting
   end
-  
+
   def test_help_message_enabled
     enable_help = @issue_template_setting.enable_help?
     assert_equal(true, enable_help)
@@ -19,15 +19,15 @@ class IssueTemplateSettingTest < ActiveSupport::TestCase
 
   def test_duplicate_project_setting
     templ = IssueTemplateSetting.find_or_create(3)
-    templ.attributes = {:enabled => true, :help_message => 'Help!'}
+    templ.attributes = { enabled: true, help_message: 'Help!' }
     assert templ.save!, 'Failed to save.'
 
     # test which has the same proect id
     templ2 = IssueTemplateSetting.new
-    templ2.attributes = {:project_id => 1, :enabled => true, :help_message => 'Help!'}
+    templ2.attributes = { project_id: 1, enabled: true, help_message: 'Help!' }
     assert !templ2.save, 'Dupricate project should be denied.'
   end
-  
+
   def test_help_message_disabled
     # load disabled template setting
     issue_template_setting = IssueTemplateSetting.find(2)
