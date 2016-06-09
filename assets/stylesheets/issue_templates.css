@@ -1,7 +1,7 @@
 .template {
     background: url(../images/issue_templates.png) no-repeat 3px center;
     padding-top: 3px;
-    padding-left: 18px;    
+    padding-left: 18px;
 }
 
 #template_area {
@@ -23,41 +23,40 @@
 }
 
 #template_help_content {
-    // display: none;
-    position:relative;
+    position: relative;
     text-align: left;
     margin-left: 0.5em;
 }
 
-#template_help_content p{
+#template_help_content p {
     padding-left: 5px;
 }
 
 div.template_help div#template_help_hide {
-    display:block;
-    position:absolute;
-    bottom:5px;
-    right:10px;
-    font-size:smaller;
-    background:none;
-    color:#000;
+    display: block;
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
+    font-size: smaller;
+    background: none;
+    color: #000;
     filter: alpha(opacity=30);
     -moz-opacity: 0.3;
-    opacity: 0.3;    
+    opacity: 0.3;
 }
 
 div.template_help div#template_help_hide:hover {
     filter: alpha(opacity=80);
     -moz-opacity: 0.8;
-    opacity: 0.8;    
+    opacity: 0.8;
 }
 
-fieldset.issue { 
-     padding-top: 5px; 
-     padding-bottom: 5px; 
-     background-color: #F6F6F6;
-     margin-top: 10px; 
-     margin-bottom: 10px;
+fieldset.issue {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: #F6F6F6;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 div.issue_template {
@@ -68,8 +67,8 @@ div.issue_template {
 }
 
 span.help_content {
-     color: #8b0000;
-     padding: 6px;
+    color: #8b0000;
+    padding: 6px;
 }
 
 #template_status-area .flash_message {
@@ -94,8 +93,7 @@ option.global {
     font-style: oblique;
 }
 
-.non_project_tracker
-{
+.non_project_tracker {
     background: url(../images/lamp.png) no-repeat 3px center;
     color: #dd8888;
     font-style: italic;
@@ -104,35 +102,36 @@ option.global {
     padding-left: 20px;
 }
 
-.template_tracker
-{
+.template_tracker {
     background: url(../images/ticket.png) no-repeat 3px center;
     padding-top: 3px;
     padding-left: 18px;
 }
 
 .template_box {
-padding: 6px;
+    padding: 6px;
     margin-bottom: 10px;
     color: rgb(80, 80, 80);
     line-height: 1.5em;
     border: 1px solid rgb(228, 228, 228);
 }
 
-.icon-erase { background-image: url(../images/eraser.png); }
+.icon-erase {
+    background-image: url(../images/eraser.png);
+}
 
 #admin-menu a.redmine-issue-templates {
     background-image: url(../images/issue_templates.png);
 }
 
-a.template_tooltip  {
+a.template_tooltip {
     background: url(../images/preview.png) no-repeat 3px center;
     padding-top: 3px;
     padding-left: 24px;
 }
 
 #issue_template-form textarea {
-    overflow:auto;
+    overflow: auto;
 }
 
 .box-white {
