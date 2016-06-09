@@ -106,7 +106,7 @@ class IssueTemplatesController < ApplicationController
 
     project_default_template = issue_templates.is_default.first
 
-    has_project_default_template =  project_default_template.present?
+    has_project_default_template = project_default_template.present?
     default_template = nil
 
     if has_project_default_template
@@ -124,7 +124,7 @@ class IssueTemplatesController < ApplicationController
         inherit_templates.each do |template|
           group.push([template.title, template.id, { class: 'inherited' }])
           next unless template.is_default == true
-          default_template = template if !has_project_default_template
+          default_template = template unless has_project_default_template
         end
       end
     end
