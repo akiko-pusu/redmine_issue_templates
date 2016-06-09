@@ -12,19 +12,23 @@ class IssueTemplatesController < ApplicationController
   before_filter :find_tracker, only: [:set_pulldown]
 
   def index
-    tracker_ids = IssueTemplate.search_by_project(@project.id).pluck(:tracker_id).uniq
+    project_id = @project.id
+    project_templates = IssueTemplate.search_by_project(project_id)
+
+    # pick up used tracker ids
+    tracker_ids = project_templates.pluck(:tracker_id).uniq
 
     @template_map = {}
     tracker_ids.each do |tracker_id|
-      templates = IssueTemplate.search_by_project(@project.id).search_by_tracker(tracker_id).order_by_position
+      templates = project_templates.search_by_tracker(tracker_id).order_by_position
       @template_map[Tracker.find(tracker_id)] = templates if templates.any?
     end
 
-    @setting = IssueTemplateSetting.find_or_create(@project.id)
-    inherit_template = @setting.enabled_inherit_templates?
+    setting = IssueTemplateSetting.find_or_create(project_id)
+    inherit_template = setting.enabled_inherit_templates?
     @inherit_templates = []
 
-    project_ids = inherit_template ? @project.ancestors.collect(&:id) : [@project.id]
+    project_ids = inherit_template ? @project.ancestors.collect(&:id) : [project_id]
     if inherit_template
       # keep ordering
       used_tracker_ids = @project.trackers.pluck(:tracker_id)
@@ -32,7 +36,7 @@ class IssueTemplatesController < ApplicationController
     end
 
     @global_issue_templates = GlobalIssueTemplate.joins(:projects)
-                                                 .search_by_project(@project.id)
+                                                 .search_by_project(project_id)
                                                  .order_by_position
 
     render layout: !request.xhr?
@@ -75,10 +79,12 @@ class IssueTemplatesController < ApplicationController
 
   # load template description
   def load
-    @issue_template = if !params[:template_type].nil? && params[:template_type] == 'global'
-                        GlobalIssueTemplate.find(params[:issue_template])
+    issue_template_id = params[:issue_template]
+    template_type = params[:template_type]
+    @issue_template = if !template_type.blank? && template_type == 'global'
+                        GlobalIssueTemplate.find(issue_template_id)
                       else
-                        IssueTemplate.find(params[:issue_template])
+                        IssueTemplate.find(issue_template_id)
                       end
     render text: @issue_template.to_json(root: true)
   end
@@ -88,17 +94,22 @@ class IssueTemplatesController < ApplicationController
     grouped_options = []
     group = []
     default_template = nil
-    setting = IssueTemplateSetting.find_or_create(@project.id)
+    project_id = @project.id
+    tracker_id = @tracker.id
+    setting = IssueTemplateSetting.find_or_create(project_id)
     inherit_template = setting.enabled_inherit_templates?
 
-    project_ids = inherit_template ? @project.ancestors.collect(&:id) : [@project.id]
-    issue_templates = IssueTemplate.search_by_project(@project.id)
-                                   .search_by_tracker(@tracker.id)
+    project_ids = inherit_template ? @project.ancestors.collect(&:id) : [project_id]
+    issue_templates = IssueTemplate.search_by_project(project_id)
+                                   .search_by_tracker(tracker_id)
                                    .enabled.order_by_position
 
     project_default_template = issue_templates.is_default.first
 
-    unless project_default_template.blank?
+    has_project_default_template = project_default_template.present?
+    default_template = nil
+
+    if has_project_default_template
       default_template = project_default_template.id
     end
 
@@ -107,25 +118,25 @@ class IssueTemplatesController < ApplicationController
     end
 
     if inherit_template
-      inherit_templates = get_inherit_templates(project_ids, @tracker.id)
+      inherit_templates = get_inherit_templates(project_ids, tracker_id)
 
       if inherit_templates.any?
-        inherit_templates.each do |x|
-          group.push([x.title, x.id, { class: 'inherited' }])
-          next unless x.is_default == true
-          default_template = x if project_default_template.blank?
+        inherit_templates.each do |template|
+          group.push([template.title, template.id, { class: 'inherited' }])
+          next unless template.is_default == true
+          default_template = template unless has_project_default_template
         end
       end
     end
 
     global_issue_templates = GlobalIssueTemplate.joins(:projects)
-                                                .search_by_tracker(@tracker.id)
-                                                .search_by_project(@project.id)
+                                                .search_by_tracker(tracker_id)
+                                                .search_by_project(project_id)
                                                 .order_by_position
 
     if global_issue_templates.any?
-      global_issue_templates.each do |x|
-        group.push([x.title, x.id, { class: 'global' }])
+      global_issue_templates.each do |global_issue_template|
+        group.push([global_issue_template.title, global_issue_template.id, { class: 'global' }])
       end
     end
 
@@ -137,10 +148,9 @@ class IssueTemplatesController < ApplicationController
   end
 
   # preview
-  # @return [Object]
   def preview
-    @text = (params[:issue_template] ? params[:issue_template][:description] : nil)
-    @issue_template = IssueTemplate.find(params[:id]) if params[:id]
+    issue_template = params[:issue_template]
+    @text = (issue_template ? issue_template[:description] : nil)
     render partial: 'common/preview'
   end
 

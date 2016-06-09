@@ -17,8 +17,9 @@ class GlobalIssueTemplatesController < ApplicationController
     @trackers = Tracker.all
     @template_map = {}
     @trackers.each do |tracker|
-      templates = GlobalIssueTemplate.search_by_tracker(tracker.id).order_by_position
-      @template_map[Tracker.find(tracker.id)] = templates if templates.any?
+      tracker_id = tracker.id
+      templates = GlobalIssueTemplate.search_by_tracker(tracker_id).order_by_position
+      @template_map[Tracker.find(tracker_id)] = templates if templates.any?
     end
     render layout: !request.xhr?
   end
@@ -68,8 +69,10 @@ class GlobalIssueTemplatesController < ApplicationController
 
   # preview
   def preview
-    @text = (params[:global_issue_template] ? params[:global_issue_template][:description] : nil)
-    @global_issue_template = GlobalIssueTemplate.find(params[:id]) if params[:id]
+    global_issue_template = params[:global_issue_template]
+    id = params[:id]
+    @text = (global_issue_template ? global_issue_template[:description] : nil)
+    @global_issue_template = GlobalIssueTemplate.find(id) if id
     render partial: 'common/preview'
   end
 
