@@ -28,7 +28,7 @@ class GlobalIssueTemplatesController < ApplicationController
     # create empty instance
     @trackers = Tracker.all
     @projects = Project.all
-    @global_issue_template = GlobalIssueTemplate.new(author: @user, tracker: @tracker)
+    @global_issue_template = GlobalIssueTemplate.new
     if request.post?
       # Case post, set attributes passed as parameters.
       @global_issue_template.safe_attributes = params[:global_issue_template]
