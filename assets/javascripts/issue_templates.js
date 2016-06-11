@@ -32,7 +32,7 @@ function load_template(target_url, token, confirm_msg, should_replaced) {
     var selected_template = $("#issue_template");
     if (selected_template.val() != "") {
         var template_type = "";
-        if(selected_template.hasClass('global')){
+        if(selected_template.find('option:selected').hasClass('global')){
             template_type = "global";
         }
         $.ajax({
