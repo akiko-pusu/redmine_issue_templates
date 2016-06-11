@@ -3,7 +3,7 @@ require 'rake/testtask'
 require 'yard'
 
 desc 'Default: run unit tests.'
-task default: :test
+task :default => :test
 
 desc 'Test the redmine_banner plugin.'
 Rake::TestTask.new(:test) do |t|
