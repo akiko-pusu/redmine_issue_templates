@@ -2,17 +2,17 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-changeType = "";
+changeType = '';
 
 function checkExpand(ch) {
     var obj=document.all && document.all(ch) || document.getElementById && document.getElementById(ch);
     if(obj && obj.style) obj.style.display=
-        "none" == obj.style.display ?"" : "none"
+        'none' == obj.style.display ?'' : 'none'
 }
 
 function eraseSubjectAndDescription() {
-    $("#issue_description").val('');
-    $("#issue_subject").val('');
+    $('#issue_description').val('');
+    $('#issue_subject').val('');
 
     try {
         if (CKEDITOR.instances.issue_description)
@@ -29,11 +29,11 @@ $(document).ready(function() {
 
 // TODO: When update description, confirmation dialog should be appeared.
 function load_template(target_url, token, confirm_msg, should_replaced) {
-    var selected_template = $("#issue_template");
-    if (selected_template.val() != "") {
-        var template_type = "";
+    var selected_template = $('#issue_template');
+    if (selected_template.val() != '') {
+        var template_type = '';
         if(selected_template.find('option:selected').hasClass('global')){
-            template_type = "global";
+            template_type = 'global';
         }
         $.ajax({
             url:target_url,
@@ -41,14 +41,14 @@ function load_template(target_url, token, confirm_msg, should_replaced) {
             type:'post',
             data:$.param({issue_template:selected_template.val(), authenticity_token:token, template_type:template_type})
         }).done(function (html) {
-            var oldSubj = "";
-            var oldVal = "";
-            var issue_subject = $("#issue_subject");
-            var issue_description = $("#issue_description");
+            var oldSubj = '';
+            var oldVal = '';
+            var issue_subject = $('#issue_subject');
+            var issue_description = $('#issue_description');
 
             eval('var template = ' + html);
             if (issue_description.val() != '' && should_replaced == 'false') {
-                oldVal = issue_description.val() + "\n\n";
+                oldVal = issue_description.val() + '\n\n';
             }
 
             if (issue_subject.val() != '' && should_replaced == 'false') {
@@ -92,7 +92,7 @@ function set_pulldown(tracker, target_url, token) {
         data: $.param({issue_tracker_id: tracker, authenticity_token: token})
     }).done(function( html ) {
         $('#issue_template').html(html);
-        $('#allow_overwrite_description').attr("checked", allow_overwrite);
+        $('#allow_overwrite_description').attr('checked', allow_overwrite);
     });
 }
 
