@@ -13,7 +13,7 @@ Rake::TestTask.new(:test) do |t|
 end
 
 YARD::Rake::YardocTask.new(:yardoc) do |t|
-  files = ['lib/**/*.rb', 'app/**/*.rb'] # exclude test file
+  files = ['lib/**/*.rb', 'app/**/*.rb'] #exclude test file
   t.files = files
   t.options += ['--output-dir', './doc']
 end
