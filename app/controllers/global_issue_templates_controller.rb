@@ -8,7 +8,7 @@ class GlobalIssueTemplatesController < ApplicationController
   menu_item :issues
   before_filter :find_object, only: [:show, :edit, :destroy]
   before_filter :find_project, only: [:edit]
-  before_filter :require_admin, :find_user, only: [:index, :new, :show], excep: [:preview]
+  before_filter :require_admin, only: [:index, :new, :show], excep: [:preview]
 
   #
   # Action for global template : Admin right is required.
@@ -28,10 +28,11 @@ class GlobalIssueTemplatesController < ApplicationController
     # create empty instance
     @trackers = Tracker.all
     @projects = Project.all
-    @global_issue_template = GlobalIssueTemplate.new(author: @user, tracker: @tracker)
+    @global_issue_template = GlobalIssueTemplate.new
     if request.post?
       # Case post, set attributes passed as parameters.
       @global_issue_template.safe_attributes = params[:global_issue_template]
+      @global_issue_template.author = User.current
       if @global_issue_template.save
         flash[:notice] = l(:notice_successful_create)
         redirect_to action: 'show', id: @global_issue_template.id
@@ -81,11 +82,6 @@ class GlobalIssueTemplatesController < ApplicationController
   end
 
   private
-
-  # Reorder templates
-  def find_user
-    @user = User.current
-  end
 
   def find_project
     @projects = Project.all
