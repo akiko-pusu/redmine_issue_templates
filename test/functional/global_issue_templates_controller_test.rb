@@ -78,7 +78,6 @@ class GlobalIssueTemplatesControllerTest < ActionController::TestCase
         assert template.description.blank?
         assert template.note.blank?
         assert template.tracker.blank?
-        assert_equal(1, template.author.id)
       end
 
       # do post
