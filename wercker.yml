@@ -25,6 +25,10 @@ build:
         code: |
           bundle install --path vendor/bundle --without mysql postgreql rmagick --with test
     - script:
+        name: 'Bundle Update'
+        code: |
+          bundle update
+    - script:
         name: 'Migrate DB'
         code:
           bundle exec rake db:migrate RAILS_ENV=test
