@@ -9,7 +9,7 @@ class IssueTemplatesController < ApplicationController
   before_filter :find_object, only: [:show, :edit, :destroy]
   before_filter :find_user, :find_project, :authorize,
                 except: [:preview, :move_order_higher, :move_order_lower, :move_order_to_top, :move_order_to_bottom, :move]
-  before_filter :find_tracker, only: [:set_pulldown]
+  before_filter :find_tracker, only: [:set_pulldown, :list_templates]
 
   def index
     project_id = @project.id
@@ -145,6 +145,56 @@ class IssueTemplatesController < ApplicationController
     render action: '_template_pulldown', layout: false,
            locals: { is_triggered_by_status: is_triggered_by_status, grouped_options: grouped_options,
                      should_replaced: setting.should_replaced, default_template: default_template }
+  end
+
+  #
+  # List templates associated with tracker and project.
+  # TODO: refactor here. Duplicate with set_pulldown....
+  #
+  def list_templates
+    default_template = nil
+    project_id = @project.id
+    tracker_id = @tracker.id
+    setting = IssueTemplateSetting.find_or_create(project_id)
+    inherit_template = setting.enabled_inherit_templates?
+
+    project_ids = inherit_template ? @project.ancestors.collect(&:id) : [project_id]
+    issue_templates = IssueTemplate.search_by_project(project_id)
+                          .search_by_tracker(tracker_id)
+                          .enabled.order_by_position
+
+    project_default_template = issue_templates.is_default.first
+
+    has_project_default_template = project_default_template.present?
+    default_template = nil
+
+    if has_project_default_template
+      default_template = project_default_template.id
+    end
+
+    if inherit_template
+      inherit_templates = get_inherit_templates(project_ids, tracker_id)
+
+      if inherit_templates.any?
+        inherit_templates.each do |template|
+          next unless template.is_default == true
+          default_template = template unless has_project_default_template
+        end
+      end
+    end
+
+    global_issue_templates = GlobalIssueTemplate.joins(:projects)
+                                 .search_by_tracker(tracker_id)
+                                 .search_by_project(project_id)
+                                 .order_by_position
+
+    render action: '_list_templates',
+           layout: false,
+           locals: { default_template: default_template,
+                     issue_templates: issue_templates,
+                     inherit_templates: inherit_templates,
+                     global_issue_templates: global_issue_templates
+           }
   end
 
   # preview
