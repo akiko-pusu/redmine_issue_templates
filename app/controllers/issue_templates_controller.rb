@@ -107,7 +107,7 @@ class IssueTemplatesController < ApplicationController
         inherit_templates.each do |template|
           group.push([template.title, template.id, { class: 'inherited' }])
           next unless template.is_default == true
-          default_template = template
+          default_template = template.id
         end
       end
     end
@@ -115,7 +115,7 @@ class IssueTemplatesController < ApplicationController
     issue_templates = IssueTemplate.get_templates_for_project_tracker(project_id, tracker_id)
 
     project_default_template = issue_templates.is_default.first
-    default_template = project_default_template.present? ? project_default_template : default_template
+    default_template = project_default_template.present? ? project_default_template.id : default_template
 
     global_issue_templates = GlobalIssueTemplate.get_templates_for_project_tracker(project_id, tracker_id)
 
@@ -157,7 +157,7 @@ class IssueTemplatesController < ApplicationController
     issue_templates = IssueTemplate.get_templates_for_project_tracker(project_id, tracker_id)
 
     project_default_template = issue_templates.is_default.first
-    default_template = project_default_template.present? ? project_default_template : default_template
+    default_template = project_default_template.present? ? project_default_template.id : default_template
 
     global_issue_templates = GlobalIssueTemplate.get_templates_for_project_tracker(project_id, tracker_id)
 

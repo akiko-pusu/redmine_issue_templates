@@ -40,7 +40,7 @@
             </div>
           </div>
         </td>
-        <td class="center"><%= checked_image template.is_default? %></td>
+        <td class="center"><%= checked_image template.id == default_template %></td>
         <td>
           <a href="#" onclick="updateSelect(<%= template.id %>, false); return false;"
              class="icon icon-test"></a>
