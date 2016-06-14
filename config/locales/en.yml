@@ -41,3 +41,5 @@ en:
   no_issue_templates_for_this_redmine: "No global issue templates are defined for this Redmine site."
   only_admin_can_associate_global_template: "Only Redmine administrator can associate global templates with this project."
   text_no_tracker_enabled_for_global: "Trackers are not defined yet.\nPlease set them first because templates are assigned to trackers."
+  display_and_filter_issue_templates_in_dialog: "Filter Templates"
+  label_filter_template: "Filter Templates"

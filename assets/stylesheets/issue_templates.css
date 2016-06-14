@@ -137,3 +137,71 @@ a.template_tooltip {
 .box-white {
     background-color: white;
 }
+
+/*--- Tooltip: Use to display template description -----*/
+.template_tooltip_wrapper {
+    color: #555;
+    display: inline-block;
+}
+
+/* Hide tooltip body */
+.template_tooltip_wrapper .template_tooltip_body {
+    display: none;
+}
+
+/* Mouse over action */
+.template_tooltip_wrapper:hover {
+    position: relative;
+    color: #333;
+}
+
+/* tooltip body */
+.template_tooltip_wrapper:hover .template_tooltip_body {
+    text-align: left;
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: -30px;
+    font-size: 90%;
+    background-color: #ffffff;
+    width: 300px;
+    padding: 8px 10px 12px;
+    border: 1px solid #CCCCCC;
+    z-index: 20000 !important
+}
+
+.template_tooltip_wrapper:hover .template_tooltip_body .title {
+    color: #979797;
+    padding-bottom: 10px;
+    font-weight: bold;
+    display: inline-block;
+    font-style: italic;
+}
+
+table.list.template_list {
+    width: 380px;
+    margin: 8px 0px;
+}
+
+.list.template_list th {
+    text-align: left;
+}
+
+.list.template_list td {
+    text-align: left;
+    padding: 5px;
+}
+
+.overflow_dialog {
+    overflow: visible;
+}
+
+.filtered_templates_list {
+    padding-top: 10px;
+}
+
+select.issue_template {
+    width: 240px;
+}
+
+

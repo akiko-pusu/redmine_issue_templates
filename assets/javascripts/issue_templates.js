@@ -22,13 +22,43 @@ function eraseSubjectAndDescription() {
     }
 }
 
-// Change Location of pulldown.
-$(document).ready(function() {
-    $('#template_area').insertBefore($('#issue_subject').parent());
-});
+function openDialog(url, title) {
+    // ダイアログを表示する
+
+    var request_url = url;
+    $.ajax({
+        url: request_url,
+        success: function (data) {
+            $("#filtered_templates_list").html(data);
+            $("#issue_template_dialog").dialog(
+                {
+                    modal: false,
+                    dialogClass: "modal overflow_dialog",
+                    draggable: true,
+                    title: title,
+                    width: 400
+                }
+            );
+        }
+    });
+}
+
+function showUrlInDialog(url, title) {
+    var request_url = url;
+    $.ajax({
+        url: request_url,
+        success: function (data) {
+            $("#issue_template_dialog").dialog({
+                modal: true,
+                title: title
+            });
+            $("#filtered_templates_list").html(data);
+        }
+    });
+}
 
 // TODO: When update description, confirmation dialog should be appeared.
-function load_template(target_url, token, confirm_msg, should_replaced) {
+function load_template(target_url, confirm_msg, should_replaced) {
     var selected_template = $('#issue_template');
     if (selected_template.val() != '') {
         var template_type = '';
@@ -39,7 +69,7 @@ function load_template(target_url, token, confirm_msg, should_replaced) {
             url:target_url,
             async:true,
             type:'post',
-            data:$.param({issue_template:selected_template.val(), authenticity_token:token, template_type:template_type})
+            data:$.param({issue_template:selected_template.val(), template_type:template_type})
         }).done(function (html) {
             var oldSubj = '';
             var oldVal = '';
@@ -83,19 +113,47 @@ function show_loaded_message(confirm_msg, target) {
     });
 }
 
-function set_pulldown(tracker, target_url, token) {
+function set_pulldown(tracker, target_url) {
     var allow_overwrite = $('#allow_overwrite_description').prop('checked');
     $.ajax({
         url: target_url,
         async: true,
         type: 'post',
-        data: $.param({issue_tracker_id: tracker, authenticity_token: token})
+        data: $.param({issue_tracker_id: tracker})
     }).done(function( html ) {
         $('#issue_template').html(html);
         $('#allow_overwrite_description').attr('checked', allow_overwrite);
     });
 }
 
+$(document).ready(function(){
+    //var cols = $(".template_data");
+    $("input[name='template_search_filter']").on("keydown keyup",function(){
+        var cols = $(".template_data");
+        var searchWord = $(this).val();
+        reg = new RegExp(searchWord,"gi");
+        cols.each(function(i,val){
+            var col_name = $(val).children("td").text();
+            if(col_name.match(reg)){
+                $(val).show();
+            }else{
+                $(val).hide();
+            }
+        })
+    });
+})
+
+function updateSelect(id, is_global) {
+    var target = $('#issue_template');
+    if (is_global == true) {
+        target = $('#issue_template option[value="' + id + '"][class="global"]').attr("selected", "selected");
+        target.change();
+    } else {
+        target.val(id).trigger('change');
+    }
+}
+
+// flash message as a jQuery Plugin
 (function($) {
     $.fn.flash_message = function(options) {
         // default
@@ -124,3 +182,4 @@ function set_pulldown(tracker, target_url, token) {
         });
     };
 })(jQuery);
+
