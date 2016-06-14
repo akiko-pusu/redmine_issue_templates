@@ -100,23 +100,8 @@ class IssueTemplatesController < ApplicationController
     inherit_template = setting.enabled_inherit_templates?
 
     project_ids = inherit_template ? @project.ancestors.collect(&:id) : [project_id]
-    issue_templates = IssueTemplate.search_by_project(project_id)
-                                   .search_by_tracker(tracker_id)
-                                   .enabled.order_by_position
 
-    project_default_template = issue_templates.is_default.first
-
-    has_project_default_template = project_default_template.present?
-    default_template = nil
-
-    if has_project_default_template
-      default_template = project_default_template.id
-    end
-
-    unless issue_templates.empty?
-      issue_templates.each { |x| group.push([x.title, x.id]) }
-    end
-
+    # first: get inherit_templates
     if inherit_template
       inherit_templates = get_inherit_templates(project_ids, tracker_id)
 
@@ -124,9 +109,20 @@ class IssueTemplatesController < ApplicationController
         inherit_templates.each do |template|
           group.push([template.title, template.id, { class: 'inherited' }])
           next unless template.is_default == true
-          default_template = template unless has_project_default_template
+          default_template = template
         end
       end
+    end
+
+    issue_templates = IssueTemplate.search_by_project(project_id)
+                                   .search_by_tracker(tracker_id)
+                                   .enabled.order_by_position
+
+    project_default_template = issue_templates.is_default.first
+    default_template = project_default_template.present? ? project_default_template : default_template
+
+    unless issue_templates.empty?
+      issue_templates.each { |x| group.push([x.title, x.id]) }
     end
 
     global_issue_templates = GlobalIssueTemplate.joins(:projects)
@@ -159,29 +155,26 @@ class IssueTemplatesController < ApplicationController
     inherit_template = setting.enabled_inherit_templates?
 
     project_ids = inherit_template ? @project.ancestors.collect(&:id) : [project_id]
-    issue_templates = IssueTemplate.search_by_project(project_id)
-                                   .search_by_tracker(tracker_id)
-                                   .enabled.order_by_position
 
-    project_default_template = issue_templates.is_default.first
-
-    has_project_default_template = project_default_template.present?
-    default_template = nil
-
-    if has_project_default_template
-      default_template = project_default_template.id
-    end
-
+    # first: get inherit_templates
     if inherit_template
       inherit_templates = get_inherit_templates(project_ids, tracker_id)
 
       if inherit_templates.any?
         inherit_templates.each do |template|
+          group.push([template.title, template.id, { class: 'inherited' }])
           next unless template.is_default == true
-          default_template = template unless has_project_default_template
+          default_template = template
         end
       end
     end
+
+    issue_templates = IssueTemplate.search_by_project(project_id)
+                          .search_by_tracker(tracker_id)
+                          .enabled.order_by_position
+
+    project_default_template = issue_templates.is_default.first
+    default_template = project_default_template.present? ? project_default_template : default_template
 
     global_issue_templates = GlobalIssueTemplate.joins(:projects)
                                                 .search_by_tracker(tracker_id)
