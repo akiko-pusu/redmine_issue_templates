@@ -160,8 +160,8 @@ class IssueTemplatesController < ApplicationController
 
     project_ids = inherit_template ? @project.ancestors.collect(&:id) : [project_id]
     issue_templates = IssueTemplate.search_by_project(project_id)
-                          .search_by_tracker(tracker_id)
-                          .enabled.order_by_position
+                                   .search_by_tracker(tracker_id)
+                                   .enabled.order_by_position
 
     project_default_template = issue_templates.is_default.first
 
@@ -184,17 +184,16 @@ class IssueTemplatesController < ApplicationController
     end
 
     global_issue_templates = GlobalIssueTemplate.joins(:projects)
-                                 .search_by_tracker(tracker_id)
-                                 .search_by_project(project_id)
-                                 .order_by_position
+                                                .search_by_tracker(tracker_id)
+                                                .search_by_project(project_id)
+                                                .order_by_position
 
     render action: '_list_templates',
            layout: false,
            locals: { default_template: default_template,
                      issue_templates: issue_templates,
                      inherit_templates: inherit_templates,
-                     global_issue_templates: global_issue_templates
-           }
+                     global_issue_templates: global_issue_templates }
   end
 
   # preview
