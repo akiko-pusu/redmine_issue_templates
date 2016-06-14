@@ -118,6 +118,7 @@ class IssueTemplatesController < ApplicationController
     default_template = project_default_template.present? ? project_default_template : default_template
 
     global_issue_templates = GlobalIssueTemplate.get_templates_for_project_tracker(project_id, tracker_id)
+
     unless issue_templates.empty?
       issue_templates.each { |x| group.push([x.title, x.id]) }
     end
