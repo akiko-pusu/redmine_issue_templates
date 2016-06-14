@@ -63,11 +63,11 @@ class IssueTemplate < ActiveRecord::Base
       inherit_templates
     end
 
-    def get_templates_for_project_tracker(project_id, tracker_id=nil)
+    def get_templates_for_project_tracker(project_id, tracker_id = nil)
       IssueTemplate.search_by_project(project_id)
-          .search_by_tracker(tracker_id)
-          .enabled
-          .order_by_position
+                   .search_by_tracker(tracker_id)
+                   .enabled
+                   .order_by_position
     end
   end
 end

@@ -44,12 +44,12 @@ class GlobalIssueTemplate < ActiveRecord::Base
   # Class method
   #
   class << self
-    def get_templates_for_project_tracker(project_id, tracker_id=nil)
+    def get_templates_for_project_tracker(project_id, tracker_id = nil)
       GlobalIssueTemplate.joins(:projects)
-          .search_by_tracker(tracker_id)
-          .search_by_project(project_id)
-          .enabled
-          .order_by_position
+                         .search_by_tracker(tracker_id)
+                         .search_by_project(project_id)
+                         .enabled
+                         .order_by_position
     end
   end
 end
