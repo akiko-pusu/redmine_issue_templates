@@ -32,12 +32,10 @@ class IssueTemplatesController < ApplicationController
     if inherit_template
       # keep ordering
       used_tracker_ids = @project.trackers.pluck(:tracker_id)
-      @inherit_templates = get_inherit_templates(project_ids, used_tracker_ids)
+      @inherit_templates = IssueTemplate.get_inherit_templates(project_ids, used_tracker_ids)
     end
 
-    @global_issue_templates = GlobalIssueTemplate.joins(:projects)
-                                                 .search_by_project(project_id)
-                                                 .order_by_position
+    @global_issue_templates = GlobalIssueTemplate.get_templates_for_project_tracker(project_id)
 
     render layout: !request.xhr?
   end
@@ -103,7 +101,7 @@ class IssueTemplatesController < ApplicationController
 
     # first: get inherit_templates
     if inherit_template
-      inherit_templates = get_inherit_templates(project_ids, tracker_id)
+      inherit_templates = IssueTemplate.get_inherit_templates(project_ids, tracker_id)
 
       if inherit_templates.any?
         inherit_templates.each do |template|
@@ -114,21 +112,15 @@ class IssueTemplatesController < ApplicationController
       end
     end
 
-    issue_templates = IssueTemplate.search_by_project(project_id)
-                                   .search_by_tracker(tracker_id)
-                                   .enabled.order_by_position
+    issue_templates = IssueTemplate.get_templates_for_project_tracker(project_id, tracker_id)
 
     project_default_template = issue_templates.is_default.first
     default_template = project_default_template.present? ? project_default_template : default_template
 
+    global_issue_templates = GlobalIssueTemplate.get_templates_for_project_tracker(project_id, tracker_id)
     unless issue_templates.empty?
       issue_templates.each { |x| group.push([x.title, x.id]) }
     end
-
-    global_issue_templates = GlobalIssueTemplate.joins(:projects)
-                                                .search_by_tracker(tracker_id)
-                                                .search_by_project(project_id)
-                                                .order_by_position
 
     if global_issue_templates.any?
       global_issue_templates.each do |global_issue_template|
@@ -158,28 +150,15 @@ class IssueTemplatesController < ApplicationController
 
     # first: get inherit_templates
     if inherit_template
-      inherit_templates = get_inherit_templates(project_ids, tracker_id)
-
-      if inherit_templates.any?
-        inherit_templates.each do |template|
-          group.push([template.title, template.id, { class: 'inherited' }])
-          next unless template.is_default == true
-          default_template = template
-        end
-      end
+      inherit_templates = IssueTemplate.get_inherit_templates(project_ids, tracker_id)
     end
 
-    issue_templates = IssueTemplate.search_by_project(project_id)
-                          .search_by_tracker(tracker_id)
-                          .enabled.order_by_position
+    issue_templates = IssueTemplate.get_templates_for_project_tracker(project_id, tracker_id)
 
     project_default_template = issue_templates.is_default.first
     default_template = project_default_template.present? ? project_default_template : default_template
 
-    global_issue_templates = GlobalIssueTemplate.joins(:projects)
-                                                .search_by_tracker(tracker_id)
-                                                .search_by_project(project_id)
-                                                .order_by_position
+    global_issue_templates = GlobalIssueTemplate.get_templates_for_project_tracker(project_id, tracker_id)
 
     render action: '_list_templates',
            layout: false,
@@ -230,19 +209,5 @@ class IssueTemplatesController < ApplicationController
       format.html { redirect_to action: 'index' }
       format.xml  { head :ok }
     end
-  end
-
-  def get_inherit_templates(project_ids, tracker_id)
-    # keep ordering of project tree
-    # TODO: Add Test code.
-    inherit_templates = []
-    project_ids.each do |i|
-      inherit_templates.concat(IssueTemplate.search_by_project(i)
-                                   .search_by_tracker(tracker_id)
-                                   .enabled
-                                   .enabled_sharing
-                                   .order_by_position)
-    end
-    inherit_templates
   end
 end

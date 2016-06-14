@@ -26,7 +26,7 @@ class IssueTemplate < ActiveRecord::Base
     where(project_id: prolect_id)
   }
   scope :search_by_tracker, lambda { |tracker_id|
-    where(tracker_id: tracker_id)
+    where(tracker_id: tracker_id) if tracker_id.present?
   }
 
   def enabled?
@@ -43,6 +43,31 @@ class IssueTemplate < ActiveRecord::Base
   def check_default
     if is_default? && is_default_changed?
       IssueTemplate.search_by_project(project_id).search_by_tracker(tracker_id).update_all(is_default: false)
+    end
+  end
+
+  #
+  # Class method
+  #
+  class << self
+    def get_inherit_templates(project_ids, tracker_id)
+      # keep ordering of project tree
+      inherit_templates = []
+      project_ids.each do |i|
+        inherit_templates.concat(IssueTemplate.search_by_project(i)
+                                     .search_by_tracker(tracker_id)
+                                     .enabled
+                                     .enabled_sharing
+                                     .order_by_position)
+      end
+      inherit_templates
+    end
+
+    def get_templates_for_project_tracker(project_id, tracker_id=nil)
+      IssueTemplate.search_by_project(project_id)
+          .search_by_tracker(tracker_id)
+          .enabled
+          .order_by_position
     end
   end
 end
