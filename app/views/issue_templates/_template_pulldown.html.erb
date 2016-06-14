@@ -6,7 +6,8 @@
 <option value="">---</option>
 <%= grouped_options_for_select(grouped_options, default_template) %>
 
-<% if !default_template.nil? && is_triggered_by_status == 'false' %>
+<% return default_template.nil %>
+<% is_triggered_by_status.blank? || if (is_triggered_by_status.present? && is_triggered_by_status == 'false') %>
     <script type="text/javascript">
       //<![CDATA[
       load_url = '<%= url_for(controller: 'issue_templates', action: 'load', project_id: @project) %>';
@@ -15,3 +16,4 @@
       load_template(load_url, confirm_msg, should_replaced);
     </script>
 <% end %>
+
