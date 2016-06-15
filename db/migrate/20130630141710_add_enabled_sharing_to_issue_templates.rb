@@ -1,6 +1,6 @@
 class AddEnabledSharingToIssueTemplates < ActiveRecord::Migration
   def self.up
-    add_column :issue_templates, :enabled_sharing, :boolean, :default => false
+    add_column :issue_templates, :enabled_sharing, :boolean, default: false
   end
 
   def self.down
