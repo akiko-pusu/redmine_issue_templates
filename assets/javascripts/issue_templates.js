@@ -126,23 +126,6 @@ function set_pulldown(tracker, target_url) {
     });
 }
 
-$(document).ready(function(){
-    //var cols = $(".template_data");
-    $("input[name='template_search_filter']").on("keydown keyup",function(){
-        var cols = $(".template_data");
-        var searchWord = $(this).val();
-        reg = new RegExp(searchWord,"gi");
-        cols.each(function(i,val){
-            var col_name = $(val).children("td").text();
-            if(col_name.match(reg)){
-                $(val).show();
-            }else{
-                $(val).hide();
-            }
-        })
-    });
-})
-
 function updateSelect(id, is_global) {
     var target = $('#issue_template');
     if (is_global == true) {
