@@ -1,5 +1,6 @@
 require 'simplecov'
 require 'simplecov-rcov'
+require 'shoulda'
 if ENV['JENKINS'] == 'true'
   SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
 end
