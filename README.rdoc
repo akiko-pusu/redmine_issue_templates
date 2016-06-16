@@ -62,6 +62,15 @@ If you have some trouble related "bundle intall", please try --without option.
 
 == Changelog
 
+=== 0.1.2-dev
+
+* Add Spanish translation. Thanks, Andres Arias (r-labs #1413)
+* Add popup to preview template description and filter template. (Featured: r-labs 1410)
+* Bugfix: Prevent to load default template in case updated issue form triggered by states change event.
+** (Related: bitbucket#36, Template loads every time Status is changed.)
+* Update Simplified Chinese Localization. Thanks,  Steven Wong.
+* Code refactoring.
+
 === 0.1.1
 
 Bugfix release.
@@ -161,7 +170,7 @@ NOTE: Please run "rake redmine:plugins:migrate" task because new column
 * French: Anonymous one
 * Serbian: Miodrag Milic
 * Polish: Paweł Budikom and Krzysztof Wosinski
-
+* Spanish: Andres Arias
 
 === License
 
