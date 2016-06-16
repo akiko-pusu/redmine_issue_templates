@@ -19,6 +19,7 @@ class IssueTemplatesIssuesHook < Redmine::Hook::ViewListener
     action = context[:request].parameters[:action]
     project = context[:project]
     issue = context[:issue]
+    return if issue.tracker_id.blank?
     setting = IssueTemplateSetting.find_or_create(project.id)
     copy_from = context[:request].parameters[:copy_from]
     is_triggered_by_status = triggered_by_status?(context[:request])
