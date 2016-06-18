@@ -50,7 +50,8 @@ If you have some trouble related "bundle intall", please try --without option.
 
 === Repository
 
-* https://bitbucket.org/akiko_pusu/redmine_issue_templates
+* https://github.com/akiko-pusu/redmine_issue_templates
+* https://bitbucket.org/akiko_pusu/redmine_issue_templates (Obsoleted)
 
 === WebPage
 
@@ -64,6 +65,7 @@ If you have some trouble related "bundle intall", please try --without option.
 
 === 0.1.2-dev
 
+* Move repository from Bitbucket to Github.
 * Add Spanish translation. Thanks, Andres Arias (r-labs #1413)
 * Add popup to preview template description and filter template. (Featured: r-labs 1410)
 * Bugfix: Prevent to load default template in case updated issue form triggered by states change event.
