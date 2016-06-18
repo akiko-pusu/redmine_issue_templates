@@ -32,7 +32,7 @@ function openDialog(url, title) {
             $("#filtered_templates_list").html(data);
             $("#issue_template_dialog").dialog(
                 {
-                    modal: false,
+                    modal: true,
                     dialogClass: "modal overflow_dialog",
                     draggable: true,
                     title: title,
