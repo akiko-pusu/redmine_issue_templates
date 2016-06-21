@@ -9,3 +9,5 @@ group :test do
   gem 'shoulda', require: false
   gem 'rubocop', require: false
 end
+
+gem "codeclimate-test-reporter", group: :test, require: nil
