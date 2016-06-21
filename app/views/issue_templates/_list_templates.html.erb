@@ -1,0 +1,71 @@
+<table class="list template_list">
+  <tr>
+    <th><%=h l(:issue_title) %></th>
+    <th><%=h l(:issue_description) %></th>
+    <th><%= l(:field_is_default) %></th>
+    <th><%=h l(:button_apply, default: 'Apply') %></th>
+  </tr>
+<% issue_templates.each do |template| %>
+      <tr class="<%= cycle('odd', 'even') %> template_data">
+        <td>
+          <%= template.title %>
+        </td>
+        <td>
+          <div class="template_tooltip_wrapper">
+            <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"></a>
+            <div class="wiki template_tooltip_body">
+              <span class="title"><%= template.title %></span>
+              <%= textilizable(template.description) %>
+            </div>
+          </div>
+        </td>
+        <td class="center"><%= checked_image template.is_default? %></td>
+        <td>
+          <a href="#" onclick="updateSelect(<%= template.id %>, false); return false;"
+             class="icon icon-test"></a>
+        </td>
+      </tr>
+<% end %>
+<% inherit_templates.each do |template| %>
+      <tr class="<%= cycle('odd', 'even') %> template_data">
+        <td>
+          <%= template.title %>
+        </td>
+        <td>
+          <div class="template_tooltip_wrapper">
+            <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"></a>
+            <div class="wiki template_tooltip_body">
+              <span class="title"><%= template.title %></span>
+              <%= textilizable(template.description) %>
+            </div>
+          </div>
+        </td>
+        <td class="center"><%= checked_image template.id == default_template %></td>
+        <td>
+          <a href="#" onclick="updateSelect(<%= template.id %>, false); return false;"
+             class="icon icon-test"></a>
+        </td>
+      </tr>
+<% end %>
+<% global_issue_templates.each do |template| %>
+      <tr class="<%= cycle('odd', 'even') %> template_data">
+        <td>
+          <%= template.title %>
+        </td>
+        <td>
+          <div class="template_tooltip_wrapper">
+            <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"></a>
+            <div class="wiki template_tooltip_body">
+              <span class="title"><%= template.title %></span>
+              <%= textilizable(template.description) %>
+            </div>
+          </div>
+        </td>
+        <td class="center"></td>
+        <td>
+          <a href="#" onclick="updateSelect(<%= template.id %>, true); return false;"
+             class="icon icon-test"></a>
+        </td>
+      </tr>
+<% end %>
+</table>

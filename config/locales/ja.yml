@@ -41,3 +41,6 @@ ja:
   no_issue_templates_for_this_redmine: "このRedmineにはグローバルチケットテンプレートは定義されていません。"
   only_admin_can_associate_global_template: "このプロジェクトでグローバルチケットテンプレートを利用するには、Redmine管理者権限が必要です。"
   text_no_tracker_enabled_for_global: "テンプレートはトラッカー毎に設定します。\nトラッカーの設定をお願いします。"
+  display_and_filter_issue_templates_in_dialog: "テンプレートのフィルタ"
+  label_filter_template: "テンプレートのフィルタ"
+  

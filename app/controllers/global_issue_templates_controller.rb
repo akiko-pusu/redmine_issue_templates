@@ -5,6 +5,7 @@ class GlobalIssueTemplatesController < ApplicationController
   include IssueTemplatesHelper
   helper :issues
   include IssuesHelper
+  include Concerns::TemplateRenderAction
   menu_item :issues
   before_filter :find_object, only: [:show, :edit, :destroy]
   before_filter :find_project, only: [:edit]
@@ -96,9 +97,6 @@ class GlobalIssueTemplatesController < ApplicationController
 
   def move_order(method)
     GlobalIssueTemplate.find(params[:id]).send "move_#{method}"
-    respond_to do |format|
-      format.html { redirect_to action: 'index' }
-      format.xml  { head :ok }
-    end
+    render_for_move_with_format
   end
 end

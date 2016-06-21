@@ -26,7 +26,7 @@ class GlobalIssueTemplate < ActiveRecord::Base
   scope :enabled, -> { where(enabled: true) }
   scope :order_by_position, -> { order(:position) }
   scope :search_by_tracker, lambda { |tracker_id|
-    where(tracker_id: tracker_id)
+    where(tracker_id: tracker_id) if tracker_id.present?
   }
   scope :search_by_project, lambda { |project_id|
     joins(:projects).where(projects: { id: project_id })
@@ -38,5 +38,18 @@ class GlobalIssueTemplate < ActiveRecord::Base
 
   def <=>(global_issue_template)
     position <=> global_issue_template.position
+  end
+
+  #
+  # Class method
+  #
+  class << self
+    def get_templates_for_project_tracker(project_id, tracker_id = nil)
+      GlobalIssueTemplate.joins(:projects)
+                         .search_by_tracker(tracker_id)
+                         .search_by_project(project_id)
+                         .enabled
+                         .order_by_position
+    end
   end
 end

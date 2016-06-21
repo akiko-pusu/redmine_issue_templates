@@ -5,11 +5,13 @@ class IssueTemplatesController < ApplicationController
   include IssueTemplatesHelper
   helper :issues
   include IssuesHelper
+  include Concerns::TemplateRenderAction
   menu_item :issues
   before_filter :find_object, only: [:show, :edit, :destroy]
   before_filter :find_user, :find_project, :authorize,
                 except: [:preview, :move_order_higher, :move_order_lower, :move_order_to_top, :move_order_to_bottom, :move]
-  before_filter :find_tracker, only: [:set_pulldown]
+  before_filter :find_tracker, only: [:set_pulldown, :list_templates]
+  accept_api_auth :index, :list_templates, :load
 
   def index
     project_id = @project.id
@@ -32,14 +34,20 @@ class IssueTemplatesController < ApplicationController
     if inherit_template
       # keep ordering
       used_tracker_ids = @project.trackers.pluck(:tracker_id)
-      @inherit_templates = get_inherit_templates(project_ids, used_tracker_ids)
+      @inherit_templates = IssueTemplate.get_inherit_templates(project_ids, used_tracker_ids)
     end
 
-    @global_issue_templates = GlobalIssueTemplate.joins(:projects)
-                                                 .search_by_project(project_id)
-                                                 .order_by_position
+    @global_issue_templates = GlobalIssueTemplate.get_templates_for_project_tracker(project_id)
 
-    render layout: !request.xhr?
+    respond_to do |format|
+      format.html do
+        render layout: !request.xhr?
+      end
+      format.json do
+        render formats: :json, handlers: 'jbuilder',
+               locals: { project_templates: project_templates }
+      end
+    end
   end
 
   def show
@@ -50,10 +58,7 @@ class IssueTemplatesController < ApplicationController
     @issue_template ||= IssueTemplate.new(author: @user, project: @project)
     if request.post?
       @issue_template.safe_attributes = params[:issue_template]
-      if @issue_template.save
-        flash[:notice] = l(:notice_successful_create)
-        redirect_to action: 'show', id: @issue_template.id, project_id: @project
-      end
+      save_and_flash
     end
   end
 
@@ -61,10 +66,7 @@ class IssueTemplatesController < ApplicationController
     # Change from request.post to request.patch for Rails4.
     if request.patch? || request.put?
       @issue_template.safe_attributes = params[:issue_template]
-      if @issue_template.save
-        flash[:notice] = l(:notice_successful_update)
-        redirect_to action: 'show', id: @issue_template.id, project_id: @project
-      end
+      save_and_flash
     end
   end
 
@@ -100,39 +102,30 @@ class IssueTemplatesController < ApplicationController
     inherit_template = setting.enabled_inherit_templates?
 
     project_ids = inherit_template ? @project.ancestors.collect(&:id) : [project_id]
-    issue_templates = IssueTemplate.search_by_project(project_id)
-                                   .search_by_tracker(tracker_id)
-                                   .enabled.order_by_position
 
-    project_default_template = issue_templates.is_default.first
-
-    has_project_default_template = project_default_template.present?
-    default_template = nil
-
-    if has_project_default_template
-      default_template = project_default_template.id
-    end
-
-    unless issue_templates.empty?
-      issue_templates.each { |x| group.push([x.title, x.id]) }
-    end
-
+    # first: get inherit_templates
     if inherit_template
-      inherit_templates = get_inherit_templates(project_ids, tracker_id)
+      inherit_templates = IssueTemplate.get_inherit_templates(project_ids, tracker_id)
 
       if inherit_templates.any?
         inherit_templates.each do |template|
           group.push([template.title, template.id, { class: 'inherited' }])
           next unless template.is_default == true
-          default_template = template unless has_project_default_template
+          default_template = template.id
         end
       end
     end
 
-    global_issue_templates = GlobalIssueTemplate.joins(:projects)
-                                                .search_by_tracker(tracker_id)
-                                                .search_by_project(project_id)
-                                                .order_by_position
+    issue_templates = IssueTemplate.get_templates_for_project_tracker(project_id, tracker_id)
+
+    project_default_template = issue_templates.is_default.first
+    default_template = project_default_template.present? ? project_default_template.id : default_template
+
+    global_issue_templates = GlobalIssueTemplate.get_templates_for_project_tracker(project_id, tracker_id)
+
+    unless issue_templates.empty?
+      issue_templates.each { |x| group.push([x.title, x.id]) }
+    end
 
     if global_issue_templates.any?
       global_issue_templates.each do |global_issue_template|
@@ -145,6 +138,50 @@ class IssueTemplatesController < ApplicationController
     render action: '_template_pulldown', layout: false,
            locals: { is_triggered_by_status: is_triggered_by_status, grouped_options: grouped_options,
                      should_replaced: setting.should_replaced, default_template: default_template }
+  end
+
+  #
+  # List templates associated with tracker and project.
+  # TODO: refactor here. Duplicate with set_pulldown....
+  #
+  def list_templates
+    default_template = nil
+    project_id = @project.id
+    tracker_id = @tracker.id
+    setting = IssueTemplateSetting.find_or_create(project_id)
+    inherit_template = setting.enabled_inherit_templates?
+
+    project_ids = inherit_template ? @project.ancestors.collect(&:id) : [project_id]
+
+    # first: get inherit_templates
+    if inherit_template
+      inherit_templates = IssueTemplate.get_inherit_templates(project_ids, tracker_id)
+    end
+
+    issue_templates = IssueTemplate.get_templates_for_project_tracker(project_id, tracker_id)
+
+    project_default_template = issue_templates.is_default.first
+    default_template = project_default_template.present? ? project_default_template.id : default_template
+
+    global_issue_templates = GlobalIssueTemplate.get_templates_for_project_tracker(project_id, tracker_id)
+
+    respond_to do |format|
+      format.html do
+        render action: '_list_templates',
+               layout: false,
+               locals: { default_template: default_template,
+                         issue_templates: issue_templates,
+                         inherit_templates: inherit_templates,
+                         global_issue_templates: global_issue_templates }
+      end
+      format.json do
+        render action: '_list_templates', formats: 'json', handlers: 'jbuilder',
+               locals: { default_template: default_template,
+                         issue_templates: issue_templates,
+                         inherit_templates: inherit_templates,
+                         global_issue_templates: global_issue_templates }
+      end
+    end
   end
 
   # preview
@@ -184,23 +221,13 @@ class IssueTemplatesController < ApplicationController
 
   def move_order(method)
     IssueTemplate.find(params[:id]).send "move_#{method}"
-    respond_to do |format|
-      format.html { redirect_to action: 'index' }
-      format.xml  { head :ok }
-    end
+    render_for_move_with_format
   end
 
-  def get_inherit_templates(project_ids, tracker_id)
-    # keep ordering of project tree
-    # TODO: Add Test code.
-    inherit_templates = []
-    project_ids.each do |i|
-      inherit_templates.concat(IssueTemplate.search_by_project(i)
-                                   .search_by_tracker(tracker_id)
-                                   .enabled
-                                   .enabled_sharing
-                                   .order_by_position)
+  def save_and_flash
+    if @issue_template.save
+      flash[:notice] = l(:notice_successful_create)
+      redirect_to action: 'show', id: @issue_template.id, project_id: @project
     end
-    inherit_templates
   end
 end
