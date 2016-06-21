@@ -5,7 +5,7 @@ if ENV['JENKINS'] == 'true'
   SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
 end
 
-require "codeclimate-test-reporter"
+require 'codeclimate-test-reporter'
 CodeClimate::TestReporter.start
 
 # FIXME: Remove 'rails' because same issue is happened when run test on CI environment.
