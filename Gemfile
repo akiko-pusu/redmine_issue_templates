@@ -10,4 +10,4 @@ group :test do
   gem 'rubocop', require: false
 end
 
-gem "codeclimate-test-reporter", group: :test, require: nil
+gem 'codeclimate-test-reporter', group: :test, require: nil
