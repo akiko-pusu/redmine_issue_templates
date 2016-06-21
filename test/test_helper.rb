@@ -19,7 +19,7 @@ end
 SimpleCov.start do
   add_filter do |source_file|
     # report this plugin only.
-    !source_file.filename.include?('plugins/redmine_issue_templates') || !source_file.filename.end_with?(".rb")
+    !source_file.filename.include?('plugins/redmine_issue_templates') || !source_file.filename.end_with?('.rb')
   end
 end
 
