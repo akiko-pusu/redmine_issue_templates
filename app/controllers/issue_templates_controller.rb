@@ -5,6 +5,7 @@ class IssueTemplatesController < ApplicationController
   include IssueTemplatesHelper
   helper :issues
   include IssuesHelper
+  include Concerns::TemplateRenderAction
   menu_item :issues
   before_filter :find_object, only: [:show, :edit, :destroy]
   before_filter :find_user, :find_project, :authorize,
@@ -57,10 +58,7 @@ class IssueTemplatesController < ApplicationController
     @issue_template ||= IssueTemplate.new(author: @user, project: @project)
     if request.post?
       @issue_template.safe_attributes = params[:issue_template]
-      if @issue_template.save
-        flash[:notice] = l(:notice_successful_create)
-        redirect_to action: 'show', id: @issue_template.id, project_id: @project
-      end
+      save_and_flash
     end
   end
 
@@ -68,10 +66,7 @@ class IssueTemplatesController < ApplicationController
     # Change from request.post to request.patch for Rails4.
     if request.patch? || request.put?
       @issue_template.safe_attributes = params[:issue_template]
-      if @issue_template.save
-        flash[:notice] = l(:notice_successful_update)
-        redirect_to action: 'show', id: @issue_template.id, project_id: @project
-      end
+      save_and_flash
     end
   end
 
@@ -226,9 +221,13 @@ class IssueTemplatesController < ApplicationController
 
   def move_order(method)
     IssueTemplate.find(params[:id]).send "move_#{method}"
-    respond_to do |format|
-      format.html { redirect_to action: 'index' }
-      format.xml  { head :ok }
+    render_for_move_with_format
+  end
+
+  def save_and_flash
+    if @issue_template.save
+      flash[:notice] = l(:notice_successful_create)
+      redirect_to action: 'show', id: @issue_template.id, project_id: @project
     end
   end
 end
