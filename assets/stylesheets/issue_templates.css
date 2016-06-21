@@ -167,7 +167,7 @@ a.template_tooltip {
     width: 300px;
     padding: 8px 10px 12px;
     border: 1px solid #CCCCCC;
-    z-index: 20000 !important
+    z-index: 20000;
 }
 
 .template_tooltip_wrapper:hover .template_tooltip_body .title {
@@ -180,9 +180,8 @@ a.template_tooltip {
 
 table.list.template_list {
     width: 380px;
-    margin: 8px 0px;
+    margin: 8px 0;
 }
-
 .list.template_list th {
     text-align: left;
 }
