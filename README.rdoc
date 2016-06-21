@@ -68,9 +68,9 @@ If you have some trouble related "bundle intall", please try --without option.
 * Move repository from Bitbucket to Github.
 * Add Spanish translation. Thanks, Andres Arias (r-labs #1413)
 * Add popup to preview template description and filter template. (Featured: r-labs 1410)
-* Bugfix: Prevent to load default template in case updated issue form triggered by states change event.
-** (Related: bitbucket#36, Template loads every time Status is changed.)
+* Bugfix: Prevent to load default template in case updated issue form triggered by states change event. (Related: bitbucket#36, Template loads every time Status is changed.)
 * Update Simplified Chinese Localization. Thanks,  Steven Wong.
+* Support REST API with json format. (prototype. r-labs #1324)
 * Code refactoring.
 
 === 0.1.1

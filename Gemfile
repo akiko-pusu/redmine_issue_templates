@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'jbuilder'
 group :test do
   gem 'simplecov-rcov', require: false
   #
