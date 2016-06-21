@@ -18,16 +18,5 @@ mv ../redmine-${REDMINE_VERSION}/* ./
 gem install simplecov simplecov-rcov yard
 gem update bundler
 
-# bundle install実施
-#cd redmine-${REDMINE_VERSION}
-
-#bundle install  --path vendor/bundle --without mysql postgreql rmagick --with test
-
-# migration 実施
-#bundle exec rake db:migrate RAILS_ENV=test
-#bundle exec rake redmine:plugins:migrate RAILS_ENV=test
-
-# ここまででRedmineの準備完了 / テストに移る
-#bundle exec rake redmine:plugins:test PLUGIN=${PLUGIN_NAME}
 
 
