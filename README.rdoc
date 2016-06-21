@@ -1,21 +1,23 @@
 = Redmine Issue Templates Plugin 
 
 Plugin to generate and use issue templates for each project to assist issue creation. 
-For Redmine 2.1.x or later, please use version 0.0.4 or higher.
+For Redmine 2.1.x or higher, please use version 0.0.4 or higher.
 For Redmine 2.0, please use version 0.0.3 or higher.
-For Redmine 1.3 and 1.4, please use support_0.0.2 branch.
-(https://bitbucket.org/akiko_pusu/redmine_issue_templates/src/4475e1668541)
 
 Build Status: {<img src="https://drone.io/github.com/akiko-pusu/redmine_issue_templates/status.png" />}[https://drone.io/github.com/akiko-pusu/redmine_issue_templates]
+
+=== Repository
+
+* https://github.com/akiko-pusu/redmine_issue_templates
+* https://bitbucket.org/akiko_pusu/redmine_issue_templates (Obsoleted)
 
 === Plugin installation
 
 1. Copy the plugin directory into the $REDMINE_ROOT/plugins directory.
    Please note that plugin's folder name should be "redmine_issue_templates".
    If changed, some migration task will be failed.
-2. Do migration task. 
-  e.g. rake db:migrate_plugins RAILS_ENV=production
-  e.g. rake redmine:plugins:migrate RAILS_ENV=production  (For Redmine 2.x)
+2. Do migration task.
+  e.g. rake redmine:plugins:migrate RAILS_ENV=production
 3. (Re)Start Redmine.
 
 === Uninstall
@@ -49,11 +51,6 @@ This plugin repository includes some test code and gem settiing.
 If you have some trouble related "bundle intall", please try --without option.
 
   Exp. bundle install --without test
-
-=== Repository
-
-* https://github.com/akiko-pusu/redmine_issue_templates
-* https://bitbucket.org/akiko_pusu/redmine_issue_templates (Obsoleted)
 
 === WebPage
 
@@ -89,8 +86,7 @@ Special thanks all contributors, and Mattani-san, to this release.
 
 === 0.1.0
 
-NOTE: Please run "rake redmine:plugins:migrate" task because new column
-  is added.
+NOTE: Please run "rake redmine:plugins:migrate" task because new column is added.
 
 * Support Redmine 3.0. (r-labs: #1366)
 * Add Sort to Global Templates. (r-labs: #1364)
@@ -107,8 +103,7 @@ Bug fix release.
 
 === 0.0.8
 
-NOTE: Please run "rake redmine:plugins:migrate" task because new column
-  is added.
+NOTE: Please run "rake redmine:plugins:migrate" task because new column is added.
 
 * Fix some bugs.
 * Support global issue templates.
@@ -124,8 +119,7 @@ Known issue:
 
 === 0.0.7
 
-NOTE: Please run "rake redmine:plugins:migrate" task because new column
-  is added.
+NOTE: Please run "rake redmine:plugins:migrate" task because new column is added.
 
 * Fix some bugs.
 * Compatible with CKEditor.  (#1280)
@@ -160,8 +154,7 @@ NOTE: Please run "rake redmine:plugins:migrate" task because new column
   (Now unsupport Redmine 2.0.x. Please use ver 0.0.3 for Redmine2.0.x)
   Thak you so much, Viktor Muth, that gave me some feedback.
 
-* Now insert template text just after the text that is already in the
-  description field.  (#1115)
+* Now insert template text just after the text that is already in the description field.  (#1115)
 
 === Language and I18n contributors
 
