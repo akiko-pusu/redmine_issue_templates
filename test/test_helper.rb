@@ -11,6 +11,10 @@ else
   ]
 end
 
+CodeClimate::TestReporter.configure do |config|
+  config.git_dir = "#{File.dirname(__FILE__)}/../" 
+end
+
 SimpleCov.start
 
 require File.expand_path(File.dirname(__FILE__) + '/../../../test/test_helper')
