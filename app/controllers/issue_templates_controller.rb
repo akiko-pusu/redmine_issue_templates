@@ -10,6 +10,7 @@ class IssueTemplatesController < ApplicationController
   before_filter :find_user, :find_project, :authorize,
                 except: [:preview, :move_order_higher, :move_order_lower, :move_order_to_top, :move_order_to_bottom, :move]
   before_filter :find_tracker, only: [:set_pulldown, :list_templates]
+  accept_api_auth :index, :list_templates, :load
 
   def index
     project_id = @project.id
@@ -37,7 +38,15 @@ class IssueTemplatesController < ApplicationController
 
     @global_issue_templates = GlobalIssueTemplate.get_templates_for_project_tracker(project_id)
 
-    render layout: !request.xhr?
+    respond_to do |format|
+      format.html do
+        render layout: !request.xhr?
+      end
+      format.json do
+        render formats: :json, handlers: 'jbuilder',
+               locals: { project_templates: project_templates }
+      end
+    end
   end
 
   def show
@@ -161,12 +170,23 @@ class IssueTemplatesController < ApplicationController
 
     global_issue_templates = GlobalIssueTemplate.get_templates_for_project_tracker(project_id, tracker_id)
 
-    render action: '_list_templates',
-           layout: false,
-           locals: { default_template: default_template,
-                     issue_templates: issue_templates,
-                     inherit_templates: inherit_templates,
-                     global_issue_templates: global_issue_templates }
+    respond_to do |format|
+      format.html do
+        render action: '_list_templates',
+               layout: false,
+               locals: { default_template: default_template,
+                         issue_templates: issue_templates,
+                         inherit_templates: inherit_templates,
+                         global_issue_templates: global_issue_templates }
+      end
+      format.json do
+        render action: '_list_templates', formats: 'json', handlers: 'jbuilder',
+               locals: { default_template: default_template,
+                         issue_templates: issue_templates,
+                         inherit_templates: inherit_templates,
+                         global_issue_templates: global_issue_templates }
+      end
+    end
   end
 
   # preview
