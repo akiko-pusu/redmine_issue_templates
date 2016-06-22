@@ -27,15 +27,12 @@ class IssueTemplatesController < ApplicationController
     end
 
     setting = IssueTemplateSetting.find_or_create(project_id)
-    inherit_template = setting.enabled_inherit_templates?
+    enabled_inherit_template = setting.enabled_inherit_templates?
     @inherit_templates = []
 
-    project_ids = inherit_template ? @project.ancestors.collect(&:id) : [project_id]
-    if inherit_template
-      # keep ordering
-      used_tracker_ids = @project.trackers.pluck(:tracker_id)
-      @inherit_templates = IssueTemplate.get_inherit_templates(project_ids, used_tracker_ids)
-    end
+    project_ids = enabled_inherit_template ? @project.ancestors.collect(&:id) : []
+    used_tracker_ids = @project.trackers.pluck(:tracker_id)
+    @inherit_templates = IssueTemplate.get_inherit_templates(project_ids, used_tracker_ids)
 
     @global_issue_templates = GlobalIssueTemplate.get_templates_for_project_tracker(project_id)
 
@@ -98,22 +95,15 @@ class IssueTemplatesController < ApplicationController
     default_template = nil
     project_id = @project.id
     tracker_id = @tracker.id
-    setting = IssueTemplateSetting.find_or_create(project_id)
-    inherit_template = setting.enabled_inherit_templates?
-
-    project_ids = inherit_template ? @project.ancestors.collect(&:id) : [project_id]
 
     # first: get inherit_templates
-    if inherit_template
-      inherit_templates = IssueTemplate.get_inherit_templates(project_ids, tracker_id)
+    setting = IssueTemplateSetting.find_or_create(project_id)
+    inherit_templates = get_inherit_templates(setting)
 
-      if inherit_templates.any?
-        inherit_templates.each do |template|
-          group.push([template.title, template.id, { class: 'inherited' }])
-          next unless template.is_default == true
-          default_template = template.id
-        end
-      end
+    inherit_templates.each do |template|
+      group.push([template.title, template.id, { class: 'inherited' }])
+      next unless template.is_default == true
+      default_template = template.id
     end
 
     issue_templates = IssueTemplate.get_templates_for_project_tracker(project_id, tracker_id)
@@ -145,18 +135,12 @@ class IssueTemplatesController < ApplicationController
   # TODO: refactor here. Duplicate with set_pulldown....
   #
   def list_templates
-    default_template = nil
     project_id = @project.id
     tracker_id = @tracker.id
-    setting = IssueTemplateSetting.find_or_create(project_id)
-    inherit_template = setting.enabled_inherit_templates?
-
-    project_ids = inherit_template ? @project.ancestors.collect(&:id) : [project_id]
 
     # first: get inherit_templates
-    if inherit_template
-      inherit_templates = IssueTemplate.get_inherit_templates(project_ids, tracker_id)
-    end
+    setting = IssueTemplateSetting.find_or_create(project_id)
+    inherit_templates = get_inherit_templates(setting)
 
     issue_templates = IssueTemplate.get_templates_for_project_tracker(project_id, tracker_id)
 
@@ -229,5 +213,14 @@ class IssueTemplatesController < ApplicationController
       flash[:notice] = l(:notice_successful_create)
       redirect_to action: 'show', id: @issue_template.id, project_id: @project
     end
+  end
+
+  def get_inherit_templates(setting)
+    enabled_inherit_template = setting.enabled_inherit_templates?
+
+    project_ids = enabled_inherit_template ? @project.ancestors.collect(&:id) : []
+
+    # first: get inherit_templates
+    IssueTemplate.get_inherit_templates(project_ids, @tracker.id)
   end
 end
