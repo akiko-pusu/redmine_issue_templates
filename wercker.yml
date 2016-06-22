@@ -18,8 +18,9 @@ build:
     - script:
         name: check directory again
         code: |
+          pwd
           ls -la .
-          ls -la plugins/
+          ls -la plugins/redmine_issue_templates
     - script:
         name: 'Bundle'
         code: |
