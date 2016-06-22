@@ -50,10 +50,9 @@ class IssueTemplate < ActiveRecord::Base
   # Class method
   #
   class << self
-    def get_inherit_templates(enabled_inherit_template, project_ids, tracker_id)
+    def get_inherit_templates(project_ids, tracker_id)
       # keep ordering of project tree
       inherit_templates = []
-      return inherit_templates unless enabled_inherit_template
       project_ids.each do |i|
         inherit_templates.concat(IssueTemplate.search_by_project(i)
                                      .search_by_tracker(tracker_id)
