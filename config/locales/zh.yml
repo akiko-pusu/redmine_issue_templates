@@ -41,4 +41,5 @@ zh:
   no_issue_templates_for_this_redmine: "当前未定义全局ISSUE模板。请联系Redmine系统管理员。"
   only_admin_can_associate_global_template: "只有Redmine系统管理员才能在当前项目中关联全局ISSUE模板。"
   text_no_tracker_enabled_for_global: "未指定跟踪类型。\n在使用ISSUE模板前，请先指定模板适用的跟踪类型。"
-  
+  display_and_filter_issue_templates_in_dialog: "模板查询"
+  label_filter_template: "模板查询"  
