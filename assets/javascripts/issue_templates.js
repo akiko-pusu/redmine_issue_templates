@@ -131,12 +131,13 @@ function set_pulldown(tracker, target_url) {
 
 function updateSelect(id, is_global) {
     var target = $('#issue_template');
+    target.attr("selected", false);
     if (is_global === true) {
-        target = $('#issue_template option[value="' + id + '"][class="global"]').attr("selected", "selected");
-        target.change();
+        target.find('option[value="' + id + '"][class="global"]').prop('selected', true);
     } else {
-        target.val(id).trigger('change');
+        target.val(id);
     }
+    target.trigger('change');
 }
 
 // flash message as a jQuery Plugin
