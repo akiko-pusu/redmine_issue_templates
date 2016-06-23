@@ -169,6 +169,11 @@ NOTE: Please run "rake redmine:plugins:migrate" task because new column is added
 * Polish: Paweł Budikom and Krzysztof Wosinski
 * Spanish: Andres Arias
 
+=== Report
+
+Code Climate: {<img src="https://codeclimate.com/github/akiko-pusu/redmine_issue_templates/badges/gpa.svg" />}[https://codeclimate.com/github/akiko-pusu/redmine_issue_templates]
+Test Coverage: {<img src="https://codeclimate.com/github/akiko-pusu/redmine_issue_templates/badges/coverage.svg" />}[https://codeclimate.com/github/akiko-pusu/redmine_issue_templates/coverage]
+
 === License
 
 This software is licensed under the GNU GPL v2.
