@@ -1,6 +1,0 @@
-^coverage$
-^rdoc$
-^doc$
-.yardoc$
-syntax: glob
-Gemfile.lock

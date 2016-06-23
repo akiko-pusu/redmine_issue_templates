@@ -29,7 +29,7 @@ Redmine::Plugin.register :redmine_issue_templates do
   version '0.1.2'
   author_url 'http://twitter.com/akiko_pusu'
   requires_redmine version_or_higher: '2.5'
-  url 'https://bitbucket.org/akiko_pusu/redmine_issue_templates'
+  url 'https://github.com/akiko-pusu/redmine_issue_templates'
 
   menu :admin_menu, :redmine_issue_templates, { controller: 'global_issue_templates', action: 'index' },
        caption: :global_issue_templates
