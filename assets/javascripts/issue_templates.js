@@ -5,9 +5,10 @@
 changeType = '';
 
 function checkExpand(ch) {
-    var obj=document.all && document.all(ch) || document.getElementById && document.getElementById(ch);
-    if(obj && obj.style) obj.style.display=
-        'none' === obj.style.display ?'' : 'none'
+    var obj;
+    obj = document.all && document.all(ch) || document.getElementById && document.getElementById(ch);
+    if(obj && obj.style) obj.style.display =
+        obj.style.display === 'none' ? '' : 'none'
 }
 
 function eraseSubjectAndDescription() {
@@ -24,10 +25,8 @@ function eraseSubjectAndDescription() {
 
 function openDialog(url, title) {
     // ダイアログを表示する
-
-    var request_url = url;
     $.ajax({
-        url: request_url,
+        url: url,
         success: function (data) {
             $("#filtered_templates_list").html(data);
             $("#issue_template_dialog").dialog(
@@ -43,21 +42,6 @@ function openDialog(url, title) {
     });
 }
 
-function showUrlInDialog(url, title) {
-    var request_url = url;
-    $.ajax({
-        url: request_url,
-        success: function (data) {
-            $("#issue_template_dialog").dialog({
-                modal: true,
-                title: title
-            });
-            $("#filtered_templates_list").html(data);
-        }
-    });
-}
-
-// TODO: When update description, confirmation dialog should be appeared.
 function load_template(target_url, confirm_msg, should_replaced) {
     var selected_template = $('#issue_template');
     if (selected_template.val() !== '') {
@@ -84,14 +68,15 @@ function load_template(target_url, confirm_msg, should_replaced) {
             if (issue_subject.val() !== '' && should_replaced === 'false') {
                 oldSubj = issue_subject.val() + ' ';
             }
-            for(var issue_template in template) {
+            for (var issue_template in template) {
                 if ({}.hasOwnProperty.call(template, issue_template)) {
 
-                    template[issue_template].description = (template[issue_template].description === null) ? '' : template[issue_template].description;
-                    template[issue_template].issue_title = (template[issue_template].issue_title === null) ? '' : template[issue_template].issue_title;
+                    var obj = template[issue_template];
+                    obj.description = (obj.description === null) ? '' : obj.description;
+                    obj.issue_title = (obj.issue_title === null) ? '' : obj.issue_title;
 
-                    issue_description.val(oldVal + template[issue_template].description);
-                    issue_subject.val(oldSubj + template[issue_template].issue_title);
+                    issue_description.val(oldVal + obj.description);
+                    issue_subject.val(oldSubj + obj.issue_title);
                     try {
                         if (CKEDITOR.instances.issue_description)
                             CKEDITOR.instances.issue_description.setData(oldVal + template[issue_template].description);
