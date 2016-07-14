@@ -79,4 +79,10 @@ class IssuesControllerTest < ActionController::TestCase
     assert_response :success
     assert_select 'div#template_area', false
   end
+
+  def test_new_without_project
+    get :new
+    assert_response :success
+    assert_select 'div#template_area select#issue_template' false
+  end
 end
