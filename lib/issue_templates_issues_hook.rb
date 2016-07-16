@@ -20,15 +20,17 @@ class IssueTemplatesIssuesHook < Redmine::Hook::ViewListener
     project = context[:project]
     issue = context[:issue]
     return if issue.tracker_id.blank?
-    setting = IssueTemplateSetting.find_or_create(project.id)
+    project_id = project.present? ? project.id : issue.project_id
+    setting = IssueTemplateSetting.find_or_create(project_id)
     copy_from = context[:request].parameters[:copy_from]
     is_triggered_by_status = triggered_by_status?(context[:request])
     return '' unless copy_from.blank?
-    return '' unless (action == 'new' || action == 'update_form' || action == 'create') && !project.id.blank? && issue.id.blank?
+    return '' unless (action == 'new' || action == 'update_form' || action == 'create') && !project_id.blank? && issue.id.blank?
     context[:controller].send(
       :render_to_string,
       partial: 'issue_templates/issue_select_form',
-      locals: { setting: setting, issue: issue, is_triggered_by_status: is_triggered_by_status }
+      locals: { setting: setting, issue: issue, is_triggered_by_status: is_triggered_by_status,
+                project_id: project_id }
     )
   end
 
