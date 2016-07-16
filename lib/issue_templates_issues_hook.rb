@@ -18,7 +18,6 @@ class IssueTemplatesIssuesHook < Redmine::Hook::ViewListener
   def view_issues_form_details_top(context = {})
     action = context[:request].parameters[:action]
     project = context[:project]
-    return if project.blank?
     issue = context[:issue]
     return if issue.tracker_id.blank?
     project_id = project.present? ? project.id : issue.project_id
@@ -30,7 +29,8 @@ class IssueTemplatesIssuesHook < Redmine::Hook::ViewListener
     context[:controller].send(
       :render_to_string,
       partial: 'issue_templates/issue_select_form',
-      locals: { setting: setting, issue: issue, is_triggered_by_status: is_triggered_by_status }
+      locals: { setting: setting, issue: issue, is_triggered_by_status: is_triggered_by_status,
+                project_id: project_id }
     )
   end
 

@@ -1,5 +1,5 @@
-<% return '' unless @project.module_enabled? :issue_templates %>
-<% return '' unless authorize_for('issue_templates', 'show') %>
+<% return '' unless @issue.project.module_enabled? :issue_templates %>
+<% return '' unless User.current.allowed_to?(:show_issue_templates, @issue.project)  %>
 <div id="template_area">
   <p>
     <label for="issue_template"><%=h l(:issue_template)%></label>
@@ -46,7 +46,7 @@
   //<![CDATA[
   $(document).ready(function() {
     var pulldown_url = '<%= url_for(controller: 'issue_templates',
-        action:'set_pulldown', project_id: @project, is_triggered_by_status: is_triggered_by_status) %>';
+        action:'set_pulldown', project_id: project_id, is_triggered_by_status: is_triggered_by_status) %>';
     var tracker =  '<%= @issue.tracker.id %>';
     set_pulldown(tracker, pulldown_url);
 
@@ -55,7 +55,7 @@
     $("#issue_template").change(function(){
       var is_triggered_by_status = '<%= is_triggered_by_status %>';
       var load_url = '<%= url_for(controller: 'issue_templates', action: 'load',
-        project_id: @project, is_triggered_by_status: is_triggered_by_status) %>';
+        project_id: project_id, is_triggered_by_status: is_triggered_by_status) %>';
       var should_replaced = '<%= setting.should_replaced %>';
 
       load_template(load_url, undefined, should_replaced, is_triggered_by_status);
@@ -64,7 +64,7 @@
     // Show dialog
     $('#link_template_dialog').click(function() {
       var template_list_url = '<%= url_for(controller: 'issue_templates',
-        action:'list_templates', project_id: @project, issue_tracker_id: @issue.tracker.id) %>';
+        action:'list_templates', project_id: project_id, issue_tracker_id: @issue.tracker.id) %>';
       var template_list_title = '<%=h l(:issue_template) %>: ' + '<%= @issue.tracker.name %>';
 
       openDialog(template_list_url, template_list_title);
