@@ -11,18 +11,35 @@ de:
   close_help: Hilfedialog schließen
   about_template_help_message: Dies ist die Onlinehilfe für Ticketvorlagen in diesem Projekt.
   label_enabled_help_message: Diese Vorlage aktivieren. Deaktvieren Sie diese Checkbox, um die Vorlage als Entwurf abzulegen.
-  label_list_templates: "Vorlagenliste"
-  label_new_templates: "Vorlage hinzufügen"
-  issue_template_name: "Vorlagenname"
-  issue_description: "Beschreibung"
-  issue_title: "Thema"
-  label_applied_for_issue: "aktive Felder des Tickets: "
-  help_for_issue_title: "Definieren Sie das Thema des Tickets. Dieser Name bezeichnet auch die Vorlage."
-  help_for_this_field: "Hilfe"
-  permission_manage_issue_templates: "Vorlagen verwalten"
-  permission_edit_issue_templates: "Vorlagen ändern"
-  permission_show_issue_templates: "Vorlagen anzeigen"  
-  project_module_issue_templates: "Ticketvorlagen"
-  label_isdefault_help_message: "Aktvieren Sie diese Option, damit diese Vorlage als Standard für den Standardtracker verwendet wird."
-  defaulf_template_loaded: "Die Standardvorlage für den Tracker %{tracker} wurde in das Beschreibungsfeld übernommen."
-  text_no_tracker_enabled: "Bisher wurde keine Konfiguration der Tracker und Ticketvorlagen für dieses Projekt vorgenommen.\nBitte konfigurieren Sie diese notwendige Einstellung, um diese Funktion zu nutzen."
+  label_list_templates: Vorlagenliste
+  label_new_templates: Vorlage hinzufügen
+  issue_template_name: Vorlagenname
+  issue_description: Beschreibung
+  issue_title: Thema
+  label_applied_for_issue: aktive Felder des Tickets: 
+  help_for_issue_title: Definieren Sie das Thema des Tickets. Dieser Name bezeichnet auch die Vorlage.
+  help_for_this_field: Hilfe
+  permission_manage_issue_templates: Vorlagen verwalten
+  permission_edit_issue_templates: Vorlagen ändern
+  permission_show_issue_templates: Vorlagen anzeigen
+  project_module_issue_templates: Ticketvorlagen
+  label_isdefault_help_message: Aktivieren Sie diese Option damit diese Vorlage als Standard für den Standardtracker verwendet wird.
+  defaulf_template_loaded: Die Standardvorlage für den Tracker %{tracker} wurde in das Beschreibungsfeld übernommen.
+  text_no_tracker_enabled: Bisher wurde keine Konfiguration der Tracker und Ticketvorlagen für dieses Projekt vorgenommen.\nBitte konfigurieren Sie diese notwendige Einstellung, um diese Funktion zu nutzen.
+  label_enabled_sharing: Vererbung mit Projektbaum erlauben.
+  label_inherit_templates: Vorlagen vererben
+  label_inherit_templates_help_message: Vorlage von Elternprojekt erben (nur falls Vererbung erlaubt)
+  label_inherited_templates: Geerbte Vorlagen
+  no_issue_templates_for_this_project: Für dieses Projekt sind keine Vorlagen definiert.
+  link_to_index_edit_template: Vorlagenliste / Vorlagen bearbeiten
+  erase_issue_subject_and_description: Lösche Thema und Beschreibung
+  unused_tracker_at_this_project: ACHTUNG: Dieser Tracker ist für dieses Projekt nicht aktiviert. Bitte Vorlage anpassen.
+  label_enabledshaing_help_message: Falls aktiv kann diese Vorlage an Unterprojekte vererbt werden.
+  label_should_replaced: Ersetze Thema und Beschreibung
+  label_should_replaced_help_message: Falls aktiv werden Thema und Beschreibung gelöscht und durch den Vorlagentext ersetzt. Ansonsten wird der Vorlagentext am Ende angehangen.
+  global_issue_templates: Globale Ticketvorlagen
+  no_issue_templates_for_this_redmine: Es sind keine globalen Ticketvorlagen definiert.
+  only_admin_can_associate_global_template: Nur Administratoren können globale Vorlagen diesem Projekt zuweisen.
+  text_no_tracker_enabled_for_global: Es sind keine Tracker aktiviert.\nVor der Definition von Vorlagen muss mindestens ein Tracker im Projekt freigegeben sein.
+  display_and_filter_issue_templates_in_dialog: Vorlagen filtern
+  label_filter_template: Vorlagen filtern
