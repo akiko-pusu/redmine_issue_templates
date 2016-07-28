@@ -33,8 +33,8 @@ class IssueTemplate < ActiveRecord::Base
     enabled
   end
 
-  def <=>(issue_template)
-    position <=> issue_template.position
+  def <=>(other)
+    position <=> other.position
   end
 
   #
@@ -44,6 +44,23 @@ class IssueTemplate < ActiveRecord::Base
     if is_default? && is_default_changed?
       IssueTemplate.search_by_project(project_id).search_by_tracker(tracker_id).update_all(is_default: false)
     end
+  end
+
+  def checklist
+    #
+    # TODO: Exception handling
+    #
+    return [] if checklist_json.blank?
+    JSON.parse(checklist_json)
+  end
+
+  def template_json
+    result = attributes
+    result[:checklist] = checklist
+    result.delete('checklist_json')
+    template = {}
+    template[:issue_template] = result
+    template.to_json(root: true)
   end
 
   #

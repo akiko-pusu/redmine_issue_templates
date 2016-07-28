@@ -25,7 +25,7 @@
                             url: { controller: 'issue_templates', action: 'edit',
                                    project_id: @project, id: @issue_template },
                             html: { id: 'issue_template-form', class: nil, multipart: false } do |f| %>
-          <%= render partial: 'form', locals: { f: f } %>
+          <%= render 'form', { f: f, checklist_enabled: checklist_enabled } %>
 
           <%= submit_tag l(:button_save) %>
       <% end %>
@@ -62,6 +62,22 @@
     </p>
 
     <div class="wiki issue_template"><%= textilizable(@issue_template.description) %></div>
+    <!-- for Checklist -->
+    <% if checklist_enabled %>
+        <p id="checklist_form">
+          <label>Checklist</label>
+          <ul class='checklist' style='padding-left: 180px;'>
+          <% @issue_template.checklist.each do |content| %>
+              <li>
+                <span class="text"><%= content %></span>
+                <input type="hidden" name="issue_template[checklists][]"
+                       id="issue_template_checklist" value="<%= content %>">
+              </li>
+          <% end %>
+          </ul>
+        </p>
+    <% end %>
+
   </fieldset>
 
   <p><label><%= l(:issue_template_note) %></label>

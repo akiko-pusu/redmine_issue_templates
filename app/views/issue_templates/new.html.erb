@@ -15,7 +15,7 @@
                             url: { controller: 'issue_templates', action: 'new', project_id: @project },
                             html: { id: 'issue_template-form', class: nil, multipart: false } do |f| %>
 
-          <%= render partial: 'form', locals: { f: f } %>
+          <%= render 'form', { f: f, checklist_enabled: checklist_enabled } %>
           <div id="preview" class="wiki"></div>
           <%= submit_tag l(:button_create) %>
       <% end %>
