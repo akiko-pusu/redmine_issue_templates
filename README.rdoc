@@ -169,6 +169,19 @@ NOTE: Please run "rake redmine:plugins:migrate" task because new column is added
 * Polish: Paweł Budikom and Krzysztof Wosinski
 * Spanish: Andres Arias
 
+=== Run test
+
+Please see wercker.yml for more details.
+
+% cd REDMINE_ROOT_DIR
+% export RAILS_ENV=test
+% bundle exec rake redmine:plugins:test PLUGIN=redmine_issue_templates
+
+or
+
+% bundle exec rake redmine_issue_templates:test
+
+
 === Report
 
 Code Climate: {<img src="https://codeclimate.com/github/akiko-pusu/redmine_issue_templates/badges/gpa.svg" />}[https://codeclimate.com/github/akiko-pusu/redmine_issue_templates]
