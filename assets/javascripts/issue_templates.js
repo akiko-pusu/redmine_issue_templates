@@ -55,6 +55,12 @@ function load_template(target_url, confirm_msg, should_replaced) {
             type:'post',
             data:$.param({issue_template:selected_template.val(), template_type:template_type})
         }).done(function (data) {
+            // NOTE: Workaround for GiHub Issue, to prevent overwrite with default template
+            // when operator submits new issue form without required field and returns
+            // with error message. If flash message #errorExplanation exists, not overwrited.
+            // (https://github.com/akiko-pusu/redmine_issue_templates/issues/50)
+            if ($('#errorExplanation')[0]) return;
+
             var oldSubj = '';
             var oldVal = '';
             var issue_subject = $('#issue_subject');
