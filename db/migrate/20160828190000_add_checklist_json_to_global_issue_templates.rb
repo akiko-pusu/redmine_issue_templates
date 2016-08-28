@@ -4,6 +4,6 @@ class AddChecklistJsonToGlobalIssueTemplates < ActiveRecord::Migration
   end
 
   def self.down
-    remove_column :glogal_issue_templates, :checklist_json
+    remove_column :global_issue_templates, :checklist_json
   end
 end
