@@ -48,21 +48,47 @@ class IssueTemplatesController < ApplicationController
   end
 
   def show
+    begin
+      checklist_enabled = Redmine::Plugin.registered_plugins.keys.include? :redmine_checklists
+    rescue
+      checklist_enabled = false
+    end
+    render(layout: !request.xhr?,
+           locals: { checklist_enabled: checklist_enabled,
+                     issue_template: @issue_template, project: @project }) && return
   end
 
   def new
     # create empty instance
     @issue_template ||= IssueTemplate.new(author: @user, project: @project)
-    if request.post?
-      @issue_template.safe_attributes = params[:issue_template]
-      save_and_flash
+    begin
+      checklist_enabled = Redmine::Plugin.registered_plugins.keys.include? :redmine_checklists
+    rescue
+      checklist_enabled = false
     end
+    if request.post?
+      param_template = params[:issue_template]
+      @issue_template.safe_attributes = param_template
+
+      if param_template[:checklists]
+        @issue_template.checklist_json = param_template[:checklists].to_json
+      end
+      save_and_flash && return
+    end
+    render(layout: !request.xhr?,
+           locals: { checklist_enabled: checklist_enabled,
+                     issue_template: @issue_template, project: @project }) && return
   end
 
   def edit
     # Change from request.post to request.patch for Rails4.
     if request.patch? || request.put?
-      @issue_template.safe_attributes = params[:issue_template]
+      param_template = params[:issue_template]
+      @issue_template.safe_attributes = param_template
+
+      if param_template[:checklists]
+        @issue_template.checklist_json = param_template[:checklists].to_json
+      end
       save_and_flash
     end
   end
@@ -80,12 +106,12 @@ class IssueTemplatesController < ApplicationController
   def load
     issue_template_id = params[:issue_template]
     template_type = params[:template_type]
-    @issue_template = if !template_type.blank? && template_type == 'global'
-                        GlobalIssueTemplate.find(issue_template_id)
-                      else
-                        IssueTemplate.find(issue_template_id)
-                      end
-    render text: @issue_template.to_json(root: true)
+    issue_template = if !template_type.blank? && template_type == 'global'
+                       GlobalIssueTemplate.find(issue_template_id)
+                     else
+                       IssueTemplate.find(issue_template_id)
+                     end
+    render text: issue_template.template_json
   end
 
   # update pulldown

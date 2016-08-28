@@ -54,7 +54,7 @@ class GlobalIssueTemplatesController < ApplicationController
         redirect_to action: 'show', id: @global_issue_template.id
       else
         respond_to do |format|
-          format.html { render action: 'show' }
+          format.html { render 'show' }
         end
       end
     end
