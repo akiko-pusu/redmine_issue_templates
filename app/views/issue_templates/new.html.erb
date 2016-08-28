@@ -1,10 +1,10 @@
 <div class="contextual">
   <%= link_to(l(:label_list_templates),
               { controller: 'issue_templates',
-                action: 'index', project_id: @project }, class: 'template') %>
+                action: 'index', project_id: project }, class: 'template') %>
 </div>
 <h2 class="template"><%=h "#{l(:issue_templates)} / #{l(:button_add)}" %></h2>
-<% if @project.trackers.blank? %>
+<% if project.trackers.blank? %>
     <div class="nodata">
       <%= simple_format(l(:text_no_tracker_enabled)) %>
     </div>
@@ -12,10 +12,11 @@
     <div class="box">
       <%= error_messages_for 'issue_template' %>
       <%= labelled_form_for :issue_template,  @issue_template,
-                            url: { controller: 'issue_templates', action: 'new', project_id: @project },
+                            url: { controller: 'issue_templates', action: 'new', project_id: project },
                             html: { id: 'issue_template-form', class: nil, multipart: false } do |f| %>
-
-          <%= render 'form', { f: f, checklist_enabled: checklist_enabled } %>
+          
+          <%= render 'form', { f: f, checklist_enabled: checklist_enabled,
+                               issue_template: issue_template, project: project } %>
           <div id="preview" class="wiki"></div>
           <%= submit_tag l(:button_create) %>
       <% end %>

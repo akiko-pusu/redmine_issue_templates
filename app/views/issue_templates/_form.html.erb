@@ -5,14 +5,14 @@
   <fieldset class="issue">
     <legend class="issue"><%= l(:label_applied_for_issue) %></legend>
     <p>
-      <% if @issue_template.tracker.blank? %>
-          <%= f.select :tracker_id, template_target_trackers(@project, @issue_template),
+      <% if issue_template.tracker.blank? %>
+          <%= f.select :tracker_id, template_target_trackers(project, issue_template),
                        required: true, label: l(:label_tracker)  %>
           　<% else %>
-          <%= f.select :tracker_id, template_target_trackers(@project, @issue_template),
-                       required: true, label: l(:label_tracker), selected: @issue_template.tracker.id %>
-          <% unless project_tracker?(@issue_template.tracker.id, @project) %><br/>
-              <%= non_project_tracker_msg(project_tracker?(@issue_template.tracker.id, @project)) %>
+          <%= f.select :tracker_id, template_target_trackers(project, issue_template),
+                       required: true, label: l(:label_tracker), selected: issue_template.tracker.id %>
+          <% unless project_tracker?(issue_template.tracker.id, project) %><br/>
+              <%= non_project_tracker_msg(project_tracker?(issue_template.tracker.id, project)) %>
           <% end %>
       <% end %>
     </p>
@@ -39,7 +39,7 @@
                 onclick="addCheckList();">
           </span>
           <ul class='checklist' style='padding-left: 180px;'>
-            <% @issue_template.checklist.each_with_index do |content, i| %>
+            <% issue_template.checklist.each_with_index do |content, i| %>
               <li id="checklist_<%= i %>">
                 <span class="text">
                   <%= content %>

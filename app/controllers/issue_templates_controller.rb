@@ -53,7 +53,9 @@ class IssueTemplatesController < ApplicationController
     rescue
       checklist_enabled = false
     end
-    render(layout: !request.xhr?, locals: { checklist_enabled: checklist_enabled }) && return
+    render(layout: !request.xhr?,
+           locals: { checklist_enabled: checklist_enabled,
+                     issue_template: @issue_template, project: @project }) && return
   end
 
   def new
@@ -65,26 +67,27 @@ class IssueTemplatesController < ApplicationController
       checklist_enabled = false
     end
     if request.post?
-      @issue_template.safe_attributes = params[:issue_template]
+      param_template = params[:issue_template]
+      @issue_template.safe_attributes = param_template
 
-      if params[:issue_template][:checklists]
-        # TODO: save checklist data as json
-        json = params[:issue_template][:checklists].to_json
-        @issue_template.checklist_json = json
+      if param_template[:checklists]
+        @issue_template.checklist_json = param_template[:checklists].to_json
       end
       save_and_flash && return
     end
-    render(layout: !request.xhr?, locals: { checklist_enabled: checklist_enabled }) && return
+    render(layout: !request.xhr?,
+           locals: { checklist_enabled: checklist_enabled,
+                     issue_template: @issue_template, project: @project }) && return
   end
 
   def edit
     # Change from request.post to request.patch for Rails4.
     if request.patch? || request.put?
-      @issue_template.safe_attributes = params[:issue_template]
-      if params[:issue_template][:checklists]
-        # TODO: save checklist data as json
-        json = params[:issue_template][:checklists].to_json
-        @issue_template.checklist_json = json
+      param_template = params[:issue_template]
+      @issue_template.safe_attributes = param_template
+
+      if param_template[:checklists]
+        @issue_template.checklist_json = param_template[:checklists].to_json
       end
       save_and_flash
     end

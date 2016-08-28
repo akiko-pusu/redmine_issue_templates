@@ -1,36 +1,37 @@
 <div class="contextual">
   <%= link_to_if_authorized l(:button_edit),
-                            { controller: 'issue_templates', action: 'edit', id: @issue_template,
-                              project_id: @project },
+                            { controller: 'issue_templates', action: 'edit', id: issue_template,
+                              project_id: project },
                             class: 'icon icon-edit', accesskey: accesskey(:edit),
                             onclick: "$('#edit-issue_template').show(); return false;" %>
   <%= link_to_if_authorized l(:button_delete),
                             { controller: 'issue_templates', action: 'destroy',
-                              id: @issue_template, project_id: @project },
+                              id: issue_template, project_id: project },
                             data: {confirm: l(:text_are_you_sure)}, method: 'post', class: 'icon icon-del' %>
   <%= link_to(l(:label_list_templates),
               { controller: 'issue_templates',
                 action: 'index',
-                project_id: @project }, class: 'template') %>
+                project_id: project }, class: 'template') %>
 </div>
 
 <h2 class="template">
-  <%= l(:issue_templates) %>: #<%= @issue_template.id %> <%= @issue_template.title %>
-  <%= avatar(@issue_template.author, size: '24') %>
+  <%= l(:issue_templates) %>: #<%= issue_template.id %> <%= issue_template.title %>
+  <%= avatar(issue_template.author, size: '24') %>
 </h2>
 
 <% if authorize_for('issue_templates', 'edit') %>
     <div id="edit-issue_template" style="display:none;">
-      <%= labelled_form_for :issue_template, @issue_template,
+      <%= labelled_form_for :issue_template, issue_template,
                             url: { controller: 'issue_templates', action: 'edit',
-                                   project_id: @project, id: @issue_template },
+                                   project_id: project, id: issue_template },
                             html: { id: 'issue_template-form', class: nil, multipart: false } do |f| %>
-          <%= render 'form', { f: f, checklist_enabled: checklist_enabled } %>
+          <%= render 'form', { f: f, checklist_enabled: checklist_enabled,
+                               issue_template: issue_template, project: project } %>
 
           <%= submit_tag l(:button_save) %>
       <% end %>
       <%= preview_link url_for(controller: 'issue_templates', action: 'preview',
-                               id: @issue_template),
+                               id: issue_template),
                        'issue_template_description', target='preview' %> |
       <%= link_to l(:button_cancel), { action: 'index' },
                   onclick: 'Element.hide("edit-issue_template"); return false;' %>
@@ -43,31 +44,31 @@
 <div class="box tabular box-white">
   <p>
     <label><%= l(:issue_template_name) %></label>
-    <%= h @issue_template.title %>
+    <%= h issue_template.title %>
   </p>
   <fieldset class="issue">
     <legend class="issue"><%= l(:label_applied_for_issue) %></legend>
     <p><label><%= l(:label_tracker) %></label>
-      <%= h @issue_template.tracker.name %>
-      <%= non_project_tracker_msg(project_tracker?(@issue_template.tracker.id, @project)) %>
+      <%= h issue_template.tracker.name %>
+      <%= non_project_tracker_msg(project_tracker?(issue_template.tracker.id, project)) %>
     </p>
 
     <p>
       <label><%= l(:issue_title) %></label>
-      <%= h @issue_template.issue_title %>
+      <%= h issue_template.issue_title %>
     </p>
 
     <p>
       <strong style="margin-left: -100px;"><%= l(:issue_description) %></strong>
     </p>
 
-    <div class="wiki issue_template"><%= textilizable(@issue_template.description) %></div>
+    <div class="wiki issue_template"><%= textilizable(issue_template.description) %></div>
     <!-- for Checklist -->
     <% if checklist_enabled %>
         <p id="checklist_form">
           <label>Checklist</label>
           <ul class='checklist' style='padding-left: 180px;'>
-          <% @issue_template.checklist.each do |content| %>
+          <% issue_template.checklist.each do |content| %>
               <li>
                 <span class="text"><%= content %></span>
                 <input type="hidden" name="issue_template[checklists][]"
@@ -81,25 +82,25 @@
   </fieldset>
 
   <p><label><%= l(:issue_template_note) %></label>
-    <%= @issue_template.note.blank? ? l(:label_none) : @issue_template.note %>
+    <%= issue_template.note.blank? ? l(:label_none) : issue_template.note %>
   </p>
 
   <p><label><%= l(:field_is_default) %></label>
-    <%= checked_image @issue_template.is_default? %>
+    <%= checked_image issue_template.is_default? %>
   </p>
 
   <p><label><%= l(:label_enabled) %></label>
-    <%= checked_image @issue_template.enabled? %>
+    <%= checked_image issue_template.enabled? %>
   </p>
 
   <p><label><%= l(:label_enabled_sharing) %></label>
-    <%= checked_image @issue_template.enabled_sharing? %>
+    <%= checked_image issue_template.enabled_sharing? %>
   </p>
 
   <p><label><%= l(:field_author) %></label>
-    <%= authoring @issue_template.created_on, @issue_template.author %>
-    <% if @issue_template.created_on != @issue_template.updated_on %>
-        (<%= l(:label_updated_time, time_tag(@issue_template.updated_on)).html_safe %>)
+    <%= authoring issue_template.created_on, issue_template.author %>
+    <% if issue_template.created_on != issue_template.updated_on %>
+        (<%= l(:label_updated_time, time_tag(issue_template.updated_on)).html_safe %>)
     <% end %>
   </p>
 
