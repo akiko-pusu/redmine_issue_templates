@@ -1,5 +1,5 @@
 <h2 class="template"><%=h "#{l(:global_issue_templates)}" %></h2>
-<% if @trackers.blank? %>
+<% if trackers.blank? %>
     <div class="nodata">
       <%= simple_format(l(:text_no_tracker_enabled_for_global)) %>
     </div>
@@ -10,12 +10,12 @@
 </div>
 <div style="clear:both;"></div>
 
-<% if @template_map.blank? %>
+<% if template_map.blank? %>
     <div class="template_box">
       <%= l(:no_issue_templates_for_this_redmine) %>
     </div>
 <% end %>
-<% @template_map.each_key do |tracker| %>
+<% template_map.each_key do |tracker| %>
     <div class="template_box">
       <h3 class="template_tracker"><%= tracker.name %></h3>
 
@@ -32,7 +32,7 @@
         </tr>
         </thead>
         <tbody>
-        <% @template_map[tracker].each do |issue_template| %>
+        <% template_map[tracker].each do |issue_template| %>
             <tr class="<%= cycle('odd', 'even') %> issue_template issue">
               <td><%= link_to h(issue_template.id), { controller: 'global_issue_templates',
                                                       id: issue_template.id, action: 'show' },
