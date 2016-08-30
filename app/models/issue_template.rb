@@ -1,5 +1,6 @@
 class IssueTemplate < ActiveRecord::Base
   include Redmine::SafeAttributes
+  include Concerns::IssueTemplate::Common
   unloadable
   belongs_to :project
   belongs_to :author, class_name: 'User', foreign_key: 'author_id'
@@ -18,24 +19,11 @@ class IssueTemplate < ActiveRecord::Base
                   :is_default, :enabled, :enabled_sharing, :author, :project, :position
 
   scope :enabled_sharing, -> { where(enabled_sharing: true) }
-  scope :enabled, -> { where(enabled: true) }
   scope :is_default, -> { where(is_default: true) }
   scope :not_default, -> { where(is_default: false) }
-  scope :order_by_position, -> { order(:position) }
   scope :search_by_project, lambda { |prolect_id|
     where(project_id: prolect_id)
   }
-  scope :search_by_tracker, lambda { |tracker_id|
-    where(tracker_id: tracker_id) if tracker_id.present?
-  }
-
-  def enabled?
-    enabled
-  end
-
-  def <=>(other)
-    position <=> other.position
-  end
 
   #
   # In case set is_default and updated, others are also updated.

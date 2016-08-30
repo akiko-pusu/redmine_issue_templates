@@ -1,5 +1,6 @@
 class GlobalIssueTemplate < ActiveRecord::Base
   include Redmine::SafeAttributes
+  include Concerns::IssueTemplate::Common
   unloadable
   belongs_to :author, class_name: 'User', foreign_key: 'author_id'
   belongs_to :tracker
@@ -23,22 +24,9 @@ class GlobalIssueTemplate < ActiveRecord::Base
   attr_accessible :title, :tracker_id, :issue_title, :description, :note,
                   :enabled, :project_ids, :position, :author_id
 
-  scope :enabled, -> { where(enabled: true) }
-  scope :order_by_position, -> { order(:position) }
-  scope :search_by_tracker, lambda { |tracker_id|
-    where(tracker_id: tracker_id) if tracker_id.present?
-  }
   scope :search_by_project, lambda { |project_id|
     joins(:projects).where(projects: { id: project_id })
   }
-
-  def enabled?
-    enabled
-  end
-
-  def <=>(other)
-    position <=> other.position
-  end
 
   def checklist
     #
