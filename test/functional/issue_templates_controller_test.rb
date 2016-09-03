@@ -208,7 +208,6 @@ class IssueTemplatesControllerTest < ActionController::TestCase
       assert_template 'index'
       assert_select 'h2', text: l(:issue_template).to_s, count: 1
       assert !@response.body.match(%r{<h3>#{l(:label_inherited_templates)}</h3>})
-      # assert_select "h3", {:text => "#{l(:label_inherited_templates)}", :count => 1}, "Inherit templates should not displayed."
 
       get :index, project_id: 3
       assert_response :success
@@ -226,7 +225,6 @@ class IssueTemplatesControllerTest < ActionController::TestCase
       assert_response :success
       assert_template 'index'
       assert_select 'h2', text: l(:issue_template).to_s, count: 1
-      # assert_select "h2:nth-of-type(2)", :text => "#{l(:label_inherited_templates)}"
     end
 
     should 'render pulldown with parent template' do
@@ -235,11 +233,10 @@ class IssueTemplatesControllerTest < ActionController::TestCase
       setting.save!
       tracker = Tracker.find(1)
       get :set_pulldown, project_id: 3, issue_tracker_id: 1
-      # assert_response :succes
       assert_template 'issue_templates/_template_pulldown'
-      assert_select "optgroup[label=#{tracker.name}]"
-      assert_select 'option[value=1]'
-      assert_select 'option[class=global]'
+      assert_select "optgroup[label='#{tracker.name}']"
+      assert_select 'option[value="1"]'
+      assert_select 'option[class="global"]'
     end
   end
 

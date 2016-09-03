@@ -7,7 +7,7 @@ changeType = '';
 function checkExpand(ch) {
     var obj;
     obj = document.all && document.all(ch) || document.getElementById && document.getElementById(ch);
-    if(obj && obj.style) obj.style.display =
+    if (obj && obj.style) obj.style.display =
         obj.style.display === 'none' ? '' : 'none'
 }
 
@@ -18,7 +18,7 @@ function eraseSubjectAndDescription() {
     try {
         if (CKEDITOR.instances.issue_description)
             CKEDITOR.instances.issue_description.setData('');
-    } catch(e) {
+    } catch (e) {
         // do nothing.
     }
 }
@@ -46,15 +46,21 @@ function load_template(target_url, confirm_msg, should_replaced) {
     var selected_template = $('#issue_template');
     if (selected_template.val() !== '') {
         var template_type = '';
-        if(selected_template.find('option:selected').hasClass('global')){
+        if (selected_template.find('option:selected').hasClass('global')) {
             template_type = 'global';
         }
         $.ajax({
-            url:target_url,
-            async:true,
-            type:'post',
-            data:$.param({issue_template:selected_template.val(), template_type:template_type})
+            url: target_url,
+            async: true,
+            type: 'post',
+            data: $.param({issue_template: selected_template.val(), template_type: template_type})
         }).done(function (data) {
+            // NOTE: Workaround for GiHub Issue, to prevent overwrite with default template
+            // when operator submits new issue form without required field and returns
+            // with error message. If flash message #errorExplanation exists, not overwrited.
+            // (https://github.com/akiko-pusu/redmine_issue_templates/issues/50)
+            if ($('#errorExplanation')[0]) return;
+
             var oldSubj = '';
             var oldVal = '';
             var issue_subject = $('#issue_subject');
@@ -86,9 +92,27 @@ function load_template(target_url, confirm_msg, should_replaced) {
                     // show message just after default template loaded.
                     if (confirm_msg)
                         show_loaded_message(confirm_msg, issue_description);
+                    addCheckList(obj);
                 }
             }
         });
+    }
+}
+
+function addCheckList(obj) {
+    var list = obj.checklist;
+    if (list === undefined) return false;
+    if ($('#checklist_form').length === 0) return;
+
+    // remove exists checklist items
+    var oldList = $('span.checklist-item.show:visible span.checklist-show-only.checklist-remove > a.icon.icon-del');
+    oldList.each(function () {
+        oldList.click();
+    });
+
+    for (var i = 0; i < list.length; i++) {
+        $('span.checklist-new.checklist-edit-box > input.edit-box').val(list[i]);
+        $("span.checklist-item.new > span.icon.icon-add.save-new-by-button").click();
     }
 }
 
@@ -108,7 +132,7 @@ function set_pulldown(tracker, target_url) {
         async: true,
         type: 'post',
         data: $.param({issue_tracker_id: tracker})
-    }).done(function(data) {
+    }).done(function (data) {
         $('#issue_template').html(data);
         $('#allow_overwrite_description').attr('checked', allow_overwrite);
     });
@@ -126,8 +150,8 @@ function updateSelect(id, is_global) {
 }
 
 // flash message as a jQuery Plugin
-(function($) {
-    $.fn.flash_message = function(options) {
+(function ($) {
+    $.fn.flash_message = function (options) {
         // default
         options = $.extend({
             text: 'Done',
@@ -136,7 +160,7 @@ function updateSelect(id, is_global) {
             class_name: ''
         }, options);
 
-        return $(this).each(function() {
+        return $(this).each(function () {
             if ($(this).parent().find('.flash_message').get(0)) return;
 
             var message = $('<div></div>', {
@@ -147,7 +171,7 @@ function updateSelect(id, is_global) {
 
             $(this)[options.how](message);
             //delay and fadeout
-            message.delay(options.time).fadeOut('normal', function() {
+            message.delay(options.time).fadeOut('normal', function () {
                 $(this).remove();
             });
 

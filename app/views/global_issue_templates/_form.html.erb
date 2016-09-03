@@ -5,12 +5,12 @@
   <fieldset class="issue">
     <legend class="issue"><%= l(:label_applied_for_issue) %></legend>
     <p>
-      <% if @global_issue_template.tracker.blank? %>
-          <%= f.select :tracker_id, @trackers.collect {|t| [t.name, t.id]}, { required: true },
+      <% if issue_template.tracker.blank? %>
+          <%= f.select :tracker_id, trackers.collect {|t| [t.name, t.id]}, { required: true },
                        required: true, label: l(:label_tracker)  %>
           　<% else %>
-          <%= f.select :tracker_id, @trackers.collect {|t| [t.name, t.id]}, { required: true },
-                       required: true, label: l(:label_tracker), selected: @global_issue_template.tracker.id %>
+          <%= f.select :tracker_id, trackers.collect {|t| [t.name, t.id]}, { required: true },
+                       required: true, label: l(:label_tracker), selected: issue_template.tracker.id %>
       <% end %>
     </p>
     <p><%= f.text_field :issue_title, required: false, size: 80, label: l(:issue_title) %>
@@ -27,6 +27,28 @@
                       required: true,
                       label: l(:issue_description), style: 'overflow:auto;' %>
     </p>
+    <!-- for Checklist -->
+    <% if checklist_enabled %>
+        <p id="checklist_form">
+          <label>Checklist</label>
+          <input type="text" id="checklist_text" class="edit-box">
+          <span class="icon icon-add checklist-new-only save-new-by-button"
+                onclick="addCheckList();">
+          </span>
+        <ul class='checklist' style='padding-left: 180px;'>
+          <% issue_template.checklist.each_with_index do |content, i| %>
+              <li id="checklist_<%= i %>">
+                <span class="text">
+                  <%= content %>
+                  <a class="icon icon-del" href="javascript:void(0)" onclick="removeCheckList(this);"></a>
+                </span>
+                <input type="hidden" name="global_issue_template[checklists][]"
+                       id="global_issue_template_checklist" value="<%= content %>">
+              </li>
+          <% end %>
+        </ul>
+        </p>
+    <% end %>
   </fieldset>
   <p>
     <%= f.text_area :note, cols: 70, rows: 3,
@@ -49,17 +71,17 @@
 
 <div id="preview" class="wiki"></div>
 <%= preview_link url_for(controller: 'global_issue_templates', action: 'preview',
-                          id: @global_issue_template),
+                          id: issue_template),
                  'global_issue_template_description', target='preview' %> |
 <%= link_to l(:button_cancel), { action: 'index' }, data: { confirm: l(:text_are_you_sure) } %>
 
 <div class="box" >
-  <% if @projects.any? %>
+  <% if projects.any? %>
       <fieldset class="box box-white" id="global_issue_template_project_ids">
         <legend><%= l(:label_project_plural) %></legend>
-        <%= render_project_nested_lists(@projects) do |p|
+        <%= render_project_nested_lists(projects) do |p|
           content_tag('label', check_box_tag('global_issue_template[project_ids][]',
-                                             p.id, @global_issue_template.projects.to_a.include?(p), id: nil) + ' ' + h(p))
+                                             p.id, issue_template.projects.to_a.include?(p), id: nil) + ' ' + h(p))
         end %>
         <p><%= check_all_links 'global_issue_template_project_ids' %></p>
       </fieldset>
@@ -68,5 +90,54 @@
 </div>
 
 
-<%= submit_tag l(@global_issue_template.new_record? ? :button_create : :button_save) %>
+<%= submit_tag l(issue_template.new_record? ? :button_create : :button_save) %>
 
+<script type="text/javascript">
+  //<![CDATA[
+  // $(document).ready(function() {
+  var checklist = $('.checklist');
+
+  function removeCheckList(obj) {
+    var target = obj.closest('li')
+    target.remove();
+  }
+
+  function addCheckList() {
+    var text = $('#checklist_text').val();
+    if (text == '') return false;
+
+    $('.checklist-item').each(function(i, elem) {
+      e = $(elem)
+      if ((text == e.val())) {
+        return;
+      }
+    })
+    addCheckListItem(text);
+    $('#checklist_text').val('');
+  }
+
+  function addCheckListItem(value) {
+    var li = $('<li>');
+    var text = $('<span class="text">').text(value);
+    var hidden = $("<input>", {
+      type: 'hidden',
+      id: 'global_issue_template_checklist',
+      name: 'global_issue_template[checklists][]',
+      class: 'checklist-item',
+      value: value
+    }).appendTo(li);
+
+    var remove_link = $("<a>", {
+      class: 'icon icon-del',
+    });
+
+    text.append(remove_link);
+    li.append(text);
+    checklist.append(li);
+
+    $('body').on('click','.icon.icon-del', function() {
+      removeCheckList(this);
+    });
+  }
+  //});
+</script>

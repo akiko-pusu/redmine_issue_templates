@@ -24,6 +24,6 @@ SimpleCov.start do
 end
 
 require File.expand_path(File.dirname(__FILE__) + '/../../../test/test_helper')
-ActiveRecord::Fixtures.create_fixtures(File.dirname(__FILE__) + '/fixtures/',
-                                       [:issue_templates, :issue_template_settings,
-                                        :global_issue_templates, :global_issue_templates_projects])
+ActiveRecord::FixtureSet.create_fixtures(File.dirname(__FILE__) + '/fixtures/',
+                                         [:issue_templates, :issue_template_settings,
+                                          :global_issue_templates, :global_issue_templates_projects])

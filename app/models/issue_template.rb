@@ -1,5 +1,6 @@
 class IssueTemplate < ActiveRecord::Base
   include Redmine::SafeAttributes
+  include Concerns::IssueTemplate::Common
   unloadable
   belongs_to :project
   belongs_to :author, class_name: 'User', foreign_key: 'author_id'
@@ -18,24 +19,11 @@ class IssueTemplate < ActiveRecord::Base
                   :is_default, :enabled, :enabled_sharing, :author, :project, :position
 
   scope :enabled_sharing, -> { where(enabled_sharing: true) }
-  scope :enabled, -> { where(enabled: true) }
   scope :is_default, -> { where(is_default: true) }
   scope :not_default, -> { where(is_default: false) }
-  scope :order_by_position, -> { order(:position) }
   scope :search_by_project, lambda { |prolect_id|
     where(project_id: prolect_id)
   }
-  scope :search_by_tracker, lambda { |tracker_id|
-    where(tracker_id: tracker_id) if tracker_id.present?
-  }
-
-  def enabled?
-    enabled
-  end
-
-  def <=>(issue_template)
-    position <=> issue_template.position
-  end
 
   #
   # In case set is_default and updated, others are also updated.
@@ -44,6 +32,23 @@ class IssueTemplate < ActiveRecord::Base
     if is_default? && is_default_changed?
       IssueTemplate.search_by_project(project_id).search_by_tracker(tracker_id).update_all(is_default: false)
     end
+  end
+
+  def checklist
+    #
+    # TODO: Exception handling
+    #
+    return [] if checklist_json.blank?
+    JSON.parse(checklist_json)
+  end
+
+  def template_json
+    result = attributes
+    result[:checklist] = checklist
+    result.delete('checklist_json')
+    template = {}
+    template[:issue_template] = result
+    template.to_json(root: true)
   end
 
   #

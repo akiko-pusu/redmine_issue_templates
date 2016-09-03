@@ -39,9 +39,9 @@ build:
         code:
           bundle exec rake redmine:plugins:migrate RAILS_ENV=test
     - script:
-        name: 'Run Plugin tests'
+        name: 'Run Plugin tests via rake task'
         code: |
-          bundle exec rake redmine:plugins:test PLUGIN=${PLUGIN_NAME}
+          bundle exec rake redmine_issue_templates:test
     - script:
         name: 'Uninstall Schema tests'
         code: |
