@@ -1,6 +1,8 @@
 box: ruby
 build:
   steps:
+    # for phantomjs
+    - aussiegeek/install-phantomjs
     - script:
         name: check directory
         code: |
@@ -42,6 +44,10 @@ build:
         name: 'Run Plugin tests via rake task'
         code: |
           bundle exec rake redmine_issue_templates:test
+    - script:
+        name: 'Run Plugin spec'
+        code: |
+          bundle exec rspec -I plugins/redmine_issue_templates/spec --format documentation plugins/redmine_issue_templates/spec/
     - script:
         name: 'Uninstall Schema tests'
         code: |

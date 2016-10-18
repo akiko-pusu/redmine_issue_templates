@@ -18,7 +18,7 @@ ls -a | grep -v -E 'redmine-ready\.sh|wercker\.yml' | xargs rm -rf
 
 shopt -s dotglob
 mv ../redmine-${REDMINE_VERSION}/* ./
-gem install simplecov simplecov-rcov yard
+gem install simplecov simplecov-rcov yard rspec
 gem update bundler
 
 
