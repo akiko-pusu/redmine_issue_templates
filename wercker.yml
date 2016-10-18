@@ -2,7 +2,10 @@ box: ruby
 build:
   steps:
     # for phantomjs
-    - aussiegeek/install-phantomjs
+    - script:
+        name: install phantomJS
+        code: |
+          sh ./install-phantomjs.sh
     - script:
         name: check directory
         code: |
