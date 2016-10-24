@@ -1,10 +1,12 @@
 <table class="list template_list">
+  <thead>
   <tr>
     <th><%=h l(:issue_title) %></th>
     <th><%=h l(:issue_description) %></th>
     <th><%= l(:field_is_default) %></th>
     <th><%=h l(:button_apply, default: 'Apply') %></th>
   </tr>
+  </thead>
 <% issue_templates.each do |template| %>
       <tr class="<%= cycle('odd', 'even') %> template_data">
         <td>

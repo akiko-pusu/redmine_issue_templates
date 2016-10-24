@@ -58,3 +58,7 @@ build:
         name: 'Uninstall Schema tests'
         code: |
           bundle exec rake redmine:plugins:migrate NAME=${PLUGIN_NAME} VERSION=0 RAILS_ENV=test
+    - script:
+        name: 'store coverage report'
+        code: |
+          cp -r coverage ${WERCKER_REPORT_ARTIFACTS_DIR}/

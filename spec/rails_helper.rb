@@ -9,6 +9,7 @@ require 'rspec/rails'
 ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
+
   config.fixture_path = "#{::Rails.root}/test/fixtures"
   config.include FactoryGirl::Syntax::Methods
 
@@ -21,7 +22,8 @@ RSpec.configure do |config|
         Capybara::Poltergeist::Driver.new(app, js_errors: true,
                                                inspector: true,
                                                phantomjs_options: ['--ignore-ssl-errors=yes'],
-                                               timeout: 120)
+                                               timeout: 120
+        )
       end
     end
   end

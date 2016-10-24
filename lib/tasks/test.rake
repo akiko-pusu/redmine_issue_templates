@@ -20,4 +20,15 @@ namespace :redmine_issue_templates do
   rescue LoadError
     puts 'yardoc failed.'
   end
+
+  desc 'Run rubycritic for redmine_issue_template plugin'
+  begin
+    require 'rubycritic/rake_task'
+    RubyCritic::RakeTask.new do |t|
+      t.paths = FileList['plugins/redmine_issue_templates/app']
+      t.options = '-p redmine_issue_templates_critic --no-browser --mode-ci'
+    end
+  rescue LoadError
+    puts 'rubycritic failed.'
+  end
 end
