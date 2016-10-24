@@ -24,9 +24,9 @@ feature 'Access Redmine top page', js: true do
            :custom_fields_trackers
 
   context 'When anonymous ' do
-    specify 'Badge is not displayed' do
-      visit '/issues'
-      expect(page).to have_title 'Redmine'
+    scenario 'Link to Global issue template is not displayed.' do
+      visit '/admin'
+      expect(page).not_to have_selector('#admin-menu > ul > li > a.redmine-issue-templates')
     end
   end
 
