@@ -1,6 +1,14 @@
 box: ruby
 build:
   steps:
+    # for phantomjs
+    - script:
+        name: install phantomJS
+        code: |
+          cd /tmp
+          wget https://github.com/paladox/phantomjs/releases/download/2.1.7/phantomjs-2.1.1-linux-x86_64.tar.bz2
+          tar xfj phantomjs-2.1.1-linux-x86_64.tar.bz2
+          sudo cp /tmp/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin
     - script:
         name: check directory
         code: |
@@ -43,6 +51,14 @@ build:
         code: |
           bundle exec rake redmine_issue_templates:test
     - script:
+        name: 'Run Plugin spec'
+        code: |
+          bundle exec rspec -I plugins/redmine_issue_templates/spec --format documentation plugins/redmine_issue_templates/spec/
+    - script:
         name: 'Uninstall Schema tests'
         code: |
           bundle exec rake redmine:plugins:migrate NAME=${PLUGIN_NAME} VERSION=0 RAILS_ENV=test
+    - script:
+        name: 'store coverage report'
+        code: |
+          cp -r coverage ${WERCKER_REPORT_ARTIFACTS_DIR}/

@@ -16,6 +16,7 @@ CodeClimate::TestReporter.configure do |config|
   config.git_dir = "#{Dir.pwd}/plugins/redmine_issue_templates"
 end
 
+SimpleCov.coverage_dir('coverage/redmine_issue_template_test')
 SimpleCov.start do
   add_filter do |source_file|
     # report this plugin only.
