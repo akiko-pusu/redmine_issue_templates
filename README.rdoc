@@ -149,8 +149,7 @@ NOTE: Please run "rake redmine:plugins:migrate" task because new column is added
   Thanks for JohnArcher.
 * Fixed invalid encoding. Thank you so much, Christoph. (#1178)
 * Fixed append "null" string to issue title field. (IssueID: #1268)
-* Prevent to load template when update and redirect with validation error.
-    (#1151, #1254)
+* Prevent to load template when update and redirect with validation error. (#1151, #1254)
 
 === 0.0.5
 
@@ -183,13 +182,26 @@ NOTE: Please run "rake redmine:plugins:migrate" task because new column is added
 
 Please see wercker.yml for more details.
 
-% cd REDMINE_ROOT_DIR
-% export RAILS_ENV=test
-% bundle exec rake redmine:plugins:test PLUGIN=redmine_issue_templates
+ % cd REDMINE_ROOT_DIR
+ % export RAILS_ENV=test
+ % bundle exec rake redmine:plugins:test PLUGIN=redmine_issue_templates
 
 or
 
-% bundle exec rake redmine_issue_templates:test
+ % bundle exec rake redmine_issue_templates:test
+
+==== Run spec
+
+Please see wercker.yml for more details.
+
+ % cd REDMINE_ROOT_DIR
+ % export RAILS_ENV=test
+ % bundle exec rake redmine_issue_templates:spec
+
+By default, use poltergeist as a webdriver.
+If you set environment variable 'DRIVER' to 'selenium', selenium-webdriver is used.
+
+ % bundle exec rake redmine_issue_templates:spec DRIVER='selenium'
 
 
 === Report

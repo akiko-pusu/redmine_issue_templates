@@ -81,8 +81,11 @@ function load_template(target_url, confirm_msg, should_replaced) {
                     obj.description = (obj.description === null) ? '' : obj.description;
                     obj.issue_title = (obj.issue_title === null) ? '' : obj.issue_title;
 
-                    issue_description.val(oldVal + obj.description);
-                    issue_subject.val(oldSubj + obj.issue_title);
+                    if(oldVal.replace(/(?:\r\n|\r|\n)/g, '').trim() != obj.description.replace(/(?:\r\n|\r|\n)/g, '').trim())
+                        issue_description.val(oldVal + obj.description);
+                    if(oldSubj.trim() != obj.issue_title.trim())
+                        issue_subject.val(oldSubj + obj.issue_title);
+
                     try {
                         if (CKEDITOR.instances.issue_description)
                             CKEDITOR.instances.issue_description.setData(oldVal + template[issue_template].description);
