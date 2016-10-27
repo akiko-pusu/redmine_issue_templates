@@ -15,7 +15,6 @@ group :test do
   gem 'launchy'
   gem 'poltergeist', require: false
   gem 'database_cleaner'
-  gem 'rubycritic', require: false
 end
 
 gem 'codeclimate-test-reporter', group: :test, require: nil
