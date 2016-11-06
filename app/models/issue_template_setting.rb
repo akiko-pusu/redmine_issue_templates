@@ -28,4 +28,22 @@ class IssueTemplateSetting < ActiveRecord::Base
     return true if inherit_templates
     false
   end
+
+  def child_projects
+    project.descendants
+  end
+
+  def apply_template_to_child_projects
+    update_inherit_template_of_child_projects(true)
+  end
+
+  def unapply_template_from_child_projects
+    update_inherit_template_of_child_projects(false)
+  end
+
+  private
+
+  def update_inherit_template_of_child_projects(value)
+    IssueTemplateSetting.where(project_id: child_projects).update_all(inherit_templates: value)
+  end
 end
