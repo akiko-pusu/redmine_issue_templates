@@ -29,9 +29,8 @@ class IssueTemplate < ActiveRecord::Base
   # In case set is_default and updated, others are also updated.
   #
   def check_default
-    if is_default? && is_default_changed?
-      IssueTemplate.search_by_project(project_id).search_by_tracker(tracker_id).update_all(is_default: false)
-    end
+    return unless is_default? && is_default_changed?
+    IssueTemplate.search_by_project(project_id).search_by_tracker(tracker_id).update_all(is_default: false)
   end
 
   def checklist
@@ -57,15 +56,11 @@ class IssueTemplate < ActiveRecord::Base
   class << self
     def get_inherit_templates(project_ids, tracker_id)
       # keep ordering of project tree
-      inherit_templates = []
-      project_ids.each do |i|
-        inherit_templates.concat(IssueTemplate.search_by_project(i)
-                                     .search_by_tracker(tracker_id)
-                                     .enabled
-                                     .enabled_sharing
-                                     .order_by_position)
-      end
-      inherit_templates
+      IssueTemplate.search_by_project(project_ids)
+                   .search_by_tracker(tracker_id)
+                   .enabled
+                   .enabled_sharing
+                   .order_by_position
     end
 
     def get_templates_for_project_tracker(project_id, tracker_id = nil)
