@@ -15,19 +15,20 @@ RSpec.configure do |config|
   config.before :suite, type: :feature do
     if ENV['DRIVER'] == 'selenium'
       require 'selenium-webdriver'
+      Capybara.register_driver :selenium_chrome do |app|
+        Capybara::Selenium::Driver.new(app, browser: :chrome)
+      end
     else
       require 'capybara/poltergeist'
       Capybara.register_driver :poltergeist do |app|
-        Capybara::Poltergeist::Driver.new(app, js_errors: true,
-                                               inspector: true,
-                                               phantomjs_options: ['--ignore-ssl-errors=yes'],
-                                               timeout: 120)
+        Capybara::Poltergeist::Driver.new(app, js_errors: false, inspector: true,
+                                               phantomjs_options: ['--ignore-ssl-errors=yes'], timeout: 120)
       end
     end
   end
 
   config.before :each, type: :feature do
-    Capybara.current_driver = ENV['DRIVER'] == 'selenium' ? Capybara.javascript_driver : :poltergeist
+    Capybara.current_driver = ENV['DRIVER'] == 'selenium' ? :selenium_chrome : :poltergeist
   end
 
   config.include Capybara::DSL
