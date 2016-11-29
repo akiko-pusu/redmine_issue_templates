@@ -29,10 +29,9 @@ build:
           pwd
           ls -la .
           ls -la plugins/redmine_issue_templates
-    - script:
-        name: 'Bundle'
-        code: |
-          bundle install --path vendor/bundle --without mysql postgreql rmagick --with test
+    - bundle-install:
+        path: vendor/bundle
+        without: mysql postgreql rmagick
     - script:
         name: 'Bundle Update'
         code: |
@@ -41,7 +40,6 @@ build:
         name: 'Migrate DB'
         code:
           bundle exec rake db:migrate RAILS_ENV=test
-
     - script:
         name: 'Migrate Plugin'
         code:
