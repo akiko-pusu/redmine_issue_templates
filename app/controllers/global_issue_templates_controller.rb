@@ -66,24 +66,19 @@ class GlobalIssueTemplatesController < ApplicationController
 
   def edit
     # Change from request.post to request.patch for Rails4.
-    if request.patch? || request.put?
-      param_template = params[:global_issue_template]
-      @global_issue_template.safe_attributes = param_template
+    return unless request.patch? || request.put?
+    param_template = params[:global_issue_template]
+    @global_issue_template.safe_attributes = param_template
 
-      if param_template[:checklists]
-        @global_issue_template.checklist_json = param_template[:checklists].to_json
-      end
-      save_and_flash
-    end
+    @global_issue_template.checklist_json = param_template[:checklists].to_json if param_template[:checklists]
+    save_and_flash
   end
 
   def destroy
-    if request.post?
-      if @global_issue_template.destroy
-        flash[:notice] = l(:notice_successful_delete)
-        redirect_to action: 'index'
-      end
-    end
+    return unless request.post?
+    return unless @global_issue_template.destroy
+    flash[:notice] = l(:notice_successful_delete)
+    redirect_to action: 'index'
   end
 
   # preview
@@ -118,9 +113,8 @@ class GlobalIssueTemplatesController < ApplicationController
   end
 
   def save_and_flash
-    if @global_issue_template.save
-      flash[:notice] = l(:notice_successful_create)
-      redirect_to action: 'show', id: @global_issue_template.id
-    end
+    return unless @global_issue_template.save
+    flash[:notice] = l(:notice_successful_create)
+    redirect_to action: 'show', id: @global_issue_template.id
   end
 end
