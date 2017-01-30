@@ -6,7 +6,8 @@ namespace :redmine_issue_templates do
   Rake::TestTask.new(:test) do |t|
     t.libs << 'lib'
     t.pattern = 'plugins/redmine_issue_templates/test/**/*_test.rb'
-    t.verbose = true
+    t.verbose = false
+    t.warning = false
   end
 
   desc 'Run spec for redmine_issue_template plugin'

@@ -6,7 +6,7 @@ feature 'IssueTemplate', js: true do
   # TODO: Change not to use Redmine's fixture but to use Factory...
   #
   fixtures :projects,
-           :users, :email_addresses,
+           :users,
            :roles,
            :members,
            :member_roles,
@@ -14,14 +14,7 @@ feature 'IssueTemplate', js: true do
            :issue_statuses,
            :trackers,
            :projects_trackers,
-           :issue_categories,
-           :enabled_modules,
-           :enumerations,
-           :workflows,
-           :custom_fields,
-           :custom_values,
-           :custom_fields_projects,
-           :custom_fields_trackers
+           :enabled_modules
 
   after do
     page.execute_script 'window.close();'

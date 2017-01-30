@@ -1,19 +1,13 @@
 require 'simplecov'
 require 'simplecov-rcov'
-require 'codeclimate-test-reporter'
 require 'shoulda'
 if ENV['JENKINS'] == 'true'
   SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
   true
 else
   SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
-      SimpleCov::Formatter::HTMLFormatter,
-      CodeClimate::TestReporter::Formatter
+      SimpleCov::Formatter::HTMLFormatter
   ]
-end
-
-CodeClimate::TestReporter.configure do |config|
-  config.git_dir = "#{Dir.pwd}/plugins/redmine_issue_templates"
 end
 
 SimpleCov.coverage_dir('coverage/redmine_issue_template_test')
