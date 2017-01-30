@@ -7,8 +7,6 @@ group :test do
   # TODO: change test not to use shoulda.
   #
   gem 'shoulda', require: false
-  gem 'rubocop', require: false
-
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'capybara'
@@ -17,4 +15,3 @@ group :test do
   gem 'database_cleaner'
 end
 
-gem 'codeclimate-test-reporter', group: :test, require: nil

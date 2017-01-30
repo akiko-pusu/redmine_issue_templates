@@ -1,34 +1,16 @@
-box: ruby
+box: akiko/docker-for-redmine-plugin-test
 build:
   steps:
-    # for phantomjs
     - script:
-        name: install phantomJS
+        name: ready redmine source code
         code: |
-          cd /tmp
-          wget https://github.com/paladox/phantomjs/releases/download/2.1.7/phantomjs-2.1.1-linux-x86_64.tar.bz2
-          tar xfj phantomjs-2.1.1-linux-x86_64.tar.bz2
-          sudo cp /tmp/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin
-    - script:
-        name: check directory
-        code: |
-          pwd
-          ls -la .
-    - script:
-        name: download Redmine trunk
-        code: |
-          sh ./redmine-ready.sh
-    - script:
-        name: 'Install & Update bundler'
-        code: |
-          gem install simplecov simplecov-rcov yard --no-rdoc --no-ri
-          gem update bundler
+          sh ./script/redmine-ready.sh
     - script:
         name: check directory again
         code: |
           pwd
           ls -la .
-          ls -la plugins/redmine_issue_templates
+          ls -la plugins/${PLUGIN_NAME}
     - bundle-install:
         path: vendor/bundle
         without: mysql postgreql rmagick
@@ -47,11 +29,11 @@ build:
     - script:
         name: 'Run Plugin tests via rake task'
         code: |
-          bundle exec rake redmine_issue_templates:test
+          bundle exec rake ${PLUGIN_NAME}:test
     - script:
         name: 'Run Plugin spec'
         code: |
-          bundle exec rspec -I plugins/redmine_issue_templates/spec --format documentation plugins/redmine_issue_templates/spec/
+          bundle exec rspec -I plugins/${PLUGIN_NAME}/spec --format documentation plugins/${PLUGIN_NAME}/spec/
     - script:
         name: 'Uninstall Schema tests'
         code: |

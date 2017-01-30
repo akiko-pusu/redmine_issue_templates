@@ -8,7 +8,7 @@ SimpleCov.start 'rails'
 
 RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/test/fixtures"
-  config.use_transactional_fixtures = true
+  config.use_transactional_fixtures = false
   config.infer_spec_type_from_file_location!
   config.include FactoryGirl::Syntax::Methods
   FactoryGirl.definition_file_paths = [File.expand_path('../factories', __FILE__)]
