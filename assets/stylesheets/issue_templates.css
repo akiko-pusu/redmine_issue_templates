@@ -193,6 +193,7 @@ table.list.template_list {
 
 .overflow_dialog {
     overflow: visible;
+    width: auto;
 }
 
 .filtered_templates_list {
