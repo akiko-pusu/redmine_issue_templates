@@ -51,11 +51,6 @@ test-stable:
         code: |
           bundle exec rake redmine:plugins:migrate NAME=${WERCKER_APPLICATION_NAME} \
             VERSION=0 RAILS_ENV=test
-    - script:
-        name: 'copy output'
-        code: |
-          cp -fr ${WERCKER_SOURCE_DIR}/* ${WERCKER_OUTPUT_DIR}/
-          cp -fr ${WERCKER_SOURCE_DIR}/.* ${WERCKER_OUTPUT_DIR}/
 
 test-trunk:
   steps:
@@ -94,8 +89,3 @@ test-trunk:
         code: |
           bundle exec rake redmine:plugins:migrate NAME=${WERCKER_APPLICATION_NAME} \
             VERSION=0 RAILS_ENV=test
-    - script:
-        name: 'copy output'
-        code: |
-          cp -fr ${WERCKER_SOURCE_DIR}/* ${WERCKER_OUTPUT_DIR}/
-          cp -fr ${WERCKER_SOURCE_DIR}/.* ${WERCKER_OUTPUT_DIR}/
