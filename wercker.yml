@@ -90,14 +90,4 @@ test-trunk:
           bundle exec rake redmine:plugins:migrate NAME=${WERCKER_APPLICATION_NAME} \
             VERSION=0 RAILS_ENV=test
 
-create-zip:
-  steps:
-    - script:
-        name: 'check work directory'
-        code: |
-          cd ${WERCKER_SOURCE_DIR}
-          ls -la
-          ls -la ${WERCKER_SOURCE_DIR}
-          pwd
-
 
