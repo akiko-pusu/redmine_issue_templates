@@ -2,21 +2,20 @@
 cd /tmp/redmine
 
 # switch target version of redmine
-hg up ${REDMINE_TARGET}
+hg pull
 cat << HERE >> config/database.yml
 test:
   adapter: sqlite3
   database: db/test.sqlite3
 HERE
 
-mkdir -p /tmp/redmine/plugins/${PLUGIN_NAME}
-cp -r ${WERCKER_SOURCE_DIR}/* /tmp/redmine/plugins/${PLUGIN_NAME}/
-cp -r ${WERCKER_SOURCE_DIR}/.git /tmp/redmine/plugins/${PLUGIN_NAME}/
-
-cd ${WERCKER_SOURCE_DIR}
-ls -a | grep -v -E 'wercker\.yml' | xargs rm -rf
-
 # move redmine source to wercker source directory
-mv /tmp/redmine/* ./
-
+rm -fr ${WERCKER_OUTPUT_DIR}/*
+mkdir -p ${WERCKER_OUTPUT_DIR}
+mkdir -p ${WERCKER_OUTPUT_DIR}/plugins/${WERCKER_APPLICATION_NAME}
+cp -fr /tmp/redmine/* ${WERCKER_OUTPUT_DIR}
+cp -fr /tmp/redmine/.* ${WERCKER_OUTPUT_DIR}
+cp ${WERCKER_SOURCE_DIR}/Gemfile.local ${WERCKER_OUTPUT_DIR}/
+cp -r ${WERCKER_SOURCE_DIR}/* ${WERCKER_OUTPUT_DIR}/plugins/${WERCKER_APPLICATION_NAME}/
+cp -r ${WERCKER_SOURCE_DIR}/ ${WERCKER_OUTPUT_DIR}/plugins/${WERCKER_APPLICATION_NAME}/
 

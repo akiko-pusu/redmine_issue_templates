@@ -1,6 +1,6 @@
-= Redmine Issue Templates Plugin 
+= Redmine Issue Templates Plugin
 
-Plugin to generate and use issue templates for each project to assist issue creation. 
+Plugin to generate and use issue templates for each project to assist issue creation.
 For Redmine 2.1.x or higher, please use version 0.0.4 or higher.
 For Redmine 2.0, please use version 0.0.3 or higher.
 
@@ -31,7 +31,7 @@ See also: http://www.r-labs.org/projects/issue-template/wiki/About_en#Uninstall-
 === Required Settings
 
 1. Login to your Redmine install as an Administrator
-2. Enable the permissions for your Roles. 
+2. Enable the permissions for your Roles.
 
    Show issue templates: User can show issue templates and use templates when creating/updating issues.
    Edit issue templates: User can create/update/activate templates for each project.
@@ -42,7 +42,7 @@ See also: http://www.r-labs.org/projects/issue-template/wiki/About_en#Uninstall-
 
 === Note
 
-This plugin aims to assist contributor's feedback by using template if the 
+This plugin aims to assist contributor's feedback by using template if the
 project has some format for issues.
 
 === Troubleshoot for bundle intall and startup problem
@@ -134,7 +134,7 @@ NOTE: Please run "rake redmine:plugins:migrate" task because new column is added
 * Fix some bugs.
 * Compatible with CKEditor.  (#1280)
 * Add feature to show warning message for orphaned templates. (#1278)
-* Inherited templates only should be listed which tracker is the same to 
+* Inherited templates only should be listed which tracker is the same to
   child project use. (#1278)
 * Add French translation file. (Bitbucket IssueID:33)
 * Add Serbian translation. Thank you so much, Miodrag Milic. (Bitbucket IssueID:34)
@@ -203,11 +203,6 @@ If you set environment variable 'DRIVER' to 'selenium', selenium-webdriver is us
 
  % bundle exec rake redmine_issue_templates:spec DRIVER='selenium'
 
-
-=== Report
-
-Code Climate: {<img src="https://codeclimate.com/github/akiko-pusu/redmine_issue_templates/badges/gpa.svg" />}[https://codeclimate.com/github/akiko-pusu/redmine_issue_templates]
-Test Coverage: {<img src="https://codeclimate.com/github/akiko-pusu/redmine_issue_templates/badges/coverage.svg" />}[https://codeclimate.com/github/akiko-pusu/redmine_issue_templates/coverage]
 
 === License
 
