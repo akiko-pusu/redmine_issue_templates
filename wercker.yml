@@ -1,23 +1,34 @@
 box: akiko/docker-for-redmine-plugin-test
+dev:
+  steps:
+    - internal/shell:
+        cmd: /bin/sh  #defaults to /bin/bash
+        code: |
+          env
+          sh ./script/redmine-ready.sh
+
 build:
   steps:
     - script:
-        name: ready redmine source code
+        name: ready redmine source code and workspace
         code: |
-          sh ./script/redmine-ready.sh
+           sh ./script/redmine-ready.sh
+
+test-stable:
+  steps:
     - script:
-        name: check directory again
+        name: 'check work directory'
         code: |
-          pwd
-          ls -la .
-          ls -la plugins/${PLUGIN_NAME}
-    - bundle-install:
-        path: vendor/bundle
-        without: mysql postgreql rmagick
+          ls -la
     - script:
-        name: 'Bundle Update'
+        name: 'checkout stable'
         code: |
-          bundle update
+          hg up 3.3-stable
+          hg log --branch 3.3-stable -l 1
+    - script:
+        name: 'bundle install'
+        code: |
+          bundle install --without mysql postgreql rmagick && bundle update
     - script:
         name: 'Migrate DB'
         code:
@@ -29,16 +40,62 @@ build:
     - script:
         name: 'Run Plugin tests via rake task'
         code: |
-          bundle exec rake ${PLUGIN_NAME}:test
+          bundle exec rake ${WERCKER_APPLICATION_NAME}:test
     - script:
         name: 'Run Plugin spec'
         code: |
-          bundle exec rspec -I plugins/${PLUGIN_NAME}/spec --format documentation plugins/${PLUGIN_NAME}/spec/
+          bundle exec rspec -I plugins/${WERCKER_APPLICATION_NAME}/spec \
+            --format documentation plugins/${WERCKER_APPLICATION_NAME}/spec/
     - script:
         name: 'Uninstall Schema tests'
         code: |
-          bundle exec rake redmine:plugins:migrate NAME=${PLUGIN_NAME} VERSION=0 RAILS_ENV=test
+          bundle exec rake redmine:plugins:migrate NAME=${WERCKER_APPLICATION_NAME} \
+            VERSION=0 RAILS_ENV=test
     - script:
-        name: 'store coverage report'
+        name: 'copy output'
         code: |
-          cp -r coverage ${WERCKER_REPORT_ARTIFACTS_DIR}/
+          cp -fr ${WERCKER_SOURCE_DIR}/* ${WERCKER_OUTPUT_DIR}/
+          cp -fr ${WERCKER_SOURCE_DIR}/.* ${WERCKER_OUTPUT_DIR}/
+
+test-trunk:
+  steps:
+    - script:
+        name: 'check work directory'
+        code: |
+          ls -la
+    - script:
+        name: 'checkout stable'
+        code: |
+          hg up default
+          hg log --branch default -l 1
+    - script:
+        name: 'bundle install'
+        code: |
+          bundle install --without mysql postgreql rmagick && bundle update
+    - script:
+        name: 'Migrate DB'
+        code:
+          bundle exec rake db:migrate RAILS_ENV=test
+    - script:
+        name: 'Migrate Plugin'
+        code:
+          bundle exec rake redmine:plugins:migrate RAILS_ENV=test
+    - script:
+        name: 'Run Plugin tests via rake task'
+        code: |
+          bundle exec rake ${WERCKER_APPLICATION_NAME}:test
+    - script:
+        name: 'Run Plugin spec'
+        code: |
+          bundle exec rspec -I plugins/${WERCKER_APPLICATION_NAME}/spec \
+            --format documentation plugins/${WERCKER_APPLICATION_NAME}/spec/
+    - script:
+        name: 'Uninstall Schema tests'
+        code: |
+          bundle exec rake redmine:plugins:migrate NAME=${WERCKER_APPLICATION_NAME} \
+            VERSION=0 RAILS_ENV=test
+    - script:
+        name: 'copy output'
+        code: |
+          cp -fr ${WERCKER_SOURCE_DIR}/* ${WERCKER_OUTPUT_DIR}/
+          cp -fr ${WERCKER_SOURCE_DIR}/.* ${WERCKER_OUTPUT_DIR}/
