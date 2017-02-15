@@ -97,5 +97,7 @@ create-zip:
         code: |
           cd ${WERCKER_SOURCE_DIR}
           ls -la
+          ls -la ${WERCKER_SOURCE_DIR}
+          pwd
 
 
