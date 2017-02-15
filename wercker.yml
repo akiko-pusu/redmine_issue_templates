@@ -59,7 +59,7 @@ test-trunk:
         code: |
           ls -la
     - script:
-        name: 'checkout stable'
+        name: 'checkout default'
         code: |
           hg up default
           hg log --branch default -l 1
@@ -89,3 +89,13 @@ test-trunk:
         code: |
           bundle exec rake redmine:plugins:migrate NAME=${WERCKER_APPLICATION_NAME} \
             VERSION=0 RAILS_ENV=test
+
+create-zip:
+  steps:
+    - script:
+        name: 'check work directory'
+        code: |
+          cd ${WERCKER_SOURCE_DIR}
+          ls -la
+
+
