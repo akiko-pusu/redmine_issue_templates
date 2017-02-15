@@ -73,7 +73,7 @@ some trouble related "bundle intall", please try --without option.
 
 ## Changelog
 
-### 0.1.4-dev
+### 0.1.4
 
 Maintenance release to follow Redmine's update, and some refactoring related to test, namespace.
 Other additional updates are following:
