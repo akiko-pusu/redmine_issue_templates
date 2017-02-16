@@ -41,9 +41,9 @@ class GlobalIssueTemplatesController < ApplicationController
       @global_issue_template.safe_attributes = param_template
       @global_issue_template.author = User.current
 
-      if param_template[:checklists]
-        @global_issue_template.checklist_json = param_template[:checklists].to_json
-      end
+      checklists = param_template[:checklists]
+      @global_issue_template.checklist_json = checklists.to_json if checklists
+
       save_and_flash && return
     end
 
