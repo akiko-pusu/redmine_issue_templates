@@ -5,11 +5,10 @@ class IssueTemplatesSettingsController < ApplicationController
   before_filter :authorize, except: [:show_help, :preview]
 
   def edit
-    unless params[:settings].nil?
-      update_template_setting
-      flash[:notice] = l(:notice_successful_update)
-      redirect_to controller: 'projects', action: 'settings', id: @project, tab: 'issue_templates'
-    end
+    return if params[:settings].blank?
+    update_template_setting
+    flash[:notice] = l(:notice_successful_update)
+    redirect_to controller: 'projects', action: 'settings', id: @project, tab: 'issue_templates'
   end
 
   def preview

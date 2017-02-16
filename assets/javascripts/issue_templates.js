@@ -35,7 +35,9 @@ function openDialog(url, title) {
                     dialogClass: "modal overflow_dialog",
                     draggable: true,
                     title: title,
-                    width: 400
+                    minWidth: 400,
+                    width: 'auto',
+                    maxWidth: 'auto'
                 }
             );
         }

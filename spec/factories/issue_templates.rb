@@ -7,6 +7,7 @@ FactoryGirl.define do
     t.sequence(:note) { |n| "template-note: #{n}" }
     t.sequence(:position) { |n| n }
     t.enabled true
+    t.enabled_sharing true
     t.author_id 1
   end
 end

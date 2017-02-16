@@ -6,7 +6,7 @@ feature 'IssueTemplate', js: true do
   # TODO: Change not to use Redmine's fixture but to use Factory...
   #
   fixtures :projects,
-           :users, :email_addresses,
+           :users,
            :roles,
            :members,
            :member_roles,
@@ -14,14 +14,7 @@ feature 'IssueTemplate', js: true do
            :issue_statuses,
            :trackers,
            :projects_trackers,
-           :issue_categories,
-           :enabled_modules,
-           :enumerations,
-           :workflows,
-           :custom_fields,
-           :custom_values,
-           :custom_fields_projects,
-           :custom_fields_trackers
+           :enabled_modules
 
   after do
     page.execute_script 'window.close();'
@@ -52,7 +45,7 @@ feature 'IssueTemplate', js: true do
     given!(:enabled_module) { FactoryGirl.create(:enabled_module) }
     context 'When user has no priv to use issue template' do
       background do
-        assign_template_priv(remove_permission: ':show_issue_templates')
+        assign_template_priv(remove_permission: :show_issue_templates)
         log_user('jsmith', 'jsmith')
         visit '/projects/ecookbook/issues'
       end
@@ -64,7 +57,7 @@ feature 'IssueTemplate', js: true do
 
     context 'When user has priv to use issue template' do
       background do
-        assign_template_priv(add_permission: ':show_issue_templates')
+        assign_template_priv(add_permission: :show_issue_templates)
         log_user('jsmith', 'jsmith')
         visit '/projects/ecookbook/issues'
       end
@@ -87,7 +80,7 @@ feature 'IssueTemplate', js: true do
     given!(:enabled_module) { FactoryGirl.create(:enabled_module) }
 
     background do
-      assign_template_priv(add_permission: ':show_issue_templates')
+      assign_template_priv(add_permission: :show_issue_templates)
       log_user('jsmith', 'jsmith')
       visit '/projects/ecookbook/issues/new'
     end
@@ -158,7 +151,7 @@ feature 'IssueTemplate', js: true do
     given(:modal_close) { page.find('span.ui-icon-closethick') }
 
     background do
-      assign_template_priv(add_permission: ':show_issue_templates')
+      assign_template_priv(add_permission: :show_issue_templates)
       log_user('jsmith', 'jsmith')
       visit '/projects/ecookbook/issues/new'
     end
@@ -203,9 +196,8 @@ feature 'IssueTemplate', js: true do
   def assign_template_priv(add_permission: nil, remove_permission: nil)
     return if add_permission.blank? && remove_permission.blank?
     role = Role.find(1)
-    role.permissions << add_permission if add_permission.present?
+    role.add_permission! add_permission if add_permission.present?
     role.remove_permission! remove_permission if remove_permission.present?
-    role.save
   end
 
   def log_user(login, password)

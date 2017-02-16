@@ -6,7 +6,8 @@ namespace :redmine_issue_templates do
   Rake::TestTask.new(:test) do |t|
     t.libs << 'lib'
     t.pattern = 'plugins/redmine_issue_templates/test/**/*_test.rb'
-    t.verbose = true
+    t.verbose = false
+    t.warning = false
   end
 
   desc 'Run spec for redmine_issue_template plugin'
@@ -19,16 +20,5 @@ namespace :redmine_issue_templates do
     task default: :spec
   rescue LoadError
     puts 'yardoc failed.'
-  end
-
-  desc 'Run rubycritic for redmine_issue_template plugin'
-  begin
-    require 'rubycritic/rake_task'
-    RubyCritic::RakeTask.new do |t|
-      t.paths = FileList['plugins/redmine_issue_templates/app']
-      t.options = '-p redmine_issue_templates_critic --no-browser --mode-ci'
-    end
-  rescue LoadError
-    puts 'rubycritic failed.'
   end
 end

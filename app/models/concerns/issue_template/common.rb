@@ -12,6 +12,9 @@ module Concerns
         scope :search_by_tracker, lambda { |tracker_id|
           where(tracker_id: tracker_id) if tracker_id.present?
         }
+        scope :search_by_project, lambda { |prolect_id|
+          where(project_id: prolect_id)
+        }
       end
 
       #
