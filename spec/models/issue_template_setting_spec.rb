@@ -9,6 +9,44 @@ describe IssueTemplateSetting do
   end
   let(:child_projects) { Project.where(parent_id: project.id) }
 
+  shared_examples 'expected for apply/unapply template' do
+    context 'When no project id' do
+      let(:param) {}
+      it 'Raise Exception if no argument' do
+        expect { subject }.to raise_error(ArgumentError)
+      end
+    end
+
+    context 'When invarid project id' do
+      let(:param) { { project_id: 0 } }
+      it 'Raise  NotFound Exception if not specified varid project' do
+        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'When varid project id' do
+      let(:param) { { project_id: project.id } }
+      before do
+        FactoryGirl.create(:issue_template_setting, project_id: project.id)
+      end
+
+      it 'instance method is called' do
+        expect_any_instance_of(IssueTemplateSetting).to receive(:update_inherit_template_of_child_projects)
+        subject
+      end
+    end
+  end
+
+  describe '.apply_template_to_child_projects' do
+    let(:subject) { IssueTemplateSetting.apply_template_to_child_projects(param) }
+    it_behaves_like 'expected for apply/unapply template'
+  end
+
+  describe '.unapply_template_from_child_projects' do
+    let(:subject) { IssueTemplateSetting.unapply_template_from_child_projects(param) }
+    it_behaves_like 'expected for apply/unapply template'
+  end
+
   describe '#child_projects' do
     context 'no child projects' do
       it 'return zero count' do
