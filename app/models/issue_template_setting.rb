@@ -1,19 +1,4 @@
 class IssueTemplateSetting < ActiveRecord::Base
-  #
-  # Class method
-  #
-  class << self
-    def apply_template_to_child_projects(project_id:)
-      setting = IssueTemplateSetting.find(project_id)
-      setting.apply_template_to_child_projects
-    end
-
-    def unapply_template_from_child_projects(project_id:)
-      setting = IssueTemplateSetting.find(project_id)
-      setting.unapply_template_from_child_projects
-    end
-  end
-
   include Redmine::SafeAttributes
   unloadable
   belongs_to :project
@@ -32,6 +17,30 @@ class IssueTemplateSetting < ActiveRecord::Base
       setting.save!
     end
     setting
+  end
+
+  #
+  # Class method
+  #
+  class << self
+    def apply_template_to_child_projects(project_id: nil)
+      setting = find_setting(project_id)
+      setting.apply_template_to_child_projects
+    end
+
+    def unapply_template_from_child_projects(project_id: nil)
+      setting = find_setting(project_id)
+      setting.unapply_template_from_child_projects
+    end
+
+    private
+
+    def find_setting(project_id)
+      raise ArgumentError, 'Please specify valid project_id.' if project_id.blank?
+      setting = IssueTemplateSetting.where(project_id: project_id).first
+      raise ActiveRecord::RecordNotFound if setting.blank?
+      setting
+    end
   end
 
   def enable_help?
