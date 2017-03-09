@@ -1,5 +1,5 @@
 # Italian strings go here for Rails i18n
-en:
+it:
   issue_templates: Modelli segnalazioni
   issue_template: Modello segnalazione
   issue_template_note: Note
