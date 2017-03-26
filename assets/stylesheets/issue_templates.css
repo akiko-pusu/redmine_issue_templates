@@ -72,14 +72,20 @@ span.help_content {
 }
 
 #template_status-area .flash_message {
+    position: fixed;
+    bottom: 0px;
+    right: 10px;
+    margin-left: 10px;
     margin-top: 5pt;
     margin-bottom: 5pt;
     display: block;
     font-style: italic;
     padding-left: 20px;
-    background: #FFEBC1 url(../images/lamp.png) no-repeat 3px center;
-    color: #A6750C;
-    border: solid #FDBF3B 1px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    color: #31708f;
+    background: #eaf5fb url(../images/lamp.png) no-repeat 3px center;
+    border: solid #a7e4fd 1px;
 }
 
 option.inherited {
@@ -203,5 +209,4 @@ table.list.template_list {
 select.issue_template {
     width: 240px;
 }
-
 
