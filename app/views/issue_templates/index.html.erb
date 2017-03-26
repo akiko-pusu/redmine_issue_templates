@@ -1,9 +1,5 @@
 <h2 class="template"><%=h "#{l(:issue_template)}" %></h2>
-<% if @project.trackers.blank? %>
-    <div class="nodata">
-      <%= simple_format(l(:text_no_tracker_enabled)) %>
-    </div>
-<% end %>
+<%= render partial: "common/nodata", locals: { trackers: @project.trackers } %>
 <div class="contextual">
   <%= link_to_if_authorized(l(:label_new_templates),
                             { controller: 'issue_templates', action: 'new', project_id: @project },
@@ -58,8 +54,13 @@
                               id: issue_template.id, action: 'show' },
                             { title: "#{html_escape(issue_template.note) }"} %>
 
-                <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"
-                   onclick="checkExpand('template_description-<%= issue_template.id %>');"></a>
+                <div class="template_tooltip_wrapper">
+                  <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"></a>
+                  <div class="wiki template_tooltip_body">
+                    <span class="title"><%= issue_template.title %></span>
+                    <%= textilizable(issue_template.description) %>
+                  </div>
+                </div>
               </td>
               <td><%=h issue_template.tracker.name %></td>
               <td><%=h issue_template.author %></td>
@@ -132,8 +133,13 @@
                                 id: issue_template.id, action: 'show' },
                               { title: "#{html_escape(issue_template.note)}" } %>
 
-                  <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"
-                     onclick="checkExpand('template_description-<%= issue_template.id %>');"></a>
+                  <div class="template_tooltip_wrapper">
+                    <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"></a>
+                    <div class="wiki template_tooltip_body">
+                      <span class="title"><%= issue_template.title %></span>
+                      <%= textilizable(issue_template.description) %>
+                    </div>
+                  </div>
                 </td>
                 <td><%=h issue_template.tracker.name %></td>
                 <td><%=h issue_template.author %></td>
@@ -164,6 +170,7 @@
           <th><%= l(:field_tracker) %></th>
           <th><%= l(:field_author) %></th>
           <th><%= l(:field_updated_on) %></th>
+          <th><%= l(:field_is_default) %></th>
         </tr>
         </thead>
         <tbody>
@@ -185,12 +192,18 @@
                             { controller: 'global_issue_templates',
                               id: issue_template.id, action: 'show' },
                             { title: "#{html_escape(issue_template.note)}" } %>
-                <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"
-                   onclick="checkExpand('global_template_description-<%= issue_template.id %>');"></a>
+                <div class="template_tooltip_wrapper">
+                  <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"></a>
+                  <div class="wiki template_tooltip_body">
+                    <span class="title"><%= issue_template.title %></span>
+                    <%= textilizable(issue_template.description) %>
+                  </div>
+                </div>
               </td>
               <td><%=h issue_template.tracker.name %></td>
               <td><%=h issue_template.author %></td>
               <td><%= format_time(issue_template.updated_on)%> </td>
+              <td class="center"><%= checked_image issue_template.is_default? %></td>
             </tr>
             <tr class="<%= current_cycle %>" style="display: none;" id="global_template_description-<%= issue_template.id %>">
               <td class="description" colspan="8">

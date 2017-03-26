@@ -65,7 +65,7 @@
     $('#link_template_dialog').click(function() {
       var template_list_url = '<%= url_for(controller: 'issue_templates',
         action:'list_templates', project_id: project_id, issue_tracker_id: @issue.tracker.id) %>';
-      var template_list_title = '<%=h l(:issue_template) %>: ' + '<%= @issue.tracker.name %>';
+      var template_list_title = '<%= "#{l(:issue_template)}: #{@issue.tracker.name}".html_safe %>';
 
       openDialog(template_list_url, template_list_title);
     });
