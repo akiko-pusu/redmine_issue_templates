@@ -104,43 +104,41 @@ class IssueTemplatesController < ApplicationController
 
   # update pulldown
   def set_pulldown
-    grouped_options = []
     group = []
     default_template = nil
     project_id = @project.id
     tracker_id = @tracker.id
 
-    # first: get inherit_templates
-    setting = IssueTemplateSetting.find_or_create(project_id)
+    # 1st: get global_templates
+    global_issue_templates = global_templates
+
+    # 2nd: get inherit_templates
     inherit_templates = setting.get_inherit_templates(@tracker)
 
     inherit_templates.each do |template|
-      group.push([template.title, template.id, { class: 'inherited' }])
+      group.push(value: template.id, name: template.title, class: 'inherited')
       next unless template.is_default == true
-      default_template = template.id
+      default_template = group.length - 1
     end
 
     issue_templates = IssueTemplate.get_templates_for_project_tracker(project_id, tracker_id)
-
-    project_default_template = issue_templates.is_default.first
-    default_template = project_default_template.present? ? project_default_template.id : default_template
-
-    global_issue_templates = GlobalIssueTemplate.get_templates_for_project_tracker(project_id, tracker_id)
-
-    unless issue_templates.empty?
-      issue_templates.each { |x| group.push([x.title, x.id]) }
+    issue_templates.each do |template|
+      group.push(value: template.id, name: template.title)
+      next unless template.is_default == true
+      default_template = group.length - 1 if default_template.blank?
     end
 
-    if global_issue_templates.any?
-      global_issue_templates.each do |global_issue_template|
-        group.push([global_issue_template.title, global_issue_template.id, { class: 'global' }])
-      end
+    global_issue_templates.each do |global_issue_template|
+      group.push(value: global_issue_template.id, name: global_issue_template.title, class: 'global')
+      next unless global_issue_template.is_default == true
+      default_template = group.length - 1 if default_template.blank?
     end
 
     is_triggered_by_status = request.parameters[:is_triggered_by_status]
-    grouped_options.push([@tracker.name, group]) if group.any?
+    group[default_template][:selected] = 'selected' if default_template.present?
+
     render action: '_template_pulldown', layout: false,
-           locals: { is_triggered_by_status: is_triggered_by_status, grouped_options: grouped_options,
+           locals: { is_triggered_by_status: is_triggered_by_status, grouped_options: group,
                      should_replaced: setting.should_replaced, default_template: default_template }
   end
 
@@ -153,15 +151,15 @@ class IssueTemplatesController < ApplicationController
     tracker_id = @tracker.id
 
     # first: get inherit_templates
-    setting = IssueTemplateSetting.find_or_create(project_id)
     inherit_templates = setting.get_inherit_templates(@tracker)
-
     issue_templates = IssueTemplate.get_templates_for_project_tracker(project_id, tracker_id)
-
-    project_default_template = issue_templates.is_default.first
-    default_template = project_default_template.present? ? project_default_template.id : default_template
-
     global_issue_templates = GlobalIssueTemplate.get_templates_for_project_tracker(project_id, tracker_id)
+
+    (templ_global, templ_inherit, templ_project) = default_templates(global_issue_templates,
+                                                                     inherit_templates, issue_templates)
+
+    default_template = templ_inherit.present? ? templ_inherit : templ_global
+    default_template = templ_project.present? ? templ_project : default_template
 
     respond_to do |format|
       format.html do
@@ -232,5 +230,20 @@ class IssueTemplatesController < ApplicationController
     render(layout: !request.xhr?,
            locals: { checklist_enabled: checklist_enabled,
                      issue_template: @issue_template, project: @project })
+  end
+
+  def setting
+    IssueTemplateSetting.find_or_create(@project.id)
+  end
+
+  def global_templates
+    GlobalIssueTemplate.get_templates_for_project_tracker(@project.id, @tracker.id)
+  end
+
+  def default_templates(global_issue_templates, inherit_templates, issue_templates)
+    templ_global = global_issue_templates.is_default.first if global_issue_templates.any?
+    templ_inherit = inherit_templates.is_default.first if inherit_templates.any?
+    templ_project = issue_templates.is_default.first
+    [templ_global, templ_inherit, templ_project]
   end
 end

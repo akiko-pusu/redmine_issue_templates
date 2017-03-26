@@ -4,8 +4,9 @@
   </script>
 <% end %>
 <option value="">---</option>
-<%= grouped_options_for_select(grouped_options, default_template) %>
-
+<optgroup label="<%= @tracker.name %>">
+  <%= options_for_template_pulldown(grouped_options) %>
+</optgroup>
 <% if is_triggered_by_status.blank? || (is_triggered_by_status.present? && is_triggered_by_status == 'false') %>
     <script type="text/javascript">
       //<![CDATA[
