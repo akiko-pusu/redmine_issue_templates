@@ -37,8 +37,13 @@
               <td><%= link_to h(issue_template.title), { controller: 'global_issue_templates',
                                                          id: issue_template.id, action: 'show' },
                               { title: "#{html_escape(issue_template.note)}" } %>
-                <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"
-                   onclick="checkExpand('global_template_description-<%= issue_template.id %>');">
+                <div class="template_tooltip_wrapper">
+                  <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"></a>
+                  <div class="wiki template_tooltip_body">
+                    <span class="title"><%= issue_template.title %></span>
+                    <%= textilizable(issue_template.description) %>
+                  </div>
+                </div>
 
                 </a>
               </td>
