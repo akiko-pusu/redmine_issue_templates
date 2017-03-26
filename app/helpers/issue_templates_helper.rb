@@ -18,12 +18,8 @@ module IssueTemplatesHelper
 
   def options_for_template_pulldown(options)
     options.map do |option|
-      html_attributes = {}
-      html_attributes[:selected] = option[:selected]
-      html_attributes[:value] = option[:value]
-      html_attributes[:class] = option[:class] if option[:class].present?
       text = option[:name]
-      content_tag_string(:option, text, html_attributes)
+      content_tag_string(:option, text, option)
     end.join("\n").html_safe
   end
 end
