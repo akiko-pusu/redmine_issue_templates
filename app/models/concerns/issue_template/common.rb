@@ -56,6 +56,10 @@ module Concerns
         result.delete('checklist_json')
         result
       end
+
+      def template_struct(option = {})
+        Struct.new(:value, :name, :class, :selected).new(id, title, option[:class])
+      end
     end
   end
 end
