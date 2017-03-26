@@ -45,12 +45,16 @@ module Concerns
       end
 
       def template_json
+        template = {}
+        template[self.class::Config::JSON_OBJECT_NAME] = generate_json
+        template.to_json(root: true)
+      end
+
+      def generate_json
         result = attributes
         result[:checklist] = checklist
         result.delete('checklist_json')
-        template = {}
-        template[self.class::Config::JSON_OBJECT_NAME] = result
-        template.to_json(root: true)
+        result
       end
     end
   end
