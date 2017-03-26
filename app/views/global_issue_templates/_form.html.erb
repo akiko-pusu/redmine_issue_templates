@@ -1,15 +1,16 @@
 <%= error_messages_for 'issue_template' %>
 <div class="box tabular box-white">
-  <p><%= f.text_field :title, required: true, size: 80, label: l(:issue_template_name) %> </p>
+  <p><%= f.text_field :title, required: true, size: 80, label: l(:issue_template_name) %></p>
 
   <fieldset class="issue">
     <legend class="issue"><%= l(:label_applied_for_issue) %></legend>
     <p>
       <% if issue_template.tracker.blank? %>
-          <%= f.select :tracker_id, trackers.collect {|t| [t.name, t.id]}, { required: true },
-                       required: true, label: l(:label_tracker)  %>
-          　<% else %>
-          <%= f.select :tracker_id, trackers.collect {|t| [t.name, t.id]}, { required: true },
+          <%= f.select :tracker_id, trackers.collect { |t| [t.name, t.id] }, {required: true},
+                       required: true, label: l(:label_tracker) %>
+
+      <% else %>
+          <%= f.select :tracker_id, trackers.collect { |t| [t.name, t.id] }, {required: true},
                        required: true, label: l(:label_tracker), selected: issue_template.tracker.id %>
       <% end %>
     </p>
@@ -18,9 +19,9 @@
          onclick="checkExpand('issue_title_help_content');"><%= l(:help_for_this_field) %>
       </a>
       <br/>
-<span id="issue_title_help_content" class="help_content" style="display: none;">
-  <%= l(:help_for_issue_title) %>
-</span>
+      <span id="issue_title_help_content" class="help_content" style="display: none;">
+        <%= l(:help_for_issue_title) %>
+      </span>
     </p>
     <p>
       <%= f.text_area :description, cols: 78, rows: 12,
@@ -32,21 +33,19 @@
         <p id="checklist_form">
           <label>Checklist</label>
           <input type="text" id="checklist_text" class="edit-box">
-          <span class="icon icon-add checklist-new-only save-new-by-button"
-                onclick="addCheckList();">
-          </span>
-        <ul class='checklist' style='padding-left: 180px;'>
-          <% issue_template.checklist.each_with_index do |content, i| %>
-              <li id="checklist_<%= i %>">
+          <span class="icon icon-add checklist-new-only save-new-by-button" onclick="addCheckList();"></span>
+          <ul class='checklist' style='padding-left: 180px;'>
+            <% issue_template.checklist.each_with_index do |content, i| %>
+                <li id="checklist_<%= i %>">
                 <span class="text">
                   <%= content %>
                   <a class="icon icon-del" href="javascript:void(0)" onclick="removeCheckList(this);"></a>
                 </span>
-                <input type="hidden" name="global_issue_template[checklists][]"
-                       id="global_issue_template_checklist" value="<%= content %>">
-              </li>
-          <% end %>
-        </ul>
+                  <input type="hidden" name="global_issue_template[checklists][]"
+                         id="global_issue_template_checklist" value="<%= content %>">
+                </li>
+            <% end %>
+          </ul>
         </p>
     <% end %>
   </fieldset>
@@ -82,11 +81,11 @@
 
 <div id="preview" class="wiki"></div>
 <%= preview_link url_for(controller: 'global_issue_templates', action: 'preview',
-                          id: issue_template),
+                         id: issue_template),
                  'global_issue_template_description', target='preview' %> |
-<%= link_to l(:button_cancel), { action: 'index' }, data: { confirm: l(:text_are_you_sure) } %>
+<%= link_to l(:button_cancel), {action: 'index'}, data: {confirm: l(:text_are_you_sure)} %>
 
-<div class="box" >
+<div class="box">
   <% if projects.any? %>
       <fieldset class="box box-white" id="global_issue_template_project_ids">
         <legend><%= l(:label_project_plural) %></legend>
@@ -104,51 +103,48 @@
 <%= submit_tag l(issue_template.new_record? ? :button_create : :button_save) %>
 
 <script type="text/javascript">
-  //<![CDATA[
-  // $(document).ready(function() {
-  var checklist = $('.checklist');
+    var checklist = $('.checklist');
 
-  function removeCheckList(obj) {
-    var target = obj.closest('li')
-    target.remove();
-  }
+    function removeCheckList(obj) {
+        var target = obj.closest('li')
+        target.remove();
+    }
 
-  function addCheckList() {
-    var text = $('#checklist_text').val();
-    if (text == '') return false;
+    function addCheckList() {
+        var text = $('#checklist_text').val();
+        if (text == '') return false;
 
-    $('.checklist-item').each(function(i, elem) {
-      e = $(elem)
-      if ((text == e.val())) {
-        return;
-      }
-    })
-    addCheckListItem(text);
-    $('#checklist_text').val('');
-  }
+        $('.checklist-item').each(function (i, elem) {
+            e = $(elem)
+            if ((text == e.val())) {
+                return;
+            }
+        })
+        addCheckListItem(text);
+        $('#checklist_text').val('');
+    }
 
-  function addCheckListItem(value) {
-    var li = $('<li>');
-    var text = $('<span class="text">').text(value);
-    var hidden = $("<input>", {
-      type: 'hidden',
-      id: 'global_issue_template_checklist',
-      name: 'global_issue_template[checklists][]',
-      class: 'checklist-item',
-      value: value
-    }).appendTo(li);
+    function addCheckListItem(value) {
+        var li = $('<li>');
+        var text = $('<span class="text">').text(value);
+        var hidden = $("<input>", {
+            type: 'hidden',
+            id: 'global_issue_template_checklist',
+            name: 'global_issue_template[checklists][]',
+            class: 'checklist-item',
+            value: value
+        }).appendTo(li);
 
-    var remove_link = $("<a>", {
-      class: 'icon icon-del',
-    });
+        var remove_link = $("<a>", {
+            class: 'icon icon-del',
+        });
 
-    text.append(remove_link);
-    li.append(text);
-    checklist.append(li);
+        text.append(remove_link);
+        li.append(text);
+        checklist.append(li);
 
-    $('body').on('click','.icon.icon-del', function() {
-      removeCheckList(this);
-    });
-  }
-  //});
+        $('body').on('click', '.icon.icon-del', function () {
+            removeCheckList(this);
+        });
+    }
 </script>
