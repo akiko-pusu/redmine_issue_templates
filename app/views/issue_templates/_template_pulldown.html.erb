@@ -1,8 +1,11 @@
-<% if grouped_options.length == 0 %>
-    <script type="text/javascript">
-        $('#template_area').toggle();
-    </script>
-<% end %>
+<script type="text/javascript">
+    var length = $('#issue_template > optgroup > option').length;
+    if (length < 1) {
+        $('#template_area').hide();
+    } else {
+        $('#template_area').show();
+    }
+</script>
 <option value="">---</option>
 <optgroup label="<%= @tracker.name %>">
   <%= options_for_template_pulldown(grouped_options) %>
