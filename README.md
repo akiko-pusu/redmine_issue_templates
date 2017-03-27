@@ -73,6 +73,11 @@ some trouble related "bundle intall", please try --without option.
 
 ## Changelog
 
+### 0.1.4.1
+
+Bugfix version for #83, #92. Correct some methods not to use named parameters, 
+because ruby 1.9x does not support named parameters.
+
 ### 0.1.4
 
 Maintenance release to follow Redmine's update, and some refactoring related to test, namespace.
