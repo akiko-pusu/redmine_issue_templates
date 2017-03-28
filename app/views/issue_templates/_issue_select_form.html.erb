@@ -1,6 +1,6 @@
 <% return '' unless @issue.project.module_enabled? :issue_templates %>
 <% return '' unless User.current.allowed_to?(:show_issue_templates, @issue.project)  %>
-<div id="template_area">
+<div id="template_area" style="display: none;">
   <p>
     <label for="issue_template"><%=h l(:issue_template)%></label>
     <select id="issue_template" name="issue_template">
