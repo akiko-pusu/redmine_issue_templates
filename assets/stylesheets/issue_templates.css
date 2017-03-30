@@ -210,3 +210,6 @@ select.issue_template {
     width: 240px;
 }
 
+.settings .issue_templates p {
+    padding-left: 50px;
+}

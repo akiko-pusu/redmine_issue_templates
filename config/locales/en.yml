@@ -43,3 +43,4 @@ en:
   text_no_tracker_enabled_for_global: "Trackers are not defined yet.\nPlease set them first because templates are assigned to trackers."
   display_and_filter_issue_templates_in_dialog: "Filter Templates"
   label_filter_template: "Filter Templates"
+  label_apply_global_template_to_all_projects: "Apply Global issue template to all the projects."

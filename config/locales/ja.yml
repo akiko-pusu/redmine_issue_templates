@@ -43,4 +43,5 @@ ja:
   text_no_tracker_enabled_for_global: "テンプレートはトラッカー毎に設定します。\nトラッカーの設定をお願いします。"
   display_and_filter_issue_templates_in_dialog: "テンプレートのフィルタ"
   label_filter_template: "テンプレートのフィルタ"
+  label_apply_global_template_to_all_projects: "グローバルチケットテンプレートを全てのプロジェクトに適用"
   
