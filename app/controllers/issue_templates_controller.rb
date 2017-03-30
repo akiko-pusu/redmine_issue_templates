@@ -211,7 +211,8 @@ class IssueTemplatesController < ApplicationController
   end
 
   def global_templates
-    GlobalIssueTemplate.get_templates_for_project_tracker(@project.id, @tracker.try(:id))
+    project_id = plugin_setting['apply_global_template_to_all_projects'] == 'true' ? nil : @project.id
+    GlobalIssueTemplate.get_templates_for_project_tracker(project_id, @tracker.try(:id))
   end
 
   def default_templates
@@ -238,5 +239,9 @@ class IssueTemplatesController < ApplicationController
 
   def inherit_templates
     setting.get_inherit_templates(@tracker)
+  end
+
+  def plugin_setting
+    @plugin_setting ||= Setting.plugin_redmine_issue_templates
   end
 end
