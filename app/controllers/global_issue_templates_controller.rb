@@ -48,7 +48,7 @@ class GlobalIssueTemplatesController < ApplicationController
     end
 
     render(layout: !request.xhr?,
-           locals: { checklist_enabled: checklist_enabled, trackers: trackers, apply_global_templates: apply_all_projects?,
+           locals: { checklist_enabled: checklist_enabled, trackers: trackers, apply_all_projects: apply_all_projects?,
                      issue_template: @global_issue_template, projects: projects }) && return
   end
 
