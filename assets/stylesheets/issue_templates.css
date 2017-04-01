@@ -5,6 +5,11 @@
     margin-bottom: 0px;
 }
 
+.template.pull-right {
+    float: right;
+    margin: 4px;
+}
+
 #template_area {
     margin-top: 4pt;
 }
@@ -67,7 +72,7 @@ div.issue_template {
     background-color: white;
 }
 
-span.help_content {
+.help_content {
     color: #8b0000;
     padding: 6px;
 }
@@ -230,4 +235,8 @@ select.issue_template {
 
 .contextual.issue_templates {
     margin-bottom: 5px;
+}
+
+.icon.icon-warning {
+    background-image: url(../../../images/exclamation.png) o-repeat 3px center;
 }
