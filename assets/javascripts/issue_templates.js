@@ -161,6 +161,7 @@ function updateSelect(id, is_global) {
         options = $.extend({
             text: 'Done',
             time: 2500,
+            time: 3000,
             how: 'before',
             class_name: ''
         }, options);
