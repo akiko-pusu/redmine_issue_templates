@@ -46,3 +46,6 @@ en:
   label_apply_global_template_to_all_projects: "Apply Global issue templates to all the projects."
   note_apply_global_template_to_all_projects_setting_enabled: "This global issue template is applied to all the project by plugin setting."
   project_list_associated_this_template: "Project List:  (applied: %{applied} of %{all})"
+  note_project_local_template_override_global_template: "If project local template exists, override global templates and any global templates are not shown on create issue screen."
+  help_project_local_template_override_global_template: "If this option is activated, every global ticket templates will be applied to all projects. If a project-specific template per tracker is set, it takes override and the global template is hidden on the new ticket creation screen."
+  warning_project_local_template_override_global_template: "Please be careful when registering global issue template, that contain confidential content you want to pay attention to. In case this option is activated, all the global templates will be applied to all projects."

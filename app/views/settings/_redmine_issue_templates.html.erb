@@ -3,10 +3,30 @@
     <%= hidden_field_tag("settings[apply_global_template_to_all_projects]", 0, :id => nil).html_safe %>
     <%= check_box_tag 'settings[apply_global_template_to_all_projects]', true, @settings['apply_global_template_to_all_projects'] == "true" %>
     <%= content_tag(:b, l(:label_apply_global_template_to_all_projects))%>
-  </p>
-  <p>
+    <a class="icon icon-help" href="#" title="<%= l(:help_for_this_field) %>"
+       onclick="checkExpand('enabled_help_content'); return false;">
+      <%= l(:help_for_this_field) %>
+    </a>
+    <div id="enabled_help_content" style="display: none;
+        background-color: white; margin-left: 80px; margin-right: 80px; padding: 10px;">
+      <%= l(:help_project_local_template_override_global_template) %>
+      <p>
+        <span class="icon icon-warning"></span>
+        <span class="help_content">
+          <%= l(:warning_project_local_template_override_global_template) %>
+        </span>
+      </p>
+    </div>
     <%= link_to(l(:link_to_index_edit_template),
-                { controller: 'global_issue_templates', action: 'index' },
-                class: 'template', style: 'margin-left: 160px;') %>
+              { controller: 'global_issue_templates', action: 'index' },
+              class: 'template pull-right') %>
   </p>
 </div>
+<script>
+    function checkExpand(ch) {
+        var obj;
+        obj = document.all && document.all(ch) || document.getElementById && document.getElementById(ch);
+        if (obj && obj.style) obj.style.display =
+            obj.style.display === 'none' ? '' : 'none'
+    }
+</script>

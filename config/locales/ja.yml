@@ -46,3 +46,7 @@ ja:
   label_apply_global_template_to_all_projects: "グローバルチケットテンプレートを全てのプロジェクトに適用"
   note_apply_global_template_to_all_projects_setting_enabled: "プラグイン設定によって、グローバルチケットテンプレートは全てのプロジェクトに適用されます"
   project_list_associated_this_template: "このテンプレートが利用可能なプロジェクト (全 %{all}プロジェクト中:  %{applied}プロジェクトが有効) "
+  note_project_local_template_override_global_template: "プロジェクト固有のテンプレートが設定されている場合は、プロジェクト固有のテンプレートが優先されます。また、グローバルテンプレートはチケットの新規作成画面では非表示になります。"
+  help_project_local_template_override_global_template: "このオプションが設定されている場合、グローバルチケットテンプレートは全てのプロジェクトに適用されます。
+  プロジェクト固有のテンプレートが設定されている場合は、プロジェクト固有のテンプレートが優先され、グローバルテンプレートはチケットの新規作成画面では非表示になります。"
+  warning_project_local_template_override_global_template: "このオプションを設定すると、全てのプロジェクトにグローバルテンプレートが適用されます。取り扱いに注意したい内容を含むグローバルテンプレートを登録する場合は、十分注意してください。"
