@@ -5,4 +5,8 @@
     <%= content_tag(:b, l(:label_apply_global_template_to_all_projects))%>
   </p>
   <p>
+    <%= link_to(l(:link_to_index_edit_template),
+                { controller: 'global_issue_templates', action: 'index' },
+                class: 'template', style: 'margin-left: 160px;') %>
+  </p>
 </div>

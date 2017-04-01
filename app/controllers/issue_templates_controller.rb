@@ -33,7 +33,7 @@ class IssueTemplatesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        render layout: !request.xhr?
+        render layout: !request.xhr?, locals: { apply_all_projects: apply_all_projects? }
       end
       format.json do
         render formats: :json, handlers: 'jbuilder',
@@ -211,7 +211,7 @@ class IssueTemplatesController < ApplicationController
   end
 
   def global_templates
-    project_id = plugin_setting['apply_global_template_to_all_projects'] == 'true' ? nil : @project.id
+    project_id = apply_all_projects? ? nil : @project.id
     GlobalIssueTemplate.get_templates_for_project_tracker(project_id, @tracker.try(:id))
   end
 
@@ -239,9 +239,5 @@ class IssueTemplatesController < ApplicationController
 
   def inherit_templates
     setting.get_inherit_templates(@tracker)
-  end
-
-  def plugin_setting
-    @plugin_setting ||= Setting.plugin_redmine_issue_templates
   end
 end

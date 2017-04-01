@@ -1,6 +1,6 @@
 <h2 class="template"><%=h "#{l(:issue_template)}" %></h2>
 <%= render partial: "common/nodata", locals: { trackers: @project.trackers } %>
-<div class="contextual">
+<div class="contextual issue_templates">
   <%= link_to_if_authorized(l(:label_new_templates),
                             { controller: 'issue_templates', action: 'new', project_id: @project },
                               class: 'icon icon-add') %>
@@ -160,6 +160,15 @@
 <% unless  @global_issue_templates.blank? %>
     <h2 class="template"><%=h "#{l(:global_issue_templates)}" %></h2>
     <div class="template_box">
+
+      <% if apply_all_projects %>
+          <p>
+            <i class="icon settings"></i>
+            <span class="help_content">
+              <%= l(:note_apply_global_template_to_all_projects_setting_enabled) %>
+            </span>
+          </p>
+      <% end %>
 
       <%= l(:only_admin_can_associate_global_template) %>
       <table class="list issues">
