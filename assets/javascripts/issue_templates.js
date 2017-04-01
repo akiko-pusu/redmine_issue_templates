@@ -11,6 +11,15 @@ function checkExpand(ch) {
         obj.style.display === 'none' ? '' : 'none'
 }
 
+function changeCollapsed(obj) {
+    var target = $(obj);
+    if (target.hasClass("collapsed")) {
+        target.removeClass("collapsed")
+        return;
+    }
+    target.addClass("collapsed");
+}
+
 function eraseSubjectAndDescription() {
     $('#issue_description').val('');
     $('#issue_subject').val('');
@@ -160,7 +169,6 @@ function updateSelect(id, is_global) {
         // default
         options = $.extend({
             text: 'Done',
-            time: 2500,
             time: 3000,
             how: 'before',
             class_name: ''

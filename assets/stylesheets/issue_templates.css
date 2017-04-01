@@ -2,6 +2,7 @@
     background: url(../images/issue_templates.png) no-repeat 3px center;
     padding-top: 3px;
     padding-left: 18px;
+    margin-bottom: 0px;
 }
 
 #template_area {
@@ -213,4 +214,20 @@ select.issue_template {
 
 .settings .issue_templates p {
     padding-left: 50px;
+}
+
+.icon.settings {
+    background: url(../images/lamp.png) no-repeat 3px center;
+}
+
+.icon.plugins {
+    background: url(../../../images/plugin.png) no-repeat 3px center;
+}
+
+.icon.icon-undo, .icon.icon-reload {
+    background: url(../../../images/reload.png) no-repeat 3px center;
+}
+
+.contextual.issue_templates {
+    margin-bottom: 5px;
 }
