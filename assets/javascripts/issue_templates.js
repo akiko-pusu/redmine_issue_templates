@@ -182,7 +182,7 @@ function updateSelect(id, is_global) {
 
             var message = $('<div></div>', {
                 'class': 'flash_message ' + options.class_name,
-                text: options.text
+                html: options.text
                 // display with fade in
             }).hide().fadeIn('fast');
 
