@@ -73,10 +73,30 @@ some trouble related "bundle intall", please try --without option.
 
 ## Changelog
 
+### 0.1.5
+
+NOTE: Please run "rake redmine:plugins:migrate" task because new column is added.
+
+* Add feature enabled to  mark global issue template as "default".
+* Add plugin setting option to apply global issue templates to all the project.
+    * This option is on the plugin configuration screen. Please read help content before activate this option!
+
+* Update Russian translation. Thanks danaivehr! (GitHub: #95)
+* Prevent to locate template pulldown above "tracker" field and soon after jump below "tracker" field. (GitHub: #96)
+* Unselect projects on global issue template edit screen does not work correctly. (GitHub: #99)
+* Change the place of message to notice "default template loaded" now to bottom of the page.
+* Change the place of "Check all | Uncheck all” link in global issue template create / edit screen, to above the project list. (GitHub: #90)
+    * In case the list of projects is very long and would be much more comfortable to have the option on top.
+* Project select checkbox area is collapsed by default.
+    * Also, in case the list of projects is very long, administrator has to scroll to submit "Save" button.
+
 ### 0.1.4.1
 
 Bugfix version for #83, #92. Correct some methods not to use named parameters, 
 because ruby 1.9x does not support named parameters.
+
+* Bugfix: GitHub: #83, #92
+* Bug: Italian translation should be start with "it". (GitHub: #87)
 
 ### 0.1.4
 
@@ -224,7 +244,7 @@ added.
 *   Korean: Jaebok Oh
 *   Chinese: Steven Wong
 *   Bulgarian: Ivan Cenov
-*   Russian: Denny Brain
+*   Russian: Denny Brain, danaivehr
 *   German: Terence Miller and anonymous contributor
 *   French: Anonymous one
 *   Serbian: Miodrag Milic
