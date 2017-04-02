@@ -191,6 +191,30 @@ feature 'IssueTemplate', js: true do
     end
   end
 
+  feature 'Plugin setting for apply_global_template_to_all_projects' do
+    given(:settings) do
+      Setting.plugin_redmine_issue_templates
+    end
+
+    background do
+      log_user('admin', 'admin')
+      visit '/settings/plugin/redmine_issue_templates'
+    end
+
+    scenario 'Exists apply_global_template_to_all_projects option' do
+      assert page.has_content?('Apply Global issue templates to all the projects.')
+      expect(page).to have_selector('#settings_apply_global_template_to_all_projects')
+      expect(page.has_no_checked_field?('settings_apply_global_template_to_all_projects')).to be_truthy
+    end
+
+    scenario 'Change apply_global_template_to_all_projects option' do
+      check 'settings_apply_global_template_to_all_projects'
+      click_on 'Apply'
+      expect(settings['apply_global_template_to_all_projects']).to be_truthy
+      expect(page.has_checked_field?('settings_apply_global_template_to_all_projects')).to be_truthy
+    end
+  end
+
   private
 
   def assign_template_priv(add_permission: nil, remove_permission: nil)
