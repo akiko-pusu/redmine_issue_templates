@@ -11,6 +11,15 @@ function checkExpand(ch) {
         obj.style.display === 'none' ? '' : 'none'
 }
 
+function changeCollapsed(obj) {
+    var target = $(obj);
+    if (target.hasClass("collapsed")) {
+        target.removeClass("collapsed")
+        return;
+    }
+    target.addClass("collapsed");
+}
+
 function eraseSubjectAndDescription() {
     $('#issue_description').val('');
     $('#issue_subject').val('');
@@ -83,9 +92,12 @@ function load_template(target_url, confirm_msg, should_replaced) {
                     obj.description = (obj.description === null) ? '' : obj.description;
                     obj.issue_title = (obj.issue_title === null) ? '' : obj.issue_title;
 
-                    if(oldVal.replace(/(?:\r\n|\r|\n)/g, '').trim() != obj.description.replace(/(?:\r\n|\r|\n)/g, '').trim())
+                    issue_description.attr('original_description', $('<div />').text(issue_description.val()).html());
+                    issue_subject.attr('original_title', $('<div />').text(issue_subject.val()).html());
+
+                    if (oldVal.replace(/(?:\r\n|\r|\n)/g, '').trim() != obj.description.replace(/(?:\r\n|\r|\n)/g, '').trim())
                         issue_description.val(oldVal + obj.description);
-                    if(oldSubj.trim() != obj.issue_title.trim())
+                    if (oldSubj.trim() != obj.issue_title.trim())
                         issue_subject.val(oldSubj + obj.issue_title);
 
                     try {
@@ -160,7 +172,7 @@ function updateSelect(id, is_global) {
         // default
         options = $.extend({
             text: 'Done',
-            time: 2500,
+            time: 3000,
             how: 'before',
             class_name: ''
         }, options);

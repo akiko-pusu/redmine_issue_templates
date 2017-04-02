@@ -33,7 +33,7 @@ class IssueTemplatesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        render layout: !request.xhr?
+        render layout: !request.xhr?, locals: { apply_all_projects: apply_all_projects? }
       end
       format.json do
         render formats: :json, handlers: 'jbuilder',
@@ -184,9 +184,9 @@ class IssueTemplatesController < ApplicationController
   end
 
   def find_templates
-    @global_templates = global_templates
     @issue_templates = issue_templates
     @inherit_templates = inherit_templates
+    @global_templates = global_templates
   end
 
   def move_order(method)
@@ -211,11 +211,15 @@ class IssueTemplatesController < ApplicationController
   end
 
   def global_templates
-    GlobalIssueTemplate.get_templates_for_project_tracker(@project.id, @tracker.try(:id))
+    if apply_all_projects? && (@inherit_templates.present? || @issue_templates.present?)
+      return []
+    end
+    project_id = apply_all_projects? ? nil : @project.id
+    GlobalIssueTemplate.get_templates_for_project_tracker(project_id, @tracker.try(:id))
   end
 
   def default_templates
-    [@global_issue_templates, @inherit_templates, @issue_templates].map do |templates|
+    [@global_templates, @inherit_templates, @issue_templates].map do |templates|
       templates.try(:is_default).try(:first)
     end
   end

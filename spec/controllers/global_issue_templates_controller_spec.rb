@@ -1,21 +1,17 @@
 # frozen_string_literal: true
 require_relative '../spec_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../support/controller_helper')
 
 describe GlobalIssueTemplatesController do
-  let(:user) { FactoryGirl.create(:user, status: 1, admin: is_admin) }
-  let(:is_admin) { true }
   let(:count) { 4 }
   let(:tracker) { FactoryGirl.create(:tracker, :with_default_status) }
   let(:projects) { FactoryGirl.create_list(:project, count) }
-
-  shared_examples 'Right response' do |status_code|
-    it { expect(response.status).to eq status_code }
-  end
 
   before do
     @request.session[:user_id] = user.id
   end
 
+  include_context 'As admin'
   describe 'GET #index' do
     render_views
     before do

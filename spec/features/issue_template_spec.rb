@@ -16,8 +16,19 @@ feature 'IssueTemplate', js: true do
            :projects_trackers,
            :enabled_modules
 
+  before(:all) do
+    Redmine::Plugin.register(:redmine_issue_templates) do
+      settings partial: 'settings/redmine_issue_templates',
+               default: { 'apply_global_template_to_all_projects' => 'false' }
+    end
+  end
+
   after do
     page.execute_script 'window.close();'
+  end
+
+  after(:all) do
+    Redmine::Plugin.unregister(:redmine_issue_templates)
   end
 
   feature 'Access Redmine top page', js: true do
@@ -188,6 +199,30 @@ feature 'IssueTemplate', js: true do
         expect(issue_description.value).to eq "different description\n\n#{expected_description}"
         expect(issue_subject.value).to eq "different subject #{expected_title}"
       end
+    end
+  end
+
+  feature 'Plugin setting for apply_global_template_to_all_projects' do
+    given(:settings) do
+      Setting.plugin_redmine_issue_templates
+    end
+
+    background do
+      log_user('admin', 'admin')
+      visit '/settings/plugin/redmine_issue_templates'
+    end
+
+    scenario 'Exists apply_global_template_to_all_projects option' do
+      assert page.has_content?('Apply Global issue templates to all the projects.')
+      expect(page).to have_selector('#settings_apply_global_template_to_all_projects')
+      expect(page.has_no_checked_field?('settings_apply_global_template_to_all_projects')).to be_truthy
+    end
+
+    scenario 'Change apply_global_template_to_all_projects option' do
+      check 'settings_apply_global_template_to_all_projects'
+      click_on 'Apply'
+      expect(settings['apply_global_template_to_all_projects']).to be_truthy
+      expect(page.has_checked_field?('settings_apply_global_template_to_all_projects')).to be_truthy
     end
   end
 
