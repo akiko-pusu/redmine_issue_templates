@@ -223,7 +223,7 @@ class IssueTemplatesController < ApplicationController
     if apply_all_projects? && (@inherit_templates.present? || @issue_templates.present?)
       global_templates = []
     end
-    [@global_issue_templates, @inherit_templates, @issue_templates].map do |templates|
+    [global_templates, @inherit_templates, @issue_templates].map do |templates|
       templates.try(:is_default).try(:first)
     end
   end
