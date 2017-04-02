@@ -16,8 +16,19 @@ feature 'IssueTemplate', js: true do
            :projects_trackers,
            :enabled_modules
 
+  before(:all) do
+    Redmine::Plugin.register(:redmine_issue_templates) do
+      settings partial: 'settings/redmine_issue_templates',
+               default: { 'apply_global_template_to_all_projects' => 'false' }
+    end
+  end
+
   after do
     page.execute_script 'window.close();'
+  end
+
+  after(:all) do
+    Redmine::Plugin.unregister(:redmine_issue_templates)
   end
 
   feature 'Access Redmine top page', js: true do

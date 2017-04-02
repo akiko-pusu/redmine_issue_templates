@@ -22,6 +22,10 @@ describe IssueTemplatesController do
     project.trackers << tracker
   end
 
+  after(:all) do
+    Redmine::Plugin.unregister(:redmine_issue_templates)
+  end
+
   describe 'GET #index' do
     render_views
 
