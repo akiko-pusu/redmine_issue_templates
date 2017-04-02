@@ -26,8 +26,8 @@ describe SettingsController do
       expect(settings).not_to be_nil
       # hash value is exists
       expect(settings['apply_global_template_to_all_projects']).not_to be nil
-      # default value is false
-      expect(settings['apply_global_template_to_all_projects']).to be_falsey
+      # default value is 'false'
+      expect(settings['apply_global_template_to_all_projects']).to eq 'false'
     end
   end
 
