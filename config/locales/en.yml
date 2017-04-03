@@ -49,3 +49,4 @@ en:
   note_project_local_template_override_global_template: "If project local template exists, override global templates and any global templates are not shown on create issue screen."
   help_project_local_template_override_global_template: "If this option is activated, every global ticket templates will be applied to all projects. If a project-specific template per tracker is set, it takes override and the global template is hidden on the new ticket creation screen."
   warning_project_local_template_override_global_template: "Please be careful when registering global issue template, that contain confidential content you want to pay attention to. In case this option is activated, all the global templates will be applied to all projects."
+  revert_before_applying_template: "Revert"
