@@ -16,11 +16,16 @@
           <%= l(:label_help_message) %>
         </a>
     <% end %>
-
-    <a class="icon icon-erase" href="#" title="<%= l(:erase_issue_subject_and_description) %>"
+    <a class="icon icon-erase" href="#" title="<%= l(:erase_issue_subject_and_description, default: 'Revert') %>"
                onclick="eraseSubjectAndDescription();">
-      <%= l(:erase_issue_subject_and_description) %>
+      <%= l(:erase_issue_subject_and_description, default: 'Revert') %>
     </a>
+    <a class="icon icon-reload" href="#" title="<%= l(:revert_before_applying_template) %>" id="revert_template"
+       onclick="undoLoadTemplate();" style="display: none;">
+      <%= l(:revert_before_applying_template) %>
+    </a>
+    <span id="original_subject" style="display: none;"></span>
+    <span id="original_description" style="display: none;"></span>
     <span id="template_status-area"></span>
   </p>
   <div class="template_help box" id="template_help_content" style="display: none;">

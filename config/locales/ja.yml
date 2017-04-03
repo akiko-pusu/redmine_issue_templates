@@ -50,3 +50,4 @@ ja:
   help_project_local_template_override_global_template: "このオプションが設定されている場合、グローバルチケットテンプレートは全てのプロジェクトに適用されます。
   プロジェクト固有のテンプレートが設定されている場合は、プロジェクト固有のテンプレートが優先され、グローバルテンプレートはチケットの新規作成画面では非表示になります。"
   warning_project_local_template_override_global_template: "このオプションを設定すると、全てのプロジェクトにグローバルテンプレートが適用されます。取り扱いに注意したい内容を含むグローバルテンプレートを登録する場合は、十分注意してください。"
+  revert_before_applying_template: "テンプレート適用前に戻す"
