@@ -240,3 +240,28 @@ select.issue_template {
 .icon.icon-warning {
     background-image: url(../../../images/exclamation.png) o-repeat 3px center;
 }
+
+#revert_template {
+    display: inline-block;
+    -webkit-transition: .3s ease-in-out;
+    transition: .3s ease-in-out;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+#revert_template:active, #revert_template:hover {
+    -webkit-animation: scale .4s ease-in-out;
+    animation: scale .4s ease-in-out;
+}
+@-webkit-keyframes scale {
+    50% { -webkit-transform: scale(1.2); }
+}
+@keyframes scale {
+    50% { transform: scale(1.2); }
+}
+
+#revert_template.disabled {
+    filter: alpha(opacity=20);
+    -moz-opacity: 0.2;
+    opacity: 0.2;
+}

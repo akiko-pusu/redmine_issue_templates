@@ -115,7 +115,7 @@ function load_template(target_url, confirm_msg, should_replaced) {
                     addCheckList(obj);
 
                     if ($('#original_subject').text().length > 0 || $('#original_description').text().length > 0 ) {
-                        $('#revert_template').show();
+                        $('#revert_template').removeClass('disabled');
                     }
                 }
             }
@@ -123,7 +123,7 @@ function load_template(target_url, confirm_msg, should_replaced) {
     }
 }
 
-function undoLoadTemplate() {
+function revertAppliedTemplate() {
     var issue_subject = $('#issue_subject');
     var issue_description = $('#issue_description');
     var old_subject = $('#original_subject');
@@ -133,7 +133,7 @@ function undoLoadTemplate() {
     issue_description.val(unescapeHTML(old_description.text()));
     old_description.text = '';
     old_description.text = '';
-    $('#revert_template').hide();
+    $('#revert_template').addClass('disabled');
 }
 
 function escapeHTML(val) {

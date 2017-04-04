@@ -20,8 +20,8 @@
                onclick="eraseSubjectAndDescription();">
       <%= l(:erase_issue_subject_and_description, default: 'Revert') %>
     </a>
-    <a class="icon icon-reload" href="#" title="<%= l(:revert_before_applying_template) %>" id="revert_template"
-       onclick="undoLoadTemplate();" style="display: none;">
+    <a class="icon icon-reload disabled" href="#" title="<%= l(:revert_before_applying_template) %>" id="revert_template"
+       onclick="revertAppliedTemplate();" disabled="disabled">
       <%= l(:revert_before_applying_template) %>
     </a>
     <span id="original_subject" style="display: none;"></span>
