@@ -2,6 +2,12 @@
     background: url(../images/issue_templates.png) no-repeat 3px center;
     padding-top: 3px;
     padding-left: 18px;
+    margin-bottom: 0px;
+}
+
+.template.pull-right {
+    float: right;
+    margin: 4px;
 }
 
 #template_area {
@@ -66,20 +72,27 @@ div.issue_template {
     background-color: white;
 }
 
-span.help_content {
+.help_content {
     color: #8b0000;
     padding: 6px;
 }
 
 #template_status-area .flash_message {
+    position: fixed;
+    bottom: 0px;
+    right: 10px;
+    margin-left: 10px;
     margin-top: 5pt;
-    margin-bottom: 5pt;
+    margin-bottom: 12pt;
     display: block;
     font-style: italic;
     padding-left: 20px;
-    background: #FFEBC1 url(../images/lamp.png) no-repeat 3px center;
-    color: #A6750C;
-    border: solid #FDBF3B 1px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-right: 10px;
+    color: #31708f;
+    background: #eaf5fb url(../images/lamp.png) no-repeat 3px center;
+    border: solid #a7e4fd 1px;
 }
 
 option.inherited {
@@ -204,4 +217,51 @@ select.issue_template {
     width: 240px;
 }
 
+.settings .issue_templates p {
+    padding-left: 50px;
+}
 
+.icon.settings {
+    background: url(../images/lamp.png) no-repeat 3px center;
+}
+
+.icon.plugins {
+    background: url(../../../images/plugin.png) no-repeat 3px center;
+}
+
+.icon.icon-undo, .icon.icon-reload {
+    background: url(../../../images/reload.png) no-repeat 3px center;
+}
+
+.contextual.issue_templates {
+    margin-bottom: 5px;
+}
+
+.icon.icon-warning {
+    background-image: url(../../../images/exclamation.png) o-repeat 3px center;
+}
+
+#revert_template {
+    display: inline-block;
+    -webkit-transition: .3s ease-in-out;
+    transition: .3s ease-in-out;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+#revert_template:not(.disabled):hover {
+    -webkit-animation: scale .4s ease-in-out;
+    animation: scale .4s ease-in-out;
+}
+@-webkit-keyframes scale {
+    50% { -webkit-transform: scale(1.04); }
+}
+@keyframes scale {
+    50% { transform: scale(1.04); }
+}
+
+#revert_template.disabled {
+    filter: alpha(opacity=20);
+    -moz-opacity: 0.2;
+    opacity: 0.2;
+}

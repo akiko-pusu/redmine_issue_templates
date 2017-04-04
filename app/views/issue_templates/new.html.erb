@@ -4,11 +4,8 @@
                 action: 'index', project_id: project }, class: 'template') %>
 </div>
 <h2 class="template"><%=h "#{l(:issue_templates)} / #{l(:button_add)}" %></h2>
-<% if project.trackers.blank? %>
-    <div class="nodata">
-      <%= simple_format(l(:text_no_tracker_enabled)) %>
-    </div>
-<% else %>
+<%= render partial: "common/nodata", locals: { trackers: project.trackers } %>
+<% if project.trackers.any? %>
     <div class="box">
       <%= error_messages_for 'issue_template' %>
       <%= labelled_form_for :issue_template,  @issue_template,

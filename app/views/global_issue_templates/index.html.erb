@@ -1,12 +1,11 @@
 <h2 class="template"><%=h "#{l(:global_issue_templates)}" %></h2>
-<% if trackers.blank? %>
-    <div class="nodata">
-      <%= simple_format(l(:text_no_tracker_enabled_for_global)) %>
-    </div>
-<% end %>
-<div class="contextual">
+<%= render partial: "common/nodata", locals: { trackers: trackers } %>
+<div class="contextual issue_templates">
   <%= link_to(l(:label_new_templates),
               { controller: 'global_issue_templates', action: 'new' }, class: 'icon icon-add') %>
+  <%= link_to(l(:label_settings),
+              { controller: 'settings', action: 'plugin', id: 'redmine_issue_templates' },
+              class: 'icon plugins') %>
 </div>
 <div style="clear:both;"></div>
 
@@ -27,6 +26,7 @@
           <th><%= l(:field_tracker) %></th>
           <th><%= l(:field_author) %></th>
           <th><%= l(:field_updated_on) %></th>
+          <th><%= l(:field_is_default) %></th>
           <th><%= l(:label_enabled) %></th>
           <th><%=l(:button_sort)%></th>
         </tr>
@@ -40,14 +40,20 @@
               <td><%= link_to h(issue_template.title), { controller: 'global_issue_templates',
                                                          id: issue_template.id, action: 'show' },
                               { title: "#{html_escape(issue_template.note)}" } %>
-                <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"
-                   onclick="checkExpand('global_template_description-<%= issue_template.id %>');">
+                <div class="template_tooltip_wrapper">
+                  <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"></a>
+                  <div class="wiki template_tooltip_body">
+                    <span class="title"><%= issue_template.title %></span>
+                    <%= textilizable(issue_template.description) %>
+                  </div>
+                </div>
 
                 </a>
               </td>
               <td><%=h issue_template.tracker.name %></td>
               <td><%=h issue_template.author %></td>
               <td><%= format_time(issue_template.updated_on)%> </td>
+              <td class="center"><%= checked_image issue_template.is_default? %></td>
               <td class="center"><%= checked_image issue_template.enabled? %></td>
 
               <td>

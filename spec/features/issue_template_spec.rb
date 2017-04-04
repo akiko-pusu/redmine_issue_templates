@@ -16,8 +16,19 @@ feature 'IssueTemplate', js: true do
            :projects_trackers,
            :enabled_modules
 
+  before(:all) do
+    Redmine::Plugin.register(:redmine_issue_templates) do
+      settings partial: 'settings/redmine_issue_templates',
+               default: { 'apply_global_template_to_all_projects' => 'false' }
+    end
+  end
+
   after do
     page.execute_script 'window.close();'
+  end
+
+  after(:all) do
+    Redmine::Plugin.unregister(:redmine_issue_templates)
   end
 
   feature 'Access Redmine top page', js: true do
@@ -188,6 +199,67 @@ feature 'IssueTemplate', js: true do
         expect(issue_description.value).to eq "different description\n\n#{expected_description}"
         expect(issue_subject.value).to eq "different subject #{expected_title}"
       end
+    end
+  end
+
+  feature 'Enabled to revert just after template applied' do
+    given(:issue_description) { page.find('#issue_description') }
+    given(:issue_subject) { page.find('#issue_subject') }
+    given(:expected_title) { 'Sample Title for rspec' }
+    given(:expected_description) { 'Sample description for rspec' }
+
+    given!(:named_template) do
+      FactoryGirl.create(:issue_template, project_id: 1, tracker_id: 1,
+                                          title: 'Sample Title for rspec',
+                                          issue_title: 'Sample Title for rspec', description: 'Sample description for rspec')
+    end
+    given!(:enabled_module) { FactoryGirl.create(:enabled_module) }
+
+    background do
+      assign_template_priv(add_permission: :show_issue_templates)
+      log_user('jsmith', 'jsmith')
+      visit '/projects/ecookbook/issues/new'
+
+      issue_subject.set('Test for revert subject')
+      issue_description.set('Test for revert description')
+
+      select expected_title, from: 'issue_template'
+      sleep(0.2)
+    end
+
+    scenario 'Title and Description should be appended text' do
+      expect(issue_description.value).to eq "Test for revert description\n\n#{expected_description}"
+      expect(issue_subject.value).to eq "Test for revert subject #{expected_title}"
+    end
+
+    scenario 'Click Revert and reverted applied template' do
+      page.find('#revert_template').click
+      expect(issue_description.value).to eq 'Test for revert description'
+      expect(issue_subject.value).to eq 'Test for revert subject'
+    end
+  end
+
+  feature 'Plugin setting for apply_global_template_to_all_projects' do
+    given(:settings) do
+      Setting.plugin_redmine_issue_templates
+    end
+
+    background do
+      log_user('admin', 'admin')
+      visit '/settings/plugin/redmine_issue_templates'
+    end
+
+    scenario 'Exists apply_global_template_to_all_projects option' do
+      assert page.has_content?('Apply Global issue templates to all the projects.')
+      expect(page).to have_selector('#settings_apply_global_template_to_all_projects')
+      expect(page.has_no_checked_field?('settings_apply_global_template_to_all_projects')).to be_truthy
+    end
+
+    scenario 'Change apply_global_template_to_all_projects option' do
+      check 'settings_apply_global_template_to_all_projects'
+      click_on 'Apply'
+      expect(settings['apply_global_template_to_all_projects']).to be_truthy
+      expect(page.has_checked_field?('settings_apply_global_template_to_all_projects')).to be_truthy
     end
   end
 

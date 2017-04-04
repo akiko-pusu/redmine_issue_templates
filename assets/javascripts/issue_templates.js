@@ -11,6 +11,15 @@ function checkExpand(ch) {
         obj.style.display === 'none' ? '' : 'none'
 }
 
+function changeCollapsed(obj) {
+    var target = $(obj);
+    if (target.hasClass("collapsed")) {
+        target.removeClass("collapsed")
+        return;
+    }
+    target.addClass("collapsed");
+}
+
 function eraseSubjectAndDescription() {
     $('#issue_description').val('');
     $('#issue_subject').val('');
@@ -76,6 +85,9 @@ function load_template(target_url, confirm_msg, should_replaced) {
             if (issue_subject.val() !== '' && should_replaced === 'false') {
                 oldSubj = issue_subject.val() + ' ';
             }
+            $('#original_subject').text(escapeHTML(issue_subject.val()));
+            $('#original_description').text(escapeHTML(issue_description.val()));
+
             for (var issue_template in template) {
                 if ({}.hasOwnProperty.call(template, issue_template)) {
 
@@ -83,9 +95,12 @@ function load_template(target_url, confirm_msg, should_replaced) {
                     obj.description = (obj.description === null) ? '' : obj.description;
                     obj.issue_title = (obj.issue_title === null) ? '' : obj.issue_title;
 
-                    if(oldVal.replace(/(?:\r\n|\r|\n)/g, '').trim() != obj.description.replace(/(?:\r\n|\r|\n)/g, '').trim())
+                    issue_description.attr('original_description', $('<div />').text(issue_description.val()).html());
+                    issue_subject.attr('original_title', $('<div />').text(issue_subject.val()).html());
+
+                    if (oldVal.replace(/(?:\r\n|\r|\n)/g, '').trim() != obj.description.replace(/(?:\r\n|\r|\n)/g, '').trim())
                         issue_description.val(oldVal + obj.description);
-                    if(oldSubj.trim() != obj.issue_title.trim())
+                    if (oldSubj.trim() != obj.issue_title.trim())
                         issue_subject.val(oldSubj + obj.issue_title);
 
                     try {
@@ -98,11 +113,36 @@ function load_template(target_url, confirm_msg, should_replaced) {
                     if (confirm_msg)
                         show_loaded_message(confirm_msg, issue_description);
                     addCheckList(obj);
+
+                    if ($('#original_subject').text().length > 0 || $('#original_description').text().length > 0 ) {
+                        $('#revert_template').removeClass('disabled');
+                    }
                 }
             }
         });
     }
 }
+
+function revertAppliedTemplate() {
+    var issue_subject = $('#issue_subject');
+    var issue_description = $('#issue_description');
+    var old_subject = $('#original_subject');
+    var old_description = $('#original_description');
+
+    issue_subject.val(unescapeHTML(old_subject.text()));
+    issue_description.val(unescapeHTML(old_description.text()));
+    old_description.text = '';
+    old_description.text = '';
+    $('#revert_template').addClass('disabled');
+}
+
+function escapeHTML(val) {
+    return $('<div>').text(val).html();
+};
+
+function unescapeHTML(val) {
+    return $('<div>').html(val).text();
+};
 
 function addCheckList(obj) {
     var list = obj.checklist;
@@ -160,7 +200,7 @@ function updateSelect(id, is_global) {
         // default
         options = $.extend({
             text: 'Done',
-            time: 2000,
+            time: 3000,
             how: 'before',
             class_name: ''
         }, options);
@@ -170,7 +210,7 @@ function updateSelect(id, is_global) {
 
             var message = $('<div></div>', {
                 'class': 'flash_message ' + options.class_name,
-                text: options.text
+                html: options.text
                 // display with fade in
             }).hide().fadeIn('fast');
 
