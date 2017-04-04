@@ -249,15 +249,15 @@ select.issue_template {
     padding-bottom: 1px;
 }
 
-#revert_template:active, #revert_template:hover {
+#revert_template:not(.disabled):hover {
     -webkit-animation: scale .4s ease-in-out;
     animation: scale .4s ease-in-out;
 }
 @-webkit-keyframes scale {
-    50% { -webkit-transform: scale(1.2); }
+    50% { -webkit-transform: scale(1.04); }
 }
 @keyframes scale {
-    50% { transform: scale(1.2); }
+    50% { transform: scale(1.04); }
 }
 
 #revert_template.disabled {
