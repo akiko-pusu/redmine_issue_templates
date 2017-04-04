@@ -77,13 +77,18 @@ some trouble related "bundle intall", please try --without option.
 
 NOTE: Please run "rake redmine:plugins:migrate" task because new column is added.
 
+#### Feature for Global issue templates
+
 * Add feature enabled to  mark global issue template as "default".
 * Add plugin setting option to apply global issue templates to all the project.
     * This option is on the plugin configuration screen. Please read help content before activate this option!
 
+#### Other updates
+
 * Update Russian translation. Thanks danaivehr! (GitHub: #95)
 * Prevent to locate template pulldown above "tracker" field and soon after jump below "tracker" field. (GitHub: #96)
 * Unselect projects on global issue template edit screen does not work correctly. (GitHub: #99)
+* Feature: Add “Revert” Icon to revert applied template. (Github: #98)
 * Change the place of message to notice "default template loaded" now to bottom of the page.
 * Change the place of "Check all | Uncheck all” link in global issue template create / edit screen, to above the project list. (GitHub: #90)
     * In case the list of projects is very long and would be much more comfortable to have the option on top.
