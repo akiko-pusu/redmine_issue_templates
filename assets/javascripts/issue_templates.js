@@ -138,11 +138,11 @@ function revertAppliedTemplate() {
 
 function escapeHTML(val) {
     return $('<div>').text(val).html();
-};
+}
 
 function unescapeHTML(val) {
     return $('<div>').html(val).text();
-};
+}
 
 function addCheckList(obj) {
     var list = obj.checklist;
