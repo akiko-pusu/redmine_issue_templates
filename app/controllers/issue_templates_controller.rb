@@ -243,7 +243,7 @@ class IssueTemplatesController < ApplicationController
   end
 
   def template_params
-    params.require(:issue_template).permit(:tracker_id, :title, :note, :issue_title, :description,
+    params.require(:issue_template).permit(:tracker_id, :title, :note, :issue_title, :description, :is_default,
                                            :enabled, :author_id, :position, :enabled_sharing, :checklists)
   end
 end
