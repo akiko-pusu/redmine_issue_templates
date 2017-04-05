@@ -1,0 +1,8 @@
+test/ export-ignore
+spec/ export-ignore
+.gitattributes export-ignore
+.gitignore export-ignore
+wercker.yml export-ignore
+script/ export-ignore
+.rubocop* export-ignore
+Gemfile.local export-ignore

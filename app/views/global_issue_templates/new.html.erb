@@ -6,12 +6,14 @@
 
 <div class="box">
   <%= error_messages_for 'global_issue_template' %>
-  <%= labelled_form_for :global_issue_template,  @global_issue_template,
+  <%= labelled_form_for :global_issue_template,  issue_template,
                         url: { controller: 'global_issue_templates', action: 'new' },
                         html: { id: 'global_issue_template-form',
                                    class: nil, multipart: false } do |f| %>
 
-      <%= render partial: 'form', locals: { f: f } %>
+      <%= render 'form', { f: f, checklist_enabled: checklist_enabled,
+                           trackers: trackers, projects: projects,
+                           issue_template: issue_template, apply_all_projects: apply_all_projects } %>
   <% end %>
 </div>
 

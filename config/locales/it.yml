@@ -1,0 +1,45 @@
+# Italian strings go here for Rails i18n
+it:
+  issue_templates: Modelli segnalazioni
+  issue_template: Modello segnalazione
+  issue_template_note: Note
+  label_enabled: Attivato
+  label_disabled: Disattivato
+  label_help_message: Info sui modelli
+  label_show_help_message: Mostra messaggio d'aiuto durante la creazione o modifica delle segnalazioni.
+  about_help_message: Ogni progetto può avere messaggi d'aiuto personalizzati per i modelli.
+  close_help: Chiudi messaggio d'aiuto.
+  about_template_help_message: Puoi vedere le istruzioni per i modelli di segnalazione di questo progetto.
+  label_enabled_help_message: Abilita questo modello. Se vuoi salvarlo come bozza, disattiva questa opzione.
+  label_list_templates: "Elenco modelli"
+  label_new_templates: "Nuovo modello"
+  issue_template_name: "Nome modello"
+  issue_description: "Testo della segnalazione"
+  issue_title: "Titolo segnalazione"
+  label_applied_for_issue: "Campi applicati per la segnalazione: "
+  help_for_issue_title: "Se il titolo della Segnalazione è definito, sarà applicato all'Oggetto della segnalazione quando si applica questo modello."
+  help_for_this_field: "Aiuto per questo campo."
+  permission_manage_issue_templates: "Gestisci Modelli"
+  permission_edit_issue_templates: "Modifica Modelli"
+  permission_show_issue_templates: "Mostra Modelli"
+  project_module_issue_templates: "Modelli Segnalazioni"
+  label_isdefault_help_message: "Usa questo come modello predefinito per le segnalazioni del tracker."
+  defaulf_template_loaded: "Caricato modello predefinito nella descrizione. (Tracker: %{tracker})"
+  text_no_tracker_enabled: "Nessun tracker è stato configurato per questo progetto.\nPer favore configurali prima perché i modelli segnalazione sono assegnati ai tracker. "
+  label_enabled_sharing: "Abilita condivisione con gerarchia progetto."
+  label_inherit_templates: "Eredita modelli segnalazioni"
+  label_inherit_templates_help_message: "Eredita modelli da progetto padre. (Only parent's templates are listed which marked as enabled sharing with project tree.)"
+  label_inherited_templates: "Modelli ereditati"
+  no_issue_templates_for_this_project: "Nessun modello di segnalazione è definito per questo progetto."
+  link_to_index_edit_template: "Elenco modelli segnalazione / modifica modelli"
+  erase_issue_subject_and_description: "Pulisci oggetto e descrizione."
+  unused_tracker_at_this_project: "NOTA: Questo tracker non è abilitato per questo progetto. Per favore modifica le impostazioni del modello se necessario."
+  label_enabledshaing_help_message: "Se abilitato, questo modello può essere condiviso con i sottoprogetti. (Devi anche abilitare nel sottoprogetto l'opzione Eredita modelli segnalazioni.)"
+  label_should_replaced: "Sostituisci oggetto e descrizione"
+  label_should_replaced_help_message: "Se abilitato, l'oggetto e la descrizione esistenti saranno sostituiti con il testo del modello.（Normalmente disattivato, i testi saranno accodati.)"
+  global_issue_templates: "Modelli Segnalazioni Globali"
+  no_issue_templates_for_this_redmine: "Nessun modello globale di segnalazione è definito per questo sito Redmine."
+  only_admin_can_associate_global_template: "Solo un amministratore di Redmine può associare modelli globali a questo progetto."
+  text_no_tracker_enabled_for_global: "Nessun tracker definito\nÈ necessario configurarli prima perché i Modelli segnalazione sono assegnati ai tracker."
+  display_and_filter_issue_templates_in_dialog: "Filtra modelli"
+  label_filter_template: "Filtra modelli"

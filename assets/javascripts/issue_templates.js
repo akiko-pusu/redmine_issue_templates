@@ -5,9 +5,19 @@
 changeType = '';
 
 function checkExpand(ch) {
-    var obj=document.all && document.all(ch) || document.getElementById && document.getElementById(ch);
-    if(obj && obj.style) obj.style.display=
-        'none' === obj.style.display ?'' : 'none'
+    var obj;
+    obj = document.all && document.all(ch) || document.getElementById && document.getElementById(ch);
+    if (obj && obj.style) obj.style.display =
+        obj.style.display === 'none' ? '' : 'none'
+}
+
+function changeCollapsed(obj) {
+    var target = $(obj);
+    if (target.hasClass("collapsed")) {
+        target.removeClass("collapsed")
+        return;
+    }
+    target.addClass("collapsed");
 }
 
 function eraseSubjectAndDescription() {
@@ -17,17 +27,15 @@ function eraseSubjectAndDescription() {
     try {
         if (CKEDITOR.instances.issue_description)
             CKEDITOR.instances.issue_description.setData('');
-    } catch(e) {
+    } catch (e) {
         // do nothing.
     }
 }
 
 function openDialog(url, title) {
     // ダイアログを表示する
-
-    var request_url = url;
     $.ajax({
-        url: request_url,
+        url: url,
         success: function (data) {
             $("#filtered_templates_list").html(data);
             $("#issue_template_dialog").dialog(
@@ -36,41 +44,34 @@ function openDialog(url, title) {
                     dialogClass: "modal overflow_dialog",
                     draggable: true,
                     title: title,
-                    width: 400
+                    minWidth: 400,
+                    width: 'auto',
+                    maxWidth: 'auto'
                 }
             );
         }
     });
 }
 
-function showUrlInDialog(url, title) {
-    var request_url = url;
-    $.ajax({
-        url: request_url,
-        success: function (data) {
-            $("#issue_template_dialog").dialog({
-                modal: true,
-                title: title
-            });
-            $("#filtered_templates_list").html(data);
-        }
-    });
-}
-
-// TODO: When update description, confirmation dialog should be appeared.
 function load_template(target_url, confirm_msg, should_replaced) {
     var selected_template = $('#issue_template');
     if (selected_template.val() !== '') {
         var template_type = '';
-        if(selected_template.find('option:selected').hasClass('global')){
+        if (selected_template.find('option:selected').hasClass('global')) {
             template_type = 'global';
         }
         $.ajax({
-            url:target_url,
-            async:true,
-            type:'post',
-            data:$.param({issue_template:selected_template.val(), template_type:template_type})
+            url: target_url,
+            async: true,
+            type: 'post',
+            data: $.param({issue_template: selected_template.val(), template_type: template_type})
         }).done(function (data) {
+            // NOTE: Workaround for GiHub Issue, to prevent overwrite with default template
+            // when operator submits new issue form without required field and returns
+            // with error message. If flash message #errorExplanation exists, not overwrited.
+            // (https://github.com/akiko-pusu/redmine_issue_templates/issues/50)
+            if ($('#errorExplanation')[0]) return;
+
             var oldSubj = '';
             var oldVal = '';
             var issue_subject = $('#issue_subject');
@@ -84,14 +85,24 @@ function load_template(target_url, confirm_msg, should_replaced) {
             if (issue_subject.val() !== '' && should_replaced === 'false') {
                 oldSubj = issue_subject.val() + ' ';
             }
-            for(var issue_template in template) {
+            $('#original_subject').text(escapeHTML(issue_subject.val()));
+            $('#original_description').text(escapeHTML(issue_description.val()));
+
+            for (var issue_template in template) {
                 if ({}.hasOwnProperty.call(template, issue_template)) {
 
-                    template[issue_template].description = (template[issue_template].description === null) ? '' : template[issue_template].description;
-                    template[issue_template].issue_title = (template[issue_template].issue_title === null) ? '' : template[issue_template].issue_title;
+                    var obj = template[issue_template];
+                    obj.description = (obj.description === null) ? '' : obj.description;
+                    obj.issue_title = (obj.issue_title === null) ? '' : obj.issue_title;
 
-                    issue_description.val(oldVal + template[issue_template].description);
-                    issue_subject.val(oldSubj + template[issue_template].issue_title);
+                    issue_description.attr('original_description', $('<div />').text(issue_description.val()).html());
+                    issue_subject.attr('original_title', $('<div />').text(issue_subject.val()).html());
+
+                    if (oldVal.replace(/(?:\r\n|\r|\n)/g, '').trim() != obj.description.replace(/(?:\r\n|\r|\n)/g, '').trim())
+                        issue_description.val(oldVal + obj.description);
+                    if (oldSubj.trim() != obj.issue_title.trim())
+                        issue_subject.val(oldSubj + obj.issue_title);
+
                     try {
                         if (CKEDITOR.instances.issue_description)
                             CKEDITOR.instances.issue_description.setData(oldVal + template[issue_template].description);
@@ -101,9 +112,52 @@ function load_template(target_url, confirm_msg, should_replaced) {
                     // show message just after default template loaded.
                     if (confirm_msg)
                         show_loaded_message(confirm_msg, issue_description);
+                    addCheckList(obj);
+
+                    if ($('#original_subject').text().length > 0 || $('#original_description').text().length > 0 ) {
+                        $('#revert_template').removeClass('disabled');
+                    }
                 }
             }
         });
+    }
+}
+
+function revertAppliedTemplate() {
+    var issue_subject = $('#issue_subject');
+    var issue_description = $('#issue_description');
+    var old_subject = $('#original_subject');
+    var old_description = $('#original_description');
+
+    issue_subject.val(unescapeHTML(old_subject.text()));
+    issue_description.val(unescapeHTML(old_description.text()));
+    old_description.text = '';
+    old_description.text = '';
+    $('#revert_template').addClass('disabled');
+}
+
+function escapeHTML(val) {
+    return $('<div>').text(val).html();
+};
+
+function unescapeHTML(val) {
+    return $('<div>').html(val).text();
+};
+
+function addCheckList(obj) {
+    var list = obj.checklist;
+    if (list === undefined) return false;
+    if ($('#checklist_form').length === 0) return;
+
+    // remove exists checklist items
+    var oldList = $('span.checklist-item.show:visible span.checklist-show-only.checklist-remove > a.icon.icon-del');
+    oldList.each(function () {
+        oldList.click();
+    });
+
+    for (var i = 0; i < list.length; i++) {
+        $('span.checklist-new.checklist-edit-box > input.edit-box').val(list[i]);
+        $("span.checklist-item.new > span.icon.icon-add.save-new-by-button").click();
     }
 }
 
@@ -123,7 +177,7 @@ function set_pulldown(tracker, target_url) {
         async: true,
         type: 'post',
         data: $.param({issue_tracker_id: tracker})
-    }).done(function(data) {
+    }).done(function (data) {
         $('#issue_template').html(data);
         $('#allow_overwrite_description').attr('checked', allow_overwrite);
     });
@@ -131,37 +185,38 @@ function set_pulldown(tracker, target_url) {
 
 function updateSelect(id, is_global) {
     var target = $('#issue_template');
+    target.attr("selected", false);
     if (is_global === true) {
-        target = $('#issue_template option[value="' + id + '"][class="global"]').attr("selected", "selected");
-        target.change();
+        target.find('option[value="' + id + '"][class="global"]').prop('selected', true);
     } else {
-        target.val(id).trigger('change');
+        target.val(id);
     }
+    target.trigger('change');
 }
 
 // flash message as a jQuery Plugin
-(function($) {
-    $.fn.flash_message = function(options) {
+(function ($) {
+    $.fn.flash_message = function (options) {
         // default
         options = $.extend({
             text: 'Done',
-            time: 2000,
+            time: 3000,
             how: 'before',
             class_name: ''
         }, options);
 
-        return $(this).each(function() {
+        return $(this).each(function () {
             if ($(this).parent().find('.flash_message').get(0)) return;
 
             var message = $('<div></div>', {
                 'class': 'flash_message ' + options.class_name,
-                text: options.text
+                html: options.text
                 // display with fade in
             }).hide().fadeIn('fast');
 
             $(this)[options.how](message);
             //delay and fadeout
-            message.delay(options.time).fadeOut('normal', function() {
+            message.delay(options.time).fadeOut('normal', function () {
                 $(this).remove();
             });
 

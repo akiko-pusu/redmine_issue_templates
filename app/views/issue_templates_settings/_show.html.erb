@@ -1,9 +1,5 @@
 <div id="issue_templates_settings">
-  <% if @project.trackers.blank? %>
-      <div class="nodata">
-        <%= simple_format(l(:text_no_tracker_enabled)) %>
-      </div>
-  <% end %>
+  <%= render partial: "common/nodata", locals: { trackers: @project.trackers } %>
 
   <h2><%= l(:link_to_index_edit_template) %></h2>
   <p>

@@ -15,58 +15,71 @@ class GlobalIssueTemplatesController < ApplicationController
   # Action for global template : Admin right is required.
   #
   def index
-    @trackers = Tracker.all
-    @template_map = {}
-    @trackers.each do |tracker|
+    trackers = Tracker.all
+    template_map = {}
+    trackers.each do |tracker|
       tracker_id = tracker.id
       templates = GlobalIssueTemplate.search_by_tracker(tracker_id).order_by_position
-      @template_map[Tracker.find(tracker_id)] = templates if templates.any?
+      template_map[Tracker.find(tracker_id)] = templates if templates.any?
     end
-    render layout: !request.xhr?
+    render layout: !request.xhr?, locals: { template_map: template_map, trackers: trackers }
   end
 
   def new
     # create empty instance
-    @trackers = Tracker.all
-    @projects = Project.all
+    trackers = Tracker.all
+    projects = Project.all
     @global_issue_template = GlobalIssueTemplate.new
+    begin
+      checklist_enabled = Redmine::Plugin.registered_plugins.keys.include? :redmine_checklists
+    rescue
+      checklist_enabled = false
+    end
     if request.post?
       # Case post, set attributes passed as parameters.
-      @global_issue_template.safe_attributes = params[:global_issue_template]
+      param_template = params[:global_issue_template]
+      @global_issue_template.safe_attributes = param_template
       @global_issue_template.author = User.current
-      if @global_issue_template.save
-        flash[:notice] = l(:notice_successful_create)
-        redirect_to action: 'show', id: @global_issue_template.id
-      end
+
+      checklists = param_template[:checklists]
+      @global_issue_template.checklist_json = checklists.to_json if checklists
+
+      save_and_flash && return
     end
+
+    render(layout: !request.xhr?,
+           locals: { checklist_enabled: checklist_enabled, trackers: trackers, apply_all_projects: apply_all_projects?,
+                     issue_template: @global_issue_template, projects: projects }) && return
   end
 
   def show
-    @projects = Project.all
+    begin
+      checklist_enabled = Redmine::Plugin.registered_plugins.keys.include? :redmine_checklists
+    rescue
+      checklist_enabled = false
+    end
+    projects = Project.all
+    render(layout: !request.xhr?,
+           locals: { checklist_enabled: checklist_enabled, trackers: @trackers, apply_all_projects: apply_all_projects?,
+                     issue_template: @global_issue_template, projects: projects }) && return
   end
 
   def edit
     # Change from request.post to request.patch for Rails4.
-    if request.patch? || request.put?
-      @global_issue_template.safe_attributes = params[:global_issue_template]
-      if @global_issue_template.save
-        flash[:notice] = l(:notice_successful_update)
-        redirect_to action: 'show', id: @global_issue_template.id
-      else
-        respond_to do |format|
-          format.html { render action: 'show' }
-        end
-      end
-    end
+    return unless request.patch? || request.put?
+    param_template = params[:global_issue_template]
+    @global_issue_template.safe_attributes = param_template
+
+    checklists = param_template[:checklists]
+    @global_issue_template.checklist_json = checklists.to_json if checklists
+    save_and_flash
   end
 
   def destroy
-    if request.post?
-      if @global_issue_template.destroy
-        flash[:notice] = l(:notice_successful_delete)
-        redirect_to action: 'index'
-      end
-    end
+    return unless request.post?
+    return unless @global_issue_template.destroy
+    flash[:notice] = l(:notice_successful_delete)
+    redirect_to action: 'index'
   end
 
   # preview
@@ -98,5 +111,11 @@ class GlobalIssueTemplatesController < ApplicationController
   def move_order(method)
     GlobalIssueTemplate.find(params[:id]).send "move_#{method}"
     render_for_move_with_format
+  end
+
+  def save_and_flash
+    return unless @global_issue_template.save
+    flash[:notice] = l(:notice_successful_create)
+    redirect_to action: 'show', id: @global_issue_template.id
   end
 end

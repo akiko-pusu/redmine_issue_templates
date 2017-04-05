@@ -15,4 +15,11 @@ module IssueTemplatesHelper
     trackers = trackers.collect { |obj| [obj.name, obj.id] }
     trackers
   end
+
+  def options_for_template_pulldown(options)
+    options.map do |option|
+      text = option.name
+      content_tag_string(:option, text, option)
+    end.join("\n").html_safe
+  end
 end

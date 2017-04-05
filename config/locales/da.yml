@@ -1,0 +1,46 @@
+﻿# Danish strings go here for Rails i18n
+da:
+  issue_templates: Sagsskabeloner
+  issue_template: Sagsskabelon
+  issue_template_note: Note
+  label_enabled: Aktiveret
+  label_disabled: Deaktiveret
+  label_help_message: Skabelon-hjælpetekst
+  label_show_help_message: Vis hjælpetekst ved oprettelse eller redigering af sag.
+  about_help_message: Hvert projekt kan have sin egen hjælpetekst.
+  close_help: Luk hjælpetekst.
+  about_template_help_message: Du kan se instruktioner om sagsskabeloner på dette projekt.
+  label_enabled_help_message: Tjekboks til aktivering af denne skabelon. Fjern afkrydsning for at gemme som kladde.
+  label_list_templates: "Skabeloner"
+  label_new_templates: "Tilføj skabelon"
+  issue_template_name: "Skabelonnavn"
+  issue_description: "Sagsbeskrivelse"
+  issue_title: "Sagsemne"
+  label_applied_for_issue: "Felter: "
+  help_for_issue_title: "Hvis sat, vil sagens emnefelt blive udfyldt når skabelonen vælges."
+  help_for_this_field: "Forklaring til dette felt."
+  permission_manage_issue_templates: "Administrér skabeloner"
+  permission_edit_issue_templates: "Ret skabeloner"
+  permission_show_issue_templates: "Vis skabeloner"  
+  project_module_issue_templates: "Sagsskabeloner"
+  label_isdefault_help_message: "Anvend som den forudvalgte skabelon på sagstypen."
+  defaulf_template_loaded: "Indlæste forudvalgt skabelon. (Tracker: %{tracker})"
+  text_no_tracker_enabled: "Der er ikke defineret sagstyper for dette projekt.\nSæt disse inden der defineres sagsskabeloner.. "
+  label_enabled_sharing: "Del med projekttræet."
+  label_inherit_templates: "Arv sagsskabeloner"
+  label_inherit_templates_help_message: "Arv sagsskabeloner fra hovedprojekt. Hovedprojektets sagsskabeloner skal være delt med projekttræet."
+  label_inherited_templates: "Nedarvede sagsskabeloner"
+  no_issue_templates_for_this_project: "Ingen sagsskabeloner defineret for dette projekt."
+  link_to_index_edit_template: "Sagsskabeloner / ret skabeloner"
+  erase_issue_subject_and_description: "Tøm emne og beskrivelse."
+  unused_tracker_at_this_project: "NB: Sagstypen anvendes ikke med projektet."
+  label_enabledshaing_help_message: "Hvis valgt deles skabelonen med underliggende projekter. (Arv sagsskabeloner skal dog være valgt til på underprojekter.)"
+  label_should_replaced: "Erstat emne og beskrivelse"
+  label_should_replaced_help_message: "Hvis valgt erstattes emne og beskrivelse med skabelonen. Ellers tilføjes skabelonens indhold den eksisterende tekst."
+  global_issue_templates: "Fælles sagsskabeloner"
+  no_issue_templates_for_this_redmine: "Ingen fælles sagsskabeloner defineret."
+  only_admin_can_associate_global_template: "Kun administratorer kan sammenkoble fælles sagsskabeloner med projekter."
+  text_no_tracker_enabled_for_global: "Der er ikke defineret nogen sagstyper.\nSæt disse inden der defineres sagsskabeloner."
+  display_and_filter_issue_templates_in_dialog: "Filtrér Skabeloner"
+  label_filter_template: "Filtrér Skabeloner"
+  
