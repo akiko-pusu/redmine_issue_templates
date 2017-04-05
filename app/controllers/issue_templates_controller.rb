@@ -60,10 +60,9 @@ class IssueTemplatesController < ApplicationController
       checklist_enabled = false
     end
     if request.post?
-      param_template = params[:issue_template]
-      @issue_template.safe_attributes = param_template
+      @issue_template.safe_attributes = template_params
 
-      checklists = param_template[:checklists]
+      checklists = template_params[:checklists]
       @issue_template.checklist_json = checklists.to_json if checklists
 
       save_and_flash && return
@@ -74,10 +73,9 @@ class IssueTemplatesController < ApplicationController
   def edit
     # Change from request.post to request.patch for Rails4.
     return unless request.patch? || request.put?
-    param_template = params[:issue_template]
-    @issue_template.safe_attributes = param_template
+    @issue_template.safe_attributes = template_params
 
-    checklists = param_template[:checklists]
+    checklists = template_params[:checklists]
     @issue_template.checklist_json = checklists.to_json if checklists
 
     save_and_flash
@@ -242,5 +240,10 @@ class IssueTemplatesController < ApplicationController
 
   def inherit_templates
     setting.get_inherit_templates(@tracker)
+  end
+
+  def template_params
+    params.require(:issue_template).permit(:tracker_id, :title, :note, :issue_title, :description,
+                                           :enabled, :author_id, :position, :enabled_sharing, :checklists)
   end
 end

@@ -7,14 +7,14 @@
     }
 </script>
 <option value="">---</option>
-<optgroup label="<%= @tracker.name %>">
+<optgroup label="<%=h @tracker.name %>">
   <%= options_for_template_pulldown(grouped_options) %>
 </optgroup>
 <% if is_triggered_by_status.blank? || (is_triggered_by_status.present? && is_triggered_by_status == 'false') %>
     <script type="text/javascript">
         load_url = '<%= url_for(controller: 'issue_templates', action: 'load', project_id: @project) %>';
         should_replaced = '<%= should_replaced %>';
-        confirm_msg = "<%= escape_javascript((l(:defaulf_template_loaded, tracker: @tracker))) %>";
+        confirm_msg = "<%=h escape_javascript((l(:defaulf_template_loaded, tracker: @tracker))) %>";
         load_template(load_url, confirm_msg, should_replaced);
     </script>
 <% end %>
