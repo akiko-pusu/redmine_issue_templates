@@ -53,7 +53,7 @@ function openDialog(url, title) {
     });
 }
 
-function load_template(target_url, confirm_msg, should_replaced) {
+function load_template(target_url, confirm_msg, should_replaced, confirm_to_replace, confirmation, general_text_Yes, general_text_No) {
     var selected_template = $('#issue_template');
     if (selected_template.val() !== '') {
         var template_type = '';
@@ -78,6 +78,12 @@ function load_template(target_url, confirm_msg, should_replaced) {
             var issue_description = $('#issue_description');
 
             var template = JSON.parse(data);
+
+            if (confirm_to_replace != true && should_replaced === 'true' && (issue_description.val() !== '' || issue_subject.val() !== '')) {
+                confirmToReplace(target_url, confirm_msg, should_replaced, confirmation, general_text_Yes, general_text_No);
+                return;
+            }
+
             if (issue_description.val() !== '' && should_replaced === 'false') {
                 oldVal = issue_description.val() + '\n\n';
             }
@@ -142,6 +148,32 @@ function escapeHTML(val) {
 
 function unescapeHTML(val) {
     return $('<div>').html(val).text();
+}
+
+function confirmToReplace(target_url, confirm_msg, should_replaced, confirmation, general_text_Yes, general_text_No) {
+    $("#issue_template_confirm_to_replace_dialog").dialog(
+        {
+            modal: true,
+            dialogClass: "modal overflow_dialog",
+            draggable: true,
+            title: confirmation,
+            width: 400,
+            buttons: [
+                {
+                    text: general_text_Yes,
+                    click: function () {
+                        $(this).dialog("close");
+                        load_template(target_url, confirm_msg, should_replaced, true, confirmation, general_text_Yes, general_text_No)
+                    }
+                },
+                {
+                    text: general_text_No,
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }]
+        }
+    );
 }
 
 function addCheckList(obj) {
