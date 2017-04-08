@@ -7,12 +7,11 @@
        onclick="checkExpand('enabled_help_content'); return false;">
       <%= l(:help_for_this_field) %>
     </a>
-    <div id="enabled_help_content" style="display: none;
-        background-color: white; margin-left: 80px; margin-right: 80px; padding: 10px;">
+    <div id="enabled_help_content" style="display: none;">
       <%= l(:help_project_local_template_override_global_template) %>
       <p>
         <span class="icon icon-warning"></span>
-        <span class="help_content">
+        <span class="issue_template help_content">
           <%= l(:warning_project_local_template_override_global_template) %>
         </span>
       </p>
