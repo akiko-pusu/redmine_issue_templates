@@ -37,7 +37,7 @@ Redmine::Plugin.register :redmine_issue_templates do
            }
 
   menu :admin_menu, :redmine_issue_templates, { controller: 'global_issue_templates', action: 'index' },
-       caption: :global_issue_templates
+       caption: :global_issue_templates, html: { class: 'icon icon-global_issue_templates' }
 
   project_module :issue_templates do
     permission :edit_issue_templates, issue_templates: [:new, :edit, :destroy, :move]

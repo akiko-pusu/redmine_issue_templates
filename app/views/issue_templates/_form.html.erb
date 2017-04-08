@@ -20,7 +20,7 @@
       <a class="icon icon-help" href="#" title="<%= l(:help_for_this_field) %>"
          onclick="checkExpand('issue_title_help_content');"><%= l(:help_for_this_field) %></a>
       <br/>
-      <span id="issue_title_help_content" class="help_content" style="display: none;">
+      <span id="issue_title_help_content" class="issue_template help_content" style="display: none;">
         <%= l(:help_for_issue_title) %>
       </span>
     </p>
@@ -65,7 +65,7 @@
       <%= l(:help_for_this_field) %>
     </a>
     <br/>
-    <span id="isdefault_help_content" class="help_content" style="display: none;">
+    <span id="isdefault_help_content" class="issue_template help_content" style="display: none;">
       <%= l(:label_isdefault_help_message) %>
     </span>
   </p>
@@ -75,7 +75,7 @@
        onclick="checkExpand('enabled_help_content'); return false;"><%= l(:help_for_this_field) %>
     </a>
     <br/>
-    <span id="enabled_help_content" class="help_content" style="display: none;">
+    <span id="enabled_help_content" class="issue_template help_content" style="display: none;">
       <%= l(:label_enabled_help_message) %>
     </span>
   </p>
@@ -87,7 +87,7 @@
       <%= l(:help_for_this_field) %>
     </a>
     <br/>
-    <span id="enabledsharing_help_content" class="help_content" style="display: none;">
+    <span id="enabledsharing_help_content" class="issue_template help_content" style="display: none;">
       <%= l(:label_enabledshaing_help_message) %>
     </span>
   </p>
