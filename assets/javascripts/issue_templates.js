@@ -14,7 +14,7 @@ function checkExpand(ch) {
 function changeCollapsed(obj) {
     var target = $(obj);
     if (target.hasClass("collapsed")) {
-        target.removeClass("collapsed")
+        target.removeClass("collapsed");
         return;
     }
     target.addClass("collapsed");
@@ -120,7 +120,7 @@ function load_template(target_url, confirm_msg, should_replaced, confirm_to_repl
                         show_loaded_message(confirm_msg, issue_description);
                     addCheckList(obj);
 
-                    if ($('#original_subject').text().length > 0 || $('#original_description').text().length > 0 ) {
+                    if ($('#original_subject').text().length > 0 || $('#original_description').text().length > 0) {
                         $('#revert_template').removeClass('disabled');
                     }
                 }
