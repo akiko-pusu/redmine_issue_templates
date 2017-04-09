@@ -133,7 +133,7 @@ option.global {
     background-image: url(../images/eraser.png);
 }
 
-#admin-menu a.redmine-issue-templates {
+.icon-global_issue_templates {
     background-image: url(../images/issue_templates.png);
 }
 
