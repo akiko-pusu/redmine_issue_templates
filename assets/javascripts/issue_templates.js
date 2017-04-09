@@ -79,7 +79,7 @@ function load_template(target_url, confirm_msg, should_replaced, confirm_to_repl
 
             var template = JSON.parse(data);
 
-            if (confirm_to_replace != true && should_replaced === 'true' && (issue_description.val() !== '' || issue_subject.val() !== '')) {
+            if (confirm_to_replace !== true && should_replaced === 'true' && (issue_description.val() !== '' || issue_subject.val() !== '')) {
                 confirmToReplace(target_url, confirm_msg, should_replaced, confirmation, general_text_Yes, general_text_No);
                 return;
             }
