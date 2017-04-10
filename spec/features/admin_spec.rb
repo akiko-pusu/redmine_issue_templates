@@ -26,7 +26,7 @@ feature 'PluginSetting to apply Global issue templates to all the projects', js:
   end
 
   scenario 'Activate "apply_global_template_to_all_projects".' do
-    expect(page).to have_no_checked_field('settings_apply_global_template_to_all_projects')
+    expect(page).to have_unchecked_field('settings_apply_global_template_to_all_projects')
     check 'settings_apply_global_template_to_all_projects'
     click_on 'Apply'
     expect(page).to have_selector('#settings_apply_global_template_to_all_projects')

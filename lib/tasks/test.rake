@@ -19,6 +19,6 @@ namespace :redmine_issue_templates do
     end
     task default: :spec
   rescue LoadError
-    puts 'yardoc failed.'
+    puts 'spec failed.'
   end
 end

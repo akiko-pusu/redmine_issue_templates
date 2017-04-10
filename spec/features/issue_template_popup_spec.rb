@@ -44,7 +44,8 @@ feature 'Confirm dialog before overwrite description', js: true do
   scenario 'Select template and content is updated' do
     visit_new_issue(user)
     first_target.select_option
-    expect(issue_description.value).not_to eq''
+    wait_for_ajax
+    expect(issue_description.value).not_to eq ''
     expect(issue_description.value).to eq first_template.description
     expect(issue_subject.value).to eq first_template.issue_title
   end
@@ -58,6 +59,7 @@ feature 'Confirm dialog before overwrite description', js: true do
     context 'Overwite option is not activated' do
       scenario 'Template pulldown is shown when new issue and default is loaded.' do
         visit_new_issue(user)
+        wait_for_ajax
         expect(page).to have_selector('div#template_area select#issue_template')
         expect(issue_description.value).not_to eq ''
         expect(issue_subject.value).not_to eq ''
@@ -67,8 +69,10 @@ feature 'Confirm dialog before overwrite description', js: true do
 
       scenario 'Text appended.' do
         visit_new_issue(user)
+        wait_for_ajax
         expect(page).to have_selector('div#template_area select#issue_template')
         second_target.select_option
+        wait_for_ajax
         expect(page).not_to have_selector('#issue_template_confirm_to_replace_dialog')
         expect(issue_description.value).not_to eq first_template.description
         expect(issue_subject.value).not_to eq first_template.issue_title
@@ -85,7 +89,7 @@ feature 'Confirm dialog before overwrite description', js: true do
           visit_new_issue(user)
           expect(page).to have_selector('div#template_area select#issue_template')
           second_target.select_option
-
+          wait_for_ajax
           expect(page).to have_selector('#issue_template_confirm_to_replace_dialog')
           expect(issue_subject.value).not_to eq "#{first_template.issue_title} #{second_template.issue_title}"
           expect(issue_description.value).not_to eq "#{first_template.description}\n\n#{second_template.description}"
