@@ -5,5 +5,18 @@ FactoryGirl.define do
     sequence(:identifier) { |n| "project-#{n}" }
     homepage 'http://ecookbook.somenet.foo/'
     is_public true
+
+    trait :with_enabled_modules do
+      after(:build) do |tracker|
+        status = FactoryGirl.create(:issue_status)
+        tracker.default_status_id = status.id
+      end
+    end
+
+    factory :project_with_enabled_modules do
+      after(:create) do |project, _evaluator|
+        FactoryGirl.create(:enabled_module, project_id: project.id)
+      end
+    end
   end
 end
