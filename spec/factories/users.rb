@@ -11,10 +11,6 @@ FactoryGirl.define do
     u.hashed_password      '8f659c8d7c072f189374edacfa90d6abbc26d8ed'
     u.salt                 '7599f9963ec07b5a3b55b354407120c0'
 
-    trait :badge_user do
-      login 'badge_user'
-    end
-
     # login and password is the same. (Note: login length should be longer than 7.)
     trait :password_same_login do
       after(:create) do |user|

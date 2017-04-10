@@ -43,6 +43,7 @@ ja:
   text_no_tracker_enabled_for_global: "テンプレートはトラッカー毎に設定します。\nトラッカーの設定をお願いします。"
   display_and_filter_issue_templates_in_dialog: "テンプレートの内容を確認"
   label_filter_template: "テンプレートの絞り込み"
+  label_msg_confirm_to_replace: "説明と題名を上書きしてもよろしいですか？"
   label_apply_global_template_to_all_projects: "グローバルチケットテンプレートを全てのプロジェクトに適用"
   note_apply_global_template_to_all_projects_setting_enabled: "プラグイン設定によって、グローバルチケットテンプレートは全てのプロジェクトに適用されます"
   project_list_associated_this_template: "このテンプレートが利用可能なプロジェクト (全 %{all}プロジェクト中:  %{applied}プロジェクトが有効) "
