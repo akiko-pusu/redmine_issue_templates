@@ -43,6 +43,7 @@ zh:
   text_no_tracker_enabled_for_global: "未指定跟踪类型。\n在使用ISSUE模板前，请先指定模板适用的跟踪类型。"
   display_and_filter_issue_templates_in_dialog: "模板查询"
   label_filter_template: "模板查询"
+  label_msg_confirm_to_replace: "确认替换主题及描述信息？"
   label_apply_global_template_to_all_projects: "将全局问题模板应用于全部项目。"
   note_apply_global_template_to_all_projects_setting_enabled: "该全局问题模板通过插件设置配置后，应用于所有项目。"
   project_list_associated_this_template: "项目列表： (已应用于全部 %{all} 个项目中的 %{applied} 个)"
