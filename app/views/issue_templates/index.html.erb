@@ -136,20 +136,20 @@
                   <div class="template_tooltip_wrapper">
                     <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"></a>
                     <div class="wiki template_tooltip_body">
-                      <span class="title"><%= issue_template.title %></span>
-                      <%= textilizable(issue_template.description) %>
+                      <span class="title"><%=h issue_template.title %></span>
+                      <%=h textilizable(issue_template.description) %>
                     </div>
                   </div>
                 </td>
                 <td><%=h issue_template.tracker.name %></td>
                 <td><%=h issue_template.author %></td>
-                <td><%= format_time(issue_template.updated_on)%> </td>
+                <td><%=h format_time(issue_template.updated_on)%> </td>
                 <td class="center"><%= checked_image issue_template.is_default? %></td>
                 <td class="center"><%= checked_image issue_template.enabled? %></td>
               </tr>
               <tr class="<%= current_cycle %>" style="display: none;" id="template_description-<%= issue_template.id %>">
                 <td class="description" colspan="8">
-                  <div class="wiki"><%= textilizable(issue_template.description) %></div></td>
+                  <div class="wiki"><%=h textilizable(issue_template.description) %></div></td>
               </tr>
           <% end %>
           </tbody>
@@ -163,8 +163,8 @@
 
       <% if apply_all_projects %>
           <p>
-            <i class="icon settings"></i>
-            <span class="help_content">
+            <i class="issue_template icon settings"></i>
+            <span class="issue_template help_content">
               <%= l(:note_apply_global_template_to_all_projects_setting_enabled) %><br/>
               <%= l(:note_project_local_template_override_global_template) %>
             </span>
@@ -205,19 +205,19 @@
                 <div class="template_tooltip_wrapper">
                   <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"></a>
                   <div class="wiki template_tooltip_body">
-                    <span class="title"><%= issue_template.title %></span>
-                    <%= textilizable(issue_template.description) %>
+                    <span class="title"><%=h issue_template.title %></span>
+                    <%=h textilizable(issue_template.description) %>
                   </div>
                 </div>
               </td>
               <td><%=h issue_template.tracker.name %></td>
               <td><%=h issue_template.author %></td>
-              <td><%= format_time(issue_template.updated_on)%> </td>
+              <td><%=h format_time(issue_template.updated_on)%> </td>
               <td class="center"><%= checked_image issue_template.is_default? %></td>
             </tr>
             <tr class="<%= current_cycle %>" style="display: none;" id="global_template_description-<%= issue_template.id %>">
               <td class="description" colspan="8">
-                <div class="wiki"><%= textilizable(issue_template.description) %></div></td>
+                <div class="wiki"><%=h textilizable(issue_template.description) %></div></td>
             </tr>
         <% end %>
         </tbody>

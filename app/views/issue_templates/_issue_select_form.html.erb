@@ -44,6 +44,12 @@
            id="template_search_filter" class="autocomplete">
     <div id="filtered_templates_list"></div>
   </div>
+
+  <div id="issue_template_confirm_to_replace_dialog" style="overflow:visible; display: none;">
+    <label>
+      <%=h l(:label_msg_confirm_to_replace) %>
+    </label>
+  </div>
   <!-- dialog box -->
 
 </div>
@@ -62,8 +68,11 @@
       var load_url = '<%= url_for(controller: 'issue_templates', action: 'load',
         project_id: project_id, is_triggered_by_status: is_triggered_by_status) %>';
       var should_replaced = '<%= setting.should_replaced %>';
+      var confirmation = '<%=h l(:label_confirmation) %>';
+      var general_text_Yes = '<%=h l(:general_text_Yes) %>';
+      var general_text_No = '<%=h l(:general_text_No) %>';
 
-      load_template(load_url, undefined, should_replaced, is_triggered_by_status);
+      load_template(load_url, undefined, should_replaced, false, confirmation, general_text_Yes, general_text_No);
     });
 
     // Show dialog

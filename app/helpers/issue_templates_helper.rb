@@ -18,8 +18,8 @@ module IssueTemplatesHelper
 
   def options_for_template_pulldown(options)
     options.map do |option|
-      text = option.name
-      content_tag_string(:option, text, option)
+      text = option.try(:name).to_s
+      content_tag_string(:option, text, option, true)
     end.join("\n").html_safe
   end
 end
