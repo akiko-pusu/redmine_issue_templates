@@ -19,8 +19,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 require 'redmine'
-require 'issue_templates_issues_hook'
-require 'issue_templates_projects_helper_patch'
+require 'issue_templates/issues_hook'
+require 'issue_templates/projects_helper_patch'
 
 Redmine::Plugin.register :redmine_issue_templates do
   name 'Redmine Issue Templates plugin'
@@ -48,8 +48,8 @@ Redmine::Plugin.register :redmine_issue_templates do
 
   Rails.configuration.to_prepare do
     require_dependency 'projects_helper'
-    unless ProjectsHelper.included_modules.include? IssueTemplatesProjectsHelperPatch
-      ProjectsHelper.send(:include, IssueTemplatesProjectsHelperPatch)
+    unless ProjectsHelper.included_modules.include? IssueTemplates::ProjectsHelperPatch
+      ProjectsHelper.send(:include, IssueTemplates::ProjectsHelperPatch)
     end
   end
 end
