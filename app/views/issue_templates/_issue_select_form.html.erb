@@ -12,7 +12,7 @@
     </a>
     <% if setting.enable_help? %>
         <a class="icon icon-help" href="#" title="<%= l(:about_template_help_message) %>"
-           onclick="checkExpand('template_help_content');">
+           onclick="IssueTemplate.checkExpand('template_help_content');">
           <%= l(:label_help_message) %>
         </a>
     <% end %>
@@ -31,7 +31,7 @@
   <div class="template_help box" id="template_help_content" style="display: none;">
     <%= textilizable setting.help_message %>
     <div id="template_help_hide">
-      <a href="#" onClick="checkExpand('template_help_content');" title="<%= l(:close_help) %>">[x]</a>
+      <a href="#" onClick="IssueTemplate.checkExpand('template_help_content');" title="<%= l(:close_help) %>">[x]</a>
     </div>
   </div>
 

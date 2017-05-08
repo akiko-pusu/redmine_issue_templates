@@ -23,7 +23,7 @@
         </td>
         <td class="center"><%= checked_image template.is_default? %></td>
         <td>
-          <a href="#" onclick="updateSelect(<%= template.id %>, false); return false;"
+          <a href="#" onclick="updateTemplateSelect(<%= template.id %>, false); return false;"
              class="icon icon-test"></a>
         </td>
       </tr>
@@ -44,7 +44,7 @@
         </td>
         <td class="center"><%= checked_image template == default_template %></td>
         <td>
-          <a href="#" onclick="updateSelect(<%= template.id %>, false); return false;"
+          <a href="#" onclick="updateTemplateSelect(<%= template.id %>, false); return false;"
              class="icon icon-test"></a>
         </td>
       </tr>
@@ -65,7 +65,7 @@
         </td>
         <td class="center"><%= checked_image template == default_template %></td>
         <td>
-          <a href="#" onclick="updateSelect(<%= template.id %>, true); return false;"
+          <a href="#" onclick="updateTemplateSelect(<%= template.id %>, true); return false;"
              class="icon icon-test"></a>
         </td>
       </tr>

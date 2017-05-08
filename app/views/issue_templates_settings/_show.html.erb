@@ -25,7 +25,7 @@
 
           <p><%= f.check_box :inherit_templates, label: l(:label_inherit_templates) %>
             <a class="icon icon-help" href="#" title="<%= l(:help_for_this_field) %>"
-               onclick="checkExpand('inherit_templates_help_content'); return false;">
+               onclick="IssueTemplate.checkExpand('inherit_templates_help_content'); return false;">
               <%= l(:help_for_this_field) %>
             </a>
             <br/>
@@ -37,7 +37,7 @@
           <p>
             <%= f.check_box :should_replaced, label: l(:label_should_replaced) %>
             <a class="icon icon-help" href="#" title="<%= l(:help_for_this_field) %>"
-               onclick="checkExpand('should_replaced_help_content'); return false;">
+               onclick="IssueTemplate.checkExpand('should_replaced_help_content'); return false;">
               <%= l(:help_for_this_field) %>
             </a>
             <br/>
@@ -68,8 +68,8 @@
 </div>
 
 <script type="text/javascript">
-    var checkExpand;
-    checkExpand = function(ch) {
+    var IssueTemplate.checkExpand;
+    IssueTemplate.checkExpand = function(ch) {
       var obj;
       obj = document.all && document.all(ch) || document.getElementById && document.getElementById(ch);
       if (obj && obj.style) {

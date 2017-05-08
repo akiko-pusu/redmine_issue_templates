@@ -4,7 +4,7 @@
     <%= check_box_tag 'settings[apply_global_template_to_all_projects]', true, @settings['apply_global_template_to_all_projects'] == "true" %>
     <%= content_tag(:b, l(:label_apply_global_template_to_all_projects))%>
     <a class="icon icon-help" href="#" title="<%= l(:help_for_this_field) %>"
-       onclick="checkExpand('enabled_help_content'); return false;">
+       onclick="IssueTemplate.checkExpand('enabled_help_content'); return false;">
       <%= l(:help_for_this_field) %>
     </a>
     <div id="enabled_help_content" style="display: none;">
@@ -22,7 +22,7 @@
   </p>
 </div>
 <script>
-    function checkExpand(ch) {
+    function IssueTemplate.checkExpand(ch) {
         var obj;
         obj = document.all && document.all(ch) || document.getElementById && document.getElementById(ch);
         if (obj && obj.style) obj.style.display =

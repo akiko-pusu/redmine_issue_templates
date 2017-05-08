@@ -2,7 +2,18 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-changeType = '';
+
+// For namespace setting.
+if (typeof IssueTemplate === "undefined"){
+  var IssueTemplate = {};
+}
+
+IssueTemplate.checkExpand = function(ch) {
+    var obj;
+    obj = document.all && document.all(ch) || document.getElementById && document.getElementById(ch);
+    if (obj && obj.style) obj.style.display =
+        obj.style.display === 'none' ? '' : 'none'
+}
 
 function checkExpand(ch) {
     var obj;
@@ -215,7 +226,7 @@ function set_pulldown(tracker, target_url) {
     });
 }
 
-function updateSelect(id, is_global) {
+function updateTemplateSelect(id, is_global) {
     var target = $('#issue_template');
     target.attr("selected", false);
     if (is_global === true) {

@@ -18,7 +18,7 @@
     </p>
     <p><%= f.text_field :issue_title, required: false, size: 80, label: l(:issue_title) %>
       <a class="icon icon-help" href="#" title="<%= l(:help_for_this_field) %>"
-         onclick="checkExpand('issue_title_help_content');"><%= l(:help_for_this_field) %></a>
+         onclick="IssueTemplate.checkExpand('issue_title_help_content');"><%= l(:help_for_this_field) %></a>
       <br/>
       <span id="issue_title_help_content" class="issue_template help_content" style="display: none;">
         <%= l(:help_for_issue_title) %>
@@ -61,7 +61,7 @@
 
   <p><%= f.check_box :is_default, label: l(:field_is_default) %>
     <a class="icon icon-help" href="#" title="<%= l(:help_for_this_field) %>"
-       onclick="checkExpand('isdefault_help_content'); return false;">
+       onclick="IssueTemplate.checkExpand('isdefault_help_content'); return false;">
       <%= l(:help_for_this_field) %>
     </a>
     <br/>
@@ -72,7 +72,7 @@
   <p>
     <%= f.check_box :enabled, label: l(:label_enabled) %>
     <a class="icon icon-help" href="#" title="<%= l(:help_for_this_field) %>"
-       onclick="checkExpand('enabled_help_content'); return false;"><%= l(:help_for_this_field) %>
+       onclick="IssueTemplate.checkExpand('enabled_help_content'); return false;"><%= l(:help_for_this_field) %>
     </a>
     <br/>
     <span id="enabled_help_content" class="issue_template help_content" style="display: none;">
@@ -83,7 +83,7 @@
   <p>
     <%= f.check_box :enabled_sharing, label: l(:label_enabled_sharing) %>
     <a class="icon icon-help" href="#" title="<%= l(:help_for_this_field) %>"
-       onclick="checkExpand('enabledsharing_help_content'); return false;">
+       onclick="IssueTemplate.checkExpand('enabledsharing_help_content'); return false;">
       <%= l(:help_for_this_field) %>
     </a>
     <br/>
