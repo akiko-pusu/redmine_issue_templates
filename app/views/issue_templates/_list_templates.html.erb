@@ -23,8 +23,8 @@
         </td>
         <td class="center"><%= checked_image template.is_default? %></td>
         <td>
-          <a href="#" onclick="updateSelect(<%= template.id %>, false); return false;"
-             class="icon icon-test"></a>
+          <a data-issue-template-id="<%= template.id %>"
+             class="icon icon-test template-update-link"></a>
         </td>
       </tr>
 <% end %>
@@ -44,8 +44,8 @@
         </td>
         <td class="center"><%= checked_image template == default_template %></td>
         <td>
-          <a href="#" onclick="updateSelect(<%= template.id %>, false); return false;"
-             class="icon icon-test"></a>
+          <a data-issue-template-id="<%= template.id %>"
+             class="icon icon-test template-update-link"></a>
         </td>
       </tr>
 <% end %>
@@ -65,9 +65,15 @@
         </td>
         <td class="center"><%= checked_image template == default_template %></td>
         <td>
-          <a href="#" onclick="updateSelect(<%= template.id %>, true); return false;"
-             class="icon icon-test"></a>
+          <a data-issue-template-id="<%= template.id %>"
+             class="icon icon-test template-update-link template-global"></a>
         </td>
       </tr>
 <% end %>
 </table>
+<script type="text/javascript">
+$(document).ready(function () {
+  // set plugin
+  $('a.template-update-link').issueTemplate('updateTemplateSelect');
+});
+</script>
