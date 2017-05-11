@@ -4,12 +4,16 @@ module IssueTemplates
   class IssuesHook < Redmine::Hook::ViewListener
     include IssuesHelper
 
+    CONTROLLERS = %(
+      'IssuesController' 'IssueTemplatesController' 'ProjectsController'
+      'GlobalIssueTemplatesController' 'SettingsController'
+    ).freeze
+
+    ACTIONS = %('new' 'update_form' 'create').freeze
+
     def view_layouts_base_html_head(context = {})
       o = stylesheet_link_tag('issue_templates', plugin: 'redmine_issue_templates')
-      if (context[:controller].class.name == 'IssuesController' &&
-          context[:controller].action_name != 'index') ||
-         (context[:controller].class.name == 'IssueTemplatesController') ||
-         (context[:controller].class.name == 'GlobalIssueTemplatesController')
+      if need_template_js?(context[:controller])
         o << javascript_include_tag('issue_templates', plugin: 'redmine_issue_templates')
       end
       o
@@ -23,7 +27,7 @@ module IssueTemplates
 
       project = context[:project]
       project_id = project.present? ? project.id : issue.project_id
-      return unless create_action?(parameters) && project_id.present?
+      return unless create_action?(parameters[:action]) && project_id.present?
 
       is_triggered_by_status = triggered_by_status?(parameters)
       context[:controller].send(
@@ -52,13 +56,16 @@ module IssueTemplates
       copy_from.present?
     end
 
-    def create_action?(parameters)
-      action = parameters[:action]
-      %('new' 'update_form' 'create').include?(action)
+    def create_action?(action)
+      ACTIONS.include?(action)
     end
 
     def setting(project_id)
       IssueTemplateSetting.find_or_create(project_id)
+    end
+
+    def need_template_js?(controller)
+      CONTROLLERS.include?(controller.class.name)
     end
   end
 end

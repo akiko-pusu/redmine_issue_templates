@@ -24,8 +24,8 @@
         <div class="box tabular">
 
           <p><%= f.check_box :inherit_templates, label: l(:label_inherit_templates) %>
-            <a class="icon icon-help" href="#" title="<%= l(:help_for_this_field) %>"
-               onclick="IssueTemplate.checkExpand('inherit_templates_help_content'); return false;">
+            <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
+               data-template-help-target="#inherit_templates_help_content">
               <%= l(:help_for_this_field) %>
             </a>
             <br/>
@@ -36,8 +36,8 @@
 
           <p>
             <%= f.check_box :should_replaced, label: l(:label_should_replaced) %>
-            <a class="icon icon-help" href="#" title="<%= l(:help_for_this_field) %>"
-               onclick="IssueTemplate.checkExpand('should_replaced_help_content'); return false;">
+            <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
+               data-template-help-target="#should_replaced_help_content">
               <%= l(:help_for_this_field) %>
             </a>
             <br/>
@@ -66,15 +66,4 @@
     <% end %>
   </div>
 </div>
-
-<script type="text/javascript">
-    var IssueTemplate.checkExpand;
-    IssueTemplate.checkExpand = function(ch) {
-      var obj;
-      obj = document.all && document.all(ch) || document.getElementById && document.getElementById(ch);
-      if (obj && obj.style) {
-        obj.style.display = 'none' === obj.style.display ? '' : 'none';
-      }
-    };
-</script>
 

@@ -4,31 +4,28 @@
  */
 
 // For namespace setting.
-if (typeof IssueTemplate === "undefined"){
-  var IssueTemplate = {};
+if (typeof IssueTemplate === "undefined") {
+    var IssueTemplate = {};
 }
 
-IssueTemplate.checkExpand = function(ch) {
-    var obj;
-    obj = document.all && document.all(ch) || document.getElementById && document.getElementById(ch);
-    if (obj && obj.style) obj.style.display =
-        obj.style.display === 'none' ? '' : 'none'
+IssueTemplate.updateTemplateSelect = function (id, is_global) {
+    var obj = $('#issue_template');
+    obj.attr("selected", false);
+    if (is_global === true) {
+        obj.find('option[value="' + id + '"][class="global"]').prop('selected', true);
+    } else {
+        obj.val(id);
+    }
+    obj.trigger('change');
 }
 
-function checkExpand(ch) {
-    var obj;
-    obj = document.all && document.all(ch) || document.getElementById && document.getElementById(ch);
-    if (obj && obj.style) obj.style.display =
-        obj.style.display === 'none' ? '' : 'none'
-}
-
-function changeCollapsed(obj) {
-    var target = $(obj);
-    if (target.hasClass("collapsed")) {
-        target.removeClass("collapsed");
+function changeCollapsed(target) {
+    var obj = $(target);
+    if (obj.hasClass("collapsed")) {
+        obj.removeClass("collapsed");
         return;
     }
-    target.addClass("collapsed");
+    obj.addClass("collapsed");
 }
 
 function eraseSubjectAndDescription() {
@@ -90,11 +87,6 @@ function load_template(target_url, confirm_msg, should_replaced, confirm_to_repl
 
             var template = JSON.parse(data);
 
-            if (confirm_to_replace !== true && should_replaced === 'true' && (issue_description.val() !== '' || issue_subject.val() !== '')) {
-                confirmToReplace(target_url, confirm_msg, should_replaced, confirmation, general_text_Yes, general_text_No);
-                return;
-            }
-
             if (issue_description.val() !== '' && should_replaced === 'false') {
                 oldVal = issue_description.val() + '\n\n';
             }
@@ -111,6 +103,13 @@ function load_template(target_url, confirm_msg, should_replaced, confirm_to_repl
                     var obj = template[issue_template];
                     obj.description = (obj.description === null) ? '' : obj.description;
                     obj.issue_title = (obj.issue_title === null) ? '' : obj.issue_title;
+
+                    if (confirm_to_replace !== true && should_replaced === 'true' && (issue_description.val() !== '' || issue_subject.val() !== '')) {
+                        if (oldVal !== obj.description || oldSubj !== obj.issue_title) {
+                            confirmToReplace(target_url, confirm_msg, should_replaced, confirmation, general_text_Yes, general_text_No);
+                            return;
+                        }
+                    }
 
                     issue_description.attr('original_description', $('<div />').text(issue_description.val()).html());
                     issue_subject.attr('original_title', $('<div />').text(issue_subject.val()).html());
@@ -207,7 +206,7 @@ function addCheckList(obj) {
 function show_loaded_message(confirm_msg, target) {
     var template_status_area = $('#template_status-area');
     template_status_area.insertBefore(target);
-    template_status_area.flash_message({
+    template_status_area.issueTemplate('flash_message', {
         text: confirm_msg,
         how: 'append'
     });
@@ -226,44 +225,67 @@ function set_pulldown(tracker, target_url) {
     });
 }
 
-function updateTemplateSelect(id, is_global) {
-    var target = $('#issue_template');
-    target.attr("selected", false);
-    if (is_global === true) {
-        target.find('option[value="' + id + '"][class="global"]').prop('selected', true);
-    } else {
-        target.val(id);
-    }
-    target.trigger('change');
-}
-
-// flash message as a jQuery Plugin
-(function ($) {
-    $.fn.flash_message = function (options) {
-        // default
-        options = $.extend({
-            text: 'Done',
-            time: 3000,
-            how: 'before',
-            class_name: ''
-        }, options);
-
-        return $(this).each(function () {
-            if ($(this).parent().find('.flash_message').get(0)) return;
-
-            var message = $('<div></div>', {
-                'class': 'flash_message ' + options.class_name,
-                html: options.text
-                // display with fade in
-            }).hide().fadeIn('fast');
-
-            $(this)[options.how](message);
-            //delay and fadeout
-            message.delay(options.time).fadeOut('normal', function () {
-                $(this).remove();
+// jQuery plugin for issue template
+;(function ($) {
+    var methods = {
+        init: function (options) {
+        },
+        expandHelp: function (options) {
+            options = $.extend({
+                attr_name: 'data-template-help-target'
+            }, options);
+            return $(this).each(function () {
+                $(this).click(function () {
+                    var target = $(this).attr(options.attr_name);
+                    var obj = $(target);
+                    if (obj.length)
+                        obj.toggle();
+                });
             });
+        },
+        flash_message: function (options) {
+            // default
+            options = $.extend({
+                text: 'Done',
+                time: 3000,
+                how: 'before',
+                class_name: ''
+            }, options);
 
-        });
+            return $(this).each(function () {
+                if ($(this).parent().find('.flash_message').get(0)) return;
+
+                var message = $('<div></div>', {
+                    'class': 'flash_message ' + options.class_name,
+                    html: options.text
+                    // display with fade in
+                }).hide().fadeIn('fast');
+
+                $(this)[options.how](message);
+                //delay and fadeout
+                message.delay(options.time).fadeOut('normal', function () {
+                    $(this).remove();
+                });
+
+            });
+        }
+    };
+
+    $.fn.issueTemplate = function (method) {
+
+        // Method dispatch logic
+        if (methods[method]) {
+            return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+        } else if (typeof method === 'object' || !method) {
+            return methods.init.apply(this, arguments);
+        } else {
+            $.error('Method ' + method + ' does not exist on jQuery.webvantaUtils');
+        }
     };
 })(jQuery);
+
+$(document).ready(function () {
+    // set plugin
+    $('a.template-help').issueTemplate('expandHelp');
+});
 
