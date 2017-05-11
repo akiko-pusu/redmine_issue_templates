@@ -8,17 +8,6 @@ if (typeof IssueTemplate === "undefined") {
     var IssueTemplate = {};
 }
 
-IssueTemplate.updateTemplateSelect = function (id, is_global) {
-    var obj = $('#issue_template');
-    obj.attr("selected", false);
-    if (is_global === true) {
-        obj.find('option[value="' + id + '"][class="global"]').prop('selected', true);
-    } else {
-        obj.val(id);
-    }
-    obj.trigger('change');
-}
-
 function changeCollapsed(target) {
     var obj = $(target);
     if (obj.hasClass("collapsed")) {
@@ -229,6 +218,26 @@ function set_pulldown(tracker, target_url) {
 ;(function ($) {
     var methods = {
         init: function (options) {
+        },
+        updateTemplateSelect: function (options) {
+            options = $.extend({
+                target: '#issue_template',
+                template_id: 'data-issue-template-id'
+            }, options);
+            return $(this).each(function () {
+                $(this).click(function () {
+                    var obj = $(options.target);
+                    var id = $(this).attr(options.template_id);
+                    obj.attr("selected", false);
+                    // has template-global class?
+                    if ($(this).hasClass('template-global')) {
+                        obj.find('option[value="' + id + '"][class="global"]').prop('selected', true);
+                    } else {
+                        obj.val(id);
+                    }
+                    obj.trigger('change');
+                });
+            });
         },
         expandHelp: function (options) {
             options = $.extend({
