@@ -236,7 +236,7 @@ select.issue_template {
 }
 
 .issue_template_icon.icon-undo,
-.icon.icon-reload {
+.issue_template_icon.icon-reload {
     background: url(../../../images/reload.png) no-repeat 3px center;
 }
 
