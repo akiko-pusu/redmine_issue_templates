@@ -18,6 +18,8 @@
         var confirmation = '<%=h l(:label_confirmation) %>';
         var general_text_Yes = '<%=h l(:general_text_Yes) %>';
         var general_text_No = '<%=h l(:general_text_No) %>';
-        load_template(load_url, confirm_msg, should_replaced, false, confirmation, general_text_Yes, general_text_No);
+
+        var templateNS = new ISSUE_TEMPLATE();
+        templateNS.load_template(load_url, confirm_msg, should_replaced, false, confirmation, general_text_Yes, general_text_No);
     </script>
 <% end %>
