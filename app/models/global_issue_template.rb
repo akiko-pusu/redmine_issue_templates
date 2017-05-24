@@ -21,9 +21,9 @@ class GlobalIssueTemplate < ActiveRecord::Base
                   :is_default, :enabled, :author_id, :position, :project_ids
 
   # for intermediate table assosciations
-  scope :search_by_project, lambda do |project_id|
+  scope :search_by_project, lambda { |project_id|
     joins(:projects).where(projects: { id: project_id }) if project_id.present?
-  end
+  }
 
   module Config
     JSON_OBJECT_NAME = 'global_issue_template'.freeze
