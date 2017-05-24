@@ -18,7 +18,7 @@ ISSUE_TEMPLATE.prototype = {
         }
     },
     openDialog: function(url, title) {
-        // ダイアログを表示する
+        // Open dialog (modal window) to display selectable templates list.
         $.ajax({
             url: url,
             success: function (data) {
