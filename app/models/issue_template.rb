@@ -13,9 +13,7 @@ class IssueTemplate < ActiveRecord::Base
                   :is_default, :enabled, :enabled_sharing, :author, :project, :position
 
   scope :enabled_sharing, -> { where(enabled_sharing: true) }
-  scope :search_by_project, lambda { |prolect_id|
-    where(project_id: prolect_id)
-  }
+  scope :search_by_project, ->(prolect_id) { where(project_id: prolect_id) }
 
   module Config
     JSON_OBJECT_NAME = 'issue_template'.freeze
