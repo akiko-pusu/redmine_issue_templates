@@ -195,7 +195,7 @@ ISSUE_TEMPLATE.prototype = {
     escapeHTML: function(val) {
         return $('<div>').text(val).html();
     },
-    unescapeHTML(val) {
+    unescapeHTML: function(val) {
         return $('<div>').html(val).text();
     }
 };
