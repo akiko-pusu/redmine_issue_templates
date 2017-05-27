@@ -54,8 +54,7 @@ module Concerns
       def generate_json
         result = attributes
         result[:checklist] = checklist
-        result.delete('checklist_json')
-        result
+        result.except('checklist_json')
       end
 
       def template_struct(option = {})

@@ -44,13 +44,11 @@ class IssueTemplateSetting < ActiveRecord::Base
   end
 
   def enable_help?
-    return true if enabled == true && !help_message.blank?
-    false
+    enabled == true && !help_message.blank?
   end
 
   def enabled_inherit_templates?
-    return true if inherit_templates
-    false
+    inherit_templates
   end
 
   def child_projects
