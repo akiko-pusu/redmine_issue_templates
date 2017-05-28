@@ -229,17 +229,8 @@ select.issue_template {
     background: url(../../../images/plugin.png) no-repeat 3px center;
 }
 
-.issue_template_icon.icon-undo,
-.icon.icon-reload {
-    background: url(../../../images/reload.png) no-repeat 3px center;
-}
-
 .contextual.issue_templates {
     margin-bottom: 5px;
-}
-
-.issue_template_icon.icon-warning {
-    background-image: url(../../../images/exclamation.png) no-repeat 3px center;
 }
 
 #revert_template {
