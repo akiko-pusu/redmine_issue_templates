@@ -1,4 +1,13 @@
 module ControllerHelper
+  # AuthHeader with api key (Ref.http://www.redmine.org/projects/redmine/wiki/Rest_api)
+  def auth_with_user(user)
+    request.headers['X-Redmine-API-Key'] = user.api_key.to_s
+  end
+
+  def clear_token
+    request.headers['X-Redmine-API-Key'] = nil
+  end
+
   shared_context 'As admin' do
     let(:user) { FactoryGirl.create(:user, status: 1, admin: is_admin) }
     let(:is_admin) { true }

@@ -1,0 +1,57 @@
+api.array :global_issue_templates do
+  @global_issue_templates.each do |template|
+    api.template do
+      api.id template.id
+      api.tracker_id template.tracker_id
+      api.tracker_name template.tracker.name
+      api.title template.title
+      api.issue_title template.issue_title
+      api.description template.description
+      api.note template.note
+      api.enabled template.enabled
+      api.updated_on template.updated_on
+      api.created_on template.created_on
+      api.updated_on template.updated_on
+    end
+  end
+end
+api.array :inherit_templates do
+  @inherit_templates.each do |template|
+    api.template do
+      api.id template.id
+      api.tracker_id template.tracker_id
+      api.tracker_name template.tracker.name
+      api.title template.title
+      api.issue_title template.issue_title
+      api.description template.description
+      api.note template.note
+      api.enabled template.enabled
+      api.is_default template.is_default
+      api.enabled_sharing template.enabled_sharing
+      api.position template.position
+      api.updated_on template.updated_on
+      api.created_on template.created_on
+      api.updated_on template.updated_on
+    end
+  end
+end
+api.array :issue_templates do
+  project_templates.each do |template|
+    api.template do
+      api.id template.id
+      api.tracker_id template.tracker_id
+      api.tracker_name template.tracker.name
+      api.title template.title
+      api.issue_title template.issue_title
+      api.description template.description
+      api.note template.note
+      api.enabled template.enabled
+      api.is_default template.is_default
+      api.enabled_sharing template.enabled_sharing
+      api.position template.position
+      api.updated_on template.updated_on
+      api.created_on template.created_on
+      api.updated_on template.updated_on
+    end
+  end
+end
