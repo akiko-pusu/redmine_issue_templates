@@ -35,9 +35,8 @@ class IssueTemplatesController < ApplicationController
       format.html do
         render layout: !request.xhr?, locals: { apply_all_projects: apply_all_projects? }
       end
-      format.json do
-        render formats: :json, handlers: 'jbuilder',
-               locals: { project_templates: project_templates }
+      format.api do
+        render formats: :json, locals: { project_templates: project_templates }
       end
     end
   end
@@ -136,8 +135,8 @@ class IssueTemplatesController < ApplicationController
                          inherit_templates: @inherit_templates,
                          global_issue_templates: @global_templates }
       end
-      format.json do
-        render action: '_list_templates', formats: 'json', handlers: 'jbuilder',
+      format.api do
+        render action: '_list_templates',
                locals: { default_template: default_template,
                          issue_templates: @issue_templates,
                          inherit_templates: @inherit_templates,
