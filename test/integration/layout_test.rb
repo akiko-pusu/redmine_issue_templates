@@ -19,7 +19,7 @@ class LayoutTest < Redmine::IntegrationTest
 
     get '/projects/ecookbook/issues'
     assert_response :success
-    assert_select 'h3.template', 0
+    assert_select 'h3', count: 0, text: I18n.t('issue_template')
 
     get '/projects/ecookbook/issues/new'
     assert_select 'div#template_area select#issue_template', 0
@@ -33,7 +33,7 @@ class LayoutTest < Redmine::IntegrationTest
 
     get '/projects/ecookbook/issues'
     assert_response :success
-    assert_select 'h3.template'
+    assert_select 'h3', count: 1, text: I18n.t('issue_template')
     assert_tag :a, content: 'Add template',
                    attributes: { href: '/projects/ecookbook/issue_templates/new' }
   end

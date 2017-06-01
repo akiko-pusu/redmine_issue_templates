@@ -48,7 +48,7 @@ class IssuesControllerTest < ActionController::TestCase
   def test_index_without_project
     get :index
     assert_response :success
-    assert_select 'h3.template', false
+    assert_select 'h3', count: 0, text: I18n.t('issue_template')
   end
 
   def test_index
@@ -56,14 +56,14 @@ class IssuesControllerTest < ActionController::TestCase
     assert_response :success
     assert_select 'div#template_area select#issue_template', false,
                   'Action index should not contain template select pulldown.'
-    assert_select 'h3.template'
+    assert_select 'h3', text: I18n.t('issue_template')
     assert_select 'a', { href: "/projects/#{@project}/issue_templates/new" }, false
   end
 
   def test_index_with_edit_permission
     Role.find(1).add_permission! :edit_issue_templates
     get :index, project_id: @project.id
-    assert_select 'h3.template'
+    assert_select 'h3', text: I18n.t('issue_template')
     assert_select 'a', href: "/projects/#{@project}/issue_templates/new"
   end
 

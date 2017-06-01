@@ -30,6 +30,7 @@ Metrics/PerceivedComplexity:
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
+    - 'test/**/*'
 
 # Avoid methods longer than 10 lines of code
 MethodLength:
