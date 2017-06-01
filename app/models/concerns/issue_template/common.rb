@@ -24,6 +24,10 @@ module Concerns
 
         scope :is_default, -> { where(is_default: true) }
         scope :not_default, -> { where(is_default: false) }
+
+        after_destroy do |template|
+          logger.info("[Destroy] #{self.class}: #{template.inspect}")
+        end
       end
 
       #
@@ -59,6 +63,10 @@ module Concerns
 
       def template_struct(option = {})
         Struct.new(:value, :name, :class, :selected).new(id, title, option[:class])
+      end
+
+      def log_destroy_action(template)
+        logger.info "[Destroy] #{self.class}: #{template.inspect}" if logger && logger.info
       end
     end
   end
