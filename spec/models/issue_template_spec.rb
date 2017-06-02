@@ -28,4 +28,12 @@ describe IssueTemplate do
       expect(IssueTemplate.order_by_position.first).to eq issue_template2
     end
   end
+
+  describe '#destroy' do
+    subject { issue_template.destroy }
+    it 'log message is generated' do
+      expect(Rails.logger).to receive(:info).with(/\[Destroy\] IssueTemplate: /).once
+      subject
+    end
+  end
 end
