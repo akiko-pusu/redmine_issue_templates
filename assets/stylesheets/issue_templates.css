@@ -10,13 +10,9 @@
     margin: 4px;
 }
 
-#template_area {
-    margin-top: 4pt;
-}
-
-#template_area > p {
-    padding-bottom: 0;
-    margin-bottom: 0;
+#template_area a {
+    display: inline-block;
+    margin-right: .85em;
 }
 
 .template_help {
@@ -135,9 +131,7 @@ option.global {
 }
 
 a.template_tooltip {
-    background: url(../images/preview.png) no-repeat 3px center;
-    padding-top: 3px;
-    padding-left: 24px;
+    background-image: url(../images/preview.png);
 }
 
 #issue_template-form textarea {
@@ -235,25 +229,13 @@ select.issue_template {
     background: url(../../../images/plugin.png) no-repeat 3px center;
 }
 
-.issue_template_icon.icon-undo,
-.icon.icon-reload {
-    background: url(../../../images/reload.png) no-repeat 3px center;
-}
-
 .contextual.issue_templates {
     margin-bottom: 5px;
 }
 
-.issue_template_icon.icon-warning {
-    background-image: url(../../../images/exclamation.png) no-repeat 3px center;
-}
-
 #revert_template {
-    display: inline-block;
     -webkit-transition: .3s ease-in-out;
     transition: .3s ease-in-out;
-    padding-top: 1px;
-    padding-bottom: 1px;
 }
 
 #revert_template:not(.disabled):hover {
