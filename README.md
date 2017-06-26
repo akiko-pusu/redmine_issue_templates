@@ -97,7 +97,7 @@ NOTE: Please run "rake redmine:plugins:migrate" task because new column is added
 
 ### 0.1.4.1
 
-Bugfix version for #83, #92. Correct some methods not to use named parameters, 
+Bugfix version for #83, #92. Correct some methods not to use named parameters,
 because ruby 1.9x does not support named parameters.
 
 * Bugfix: GitHub: #83, #92
@@ -291,6 +291,8 @@ rake redmine_issue_templates:apply_inhelit_template_to_child_projects[1]
 Please see wercker.yml for more details.
 
     % cd REDMINE_ROOT_DIR
+    % cp plugins/redmine_issue_templates/Gemfile.local plugins/redmine_issue_templates/Gemfile
+    % bundle install --with test
     % export RAILS_ENV=test
     % bundle exec rake redmine:plugins:test PLUGIN=redmine_issue_templates
 
@@ -303,6 +305,8 @@ or
 Please see wercker.yml for more details.
 
     % cd REDMINE_ROOT_DIR
+    % cp plugins/redmine_issue_templates/Gemfile.local plugins/redmine_issue_templates/Gemfile
+    % bundle install --with test
     % export RAILS_ENV=test
     % bundle exec rake redmine_issue_templates:spec
 

@@ -1,8 +1,9 @@
 namespace :redmine_issue_templates do
   desc 'Run test for redmine_issue_template plugin.'
-  task default: :test
+  task :test do |task_name|
+    next unless ENV['RAILS_ENV'] == 'test' && task_name.name == 'redmine_issue_templates:test'
+  end
 
-  desc 'Run test for redmine_issue_template plugin.'
   Rake::TestTask.new(:test) do |t|
     t.libs << 'lib'
     t.pattern = 'plugins/redmine_issue_templates/test/**/*_test.rb'
@@ -11,14 +12,16 @@ namespace :redmine_issue_templates do
   end
 
   desc 'Run spec for redmine_issue_template plugin'
-  begin
-    require 'rspec/core/rake_task'
-    RSpec::Core::RakeTask.new(:spec) do |t|
-      t.pattern = 'plugins/redmine_issue_templates/spec/**/*_spec.rb'
-      t.rspec_opts = ['-I plugins/redmine_issue_templates/spec', '--format documentation']
+  task :spec do |task_name|
+    next unless ENV['RAILS_ENV'] == 'test' && task_name.name == 'redmine_issue_templates:spec'
+    begin
+      require 'rspec/core'
+      path = 'plugins/redmine_issue_templates/spec/'
+      options = '-I plugins/redmine_issue_templates/spec --format documentation'
+      options << ' --pattern *_spec.rb'
+      RSpec::Core::Runner.run(['spec', options, path])
+    rescue LoadError => ex
+      puts "This task should be called only for redmine issue template spec. #{ex.message}"
     end
-    task default: :spec
-  rescue LoadError
-    puts 'spec failed.'
   end
 end
