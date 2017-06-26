@@ -1,6 +1,17 @@
-require 'simplecov'
-require 'simplecov-rcov'
-require 'shoulda'
+begin
+  require 'simplecov'
+  require 'simplecov-rcov'
+  require 'shoulda'
+rescue LoadError => ex
+  puts <<-"EOS"
+  This test should be called only for redmine issue template test.
+    Test exit with LoadError --  #{ex.message}
+  Please move redmine_issue_templates/Gemfile.local to redmine_issue_templates/Gemfile
+  and run bundle install if you want to to run tests.
+  EOS
+  exit
+end
+
 if ENV['JENKINS'] == 'true'
   SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
   true
@@ -20,5 +31,5 @@ end
 
 require File.expand_path(File.dirname(__FILE__) + '/../../../test/test_helper')
 ActiveRecord::FixtureSet.create_fixtures(File.dirname(__FILE__) + '/fixtures/',
-                                         [:issue_templates, :issue_template_settings,
-                                          :global_issue_templates, :global_issue_templates_projects])
+                                         %i[issue_templates issue_template_settings
+                                            global_issue_templates global_issue_templates_projects])
