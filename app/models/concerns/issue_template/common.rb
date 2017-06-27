@@ -12,6 +12,8 @@ module Concerns
         belongs_to :tracker
         before_save :check_default
 
+        before_destroy :confirm_disabled
+
         validates :title, presence: true
         validates :tracker, presence: true
         acts_as_list scope: :tracker
@@ -24,6 +26,10 @@ module Concerns
 
         scope :is_default, -> { where(is_default: true) }
         scope :not_default, -> { where(is_default: false) }
+
+        after_destroy do |template|
+          logger.info("[Destroy] #{self.class}: #{template.inspect}")
+        end
       end
 
       #
@@ -54,12 +60,21 @@ module Concerns
       def generate_json
         result = attributes
         result[:checklist] = checklist
-        result.delete('checklist_json')
-        result
+        result.except('checklist_json')
       end
 
       def template_struct(option = {})
         Struct.new(:value, :name, :class, :selected).new(id, title, option[:class])
+      end
+
+      def log_destroy_action(template)
+        logger.info "[Destroy] #{self.class}: #{template.inspect}" if logger && logger.info
+      end
+
+      def confirm_disabled
+        return unless enabled?
+        errors.add :base, 'enabled_template_cannot_destroy'
+        false
       end
     end
   end

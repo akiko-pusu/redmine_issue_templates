@@ -15,8 +15,9 @@
       <% end %>
     </p>
     <p><%= f.text_field :issue_title, required: false, size: 80, label: l(:issue_title) %>
-      <a class="icon icon-help" href="#" title="<%= l(:help_for_this_field) %>"
-         onclick="checkExpand('issue_title_help_content');"><%= l(:help_for_this_field) %>
+      <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
+         data-template-help-target="#issue_title_help_content">
+        <%= l(:help_for_this_field) %>
       </a>
       <br/>
       <span id="issue_title_help_content" class="issue_template help_content" style="display: none;">
@@ -56,8 +57,8 @@
   </p>
 
   <p><%= f.check_box :is_default, label: l(:field_is_default) %>
-    <a class="icon icon-help" href="#" title="<%= l(:help_for_this_field) %>"
-       onclick="checkExpand('isdefault_help_content'); return false;">
+    <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
+       data-template-help-target="#isdefault_help_content">
       <%= l(:help_for_this_field) %>
     </a>
     <br/>
@@ -67,8 +68,8 @@
   </p>
 
   <p><%= f.check_box :enabled, label: l(:label_enabled) %>
-    <a class="icon icon-help" href="#" title="<%= l(:help_for_this_field) %>"
-       onclick="checkExpand('enabled_help_content'); return false;">
+    <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
+       data-template-help-target="#enabled_help_content">
       <%= l(:help_for_this_field) %>
     </a><br/>
     <span id="enabled_help_content" class="issue_template help_content" style="display: none;"><%= l(:label_enabled_help_message) %></span>
@@ -101,7 +102,7 @@
   <% if projects.any? %>
       <fieldset class="box box-white" id="global_issue_template_project_ids"
                 style="<%= apply_all_projects ? 'opacity: 0.6' : '' %>">
-        <a class="collapsible collapsed" onclick="checkExpand('all_projects'); changeCollapsed(event.target); return false;">
+        <a class="collapsible collapsed template-help" data-template-help-target="#all_projects">
           <%= l(:project_list_associated_this_template, {applied: issue_template.projects.length, all: projects.length}) %>
         </a>
         <div id="all_projects" style="display: none; ">

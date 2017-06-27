@@ -17,9 +17,11 @@ namespace :redmine_issue_templates do
     begin
       require 'rspec/core'
       path = 'plugins/redmine_issue_templates/spec/'
-      options = '-I plugins/redmine_issue_templates/spec --format documentation'
-      options << ' --pattern *_spec.rb'
-      RSpec::Core::Runner.run(['spec', options, path])
+      options = ['-I plugins/redmine_issue_templates/spec']
+      options << '--format'
+      options << 'documentation'
+      options << path
+      RSpec::Core::Runner.run(options)
     rescue LoadError => ex
       puts "This task should be called only for redmine issue template spec. #{ex.message}"
     end

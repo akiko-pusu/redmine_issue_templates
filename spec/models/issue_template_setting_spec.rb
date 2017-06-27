@@ -17,14 +17,14 @@ describe IssueTemplateSetting do
       end
     end
 
-    context 'When invarid project id' do
+    context 'When invalid project id' do
       let(:param) { 0 }
-      it 'Raise  NotFound Exception if not specified varid project' do
+      it 'Raise  NotFound Exception if not specified valid project' do
         expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
-    context 'When varid project id' do
+    context 'When valid project id' do
       let(:param) { project.id }
       before do
         FactoryGirl.create(:issue_template_setting, project_id: project.id)

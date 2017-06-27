@@ -11,29 +11,26 @@
       <%=h l(:display_and_filter_issue_templates_in_dialog, default: 'Filter Templates') %>
     </a>
     <% if setting.enable_help? %>
-        <a class="icon icon-help" href="#" title="<%= l(:about_template_help_message) %>"
-           onclick="checkExpand('template_help_content');">
+        <a class="icon icon-help template-help" title="<%= l(:about_template_help_message) %>"
+           data-template-help-target="#template_help_content">
           <%= l(:label_help_message) %>
         </a>
     <% end %>
-    <a class="icon icon-erase" href="#" title="<%= l(:erase_issue_subject_and_description, default: 'Revert') %>"
-               onclick="eraseSubjectAndDescription();">
-      <%= l(:erase_issue_subject_and_description, default: 'Revert') %>
+    <a class="icon icon-erase" title="<%= l(:erase_issue_subject_and_description, default: 'Erase') %>" id="erase_template">
+      <%= l(:erase_issue_subject_and_description, default: 'Erase') %>
     </a>
-    <a class="icon icon-reload disabled" href="#" title="<%= l(:revert_before_applying_template) %>" id="revert_template"
-       onclick="revertAppliedTemplate();" disabled="disabled">
-      <%= l(:revert_before_applying_template) %>
+    <a class="icon icon-reload disabled" title="<%= l(:revert_before_applying_template, default: 'Revert') %>"
+       id="revert_template" disabled="disabled">
+      <%= l(:revert_before_applying_template, default: 'Revert') %>
     </a>
+    <br/>
+    <span id="template_help_content" class="issue_template help_content" style="display: none; line-height: 2.5em;">
+              <%= setting.help_message %>
+    </span>
     <span id="original_subject" style="display: none;"></span>
     <span id="original_description" style="display: none;"></span>
     <span id="template_status-area"></span>
   </p>
-  <div class="template_help box" id="template_help_content" style="display: none;">
-    <%= textilizable setting.help_message %>
-    <div id="template_help_hide">
-      <a href="#" onClick="checkExpand('template_help_content');" title="<%= l(:close_help) %>">[x]</a>
-    </div>
-  </div>
 
   <!-- dialog box -->
   <div id="issue_template_dialog" style="overflow:visible; display: none;">
@@ -54,48 +51,58 @@
 
 </div>
 <script type="text/javascript">
-  //<![CDATA[
-  $(document).ready(function() {
-    var pulldown_url = '<%= url_for(controller: 'issue_templates',
+    //<![CDATA[
+    $(function() {
+        var templateNS = new ISSUE_TEMPLATE();
+        var pulldown_url = '<%= url_for(controller: 'issue_templates',
         action:'set_pulldown', project_id: project_id, is_triggered_by_status: is_triggered_by_status) %>';
-    var tracker =  '<%= @issue.tracker.id %>';
-    set_pulldown(tracker, pulldown_url);
+        var tracker =  '<%= @issue.tracker.id %>';
+        templateNS.set_pulldown(tracker, pulldown_url);
 
-    $('#template_area').insertBefore($('#issue_subject').parent());
+        $('#template_area').insertBefore($('#issue_subject').parent());
 
-    $("#issue_template").change(function(){
-      var is_triggered_by_status = '<%= is_triggered_by_status %>';
-      var load_url = '<%= url_for(controller: 'issue_templates', action: 'load',
+        $("#issue_template").change(function(){
+            var is_triggered_by_status = '<%= is_triggered_by_status %>';
+            var load_url = '<%= url_for(controller: 'issue_templates', action: 'load',
         project_id: project_id, is_triggered_by_status: is_triggered_by_status) %>';
-      var should_replaced = '<%= setting.should_replaced %>';
-      var confirmation = '<%=h l(:label_confirmation) %>';
-      var general_text_Yes = '<%=h l(:general_text_Yes) %>';
-      var general_text_No = '<%=h l(:general_text_No) %>';
+            var should_replaced = '<%= setting.should_replaced %>';
+            var confirmation = '<%=h l(:label_confirmation) %>';
+            var general_text_Yes = '<%=h l(:general_text_Yes) %>';
+            var general_text_No = '<%=h l(:general_text_No) %>';
 
-      load_template(load_url, undefined, should_replaced, false, confirmation, general_text_Yes, general_text_No);
-    });
+            templateNS.load_template(load_url, undefined, should_replaced, false, confirmation, general_text_Yes, general_text_No);
+        });
 
-    // Show dialog
-    $('#link_template_dialog').click(function() {
-      var template_list_url = '<%= url_for(controller: 'issue_templates',
+        // Show dialog
+        $('#link_template_dialog').click(function() {
+            var template_list_url = '<%= url_for(controller: 'issue_templates',
         action:'list_templates', project_id: project_id, issue_tracker_id: @issue.tracker.id) %>';
-      var template_list_title = '<%= "#{l(:issue_template)}: #{@issue.tracker.name}".html_safe %>';
+            var template_list_title = '<%= "#{l(:issue_template)}: #{@issue.tracker.name}".html_safe %>';
 
-      openDialog(template_list_url, template_list_title);
-    });
+            templateNS.openDialog(template_list_url, template_list_title);
+        });
 
-    $("input[name='template_search_filter']").on("keydown keyup",function(){
-      var cols = $(".template_data");
-      var searchWord = $(this).val();
-      reg = new RegExp(searchWord,"gi");
-      cols.each(function(i,val){
-        var col_name = $(val).children("td").text();
-        if(col_name.match(reg)){
-          $(val).show();
-        }else{
-          $(val).hide();
-        }
-      })
+        // revert template
+        $('#revert_template').click(function() {
+            templateNS.revertAppliedTemplate();
+        });
+
+        $('#erase_template').click(function() {
+            templateNS.eraseSubjectAndDescription();
+        });
+
+        $("input[name='template_search_filter']").on("keydown keyup",function(){
+            var cols = $(".template_data");
+            var searchWord = $(this).val();
+            reg = new RegExp(searchWord,"gi");
+            cols.each(function(i,val){
+                var col_name = $(val).children("td").text();
+                if(col_name.match(reg)){
+                    $(val).show();
+                }else{
+                    $(val).hide();
+                }
+            })
+        });
     });
-  });
 </script>

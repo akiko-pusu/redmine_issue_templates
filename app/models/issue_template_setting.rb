@@ -9,6 +9,8 @@ class IssueTemplateSetting < ActiveRecord::Base
   safe_attributes 'help_message', 'enabled', 'inherit_templates', 'should_replaced'
   attr_accessible :help_message, :enabled, :inherit_templates, :should_replaced
 
+  scope :inherit_templates, -> { where(inherit_templates: true) }
+
   def self.find_or_create(project_id)
     setting = IssueTemplateSetting.where(project_id: project_id).first
     unless setting.present?
@@ -44,13 +46,11 @@ class IssueTemplateSetting < ActiveRecord::Base
   end
 
   def enable_help?
-    return true if enabled == true && !help_message.blank?
-    false
+    enabled == true && !help_message.blank?
   end
 
   def enabled_inherit_templates?
-    return true if inherit_templates
-    false
+    inherit_templates
   end
 
   def child_projects

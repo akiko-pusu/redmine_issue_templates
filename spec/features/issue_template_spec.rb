@@ -51,7 +51,7 @@ feature 'IssueTemplate', js: true do
       end
 
       scenario 'Link to issue template list is not displayed.' do
-        expect(page).not_to have_selector('h3.template')
+        expect(page).not_to have_selector('h3', text: I18n.t('issue_template'))
       end
     end
 
@@ -63,7 +63,7 @@ feature 'IssueTemplate', js: true do
       end
 
       scenario 'Link to issue template list is displayed.' do
-        expect(page).to have_selector('h3.template')
+        expect(page).to have_selector('h3', text: I18n.t('issue_template'))
       end
     end
   end
