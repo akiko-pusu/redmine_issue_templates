@@ -9,7 +9,7 @@ module IssueTemplates
       'GlobalIssueTemplatesController' 'SettingsController'
     ).freeze
 
-    ACTIONS = %('new' 'update_form' 'create').freeze
+    ACTIONS = %('new' 'update_form' 'create', 'show').freeze
 
     def view_layouts_base_html_head(context = {})
       o = stylesheet_link_tag('issue_templates', plugin: 'redmine_issue_templates')

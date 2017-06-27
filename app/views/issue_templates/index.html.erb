@@ -44,7 +44,7 @@
               <td>
                 <%= link_to h(issue_template.id),
                             { controller: :issue_templates, action: 'show',
-                              id: issue_template.id, project_id: @project
+                              id: issue_template.id, project_id: issue_template.project
                             },
                             { title: issue_template.note } %>
               </td>
@@ -130,6 +130,7 @@
                 <td>
                   <%= link_to h(issue_template.title),
                               { controller: 'issue_templates',
+                                project_id: issue_template.project_id,
                                 id: issue_template.id, action: 'show' },
                               { title: "#{html_escape(issue_template.note)}" } %>
 
