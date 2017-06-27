@@ -77,7 +77,11 @@ class GlobalIssueTemplatesController < ApplicationController
 
   def destroy
     return unless request.post?
-    return unless @global_issue_template.destroy
+    unless @global_issue_template.destroy
+      flash[:error] = l(:enabled_template_cannot_destroy)
+      redirect_to action: :show, id: @global_issue_template
+      return
+    end
     flash[:notice] = l(:notice_successful_delete)
     redirect_to action: 'index'
   end
