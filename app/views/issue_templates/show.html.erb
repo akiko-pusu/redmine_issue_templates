@@ -11,7 +11,7 @@
                               count: issue_template.used_projects.count,
                               default: "Are you sure to remove this template? %{count} subprojects use this template.")},
                               title: l(:enabled_template_cannot_destroy, default: 'Only disabled template can be destroyed.'),
-                            method: 'post', class: 'icon icon-del', disabled: issue_template.enabled? %>
+                            method: 'post', class: 'icon icon-del template-disabled-link', disabled: issue_template.enabled? %>
   <%= link_to(l(:label_list_templates),
               { controller: 'issue_templates',
                 action: 'index',
