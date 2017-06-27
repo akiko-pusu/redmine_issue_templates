@@ -264,6 +264,19 @@ ISSUE_TEMPLATE.prototype = {
                 });
 
             });
+        },
+        disabled_link: function (options) {
+            options = $.extend({ }, options);
+            return $(this).each(function () {
+                $(this).click(function (event) {
+                    title = event.target.title;
+                    if (title.length && event.target.hasAttribute('disabled')) {
+                      event.stopPropagation();
+                      alert(title);
+                      return false;
+                    }
+                });
+            });
         }
     };
 
@@ -287,11 +300,6 @@ $(function() {
         $(this).toggleClass('collapsed');
     });
 
-    // disable delete link
-    $('a[disabled=disabled]').click(function(event){
-        event.stopPropagation();
-        alert(event.target.title);
-        return false;
-    });
+    $('a.template-disabled-link').issueTemplate('disabled_link');
 });
 
