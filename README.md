@@ -73,6 +73,20 @@ some trouble related "bundle intall", please try --without option.
 
 ## Changelog
 
+### 0.1.6
+
+Maintenance release to follow Redmine's update, and some refactoring related to test, namespace.
+Other additional updates are following:
+
+* Change support Redmine version to 3.0 or higher.
+* Stop to use jbuilder for rendering json. (#124)
+    * Now any gemfile is not used.
+* PR: UI improvement / Correct CSS. Thanks taqueci! (#123)
+* Bugfix: Add exception handler and not to work rake task if rake task name is not specified. (#130)
+* Logging if template is deleted. (#118)
+* Change Template UI related to delete action. (#117)
+    * Prevent unexpected deletion of template.
+
 ### 0.1.5
 
 NOTE: Please run "rake redmine:plugins:migrate" task because new column is added.
