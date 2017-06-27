@@ -12,6 +12,8 @@ module Concerns
         belongs_to :tracker
         before_save :check_default
 
+        before_destroy :confirm_disabled
+
         validates :title, presence: true
         validates :tracker, presence: true
         acts_as_list scope: :tracker
@@ -67,6 +69,12 @@ module Concerns
 
       def log_destroy_action(template)
         logger.info "[Destroy] #{self.class}: #{template.inspect}" if logger && logger.info
+      end
+
+      def confirm_disabled
+        return unless enabled?
+        errors.add :base, 'enabled_template_cannot_destroy'
+        false
       end
     end
   end

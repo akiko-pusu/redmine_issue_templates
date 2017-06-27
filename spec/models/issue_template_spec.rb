@@ -31,9 +31,21 @@ describe IssueTemplate do
 
   describe '#destroy' do
     subject { issue_template.destroy }
-    it 'log message is generated' do
-      expect(Rails.logger).to receive(:info).with(/\[Destroy\] IssueTemplate: /).once
-      subject
+    context 'Template is enabled' do
+      before { issue_template.enabled = true }
+      it 'Failed to remove with invalid message' do
+        expect(Rails.logger).to receive(:info).with(/\[Destroy\] IssueTemplate: /).never
+        subject
+        expect(issue_template.errors.present?).to be_truthy
+      end
+    end
+    context 'Template is disabled' do
+      before { issue_template.enabled = false }
+      it 'Removed and log message is generated' do
+        expect(Rails.logger).to receive(:info).with(/\[Destroy\] IssueTemplate: /).once
+        subject
+        expect(issue_template.errors.present?).to be_falsey
+      end
     end
   end
 end

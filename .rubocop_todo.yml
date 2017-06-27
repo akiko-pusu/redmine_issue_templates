@@ -14,6 +14,9 @@ Metrics/AbcSize:
 # Configuration parameters: CountComments.
 Metrics/ClassLength:
   Max: 200 
+  Exclude:
+    - 'spec/**/*'
+    - 'test/**/*'
 
 # "Line is too long"を無効
 Metrics/LineLength:

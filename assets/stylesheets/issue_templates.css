@@ -263,3 +263,7 @@ div.form-inline.issue_templates #enabled_help_content {
     margin-right: 80px;
     padding: 10px;
 }
+
+a.icon.icon-del[disabled=disabled] {
+    opacity: 0.5;
+}

@@ -7,9 +7,9 @@ class GlobalIssueTemplatesController < ApplicationController
   include IssuesHelper
   include Concerns::TemplateRenderAction
   menu_item :issues
-  before_filter :find_object, only: [:show, :edit, :destroy]
+  before_filter :find_object, only: %i[show edit destroy]
   before_filter :find_project, only: [:edit]
-  before_filter :require_admin, only: [:index, :new, :show], excep: [:preview]
+  before_filter :require_admin, only: %i[index new show], excep: [:preview]
 
   #
   # Action for global template : Admin right is required.
@@ -44,7 +44,7 @@ class GlobalIssueTemplatesController < ApplicationController
       checklists = param_template[:checklists]
       @global_issue_template.checklist_json = checklists.to_json if checklists
 
-      save_and_flash && return
+      save_and_flash(:notice_successful_create) && return
     end
 
     render(layout: !request.xhr?,
@@ -72,12 +72,16 @@ class GlobalIssueTemplatesController < ApplicationController
 
     checklists = param_template[:checklists]
     @global_issue_template.checklist_json = checklists.to_json if checklists
-    save_and_flash
+    save_and_flash(:notice_successful_update)
   end
 
   def destroy
     return unless request.post?
-    return unless @global_issue_template.destroy
+    unless @global_issue_template.destroy
+      flash[:error] = l(:enabled_template_cannot_destroy)
+      redirect_to action: :show, id: @global_issue_template
+      return
+    end
     flash[:notice] = l(:notice_successful_delete)
     redirect_to action: 'index'
   end
@@ -113,9 +117,9 @@ class GlobalIssueTemplatesController < ApplicationController
     render_for_move_with_format
   end
 
-  def save_and_flash
+  def save_and_flash(message)
     return unless @global_issue_template.save
-    flash[:notice] = l(:notice_successful_create)
+    flash[:notice] = l(message)
     redirect_to action: 'show', id: @global_issue_template.id
   end
 end
