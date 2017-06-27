@@ -1,4 +1,4 @@
-/* 
+/*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -285,6 +285,13 @@ $(function() {
     $('a.template-help').issueTemplate('expandHelp');
     $('a.template-help.collapsible').click(function () {
         $(this).toggleClass('collapsed');
+    });
+
+    // disable delete link
+    $('a[disabled=disabled]').click(function(event){
+        event.stopPropagation();
+        alert(event.target.title);
+        return false;
     });
 });
 
