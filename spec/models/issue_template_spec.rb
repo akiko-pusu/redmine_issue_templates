@@ -36,7 +36,6 @@ describe IssueTemplate do
       it 'Failed to remove with invalid message' do
         expect(Rails.logger).to receive(:info).with(/\[Destroy\] IssueTemplate: /).never
         subject
-        puts issue_template.errors.messages
         expect(issue_template.errors.present?).to be_truthy
       end
     end

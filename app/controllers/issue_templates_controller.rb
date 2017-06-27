@@ -7,10 +7,10 @@ class IssueTemplatesController < ApplicationController
   include IssuesHelper
   include Concerns::TemplateRenderAction
   menu_item :issues
-  before_filter :find_object, only: [:show, :edit, :destroy]
+  before_filter :find_object, only: %i[show edit destroy]
   before_filter :find_user, :find_project, :authorize,
-                except: [:preview, :move_order_higher, :move_order_lower, :move_order_to_top, :move_order_to_bottom, :move]
-  before_filter :find_tracker, :find_templates, only: [:set_pulldown, :list_templates]
+                except: %i[preview move_order_higher move_order_lower move_order_to_top move_order_to_bottom move]
+  before_filter :find_tracker, :find_templates, only: %i[set_pulldown list_templates]
   accept_api_auth :index, :list_templates, :load
 
   def index
@@ -64,7 +64,7 @@ class IssueTemplatesController < ApplicationController
       checklists = template_params[:checklists]
       @issue_template.checklist_json = checklists.to_json if checklists
 
-      save_and_flash && return
+      save_and_flash(:notice_successful_create) && return
     end
     render_form(checklist_enabled)
   end
@@ -77,7 +77,7 @@ class IssueTemplatesController < ApplicationController
     checklists = template_params[:checklists]
     @issue_template.checklist_json = checklists.to_json if checklists
 
-    save_and_flash
+    save_and_flash(:notice_successful_update)
   end
 
   def destroy
@@ -195,9 +195,9 @@ class IssueTemplatesController < ApplicationController
     render_for_move_with_format
   end
 
-  def save_and_flash
+  def save_and_flash(message)
     return unless @issue_template.save
-    flash[:notice] = l(:notice_successful_create)
+    flash[:notice] = l(message)
     redirect_to action: 'show', id: @issue_template.id, project_id: @project
   end
 
