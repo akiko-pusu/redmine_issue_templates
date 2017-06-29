@@ -2,7 +2,7 @@
 class IssueTemplatesSettingsController < ApplicationController
   unloadable
   before_filter :find_project, :find_user
-  before_filter :authorize, except: %i[show_help preview]
+  before_filter :authorize, except: [:show_help, :preview]
 
   def edit
     return if params[:settings].blank?
