@@ -28,5 +28,11 @@ module Concerns
     def checklists
       template_params[:checklists].blank? ? {} : template_params[:checklists]
     end
+
+    def checklist_enabled?
+      Redmine::Plugin.registered_plugins.keys.include? :redmine_checklists
+    rescue
+      false
+    end
   end
 end

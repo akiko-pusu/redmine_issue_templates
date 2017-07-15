@@ -41,29 +41,20 @@ class IssueTemplatesController < ApplicationController
   end
 
   def show
-    begin
-      checklist_enabled = Redmine::Plugin.registered_plugins.keys.include? :redmine_checklists
-    rescue
-      checklist_enabled = false
-    end
-    render_form(checklist_enabled)
+    render_form
   end
 
   def new
     # create empty instance
     @issue_template ||= IssueTemplate.new(author: @user, project: @project)
-    begin
-      checklist_enabled = Redmine::Plugin.registered_plugins.keys.include? :redmine_checklists
-    rescue
-      checklist_enabled = false
-    end
+
     if request.post?
       @issue_template.safe_attributes = template_params
       @issue_template.checklist_json = checklists.to_json
 
       save_and_flash(:notice_successful_create) && return
     end
-    render_form(checklist_enabled)
+    render_form
   end
 
   def edit
@@ -197,9 +188,9 @@ class IssueTemplatesController < ApplicationController
     redirect_to action: 'show', id: @issue_template.id, project_id: @project
   end
 
-  def render_form(checklist_enabled)
+  def render_form
     render(layout: !request.xhr?,
-           locals: { checklist_enabled: checklist_enabled,
+           locals: { checklist_enabled: checklist_enabled?,
                      issue_template: @issue_template, project: @project })
   end
 

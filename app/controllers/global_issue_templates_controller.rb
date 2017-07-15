@@ -26,14 +26,8 @@ class GlobalIssueTemplatesController < ApplicationController
 
   def new
     # create empty instance
-    trackers = Tracker.all
-    projects = Project.all
     @global_issue_template = GlobalIssueTemplate.new
-    begin
-      checklist_enabled = Redmine::Plugin.registered_plugins.keys.include? :redmine_checklists
-    rescue
-      checklist_enabled = false
-    end
+
     if request.post?
       # Case post, set attributes passed as parameters.
       @global_issue_template.safe_attributes = template_params
@@ -43,21 +37,11 @@ class GlobalIssueTemplatesController < ApplicationController
       save_and_flash(:notice_successful_create) && return
     end
 
-    render(layout: !request.xhr?,
-           locals: { checklist_enabled: checklist_enabled, trackers: trackers, apply_all_projects: apply_all_projects?,
-                     issue_template: @global_issue_template, projects: projects }) && return
+    render_form
   end
 
   def show
-    begin
-      checklist_enabled = Redmine::Plugin.registered_plugins.keys.include? :redmine_checklists
-    rescue
-      checklist_enabled = false
-    end
-    projects = Project.all
-    render(layout: !request.xhr?,
-           locals: { checklist_enabled: checklist_enabled, trackers: @trackers, apply_all_projects: apply_all_projects?,
-                     issue_template: @global_issue_template, projects: projects }) && return
+    render_form
   end
 
   def edit
@@ -99,7 +83,6 @@ class GlobalIssueTemplatesController < ApplicationController
   end
 
   def find_object
-    @trackers = Tracker.all
     @global_issue_template = GlobalIssueTemplate.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     render_404
@@ -120,5 +103,13 @@ class GlobalIssueTemplatesController < ApplicationController
     params.require(:global_issue_template)
           .permit(:title, :tracker_id, :issue_title, :description, :note, :is_default, :enabled,
                   :author_id, :position, project_ids: [], checklists: [])
+  end
+
+  def render_form
+    trackers = Tracker.all
+    projects = Project.all
+    render(layout: !request.xhr?,
+           locals: { checklist_enabled: checklist_enabled?, trackers: trackers, apply_all_projects: apply_all_projects?,
+                     issue_template: @global_issue_template, projects: projects })
   end
 end
