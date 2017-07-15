@@ -7,7 +7,6 @@ module Concerns
       # Common scope both global and project scope template.
       #
       included do
-        unloadable
         belongs_to :author, class_name: 'User', foreign_key: 'author_id'
         belongs_to :tracker
         before_save :check_default
