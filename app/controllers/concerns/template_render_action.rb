@@ -24,5 +24,9 @@ module Concerns
     def apply_all_projects?
       plugin_setting['apply_global_template_to_all_projects'].to_s == 'true'
     end
+
+    def checklists
+      template_params[:checklists].blank? ? {} : template_params[:checklists]
+    end
   end
 end

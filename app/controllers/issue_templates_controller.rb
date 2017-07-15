@@ -59,9 +59,7 @@ class IssueTemplatesController < ApplicationController
     end
     if request.post?
       @issue_template.safe_attributes = template_params
-
-      checklists = template_params[:checklists]
-      @issue_template.checklist_json = checklists.to_json if checklists
+      @issue_template.checklist_json = checklists.to_json
 
       save_and_flash(:notice_successful_create) && return
     end
@@ -73,8 +71,7 @@ class IssueTemplatesController < ApplicationController
     return unless request.patch? || request.put?
     @issue_template.safe_attributes = template_params
 
-    checklists = template_params[:checklists]
-    @issue_template.checklist_json = checklists.to_json if checklists
+    @issue_template.checklist_json = checklists.to_json
 
     save_and_flash(:notice_successful_update)
   end

@@ -43,11 +43,8 @@ module Concerns
       end
 
       def checklist
-        #
-        # TODO: Exception handling
-        #
         return [] if checklist_json.blank?
-        JSON.parse(checklist_json)
+        JSON.parse(checklist_json) rescue []
       end
 
       def template_json

@@ -36,11 +36,8 @@ class GlobalIssueTemplatesController < ApplicationController
     end
     if request.post?
       # Case post, set attributes passed as parameters.
-      param_template = params[:global_issue_template]
-      @global_issue_template.safe_attributes = param_template
+      @global_issue_template.safe_attributes = template_params
       @global_issue_template.author = User.current
-
-      checklists = param_template[:checklists]
       @global_issue_template.checklist_json = checklists.to_json if checklists
 
       save_and_flash(:notice_successful_create) && return
@@ -66,11 +63,8 @@ class GlobalIssueTemplatesController < ApplicationController
   def edit
     # Change from request.post to request.patch for Rails4.
     return unless request.patch? || request.put?
-    param_template = params[:global_issue_template]
-    @global_issue_template.safe_attributes = param_template
-
-    checklists = param_template[:checklists]
-    @global_issue_template.checklist_json = checklists.to_json if checklists
+    @global_issue_template.safe_attributes = template_params
+    @global_issue_template.checklist_json = checklists.to_json
     save_and_flash(:notice_successful_update)
   end
 
@@ -120,5 +114,11 @@ class GlobalIssueTemplatesController < ApplicationController
     return unless @global_issue_template.save
     flash[:notice] = l(message)
     redirect_to action: 'show', id: @global_issue_template.id
+  end
+
+  def template_params
+    params.require(:global_issue_template)
+          .permit(:title, :tracker_id, :issue_title, :description, :note, :is_default, :enabled,
+                  :author_id, :position, project_ids: [], checklists: [])
   end
 end
