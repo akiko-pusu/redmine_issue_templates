@@ -2,7 +2,6 @@ module Concerns
   module TemplateRenderAction
     extend ActiveSupport::Concern
     included do
-      unloadable
       before_action :log_action, only: [:destroy]
 
       # logging action

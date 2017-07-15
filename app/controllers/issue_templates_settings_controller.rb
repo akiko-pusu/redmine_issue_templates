@@ -1,6 +1,5 @@
 # noinspection RubocopInspection
 class IssueTemplatesSettingsController < ApplicationController
-  unloadable
   before_filter :find_project, :find_user
   before_filter :authorize, except: [:show_help, :preview]
 

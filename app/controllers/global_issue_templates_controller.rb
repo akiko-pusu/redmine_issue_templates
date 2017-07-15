@@ -1,6 +1,5 @@
 # noinspection RubocopInspection
 class GlobalIssueTemplatesController < ApplicationController
-  unloadable
   layout 'base'
   include IssueTemplatesHelper
   helper :issues

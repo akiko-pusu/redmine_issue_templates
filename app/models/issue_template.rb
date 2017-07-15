@@ -1,7 +1,6 @@
 class IssueTemplate < ActiveRecord::Base
   include Redmine::SafeAttributes
   include Concerns::IssueTemplate::Common
-  unloadable
   belongs_to :project
   validates :project_id, presence: true
   validates_uniqueness_of :title, scope: :project_id

@@ -1,6 +1,5 @@
 # noinspection ALL
 class IssueTemplatesController < ApplicationController
-  unloadable
   layout 'base'
   include IssueTemplatesHelper
   helper :issues
