@@ -1,8 +1,7 @@
 module Concerns
-  module TemplateRenderAction
+  module IssueTemplatesCommon
     extend ActiveSupport::Concern
     included do
-      unloadable
       before_action :log_action, only: [:destroy]
 
       # logging action
@@ -24,6 +23,16 @@ module Concerns
 
     def apply_all_projects?
       plugin_setting['apply_global_template_to_all_projects'].to_s == 'true'
+    end
+
+    def checklists
+      template_params[:checklists].blank? ? {} : template_params[:checklists]
+    end
+
+    def checklist_enabled?
+      Redmine::Plugin.registered_plugins.keys.include? :redmine_checklists
+    rescue
+      false
     end
   end
 end

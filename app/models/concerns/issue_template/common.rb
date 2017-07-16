@@ -7,7 +7,6 @@ module Concerns
       # Common scope both global and project scope template.
       #
       included do
-        unloadable
         belongs_to :author, class_name: 'User', foreign_key: 'author_id'
         belongs_to :tracker
         before_save :check_default
@@ -44,11 +43,8 @@ module Concerns
       end
 
       def checklist
-        #
-        # TODO: Exception handling
-        #
         return [] if checklist_json.blank?
-        JSON.parse(checklist_json)
+        JSON.parse(checklist_json) rescue []
       end
 
       def template_json

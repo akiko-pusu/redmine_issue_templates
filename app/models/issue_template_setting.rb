@@ -1,6 +1,5 @@
 class IssueTemplateSetting < ActiveRecord::Base
   include Redmine::SafeAttributes
-  unloadable
   belongs_to :project
 
   validates_uniqueness_of :project_id
