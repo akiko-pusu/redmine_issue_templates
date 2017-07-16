@@ -4,7 +4,7 @@ class GlobalIssueTemplatesController < ApplicationController
   include IssueTemplatesHelper
   helper :issues
   include IssuesHelper
-  include Concerns::TemplateRenderAction
+  include Concerns::IssueTemplatesCommon
   menu_item :issues
   before_filter :find_object, only: [:show, :edit, :destroy]
   before_filter :find_project, only: [:edit]

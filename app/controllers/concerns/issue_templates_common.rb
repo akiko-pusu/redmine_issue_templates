@@ -1,5 +1,5 @@
 module Concerns
-  module TemplateRenderAction
+  module IssueTemplatesCommon
     extend ActiveSupport::Concern
     included do
       before_action :log_action, only: [:destroy]
