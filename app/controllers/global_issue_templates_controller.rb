@@ -76,6 +76,11 @@ class GlobalIssueTemplatesController < ApplicationController
     move_order(params[:to])
   end
 
+  def orphaned_templates
+    orphaned = GlobalIssueTemplate.orphaned
+    render partial: 'orphaned_templates', locals: { orphaned_templates: orphaned }
+  end
+
   private
 
   def find_project
