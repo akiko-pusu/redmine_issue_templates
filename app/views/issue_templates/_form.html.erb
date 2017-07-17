@@ -7,8 +7,8 @@
     <p>
       <% if issue_template.tracker.blank? %>
           <%= f.select :tracker_id, template_target_trackers(project, issue_template),
-                       required: true, label: l(:label_tracker)  %>
-          　<% else %>
+                       required: true, label: l(:label_tracker), include_blank: true  %>
+      <% else %>
           <%= f.select :tracker_id, template_target_trackers(project, issue_template),
                        required: true, label: l(:label_tracker), selected: issue_template.tracker.id %>
           <% unless project_tracker?(issue_template.tracker.id, project) %><br/>

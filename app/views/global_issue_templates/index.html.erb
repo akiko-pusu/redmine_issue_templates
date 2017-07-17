@@ -85,3 +85,8 @@
     </div>
 
 <% end %>
+
+<%= link_to l(:orphaned_templates, default: 'Orphaned Templates'), global_orphaned_templates_path, remote: true,
+            id: 'orphaned_template_link', class: 'collapsible collapsed template-help'
+%>
+<div id="orphaned_templates" style="display: none"></div>

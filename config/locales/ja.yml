@@ -55,3 +55,5 @@ ja:
   template_remove_confirm: "このテンプレートを削除してよろしいですか？ %{count}個のサブプロジェクトがこのテンプレートを利用しています。"
   label_number_of_subprojects_use_this_template: "%{count}個のサブプロジェクトがこのテンプレートを利用しています "
   enabled_template_cannot_destroy: "有効になっているテンプレートは削除できません。他に利用しているサブプロジェクトの有無を確認して、無効化してから削除を行なってください"
+  orphaned_templates: "トラッカーから孤立したテンプレート"
+  orphaned_template: "トラッカーから孤立したテンプレート"
