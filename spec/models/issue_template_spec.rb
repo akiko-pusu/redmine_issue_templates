@@ -9,6 +9,14 @@ describe IssueTemplate do
     expect(issue_template).to be_an_instance_of(IssueTemplate)
   end
 
+  describe 'scope .orphaned' do
+    subject { IssueTemplate.orphaned.count }
+    before do
+      issue_template.update_attribute(:tracker_id, 0)
+    end
+    it { is_expected.to eq 1 }
+  end
+
   describe '#enabled?' do
     it 'return true / false correctly' do
       expect(issue_template.enabled?).to be_truthy
