@@ -21,7 +21,7 @@
 <% @template_map.each_key do |tracker| %>
     <div class="template_box">
       <h3 class="template_tracker"><%= tracker.name %></h3>
-      <%= non_project_tracker_msg(project_tracker?(tracker.id, @project)) %>
+      <%= non_project_tracker_msg(project_tracker?(tracker, @project)) %>
 
       <table class="list issues">
         <thead>
@@ -226,3 +226,9 @@
 
     </div>
 <% end %>
+
+<%= link_to l(:orphaned_templates, default: 'Orphaned Templates'), project_orphaned_templates_path, remote: true,
+            id: 'orphaned_template_link', class: 'collapsible collapsed template_tooltip'
+%>
+
+<div id="orphaned_templates" style="display: none"></div>

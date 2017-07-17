@@ -17,7 +17,7 @@ class IssueTemplatesController < ApplicationController
     project_templates = IssueTemplate.search_by_project(project_id)
 
     # pick up used tracker ids
-    tracker_ids = project_templates.pluck(:tracker_id).uniq
+    tracker_ids = @project.trackers.pluck(:id)
 
     @template_map = {}
     tracker_ids.each do |tracker_id|
@@ -28,7 +28,7 @@ class IssueTemplatesController < ApplicationController
     setting = IssueTemplateSetting.find_or_create(project_id)
     @inherit_templates = setting.get_inherit_templates
 
-    @global_issue_templates = global_templates
+    @global_issue_templates = global_templates(tracker_ids)
 
     respond_to do |format|
       format.html do
@@ -179,7 +179,7 @@ class IssueTemplatesController < ApplicationController
   def find_templates
     @issue_templates = issue_templates
     @inherit_templates = inherit_templates
-    @global_templates = global_templates
+    @global_templates = global_templates(@tracker.id)
   end
 
   def move_order(method)
@@ -203,12 +203,12 @@ class IssueTemplatesController < ApplicationController
     IssueTemplateSetting.find_or_create(@project.id)
   end
 
-  def global_templates
+  def global_templates(tracker_id)
     if apply_all_projects? && (@inherit_templates.present? || @issue_templates.present?)
       return []
     end
     project_id = apply_all_projects? ? nil : @project.id
-    GlobalIssueTemplate.get_templates_for_project_tracker(project_id, @tracker.try(:id))
+    GlobalIssueTemplate.get_templates_for_project_tracker(project_id, tracker_id)
   end
 
   def default_templates

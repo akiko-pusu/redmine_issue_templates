@@ -293,7 +293,7 @@ ISSUE_TEMPLATE.prototype = {
     };
 })(jQuery);
 
-$(function() {
+$(function () {
     // set plugin
     $('a.template-help').issueTemplate('expandHelp');
     $('a.template-help.collapsible').click(function () {
@@ -301,5 +301,15 @@ $(function() {
     });
 
     $('a.template-disabled-link').issueTemplate('disabled_link');
+
+    // display orphaned template list
+    $('#orphaned_template_link').on({
+        'ajax:success': (function (_this) {
+            return function (e, data) {
+                $('#orphaned_templates').toggle();
+                return $('#orphaned_templates').html(data);
+            };
+        })(this)
+    });
 });
 
