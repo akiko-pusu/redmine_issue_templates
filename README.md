@@ -73,6 +73,22 @@ some trouble related "bundle intall", please try --without option.
 
 ## Changelog
 
+### 0.1.7
+
+Bugfix release, and some code refactorings.
+
+#### Bugfix:
+
+* After related tracker is removed, index (list) templates failed with exception. (#139)
+* Checklist not loading from Template. (#141)
+
+#### Refactoring:
+
+* Remove all unlodable statement.
+* Remove unused rake task.
+* Rename modules.
+
+
 ### 0.1.6
 
 Maintenance release to follow Redmine's update, and some refactoring related to test, namespace.
