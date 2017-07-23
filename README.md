@@ -63,7 +63,8 @@ some trouble related "bundle intall", please try --without option.
 
 ### WebPage
 
-*   http://www.r-labs.org/projects/issue-template (Project Page)
+* http://www.redmine.org/plugins/issue_templates (Redmine Plugin List)
+* http://www.r-labs.org/projects/issue-template (Project Page)
 
 
 ### Description and usage info
