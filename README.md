@@ -63,7 +63,8 @@ some trouble related "bundle intall", please try --without option.
 
 ### WebPage
 
-*   http://www.r-labs.org/projects/issue-template (Project Page)
+* http://www.redmine.org/plugins/issue_templates (Redmine Plugin List)
+* http://www.r-labs.org/projects/issue-template (Project Page)
 
 
 ### Description and usage info
@@ -72,6 +73,22 @@ some trouble related "bundle intall", please try --without option.
 
 
 ## Changelog
+
+### 0.1.7
+
+Bugfix release, and some code refactorings.
+
+#### Bugfix:
+
+* After related tracker is removed, index (list) templates failed with exception. (#139)
+* Checklist not loading from Template. (#141)
+
+#### Refactoring:
+
+* Remove all unlodable statement.
+* Remove unused rake task.
+* Rename modules.
+
 
 ### 0.1.6
 

@@ -1,6 +1,6 @@
 module IssueTemplatesHelper
-  def project_tracker?(tracker_id, project)
-    project.trackers.exists?(tracker_id)
+  def project_tracker?(tracker, project)
+    project.trackers.exists?(tracker)
   end
 
   def non_project_tracker_msg(flag)
@@ -10,7 +10,7 @@ module IssueTemplatesHelper
 
   def template_target_trackers(project, issue_template)
     trackers = project.trackers
-    trackers |= [issue_template.tracker] unless issue_template.tracker_id.blank?
+    trackers |= [issue_template.tracker] unless issue_template.tracker.blank?
     trackers.collect { |obj| [obj.name, obj.id] }
   end
 

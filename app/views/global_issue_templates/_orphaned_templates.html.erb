@@ -1,0 +1,45 @@
+<h3 class='template_tracker'><%= l(:orphaned_template) %></h3>
+<table class="list issues">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th><%= l(:issue_template_name) %></th>
+    <th><%= l(:field_tracker) %></th>
+    <th><%= l(:field_author) %></th>
+    <th><%= l(:field_updated_on) %></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% orphaned_templates.each do |issue_template| %>
+      <tr class="<%= cycle('odd', 'even') %> issue_template issue">
+        <td>
+          <%= link_to h(issue_template.id),
+                      { controller: :global_issue_templates, action: 'show', id: issue_template.id },
+                      { title: issue_template.note } %>
+        </td>
+        <td>
+          <%= link_to h(issue_template.title),
+                      { controller: 'global_issue_templates',
+                        id: issue_template.id, action: 'show' },
+                      { title: "#{html_escape(issue_template.note) }"} %>
+
+          <div class="template_tooltip_wrapper">
+            <a class="icon template_tooltip" title="<%= l(:label_preview) %>"></a>
+            <div class="wiki template_tooltip_body">
+              <span class="title"><%= issue_template.title %></span>
+              <%= textilizable(issue_template.description) %>
+            </div>
+          </div>
+        </td>
+        <td><%= "ID: #{issue_template.tracker_id}" %></td>
+        <td><%=h issue_template.author %></td>
+        <td><%= format_time(issue_template.updated_on)%> </td>
+      </tr>
+      <tr class="<%= current_cycle %>" style="display: none;" id="template_description-<%= issue_template.id %>">
+        <td class="description" colspan="8">
+          <div class="wiki"><%= textilizable(issue_template.description) %></div></td>
+      </tr>
+
+  <% end %>
+  </tbody>
+</table>

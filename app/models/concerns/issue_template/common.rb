@@ -26,6 +26,19 @@ module Concerns
         scope :is_default, -> { where(is_default: true) }
         scope :not_default, -> { where(is_default: false) }
 
+        scope :orphaned, lambda { |project_id = nil|
+          condition = all
+          ids = []
+
+          if project_id.present? && class_name == 'IssueTemplate'
+            condition = condition.where(project_id: project_id)
+            ids = Tracker.joins(:projects).where(projects: { id: project_id }).pluck(:id)
+          else
+            ids = Tracker.pluck(:id)
+          end
+          condition.where.not(tracker_id: ids)
+        }
+
         after_destroy do |template|
           logger.info("[Destroy] #{self.class}: #{template.inspect}")
         end
@@ -44,7 +57,11 @@ module Concerns
 
       def checklist
         return [] if checklist_json.blank?
-        JSON.parse(checklist_json) rescue []
+        begin
+          JSON.parse(checklist_json)
+        rescue
+          []
+        end
       end
 
       def template_json

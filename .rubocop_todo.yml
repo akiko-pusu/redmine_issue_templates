@@ -31,6 +31,7 @@ Metrics/PerceivedComplexity:
   Max: 10
 
 Metrics/BlockLength:
+  Max: 30
   Exclude:
     - 'spec/**/*'
     - 'test/**/*'

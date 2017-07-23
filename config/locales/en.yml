@@ -54,3 +54,5 @@ en:
   template_remove_confirm: "Are you sure to remove this template？ %{count} subprojects use this template."
   label_number_of_subprojects_use_this_template: "%{count} subprojects use this template."
   enabled_template_cannot_destroy: "Only disabled template can be destroyed. Check if other subprojects use this template or not, and disable this before deleting."
+  orphaned_templates: "Orphaned templates from tracker"
+  orphaned_template: "Orphaned template from tracker"
