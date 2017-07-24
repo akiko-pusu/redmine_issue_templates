@@ -301,15 +301,5 @@ $(function () {
     });
 
     $('a.template-disabled-link').issueTemplate('disabled_link');
-
-    // display orphaned template list
-    $('#orphaned_template_link').on({
-        'ajax:success': (function (_this) {
-            return function (e, data) {
-                $('#orphaned_templates').toggle();
-                return $('#orphaned_templates').html(data);
-            };
-        })(this)
-    });
 });
 

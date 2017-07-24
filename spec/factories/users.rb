@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 FactoryGirl.define do
   factory :user do |u|
     # sequence -> exp. :login -> user1, user2.....

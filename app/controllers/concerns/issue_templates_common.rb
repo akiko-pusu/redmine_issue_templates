@@ -10,10 +10,11 @@ module Concerns
       end
     end
 
-    def render_for_move_with_format
+    def orphaned_templates
       respond_to do |format|
-        format.html { redirect_to action: 'index' }
-        format.xml  { head :ok }
+        format.js do
+          render 'common/orphaned_templates', locals: { orphaned_templates: orphaned }
+        end
       end
     end
 

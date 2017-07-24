@@ -1,3 +1,5 @@
+require 'rake/testtask'
+
 namespace :redmine_issue_templates do
   desc 'Run test for redmine_issue_template plugin.'
   task :test do |task_name|

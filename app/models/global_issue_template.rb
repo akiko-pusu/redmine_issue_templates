@@ -15,9 +15,6 @@ class GlobalIssueTemplate < ActiveRecord::Base
                   'position',
                   'author_id'
 
-  attr_accessible :title, :tracker_id, :issue_title, :description, :note,
-                  :is_default, :enabled, :author_id, :position, :project_ids
-
   # for intermediate table assosciations
   scope :search_by_project, lambda { |project_id|
     joins(:projects).where(projects: { id: project_id }) if project_id.present?
@@ -44,7 +41,7 @@ class GlobalIssueTemplate < ActiveRecord::Base
       GlobalIssueTemplate.search_by_tracker(tracker_id)
                          .search_by_project(project_id)
                          .enabled
-                         .order_by_position
+                         .sorted
     end
   end
 end

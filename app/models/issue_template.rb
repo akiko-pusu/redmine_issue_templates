@@ -8,8 +8,6 @@ class IssueTemplate < ActiveRecord::Base
   # author and project should be stable.
   safe_attributes 'title', 'description', 'tracker_id', 'note', 'enabled', 'issue_title', 'is_default',
                   'enabled_sharing', 'visible_children', 'position'
-  attr_accessible :title, :tracker_id, :issue_title, :description, :note,
-                  :is_default, :enabled, :enabled_sharing, :author, :project, :position
 
   scope :enabled_sharing, -> { where(enabled_sharing: true) }
   scope :search_by_project, lambda { |prolect_id|
@@ -47,14 +45,14 @@ class IssueTemplate < ActiveRecord::Base
                    .search_by_tracker(tracker_id)
                    .enabled
                    .enabled_sharing
-                   .order_by_position
+                   .sorted
     end
 
     def get_templates_for_project_tracker(project_id, tracker_id = nil)
       IssueTemplate.search_by_project(project_id)
                    .search_by_tracker(tracker_id)
                    .enabled
-                   .order_by_position
+                   .sorted
     end
   end
 end

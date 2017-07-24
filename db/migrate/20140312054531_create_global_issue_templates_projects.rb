@@ -1,4 +1,4 @@
-class CreateGlobalIssueTemplatesProjects < ActiveRecord::Migration
+class CreateGlobalIssueTemplatesProjects < ActiveRecord::Migration[4.2]
   def self.up
     create_table :global_issue_templates_projects, id: false do |t|
       t.integer :project_id

@@ -9,6 +9,9 @@
           <%= f.select :tracker_id, trackers.collect { |t| [t.name, t.id] }, {required: true},
                        required: true, label: l(:label_tracker) %>
 
+          <%= h issue_template.tracker.present? ? issue_template.tracker.name :
+                    l(:orphaned_template, default: 'Orphaned template from tracker') %>
+
       <% else %>
           <%= f.select :tracker_id, trackers.collect { |t| [t.name, t.id] }, {required: true},
                        required: true, label: l(:label_tracker), selected: issue_template.tracker.id %>

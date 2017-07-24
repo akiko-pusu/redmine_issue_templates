@@ -23,7 +23,7 @@
       <h3 class="template_tracker"><%= tracker.name %></h3>
       <%= non_project_tracker_msg(project_tracker?(tracker, @project)) %>
 
-      <table class="list issues">
+      <table class="list issues table-sortable">
         <thead>
         <tr>
           <th>#</th>
@@ -69,35 +69,21 @@
               <td class="center"><%= checked_image issue_template.enabled? %></td>
 
               <% if authorize_for('issue_templates', 'edit') %>
-                  <td>
-                    <%= issue_template.first? ? '':
-                            link_to(image_tag('2uparrow.png', alt: l(:label_sort_highest)),
-                                    { action: 'move', id: issue_template, to: :to_top },
-                                    { title: l(:label_sort_highest) }) %>
-                    <%= issue_template.first? ? '':
-                            link_to(image_tag('1uparrow.png', alt: l(:label_sort_higher)),
-                                    { action: 'move', id: issue_template, to: :higher },
-                                    { title: l(:label_sort_higher) })  %>
-                    <%= issue_template.last? ? '':
-                            link_to(image_tag('1downarrow.png', alt: l(:label_sort_lower)),
-                                    { action: 'move', id: issue_template, to: :lower },
-                                    { title: l(:label_sort_lower) }) %>
-                    <%= issue_template.last? ? '':
-                            link_to(image_tag('2downarrow.png', alt: l(:label_sort_lowest)),
-                                    { action: 'move', id: issue_template, to: :to_bottom },
-                                    { title: l(:label_sort_lowest) }) %>
+                  <td class="buttons">
+                    <%= reorder_handle(issue_template,
+                                       url: url_for(:controller => 'issue_templates',
+                                         :action =>'edit', :id => issue_template.id,
+                                         :project_id => issue_template.project) ) %>
                   </td>
               <% end %>
             </tr>
-            <tr class="<%= current_cycle %>" style="display: none;" id="template_description-<%= issue_template.id %>">
-              <td class="description" colspan="8">
-                <div class="wiki"><%= textilizable(issue_template.description) %></div></td>
-            </tr>
-
         <% end %>
         </tbody>
       </table>
     </div>
+    <%= javascript_tag do %>
+        $(function() { $("table.table-sortable tbody").positionedItems(); });
+    <% end %>
 <% end %>
 
 

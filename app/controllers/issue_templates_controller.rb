@@ -6,10 +6,9 @@ class IssueTemplatesController < ApplicationController
   include IssuesHelper
   include Concerns::IssueTemplatesCommon
   menu_item :issues
-  before_filter :find_object, only: [:show, :edit, :destroy]
-  before_filter :find_user, :find_project, :authorize,
-                except: [:preview, :move_order_higher, :move_order_lower, :move_order_to_top, :move_order_to_bottom, :move]
-  before_filter :find_tracker, :find_templates, only: [:set_pulldown, :list_templates]
+  before_action :find_object, only: %i[show edit destroy]
+  before_action :find_user, :find_project, :authorize, except: [:preview]
+  before_action :find_tracker, :find_templates, only: %i[set_pulldown list_templates]
   accept_api_auth :index, :list_templates, :load
 
   def index
@@ -21,7 +20,7 @@ class IssueTemplatesController < ApplicationController
 
     @template_map = {}
     tracker_ids.each do |tracker_id|
-      templates = project_templates.search_by_tracker(tracker_id).order_by_position
+      templates = project_templates.search_by_tracker(tracker_id).sorted
       @template_map[Tracker.find(tracker_id)] = templates if templates.any?
     end
 
@@ -87,7 +86,7 @@ class IssueTemplatesController < ApplicationController
                      else
                        IssueTemplate.find(issue_template_id)
                      end
-    render text: issue_template.template_json
+    render plain: issue_template.template_json
   end
 
   # update pulldown
@@ -143,17 +142,11 @@ class IssueTemplatesController < ApplicationController
     render partial: 'common/preview'
   end
 
-  # Reorder templates
-  def move
-    move_order(params[:to])
-  end
-
-  def orphaned_templates
-    orphaned = IssueTemplate.orphaned(@project.id)
-    render partial: 'orphaned_templates', locals: { orphaned_templates: orphaned }
-  end
-
   private
+
+  def orphaned
+    IssueTemplate.orphaned(@project.id)
+  end
 
   def find_user
     @user = User.current
@@ -182,15 +175,15 @@ class IssueTemplatesController < ApplicationController
     @global_templates = global_templates(@tracker.id)
   end
 
-  def move_order(method)
-    IssueTemplate.find(params[:id]).send "move_#{method}"
-    render_for_move_with_format
-  end
-
   def save_and_flash(message)
     return unless @issue_template.save
-    flash[:notice] = l(message)
-    redirect_to action: 'show', id: @issue_template.id, project_id: @project
+    respond_to do |format|
+      format.html do
+        flash[:notice] = l(message)
+        redirect_to action: 'show', id: @issue_template.id, project_id: @project
+      end
+      format.js { head 200 }
+    end
   end
 
   def render_form

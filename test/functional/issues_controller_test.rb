@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 require 'issues_controller'
 
 # Test for view hooks.
-class IssuesControllerTest < ActionController::TestCase
+class IssuesControllerTest < Redmine::ControllerTest
   fixtures :projects,
            :users,
            :roles,
@@ -27,9 +27,6 @@ class IssuesControllerTest < ActionController::TestCase
            :issue_templates
 
   def setup
-    @controller = IssuesController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
     User.current = nil
     enabled_module = EnabledModule.new
     enabled_module.project_id = 1
@@ -52,7 +49,7 @@ class IssuesControllerTest < ActionController::TestCase
   end
 
   def test_index
-    get :index, project_id: @project.id
+    get :index, params: { project_id: @project.id }
     assert_response :success
     assert_select 'div#template_area select#issue_template', false,
                   'Action index should not contain template select pulldown.'
@@ -62,20 +59,20 @@ class IssuesControllerTest < ActionController::TestCase
 
   def test_index_with_edit_permission
     Role.find(1).add_permission! :edit_issue_templates
-    get :index, project_id: @project.id
+    get :index, params: { project_id: @project.id }
     assert_select 'h3', text: I18n.t('issue_template')
     assert_select 'a', href: "/projects/#{@project}/issue_templates/new"
   end
 
   def test_new
-    get :new, project_id: 1
+    get :new, params: { project_id: 1 }
     assert_response :success
     assert_select 'div#template_area select#issue_template'
   end
 
   # NOTE: When copy, template area should not be displayed.
   def test_copy
-    get :new, project_id: 1, copy_from: 1
+    get :new, params: { project_id: 1, copy_from: 1 }
     assert_response :success
     assert_select 'div#template_area', false
   end

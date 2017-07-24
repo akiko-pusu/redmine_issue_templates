@@ -6,7 +6,6 @@ class IssueTemplateSetting < ActiveRecord::Base
   validates_presence_of :project_id
 
   safe_attributes 'help_message', 'enabled', 'inherit_templates', 'should_replaced'
-  attr_accessible :help_message, :enabled, :inherit_templates, :should_replaced
 
   scope :inherit_templates, -> { where(inherit_templates: true) }
 

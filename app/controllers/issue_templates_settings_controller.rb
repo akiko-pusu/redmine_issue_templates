@@ -1,7 +1,7 @@
 # noinspection RubocopInspection
 class IssueTemplatesSettingsController < ApplicationController
-  before_filter :find_project, :find_user
-  before_filter :authorize, except: [:show_help, :preview]
+  before_action :find_project, :find_user
+  before_action :authorize, except: %i[show_help preview]
 
   def edit
     return if params[:settings].blank?

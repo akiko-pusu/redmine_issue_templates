@@ -1,4 +1,4 @@
 inherit_from: .rubocop_todo.yml
 AllCops:
   # TODO: Change TargetRubyVersion to 2.0 or higher, when Redmine cloded to support ruby 1.9x.
-  TargetRubyVersion: 1.9
+  TargetRubyVersion: 2.1

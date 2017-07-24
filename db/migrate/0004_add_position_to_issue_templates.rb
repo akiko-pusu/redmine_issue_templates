@@ -1,4 +1,4 @@
-class AddPositionToIssueTemplates < ActiveRecord::Migration
+class AddPositionToIssueTemplates < ActiveRecord::Migration[4.2]
   def self.up
     add_column :issue_templates, :position, :integer, default: 1
 

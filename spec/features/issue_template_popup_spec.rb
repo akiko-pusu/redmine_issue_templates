@@ -12,7 +12,7 @@ feature 'Confirm dialog before overwrite description', js: true do
     end
   end
 
-  given(:user) { FactoryGirl.create(:user, :password_same_login, login: 'manager', language: 'en', admin: false) }
+  given(:user) { FactoryGirl.create(:user, :password_same_login, login: 'plugin_admin', language: 'en') }
   given(:project) { create(:project_with_enabled_modules) }
   given(:tracker) { FactoryGirl.create(:tracker, :with_default_status) }
   given(:role) { FactoryGirl.create(:role, :manager_role) }

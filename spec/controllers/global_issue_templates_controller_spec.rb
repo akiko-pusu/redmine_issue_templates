@@ -1,8 +1,9 @@
 # frozen_string_literal: true
+
 require_relative '../spec_helper'
 require File.expand_path(File.dirname(__FILE__) + '/../support/controller_helper')
 
-describe GlobalIssueTemplatesController do
+describe GlobalIssueTemplatesController, type: :controller do
   let(:count) { 4 }
   let(:tracker) { FactoryGirl.create(:tracker, :with_default_status) }
   let(:projects) { FactoryGirl.create_list(:project, count) }
@@ -12,6 +13,7 @@ describe GlobalIssueTemplatesController do
   end
 
   include_context 'As admin'
+
   describe 'GET #index' do
     render_views
     before do
@@ -36,17 +38,11 @@ describe GlobalIssueTemplatesController do
       get :new
     end
     include_examples 'Right response', 200
-    it do
-      template = assigns(:global_issue_template)
-      expect(template).not_to be_nil
-      expect(template.title.blank?).to be_truthy
-      expect(template.description.blank?).to be_truthy
-    end
   end
 
   describe 'POST #create' do
     render_views
-    let(:params) do
+    let(:create_params) do
       { global_issue_template: { title: 'Global Template newtitle for creation test',
                                  note: 'Global note for creation test',
                                  description: 'Global Template description for creation test',
@@ -55,14 +51,13 @@ describe GlobalIssueTemplatesController do
     let(:global_issue_template) { GlobalIssueTemplate.first }
 
     before do
-      post :new, params
+      post :new, params: create_params
     end
 
     context 'POST without project ids' do
       let(:project_ids) { [] }
       include_examples 'Right response', 302
       it do
-        expect(assigns(:global_issue_template)).to eq global_issue_template
         expect(global_issue_template.projects.count).to eq 0
       end
     end
@@ -71,7 +66,6 @@ describe GlobalIssueTemplatesController do
       let(:project_ids) { projects.map(&:id) }
       include_examples 'Right response', 302
       it do
-        expect(assigns(:global_issue_template)).to eq global_issue_template
         expect(global_issue_template.projects.count).to eq projects.count
       end
     end
@@ -83,17 +77,15 @@ describe GlobalIssueTemplatesController do
     let(:global_issue_template) do
       create(:global_issue_template_with_projects, tracker_id: tracker.id, projects_count: 3)
     end
-    let(:params) { { description: 'Update Test Global template', project_ids: [] } }
+    let(:edit_params) { { description: 'Update Test Global template', project_ids: [''] } }
 
     it 'Before update template has the default value' do
       expect(global_issue_template.projects.count).to eq 3
-      expect(global_issue_template.description).not_to eq params[:description]
+      expect(global_issue_template.description).not_to eq edit_params[:description]
     end
 
     it 'After update number of projects should changed' do
-      put :edit, id: global_issue_template.id, global_issue_template: params
-      template = assigns(:global_issue_template)
-      expect(template.description).to eq params[:description]
+      put :edit, params: { id: global_issue_template.id, global_issue_template: edit_params }
       expect(global_issue_template.projects.count).to eq 0
     end
   end

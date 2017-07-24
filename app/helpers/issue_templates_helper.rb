@@ -1,6 +1,7 @@
 module IssueTemplatesHelper
   def project_tracker?(tracker, project)
-    project.trackers.exists?(tracker)
+    return false if tracker.blank?
+    project.trackers.exists?(id: tracker)
   end
 
   def non_project_tracker_msg(flag)
@@ -17,7 +18,7 @@ module IssueTemplatesHelper
   def options_for_template_pulldown(options)
     options.map do |option|
       text = option.try(:name).to_s
-      content_tag_string(:option, text, option, true)
+      tag_builder.content_tag_string(:option, text, option, true)
     end.join("\n").html_safe
   end
 end

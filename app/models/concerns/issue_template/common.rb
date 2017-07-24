@@ -15,10 +15,11 @@ module Concerns
 
         validates :title, presence: true
         validates :tracker, presence: true
-        acts_as_list scope: :tracker
+        # acts_as_positioned scope: :tracker
+        acts_as_positioned
 
         scope :enabled, -> { where(enabled: true) }
-        scope :order_by_position, -> { order(:position) }
+        scope :sorted, -> { order(:position) }
         scope :search_by_tracker, lambda { |tracker_id|
           where(tracker_id: tracker_id) if tracker_id.present?
         }
@@ -30,7 +31,7 @@ module Concerns
           condition = all
           ids = []
 
-          if project_id.present? && class_name == 'IssueTemplate'
+          if project_id.present? && name == 'IssueTemplate'
             condition = condition.where(project_id: project_id)
             ids = Tracker.joins(:projects).where(projects: { id: project_id }).pluck(:id)
           else
@@ -87,7 +88,7 @@ module Concerns
       def confirm_disabled
         return unless enabled?
         errors.add :base, 'enabled_template_cannot_destroy'
-        false
+        throw :abort
       end
     end
   end
