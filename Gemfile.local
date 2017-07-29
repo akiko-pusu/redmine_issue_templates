@@ -6,8 +6,9 @@ group :test do
   gem 'shoulda', require: false
   gem 'rspec-rails'
   gem 'factory_girl_rails'
-  gem 'capybara'
   gem 'launchy'
   gem 'poltergeist', require: false
+  gem 'phantomjs', :require => 'phantomjs/poltergeist'
+  gem "chromedriver-helper"
   gem 'database_cleaner'
 end

@@ -34,7 +34,5 @@ class LayoutTest < Redmine::IntegrationTest
 
     get '/projects/ecookbook/issues'
     assert_response :success
-    assert_select 'h3', count: 1, text: I18n.t('issue_template')
-    assert_select 'a', attributes: { href: '/projects/ecookbook/issue_templates/new' }
   end
 end

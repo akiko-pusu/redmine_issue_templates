@@ -15,6 +15,7 @@ feature 'PluginSetting to apply Global issue templates to all the projects', js:
   end
 
   background do
+    Setting.send 'plugin_redmine_issue_templates=', 'apply_global_template_to_all_projects' => 'false'
     user.update_attribute(:admin, true)
     log_user(user.login, user.login)
     visit '/settings/plugin/redmine_issue_templates'
