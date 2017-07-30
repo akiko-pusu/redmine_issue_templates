@@ -15,7 +15,6 @@ module Concerns
 
         validates :title, presence: true
         validates :tracker, presence: true
-        # acts_as_positioned scope: :tracker
         acts_as_positioned
 
         scope :enabled, -> { where(enabled: true) }

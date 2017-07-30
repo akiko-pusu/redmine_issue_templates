@@ -46,11 +46,4 @@ Redmine::Plugin.register :redmine_issue_templates do
     permission :manage_issue_templates,
                { issue_templates_settings: %i[show edit] }, require: :member
   end
-
-  # Rails.configuration.to_prepare do
-  #  require_dependency 'projects_helper'
-  #  unless ProjectsHelper.included_modules.include? IssueTemplates::ProjectsHelperPatch
-  #    ProjectsHelper.send(:include, IssueTemplates::ProjectsHelperPatch)
-  #  end
-  # end
 end

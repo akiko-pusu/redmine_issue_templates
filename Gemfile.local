@@ -9,6 +9,6 @@ group :test do
   gem 'launchy'
   gem 'poltergeist', require: false
   gem 'phantomjs', :require => 'phantomjs/poltergeist'
-  gem "chromedriver-helper"
+  gem 'chromedriver-helper'
   gem 'database_cleaner'
 end
