@@ -30,7 +30,7 @@ module Concerns
           condition = all
           ids = []
 
-          if project_id.present? && name == 'IssueTemplate'
+          if project_id.present? && try(:name) == 'IssueTemplate'
             condition = condition.where(project_id: project_id)
             ids = Tracker.joins(:projects).where(projects: { id: project_id }).pluck(:id)
           else

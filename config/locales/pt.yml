@@ -1,0 +1,43 @@
+# Brazilian strings go here for Rails i18n
+pt:
+  issue_templates: Modelos de tarefas
+  issue_template: Modelo de tarefas
+  issue_template_note: notas
+  label_enabled: Habilitado
+  label_disabled: Desabilitado
+  label_help_message: Sobre modelos
+  label_show_help_message: Visualizar mensagem de ajuda ao Criar/Atualizar tarefa. 
+  about_help_message: Cada projeto pode customizar mensagem de ajuda para os modelos.
+  close_help: Fechar mensagem de ajuda.
+  about_template_help_message: Poder visualizar instruções sobre modelos de tarefas neste projeto.
+  label_enabled_help_message: Opção para ativar este modelo. Se deseja salvar este modelo como rascunho, desative esta opção.
+  label_list_templates: "Lista de modelos"
+  label_new_templates: "Incluir modelo"
+  issue_template_name: "Nome do modelo"
+  issue_description: "Corpo da tarefa"
+  issue_title: "Título da tarefa"
+  label_applied_for_issue: "Campos aplicados para tarefa: "
+  help_for_issue_title: "Se definido o título da tarefa, este será aplicado à tarefa ao selecionar o modelo."
+  help_for_this_field: "Ajuda sobre este campo."
+  permission_manage_issue_templates: "Gerenciar Modelos"
+  permission_edit_issue_templates: "Editar Modelos"
+  permission_show_issue_templates: "Visualizar Modelos"  
+  project_module_issue_templates: "Modelos de Tarefas"
+  label_isdefault_help_message: "Se esta opção estiver ativa este será o modelo padrão para este tipo de tarefa."
+  defaulf_template_loaded: "Modelo padrão carregado na área da descrição. (Tipo: %{tracker})"
+  text_no_tracker_enabled: "Não há tipos configurados para este projeto.\nPor favor configure os tipos pois os modelos são associados a eles. "
+  label_enabled_sharing: "Habilitar compartilhamento com a árvore de projetos."
+  label_inherit_templates: "Herdar modelos"
+  label_inherit_templates_help_message: "Herda modelos do projeto pai. (Apenas os modelos do projeto pai listados são os marcados com compartilhamento habilitado com a árvore de projetos.)"
+  label_inherited_templates: "Modelos herdados"
+  no_issue_templates_for_this_project: "Não há modelos de tarefa definidos para este projeto."
+  link_to_index_edit_template: "Lista de modelos de tarefa / editar modelos"
+  erase_issue_subject_and_description: "Limpar assunto e descrição."
+  unused_tracker_at_this_project: "NOTA: Este tipo não está habilitado para uso neste projeto. Por favor redefina as configurações do modelo se necessário."
+  label_enabledshaing_help_message: "Se habilitado, este modelo pode ser compartilhado com projetos descendentes. (Você também deve ativar a opção de herdar modelos no projeto filho.)"
+  label_should_replaced: "Substituir assunto e descrição"
+  label_should_replaced_help_message: "Se habilitado assunto e descrição são excluídos e substituídos pelos textos do modelo. (Por padrão os textos são adicionados.)"
+  global_issue_templates: "Modelos de Tarefa Globais"
+  no_issue_templates_for_this_redmine: "Não há modelos de tarefa globais definidos neste redmine."
+  only_admin_can_associate_global_template: "Somente administradores podem associar modelos globais a este projeto."
+  text_no_tracker_enabled_for_global: "Nenhum tipo foi definido ainda.\nPor favor defina os tipos, pois os modelos são atribuídos a estes."
