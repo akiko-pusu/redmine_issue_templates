@@ -63,7 +63,7 @@ some trouble related "bundle intall", please try --without option.
 
 ### WebPage
 
-* http://www.redmine.org/plugins/issue_templates (Redmine Plugin List)
+* https://www.redmine.org/plugins/redmine_issue_templates (Redmine Plugin List)
 * http://www.r-labs.org/projects/issue-template (Project Page)
 
 
@@ -73,6 +73,15 @@ some trouble related "bundle intall", please try --without option.
 
 
 ## Changelog
+
+### 0.1.8
+
+Bugfix release.
+
+* Bugfix: Prevent "undefined local variable or method" error when listing project orphaned templates. (GitHub: #150)
+* PR: Add Portuguese translation. Thank you so much, Adriano Baptistella! (GitHub: #149) 
+* Change url of Redmine Plugin Directory. (Changed identifier from issue_templates to redmine_issue_templates.)
+
 
 ### 0.1.7
 
