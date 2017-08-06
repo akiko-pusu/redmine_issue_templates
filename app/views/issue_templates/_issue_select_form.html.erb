@@ -1,13 +1,12 @@
 <% return '' unless @issue.project.module_enabled? :issue_templates %>
 <% return '' unless User.current.allowed_to?(:show_issue_templates, @issue.project)  %>
 <div id="template_area" style="display: none;">
-  <p>
     <label for="issue_template"><%=h l(:issue_template)%></label>
     <select id="issue_template" name="issue_template">
       <option value="">---</option>
     </select>
 
-    <a class="icon template_tooltip" id="link_template_dialog">
+    <a class="icon-only template_tooltip" id="link_template_dialog">
       <%=h l(:display_and_filter_issue_templates_in_dialog, default: 'Filter Templates') %>
     </a>
     <% if setting.enable_help? %>
@@ -16,10 +15,10 @@
           <%= l(:label_help_message) %>
         </a>
     <% end %>
-    <a class="icon icon-erase" title="<%= l(:erase_issue_subject_and_description, default: 'Erase') %>" id="erase_template">
+    <a class="icon-only icon-erase" title="<%= l(:erase_issue_subject_and_description, default: 'Erase') %>" id="erase_template">
       <%= l(:erase_issue_subject_and_description, default: 'Erase') %>
     </a>
-    <a class="icon icon-reload disabled" title="<%= l(:revert_before_applying_template, default: 'Revert') %>"
+    <a class="icon-only icon-reload disabled" title="<%= l(:revert_before_applying_template, default: 'Revert') %>"
        id="revert_template" disabled="disabled">
       <%= l(:revert_before_applying_template, default: 'Revert') %>
     </a>
@@ -30,7 +29,6 @@
     <span id="original_subject" style="display: none;"></span>
     <span id="original_description" style="display: none;"></span>
     <span id="template_status-area"></span>
-  </p>
 
   <!-- dialog box -->
   <div id="issue_template_dialog" style="overflow:visible; display: none;">
@@ -59,7 +57,7 @@
         var tracker =  '<%= @issue.tracker.id %>';
         templateNS.set_pulldown(tracker, pulldown_url);
 
-        $('#template_area').insertBefore($('#issue_subject').parent());
+        $('#issue_tracker_id').parent('p').append($('#template_area'));
 
         $("#issue_template").change(function(){
             var is_triggered_by_status = '<%= is_triggered_by_status %>';
