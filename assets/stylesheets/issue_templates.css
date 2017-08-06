@@ -10,6 +10,15 @@
     margin: 4px;
 }
 
+#template_area {
+    display: inline-block;
+}
+
+#template_area label {
+    float: none;
+    margin-left: 10px;
+}
+
 #template_area a {
     display: inline-block;
     margin-right: .85em;
@@ -266,4 +275,11 @@ div.form-inline.issue_templates #enabled_help_content {
 
 a.icon.icon-del[disabled=disabled] {
     opacity: 0.5;
+}
+
+@media screen and (max-width: 899px)
+{
+    #template_area label {
+        margin-left: 0;
+    }
 }
