@@ -121,7 +121,7 @@ feature 'IssueTemplate', js: true do
         end
 
         scenario 'Click filtered link and applied template' do
-          table.find('tbody > tr > td:nth-child(4) > a').click
+          table.find('tbody > tr > td:nth-child(5) > a').click
           sleep(0.2)
           description = page.find('#issue_description')
           expect(description.value).to match 'Sample description for rspec'
@@ -162,7 +162,7 @@ feature 'IssueTemplate', js: true do
         issue_description.set(expected_description)
         page.find('#link_template_dialog').click
         sleep(0.2)
-        table.find('tbody > tr > td:nth-child(4) > a').click
+        table.find('tbody > tr > td:nth-child(5) > a').click
         sleep(0.2)
         modal_close.click
       end
@@ -179,7 +179,7 @@ feature 'IssueTemplate', js: true do
         issue_description.set('different description')
         page.find('#link_template_dialog').click
         sleep(0.2)
-        table.find('tbody > tr > td:nth-child(4) > a').click
+        table.find('tbody > tr > td:nth-child(5) > a').click
         sleep(0.2)
         modal_close.click
       end
