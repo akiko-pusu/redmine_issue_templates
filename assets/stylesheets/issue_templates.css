@@ -183,7 +183,7 @@ a.template_tooltip {
     position: absolute;
     top: 10px;
     left: -30px;
-    font-size: 90%;
+    /* font-size: smaller; */
     background-color: #ffffff;
     width: 300px;
     padding: 8px 10px 12px;
@@ -308,7 +308,7 @@ a.icon.icon-del[disabled=disabled] {
     position: absolute;
     top: 20px;
     right: -10px;
-    font-size: 90%;
+    /* font-size: smaller; */
     display: block;
     background-color: #ffffff;
     width: 200px;
