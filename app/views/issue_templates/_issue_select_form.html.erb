@@ -79,7 +79,10 @@
 
         // revert template
         $('#revert_template').click(function() {
-            templateNS.revertAppliedTemplate();
+            var prop = $('#revert_template').hasClass('disabled');
+            if (!prop) {
+                templateNS.revertAppliedTemplate();
+            }
         });
 
         $('#erase_template').click(function() {
