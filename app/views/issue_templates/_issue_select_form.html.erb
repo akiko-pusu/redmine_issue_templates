@@ -6,26 +6,20 @@
       <option value="">---</option>
     </select>
 
-    <a class="icon-only template_tooltip" id="link_template_dialog">
-      <%=h l(:display_and_filter_issue_templates_in_dialog, default: 'Filter Templates') %>
+    <a class="icon icon-only template_tooltip" id="link_template_dialog"
+       title="<%= l(:display_and_filter_issue_templates_in_dialog, default: 'Filter Templates')%>">
+    </a>
+    <a class="icon-only icon-erase" id="erase_template"
+       title="<%= l(:erase_issue_subject_and_description, default: 'Erase') %>">
+    </a>
+    <a class="icon-only icon-reload disabled" id="revert_template" disabled="disabled"
+       title="<%= l(:revert_before_applying_template, default: 'Revert') %>">
     </a>
     <% if setting.enable_help? %>
-        <a class="icon icon-help template-help" title="<%= l(:about_template_help_message) %>"
-           data-template-help-target="#template_help_content">
-          <%= l(:label_help_message) %>
-        </a>
+      <a class="icon-only icon-help" title="<%= html_escape(setting.help_message) %>">
+      </a>
     <% end %>
-    <a class="icon-only icon-erase" title="<%= l(:erase_issue_subject_and_description, default: 'Erase') %>" id="erase_template">
-      <%= l(:erase_issue_subject_and_description, default: 'Erase') %>
-    </a>
-    <a class="icon-only icon-reload disabled" title="<%= l(:revert_before_applying_template, default: 'Revert') %>"
-       id="revert_template" disabled="disabled">
-      <%= l(:revert_before_applying_template, default: 'Revert') %>
-    </a>
     <br/>
-    <span id="template_help_content" class="issue_template help_content" style="display: none; line-height: 2.5em;">
-              <%= setting.help_message %>
-    </span>
     <span id="original_subject" style="display: none;"></span>
     <span id="original_description" style="display: none;"></span>
     <span id="template_status-area"></span>
@@ -57,7 +51,10 @@
         var tracker =  '<%= @issue.tracker.id %>';
         templateNS.set_pulldown(tracker, pulldown_url);
 
-        $('#issue_tracker_id').parent('p').append($('#template_area'));
+        var template_area = $('#template_area');
+        $('#issue_tracker_id').parent('p').append(template_area);
+        template_area.css({'z-index': 2000});
+        $('#issue_tracker_id').parent('p').css({'overflow': 'inherit'});
 
         $("#issue_template").change(function(){
             var is_triggered_by_status = '<%= is_triggered_by_status %>';

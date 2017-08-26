@@ -189,6 +189,8 @@ a.template_tooltip {
     padding: 8px 10px 12px;
     border: 1px solid #CCCCCC;
     z-index: 20000;
+    border-radius: 1px;
+    box-shadow: 1px 1px 3px silver;
 }
 
 .template_tooltip_wrapper:hover .template_tooltip_body .title {
@@ -292,4 +294,27 @@ a.icon.icon-del[disabled=disabled] {
     #template_area label {
         margin-left: 0;
     }
+}
+
+#template_area a.icon-only:hover {
+    position: relative;
+    z-index: 20000;
+    overflow: inherit;
+}
+
+#template_area a.icon-only:hover:after {
+    content: attr(title);
+    color: #333;
+    position: absolute;
+    top: 20px;
+    right: -10px;
+    font-size: 90%;
+    display: block;
+    background-color: #ffffff;
+    width: 200px;
+    padding: 4px 5px 6px;
+    border: 1px solid #CCCCCC;
+    opacity: 1;
+    border-radius: 1px;
+    box-shadow: 1px 1px 3px silver;
 }
