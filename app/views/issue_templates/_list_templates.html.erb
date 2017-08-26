@@ -1,7 +1,6 @@
 <table class="list template_list">
   <thead>
   <tr>
-    <th><%=h l(:issue_template_name) %></th>
     <th><%=h l(:issue_title) %></th>
     <th><%=h l(:issue_description) %></th>
     <th><%= l(:field_is_default) %></th>
@@ -10,9 +9,6 @@
   </thead>
 <% issue_templates.each do |template| %>
       <tr class="<%= cycle('odd', 'even') %> template_data">
-        <td>
-          <%= template.title %>
-        </td>
         <td>
           <%= template.issue_title %>
         </td>
@@ -35,9 +31,6 @@
 <% inherit_templates.each do |template| %>
       <tr class="<%= cycle('odd', 'even') %> template_data">
         <td>
-          <%= template.title %>
-        </td>
-        <td>
           <%= template.issue_title %>
         </td>
         <td>
@@ -58,9 +51,6 @@
 <% end %>
 <% global_issue_templates.each do |template| %>
       <tr class="<%= cycle('odd', 'even') %> template_data">
-        <td>
-          <%= template.title %>
-        </td>
         <td>
           <%= template.issue_title %>
         </td>
