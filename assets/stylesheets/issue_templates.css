@@ -279,6 +279,16 @@ a.icon.icon-del[disabled=disabled] {
 
 @media screen and (max-width: 899px)
 {
+    #template_area {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    #template_area select#issue_template {
+        max-width: 70%;
+        width: 70%;
+    }
+
     #template_area label {
         margin-left: 0;
     }
