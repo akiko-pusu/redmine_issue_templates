@@ -8,7 +8,7 @@ module IssueTemplates
       action = { name: 'issue_templates',
                  controller: 'issue_templates_settings',
                  action: :show,
-                 partial: 'issue_templates_settings/show', label: :issue_templates }
+                 partial: 'issue_templates_settings/show', label: :project_module_issue_templates }
       tabs << action if User.current.allowed_to?(action, @project)
       tabs
     end
