@@ -1,5 +1,6 @@
-require File.expand_path(File.dirname(__FILE__) + '/../rails_helper')
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require_relative '../spec_helper'
+require_relative '../rails_helper'
+require_relative '../support/login_helper'
 
 feature 'IssueTemplate', js: true do
   #
