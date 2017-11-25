@@ -5,7 +5,7 @@ require_relative '../support/login_helper'
 include LoginHelper
 
 feature 'PluginSetting to apply Global issue templates to all the projects', js: true do
-  given(:user) { FactoryGirl.create(:user, :password_same_login, login: 'plugin_admin', language: 'en') }
+  given(:user) { create(:user, :password_same_login, login: 'plugin_admin', language: 'en') }
 
   background(:all) do
     Redmine::Plugin.register(:redmine_issue_templates) do

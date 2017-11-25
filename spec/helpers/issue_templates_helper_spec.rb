@@ -2,8 +2,8 @@ require_relative '../spec_helper'
 
 describe IssueTemplatesHelper do
   describe '#project_tracker?' do
-    let(:trackers) { FactoryGirl.create_list(:tracker, 2, :with_default_status) }
-    let(:project) { FactoryGirl.create(:project) }
+    let(:trackers) { create_list(:tracker, 2, :with_default_status) }
+    let(:project) { create(:project) }
     let(:tracker) { trackers.first }
     subject { helper.project_tracker?(tracker.id, project) }
 
@@ -27,11 +27,11 @@ describe IssueTemplatesHelper do
   end
 
   describe '#template_target_trackers' do
-    let(:trackers) { FactoryGirl.create_list(:tracker, 2, :with_default_status) }
-    let(:project) { FactoryGirl.create(:project) }
+    let(:trackers) { create_list(:tracker, 2, :with_default_status) }
+    let(:project) { create(:project) }
     let(:tracker) { trackers.last }
     let(:template) do
-      FactoryGirl.create(:issue_template, tracker_id: tracker.id, project_id: project.id)
+      create(:issue_template, tracker_id: tracker.id, project_id: project.id)
     end
     subject { helper.template_target_trackers(project, template) }
     before do

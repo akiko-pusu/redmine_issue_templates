@@ -12,11 +12,11 @@ feature 'Confirm dialog before overwrite description', js: true do
     end
   end
 
-  given(:user) { FactoryGirl.create(:user, :password_same_login, login: 'plugin_admin', language: 'en') }
+  given(:user) { create(:user, :password_same_login, login: 'plugin_admin', language: 'en') }
   given(:project) { create(:project_with_enabled_modules) }
-  given(:tracker) { FactoryGirl.create(:tracker, :with_default_status) }
-  given(:role) { FactoryGirl.create(:role, :manager_role) }
-  given(:issue_priority) { FactoryGirl.create(:priority) }
+  given(:tracker) { create(:tracker, :with_default_status) }
+  given(:role) { create(:role, :manager_role) }
+  given(:issue_priority) { create(:priority) }
   given(:first_target) { page.find('#issue_template > optgroup > option:nth-child(1)') }
   given(:second_target) { page.find('#issue_template > optgroup > option:nth-child(2)') }
   given(:issue_subject) { page.find('#issue_subject') }
@@ -25,7 +25,7 @@ feature 'Confirm dialog before overwrite description', js: true do
   given(:second_template) { IssueTemplate.second }
 
   background do
-    FactoryGirl.create_list(:issue_template, 2, project_id: project.id, tracker_id: tracker.id)
+    create_list(:issue_template, 2, project_id: project.id, tracker_id: tracker.id)
 
     project.trackers << tracker
     assign_template_priv(role, add_permission: :show_issue_templates)
