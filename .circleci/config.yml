@@ -11,14 +11,14 @@ general:
 jobs:
   build:
     docker:
-      # specify the version you desire here
-      - image: circleci/ruby:2.4.1-node-browsers
+      # specify the version you desire here (ruby 2.4.x)
+      - image: circleci/ruby:2.4-node-browsers
     steps:
       - checkout
   test:
     docker:
       # specify the version you desire here
-      - image: circleci/ruby:2.4.1-node-browsers
+      - image: circleci/ruby:2.4-node-browsers
         environment:
           RAILS_ENV: test
           DB_HOST: 127.0.0.1
