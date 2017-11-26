@@ -2,6 +2,8 @@ require_relative '../spec_helper'
 require_relative '../rails_helper'
 require_relative '../support/login_helper'
 
+include LoginHelper
+
 feature 'IssueTemplate', js: true do
   #
   # TODO: Change not to use Redmine's fixture but to use Factory...
@@ -17,6 +19,7 @@ feature 'IssueTemplate', js: true do
            :projects_trackers,
            :enabled_modules
 
+  given(:role) { Role.find(1) }
   after do
     page.execute_script 'window.close();'
   end
@@ -46,7 +49,7 @@ feature 'IssueTemplate', js: true do
     given!(:enabled_module) { create(:enabled_module) }
     context 'When user has no priv to use issue template' do
       background do
-        assign_template_priv(remove_permission: :show_issue_templates)
+        assign_template_priv(role, remove_permission: :show_issue_templates)
         log_user('jsmith', 'jsmith')
         visit '/projects/ecookbook/issues'
       end
@@ -58,7 +61,7 @@ feature 'IssueTemplate', js: true do
 
     context 'When user has priv to use issue template' do
       background do
-        assign_template_priv(add_permission: :show_issue_templates)
+        assign_template_priv(role, add_permission: :show_issue_templates)
         log_user('jsmith', 'jsmith')
         visit '/projects/ecookbook/issues'
       end
@@ -76,12 +79,12 @@ feature 'IssueTemplate', js: true do
 
     given!(:named_template) do
       create(:issue_template, project_id: 1, tracker_id: 1,
-                                          title: 'Sample Title for rspec', description: 'Sample description for rspec')
+                              title: 'Sample Title for rspec', description: 'Sample description for rspec')
     end
     given!(:enabled_module) { create(:enabled_module) }
 
     background do
-      assign_template_priv(add_permission: :show_issue_templates)
+      assign_template_priv(role, add_permission: :show_issue_templates)
       log_user('jsmith', 'jsmith')
       visit '/projects/ecookbook/issues/new'
     end
@@ -137,8 +140,8 @@ feature 'IssueTemplate', js: true do
 
     given!(:named_template) do
       create(:issue_template, project_id: 1, tracker_id: 1,
-                                          title: 'bug template',
-                                          issue_title: expected_title, description: expected_description)
+                              title: 'bug template',
+                              issue_title: expected_title, description: expected_description)
     end
 
     given!(:issue_template_setting) do
@@ -152,7 +155,7 @@ feature 'IssueTemplate', js: true do
     given(:modal_close) { page.find('span.ui-icon-closethick') }
 
     background do
-      assign_template_priv(add_permission: :show_issue_templates)
+      assign_template_priv(role, add_permission: :show_issue_templates)
       log_user('jsmith', 'jsmith')
       visit '/projects/ecookbook/issues/new'
     end
@@ -200,13 +203,13 @@ feature 'IssueTemplate', js: true do
 
     given!(:named_template) do
       create(:issue_template, project_id: 1, tracker_id: 1,
-                                          title: 'Sample Title for rspec',
-                                          issue_title: 'Sample Title for rspec', description: 'Sample description for rspec')
+                              title: 'Sample Title for rspec',
+                              issue_title: 'Sample Title for rspec', description: 'Sample description for rspec')
     end
     given!(:enabled_module) { create(:enabled_module) }
 
     background do
-      assign_template_priv(add_permission: :show_issue_templates)
+      assign_template_priv(role, add_permission: :show_issue_templates)
       log_user('jsmith', 'jsmith')
       visit '/projects/ecookbook/issues/new'
 
@@ -226,26 +229,6 @@ feature 'IssueTemplate', js: true do
       page.find('#revert_template').click
       expect(issue_description.value).to eq 'Test for revert description'
       expect(issue_subject.value).to eq 'Test for revert subject'
-    end
-  end
-
-  private
-
-  def assign_template_priv(add_permission: nil, remove_permission: nil)
-    return if add_permission.blank? && remove_permission.blank?
-    role = Role.find(1)
-    role.add_permission! add_permission if add_permission.present?
-    role.remove_permission! remove_permission if remove_permission.present?
-  end
-
-  def log_user(login, password)
-    visit '/my/page'
-    assert_equal '/login', current_path
-    within('#login-form form') do
-      fill_in 'username', with: login
-      fill_in 'password', with: password
-      find('input[name=login]').click
-      page.save_screenshot('capture/issues.png', full: true)
     end
   end
 end
