@@ -51,7 +51,7 @@ describe GlobalIssueTemplatesController, type: :controller do
     let(:global_issue_template) { GlobalIssueTemplate.first }
 
     before do
-      post :new, params: create_params
+      post :create, params: create_params
     end
 
     context 'POST without project ids' do
@@ -72,7 +72,7 @@ describe GlobalIssueTemplatesController, type: :controller do
   end
 
   # PATCH GlobalIssueTemplatesController#edit
-  describe 'PUT #edit' do
+  describe 'PUT #update' do
     render_views
     let(:global_issue_template) do
       create(:global_issue_template_with_projects, tracker_id: tracker.id, projects_count: 3)
@@ -85,7 +85,7 @@ describe GlobalIssueTemplatesController, type: :controller do
     end
 
     it 'After update number of projects should changed' do
-      put :edit, params: { id: global_issue_template.id, global_issue_template: edit_params }
+      put :update, params: { id: global_issue_template.id, global_issue_template: edit_params }
       expect(global_issue_template.projects.count).to eq 0
     end
   end

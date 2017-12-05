@@ -26,14 +26,14 @@ class GlobalIssueTemplatesControllerTest < Redmine::ControllerTest
     end
   end
 
-  context '#edit' do
+  context '#update' do
     context 'with permission' do
       setup do
       end
 
-      should 'edit template when request is put' do
-        put :edit, params: { id: 2,
-                             global_issue_template: { description: 'Update Test Global template2' } }
+      should 'update template when request is put' do
+        put :update, params: { id: 2,
+                               global_issue_template: { description: 'Update Test Global template2' } }
         assert_response :redirect # show
         global_issue_template = GlobalIssueTemplate.find(2)
         assert_redirected_to controller: 'global_issue_templates',
@@ -63,9 +63,9 @@ class GlobalIssueTemplatesControllerTest < Redmine::ControllerTest
       # do post
       should 'insert new global template record when request is post' do
         num = GlobalIssueTemplate.count
-        post :new, params: { global_issue_template: { title: 'Global Template newtitle for creation test', note: 'Global note for creation test',
-                                                      description: 'Global Template description for creation test',
-                                                      tracker_id: 1, enabled: 1, author_id: 1 } }
+        post :create, params: { global_issue_template: { title: 'Global Template newtitle for creation test', note: 'Global note for creation test',
+                                                         description: 'Global Template description for creation test',
+                                                         tracker_id: 1, enabled: 1, author_id: 1 } }
 
         template = GlobalIssueTemplate.order('id DESC').first
         assert_response :redirect # show

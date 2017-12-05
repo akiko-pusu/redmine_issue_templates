@@ -17,7 +17,7 @@
   <%= error_messages_for 'global_issue_template' %>
   <%= labelled_form_for :global_issue_template,
                         issue_template,
-                        url: { controller: 'global_issue_templates', action: 'edit', id: issue_template },
+                        url: { controller: 'global_issue_templates', action: 'update', id: issue_template },
                         html: { id: 'global_issue_template-form', class: nil,
                                 multipart: false } do |f| %>
       <%= render 'form', { f: f, checklist_enabled: checklist_enabled, trackers: trackers,

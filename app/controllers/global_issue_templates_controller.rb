@@ -6,8 +6,8 @@ class GlobalIssueTemplatesController < ApplicationController
   include IssuesHelper
   include Concerns::IssueTemplatesCommon
   menu_item :issues
-  before_action :find_object, only: %i[show edit destroy]
-  before_action :find_project, only: [:edit]
+  before_action :find_object, only: %i[show update destroy]
+  before_action :find_project, only: [:update]
   before_action :require_admin, only: %i[index new show], excep: [:preview]
 
   #
@@ -27,26 +27,22 @@ class GlobalIssueTemplatesController < ApplicationController
   def new
     # create empty instance
     @global_issue_template = GlobalIssueTemplate.new
-
-    if request.post?
-      # Case post, set attributes passed as parameters.
-      @global_issue_template.safe_attributes = template_params
-      @global_issue_template.author = User.current
-      @global_issue_template.checklist_json = checklists.to_json if checklists
-
-      save_and_flash(:notice_successful_create) && return
-    end
-
     render_form
+  end
+
+  def create
+    @global_issue_template = GlobalIssueTemplate.new(template_params)
+    @global_issue_template.author = User.current
+    @global_issue_template.checklist_json = checklists.to_json if checklists
+
+    save_and_flash(:notice_successful_create) && return
   end
 
   def show
     render_form
   end
 
-  def edit
-    # Change from request.post to request.patch for Rails4.
-    return unless request.patch? || request.put?
+  def update
     @global_issue_template.safe_attributes = template_params
     @global_issue_template.checklist_json = checklists.to_json
     save_and_flash(:notice_successful_update)
