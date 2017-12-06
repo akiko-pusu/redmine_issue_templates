@@ -8,8 +8,9 @@ Rails.application.routes.draw do
   match 'projects/:project_id/issue_templates_settings/:action', controller: 'issue_templates_settings', via: %i[get post patch put]
   match 'issue_templates/preview', to: 'issue_templates#preview', via: %i[get post]
   match 'projects/:project_id/issue_templates_settings/preview', to: 'issue_templates_settings#preview', via: %i[get post]
-  match 'global_issue_templates/preview', to: 'global_issue_templates#preview', via: %i[get post]
   get 'projects/:project_id/issue_templates/orphaned_templates', to: 'issue_templates#orphaned_templates', as: 'project_orphaned_templates'
-  get 'global_issue_templates/orphaned_templates', to: 'global_issue_templates#orphaned_templates', as: 'global_orphaned_templates'
-  resources :global_issue_templates
+  resources :global_issue_templates, except: [:edit] do
+    get 'preview', on: :collection
+    get 'orphaned_templates', on: :collection
+  end
 end
