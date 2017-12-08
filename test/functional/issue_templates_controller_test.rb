@@ -52,13 +52,13 @@ class IssueTemplatesControllerTest < Redmine::ControllerTest
       end
 
       should 'return json hash' do
-        get :load, params: { project_id: 1, issue_template: 1 }
+        get :load, params: {project_id: 1, id: 1}
         assert_response :success
         assert_equal 'description1', json_response['issue_template']['description']
       end
 
       should 'return json hash of global' do
-        get :load, params: { project_id: 1, issue_template: 1, template_type: 'global' }
+        get :load, params: {project_id: 1, id: 1, template_type: 'global'}
         assert_response :success
         assert_equal 'global description1', json_response['global_issue_template']['description']
       end
@@ -109,13 +109,13 @@ class IssueTemplatesControllerTest < Redmine::ControllerTest
       end
 
       should 'preview template' do
-        get :preview, params: { issue_template: { description: 'h1. Test data.' } }
+        post :preview, params: {issue_template: {description: 'h1. Test data.'}, project_id: 1}
         assert_select 'h1', /Test data\./, @response.body.to_s
       end
     end
   end
 
-  context '#edit' do
+  context '#update' do
     context 'with permission' do
       setup do
         Role.find(1).add_permission! :show_issue_templates
@@ -123,9 +123,9 @@ class IssueTemplatesControllerTest < Redmine::ControllerTest
       end
 
       should 'edit template when request is put' do
-        put :edit, params: { id: 2,
-                             issue_template: { description: 'Update Test template2' },
-                             project_id: 1 }
+        put :update, params: {id: 2,
+                              issue_template: {description: 'Update Test template2'},
+                              project_id: 1}
         project = Project.find 1
         assert_response :redirect # show
         issue_template = IssueTemplate.find(2)
@@ -154,10 +154,10 @@ class IssueTemplatesControllerTest < Redmine::ControllerTest
       end
 
       should 'not be able to change project id and safe attributes' do
-        put :edit, params: { id: 2,
-                             issue_template: { description: 'Update Test template2',
+        put :update, params: {id: 2,
+                              issue_template: {description: 'Update Test template2',
                                                project_id: 2, author_id: 2 },
-                             project_id: 1 }
+                              project_id: 1}
         project = Project.find 1
         assert_response :redirect # show
         issue_template = IssueTemplate.find(2)

@@ -72,8 +72,8 @@
                   <td class="buttons">
                     <%= reorder_handle(issue_template,
                                        url: url_for(:controller => 'issue_templates',
-                                         :action =>'edit', :id => issue_template.id,
-                                         :project_id => issue_template.project) ) %>
+                                                    :action => 'update', :id => issue_template.id,
+                                                    :project_id => issue_template.project)) %>
                   </td>
               <% end %>
             </tr>
@@ -213,7 +213,8 @@
     </div>
 <% end %>
 
-<%= link_to l(:orphaned_templates, default: 'Orphaned Templates'), project_orphaned_templates_path, remote: true,
+<%= link_to l(:orphaned_templates, default: 'Orphaned Templates'),
+            orphaned_templates_project_issue_templates_path, remote: true,
             id: 'orphaned_template_link', class: 'collapsible collapsed template_tooltip'
 %>
 

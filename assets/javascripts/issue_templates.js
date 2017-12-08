@@ -63,7 +63,7 @@ ISSUE_TEMPLATE.prototype = {
                 url: target_url,
                 async: true,
                 type: 'post',
-                data: $.param({issue_template: selected_template.val(), template_type: template_type})
+                data: $.param({id: selected_template.val(), template_type: template_type})
             }).done(function (data) {
                 // NOTE: Workaround for GiHub Issue, to prevent overwrite with default template
                 // when operator submits new issue form without required field and returns
@@ -202,7 +202,7 @@ ISSUE_TEMPLATE.prototype = {
 
 
 // jQuery plugin for issue template
-;(function ($) {
+(function ($) {
     var methods = {
         init: function (options) {
         },

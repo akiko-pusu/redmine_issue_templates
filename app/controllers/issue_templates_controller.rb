@@ -6,7 +6,7 @@ class IssueTemplatesController < ApplicationController
   include IssuesHelper
   include Concerns::IssueTemplatesCommon
   menu_item :issues
-  before_action :find_object, only: %i[show edit destroy]
+  before_action :find_object, only: %i[show update destroy]
   before_action :find_user, :find_project, :authorize, except: [:preview]
   before_action :find_tracker, :find_templates, only: %i[set_pulldown list_templates]
   accept_api_auth :index, :list_templates, :load
@@ -56,13 +56,9 @@ class IssueTemplatesController < ApplicationController
     render_form
   end
 
-  def edit
-    # Change from request.post to request.patch for Rails4.
-    return unless request.patch? || request.put?
+  def update
     @issue_template.safe_attributes = template_params
-
     @issue_template.checklist_json = checklists.to_json
-
     save_and_flash(:notice_successful_update)
   end
 
@@ -79,7 +75,7 @@ class IssueTemplatesController < ApplicationController
 
   # load template description
   def load
-    issue_template_id = params[:issue_template]
+    issue_template_id = params[:id]
     template_type = params[:template_type]
     issue_template = if !template_type.blank? && template_type == 'global'
                        GlobalIssueTemplate.find(issue_template_id)
