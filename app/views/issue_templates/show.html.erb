@@ -1,6 +1,6 @@
 <div class="contextual">
   <%= link_to_if_authorized l(:button_edit),
-                            { controller: 'issue_templates', action: 'edit', id: issue_template,
+                            { controller: 'issue_templates', action: 'update', id: issue_template,
                               project_id: project },
                             class: 'icon icon-edit', accesskey: accesskey(:edit),
                             onclick: "$('#edit-issue_template').show(); return false;" %>
@@ -11,7 +11,7 @@
                               count: issue_template.used_projects.count,
                               default: "Are you sure to remove this template? %{count} subprojects use this template.")},
                               title: l(:enabled_template_cannot_destroy, default: 'Only disabled template can be destroyed.'),
-                            method: 'post', class: 'icon icon-del template-disabled-link', disabled: issue_template.enabled? %>
+                            method: 'delete', class: 'icon icon-del template-disabled-link', disabled: issue_template.enabled? %>
   <%= link_to(l(:label_list_templates),
               { controller: 'issue_templates',
                 action: 'index',
@@ -23,10 +23,10 @@
   <%= avatar(issue_template.author, size: '24') %>
 </h2>
 
-<% if authorize_for('issue_templates', 'edit') %>
+<% if authorize_for('issue_templates', 'update') %>
     <div id="edit-issue_template" style="display:none;">
       <%= labelled_form_for :issue_template, issue_template,
-                            url: { controller: 'issue_templates', action: 'edit',
+                            url: { controller: 'issue_templates', action: 'update',
                                    project_id: project, id: issue_template },
                             html: { id: 'issue_template-form', class: nil, multipart: false } do |f| %>
           <%= render 'form', { f: f, checklist_enabled: checklist_enabled,

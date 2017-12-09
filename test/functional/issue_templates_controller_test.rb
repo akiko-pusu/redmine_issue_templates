@@ -52,13 +52,13 @@ class IssueTemplatesControllerTest < Redmine::ControllerTest
       end
 
       should 'return json hash' do
-        get :load, params: {project_id: 1, id: 1}
+        get :load, params: { project_id: 1, id: 1 }
         assert_response :success
         assert_equal 'description1', json_response['issue_template']['description']
       end
 
       should 'return json hash of global' do
-        get :load, params: {project_id: 1, id: 1, template_type: 'global'}
+        get :load, params: { project_id: 1, id: 1, template_type: 'global' }
         assert_response :success
         assert_equal 'global description1', json_response['global_issue_template']['description']
       end
@@ -87,9 +87,9 @@ class IssueTemplatesControllerTest < Redmine::ControllerTest
       # do post
       should 'insert new template record when request is post' do
         num = IssueTemplate.count
-        post :new, params: { issue_template: { title: 'newtitle', note: 'note',
-                                               description: 'description', tracker_id: 1, enabled: 1, author_id: 3 },
-                             project_id: 1 }
+        post :create, params: { issue_template: { title: 'newtitle', note: 'note',
+                                                  description: 'description', tracker_id: 1, enabled: 1, author_id: 3 },
+                                project_id: 1 }
 
         assert_response :redirect # show
         assert_equal(num + 1, IssueTemplate.count)
@@ -100,16 +100,16 @@ class IssueTemplatesControllerTest < Redmine::ControllerTest
         num = IssueTemplate.count
 
         # when title blank, validation bloks to save.
-        post :new, params: { issue_template: { title: '', note: 'note',
-                                               description: 'description', tracker_id: 1, enabled: 1,
-                                               author_id: 1 }, project_id: 1 }
+        post :create, params: { issue_template: { title: '', note: 'note',
+                                                  description: 'description', tracker_id: 1, enabled: 1,
+                                                  author_id: 1 }, project_id: 1 }
 
         assert_response :success
         assert_equal(num, IssueTemplate.count)
       end
 
       should 'preview template' do
-        post :preview, params: {issue_template: {description: 'h1. Test data.'}, project_id: 1}
+        post :preview, params: { issue_template: { description: 'h1. Test data.' }, project_id: 1 }
         assert_select 'h1', /Test data\./, @response.body.to_s
       end
     end
@@ -123,9 +123,9 @@ class IssueTemplatesControllerTest < Redmine::ControllerTest
       end
 
       should 'edit template when request is put' do
-        put :update, params: {id: 2,
-                              issue_template: {description: 'Update Test template2'},
-                              project_id: 1}
+        put :update, params: { id: 2,
+                               issue_template: { description: 'Update Test template2' },
+                               project_id: 1 }
         project = Project.find 1
         assert_response :redirect # show
         issue_template = IssueTemplate.find(2)
@@ -154,10 +154,10 @@ class IssueTemplatesControllerTest < Redmine::ControllerTest
       end
 
       should 'not be able to change project id and safe attributes' do
-        put :update, params: {id: 2,
-                              issue_template: {description: 'Update Test template2',
-                                               project_id: 2, author_id: 2 },
-                              project_id: 1}
+        put :update, params: { id: 2,
+                               issue_template: { description: 'Update Test template2',
+                                                 project_id: 2, author_id: 2 },
+                               project_id: 1 }
         project = Project.find 1
         assert_response :redirect # show
         issue_template = IssueTemplate.find(2)

@@ -45,15 +45,17 @@ class IssueTemplatesController < ApplicationController
 
   def new
     # create empty instance
-    @issue_template ||= IssueTemplate.new(author: @user, project: @project)
-
-    if request.post?
-      @issue_template.safe_attributes = template_params
-      @issue_template.checklist_json = checklists.to_json
-
-      save_and_flash(:notice_successful_create) && return
-    end
+    @issue_template = IssueTemplate.new
     render_form
+  end
+
+  def create
+    @issue_template = IssueTemplate.new(template_params)
+    @issue_template.author = User.current
+    @issue_template.project = @project
+    @issue_template.checklist_json = checklists.to_json
+
+    save_and_flash(:notice_successful_create) && return
   end
 
   def update
@@ -63,12 +65,12 @@ class IssueTemplatesController < ApplicationController
   end
 
   def destroy
-    return unless request.post?
     unless @issue_template.destroy
       flash[:error] = l(:enabled_template_cannot_destroy)
       redirect_to action: :show, project_id: @project, id: @issue_template
       return
     end
+
     flash[:notice] = l(:notice_successful_delete)
     redirect_to action: 'index', project_id: @project
   end
