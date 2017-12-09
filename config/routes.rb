@@ -2,20 +2,19 @@
 # TODO: Clean up routing.
 #
 Rails.application.routes.draw do
-  resources :global_issue_templates, except: [:edit] do
+  concern :tamplate_common do
     post 'preview', on: :collection
     get 'orphaned_templates', on: :collection
   end
 
+  resources :global_issue_templates, except: [:edit], concerns: :tamplate_common
+
   # for project issue template
   resources :projects, only: [] do
-    resources :issue_templates, except: [:edit] do
-      post 'preview', on: :collection
-      get 'orphaned_templates', on: :collection
+    resources :issue_templates, except: [:edit], concerns: :tamplate_common do
       post 'set_pulldown', on: :collection
       get 'list_templates', on: :collection
       post 'load', on: :collection
-      get 'load', on: :member
     end
 
     resources :issue_templates_settings, only: [] do
