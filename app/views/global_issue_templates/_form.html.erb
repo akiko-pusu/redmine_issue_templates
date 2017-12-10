@@ -19,13 +19,11 @@
     </p>
     <p><%= f.text_field :issue_title, required: false, size: 80, label: l(:issue_title) %>
       <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
-         data-template-help-target="#issue_title_help_content">
+         data-tooltip-area="#issue_title_help_area"
+         data-tooltip-content="#issue_title_help_content">
         <%= l(:help_for_this_field) %>
+        <span class="tooltip-area" id="issue_title_help_area"></span>
       </a>
-      <br/>
-      <span id="issue_title_help_content" class="issue_template help_content" style="display: none;">
-        <%= l(:help_for_issue_title) %>
-      </span>
     </p>
     <p>
       <%= f.text_area :description, cols: 78, rows: 12,
@@ -61,24 +59,23 @@
 
   <p><%= f.check_box :is_default, label: l(:field_is_default) %>
     <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
-       data-template-help-target="#isdefault_help_content">
+       data-template-help-target="#isdefault_help_content"
+       data-tooltip-area="#isdefault_help_area"
+       data-tooltip-content="#isdefault_help_content">
       <%= l(:help_for_this_field) %>
+      <span class="tooltip-area" id="isdefault_help_area"></span>
     </a>
-    <br/>
-    <span id="isdefault_help_content" class="issue_template help_content" style="display: none;">
-      <%= l(:label_isdefault_help_message) %>
-    </span>
   </p>
 
   <p><%= f.check_box :enabled, label: l(:label_enabled) %>
     <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
-       data-template-help-target="#enabled_help_content">
+       data-template-help-target="#enabled_help_content"
+       data-tooltip-area="#enabled_help_area"
+       data-tooltip-content="#enabled_help_content">
       <%= l(:help_for_this_field) %>
-    </a><br/>
-    <span id="enabled_help_content" class="issue_template help_content" style="display: none;"><%= l(:label_enabled_help_message) %></span>
-
+      <span class="tooltip-area" id="enabled_help_area"></span>
+    </a>
   </p>
-
 </div>
 
 <%= wikitoolbar_for 'global_issue_template_description' %>
@@ -88,6 +85,23 @@
                          id: issue_template),
                  'global_issue_template_description', target='preview' %> |
 <%= link_to l(:button_cancel), {action: 'index'}, data: {confirm: l(:text_are_you_sure)} %>
+
+
+<!-- tooltip content -->
+<div id="issue_title_help_content" class="wiki" style="display: none;">
+  <%= l(:help_for_issue_title) %>
+</div>
+<div id="isdefault_help_content" class="wiki" style="display: none;">
+  <%= l(:label_isdefault_help_message) %>
+</div>
+<div id="isdefault_help_content" class="wiki" style="display: none;">
+  <%= l(:label_isdefault_help_message) %>
+</div>
+<div id="enabled_help_content" class="wiki" style="display: none;">
+  <%= l(:label_enabled_help_message) %>
+</div>
+
+<!-- tooltip content -->
 
 <div class="box">
   <% if apply_all_projects %>

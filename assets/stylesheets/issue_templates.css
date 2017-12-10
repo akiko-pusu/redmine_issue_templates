@@ -82,7 +82,7 @@ div.issue_template {
     margin-bottom: 12pt;
     display: block;
     font-style: italic;
-    padding:8px 10px 8px 20px;
+    padding: 8px 10px 8px 20px;
     color: #31708f;
     background: #eaf5fb url(../images/lamp.png) no-repeat 3px center;
     border: solid #a7e4fd 1px;
@@ -142,7 +142,6 @@ a.template_tooltip {
     background-color: white;
 }
 
-
 /*--- Tooltip: Use to display template description -----*/
 
 .template_tooltip_wrapper {
@@ -150,13 +149,11 @@ a.template_tooltip {
     display: inline-block;
 }
 
-
 /* Hide tooltip body */
 
 .template_tooltip_wrapper .template_tooltip_body {
     display: none;
 }
-
 
 /* Mouse over action */
 
@@ -164,7 +161,6 @@ a.template_tooltip {
     position: relative;
     color: #333;
 }
-
 
 /* tooltip body */
 
@@ -244,11 +240,15 @@ select.issue_template {
 }
 
 @-webkit-keyframes scale {
-    50% { -webkit-transform: scale(1.04); }
+    50% {
+        -webkit-transform: scale(1.04);
+    }
 }
 
 @keyframes scale {
-    50% { transform: scale(1.04); }
+    50% {
+        transform: scale(1.04);
+    }
 }
 
 #revert_template.disabled {
@@ -266,4 +266,26 @@ div.form-inline.issue_templates #enabled_help_content {
 
 a.icon.icon-del[disabled=disabled] {
     opacity: 0.5;
+}
+
+/*---- help tooltip --*/
+a#help-icon span, a.icon-help span {
+    display: none;
+    padding: 8px;
+    font-size: 12px;
+    margin-left: 8px;
+    line-height: 1.6;
+}
+
+a#help-icon:hover span, a.icon-help:hover span {
+    display: inline;
+    position: absolute;
+    background-color: #FFFFFF;
+    border: 1px solid #cccccc;
+    color: #000000;
+    width: 300px;
+}
+
+#template-help-wiki > p {
+    padding-left: 5px;
 }

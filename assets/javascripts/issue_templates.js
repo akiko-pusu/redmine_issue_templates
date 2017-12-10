@@ -4,9 +4,10 @@
  */
 
 // For namespace setting.
-var ISSUE_TEMPLATE = ISSUE_TEMPLATE || function() {};
+var ISSUE_TEMPLATE = ISSUE_TEMPLATE || function () {
+};
 ISSUE_TEMPLATE.prototype = {
-    eraseSubjectAndDescription: function() {
+    eraseSubjectAndDescription: function () {
         $('#issue_description').val('');
         $('#issue_subject').val('');
 
@@ -17,7 +18,7 @@ ISSUE_TEMPLATE.prototype = {
             // do nothing.
         }
     },
-    openDialog: function(url, title) {
+    openDialog: function (url, title) {
         // Open dialog (modal window) to display selectable templates list.
         $.ajax({
             url: url,
@@ -50,8 +51,8 @@ ISSUE_TEMPLATE.prototype = {
         old_description.text = '';
         $('#revert_template').addClass('disabled');
     },
-    load_template: function(target_url, confirm_msg, should_replaced,
-                            confirm_to_replace, confirmation, general_text_Yes, general_text_No) {
+    load_template: function (target_url, confirm_msg, should_replaced,
+                             confirm_to_replace, confirmation, general_text_Yes, general_text_No) {
         var selected_template = $('#issue_template');
         var ns = this;
         if (selected_template.val() !== '') {
@@ -129,7 +130,7 @@ ISSUE_TEMPLATE.prototype = {
             });
         }
     },
-    confirmToReplace: function(target_url, confirm_msg, should_replaced,
+    confirmToReplace: function (target_url, confirm_msg, should_replaced,
                                 confirmation, general_text_Yes, general_text_No) {
         var ns = this;
         $("#issue_template_confirm_to_replace_dialog").dialog(
@@ -156,7 +157,7 @@ ISSUE_TEMPLATE.prototype = {
             }
         );
     },
-    show_loaded_message: function(confirm_msg, target) {
+    show_loaded_message: function (confirm_msg, target) {
         var template_status_area = $('#template_status-area');
         template_status_area.insertBefore(target);
         template_status_area.issueTemplate('flash_message', {
@@ -164,7 +165,7 @@ ISSUE_TEMPLATE.prototype = {
             how: 'append'
         });
     },
-    set_pulldown: function(tracker, target_url) {
+    set_pulldown: function (tracker, target_url) {
         var allow_overwrite = $('#allow_overwrite_description').prop('checked');
         $.ajax({
             url: target_url,
@@ -176,7 +177,7 @@ ISSUE_TEMPLATE.prototype = {
             $('#allow_overwrite_description').attr('checked', allow_overwrite);
         });
     },
-    addCheckList: function(obj) {
+    addCheckList: function (obj) {
         var list = obj.checklist;
         if (list === undefined) return false;
         if ($('#checklist_form').length === 0) return;
@@ -192,10 +193,10 @@ ISSUE_TEMPLATE.prototype = {
             $("span.checklist-item.new > span.icon.icon-add.save-new-by-button").click();
         }
     },
-    escapeHTML: function(val) {
+    escapeHTML: function (val) {
         return $('<div>').text(val).html();
     },
-    unescapeHTML: function(val) {
+    unescapeHTML: function (val) {
         return $('<div>').html(val).text();
     }
 };
@@ -223,6 +224,22 @@ ISSUE_TEMPLATE.prototype = {
                         obj.val(id);
                     }
                     obj.trigger('change');
+                });
+            });
+        },
+        displayTooltip: function (options) {
+            options = $.extend({
+                tooltip_body_id: 'data-tooltip-content',
+                tooltip_target_id: 'data-tooltip-area'
+            }, options);
+            return $(this).each(function () {
+                $(this).hover(function () {
+                    var content = $(this).attr(options.tooltip_body_id);
+                    var target = $(this).attr(options.tooltip_target_id);
+                    var obj = $(content);
+                    if (obj.length)
+                        $(target).html(obj);
+                    obj.toggle();
                 });
             });
         },
@@ -266,14 +283,14 @@ ISSUE_TEMPLATE.prototype = {
             });
         },
         disabled_link: function (options) {
-            options = $.extend({ }, options);
+            options = $.extend({}, options);
             return $(this).each(function () {
                 $(this).click(function (event) {
                     title = event.target.title;
                     if (title.length && event.target.hasAttribute('disabled')) {
-                      event.stopPropagation();
-                      alert(title);
-                      return false;
+                        event.stopPropagation();
+                        alert(title);
+                        return false;
                     }
                 });
             });
@@ -295,7 +312,8 @@ ISSUE_TEMPLATE.prototype = {
 
 $(function () {
     // set plugin
-    $('a.template-help').issueTemplate('expandHelp');
+    $('a.template-help').issueTemplate('displayTooltip');
+    $('a.template-help.collapsible').issueTemplate('expandHelp');
     $('a.template-help.collapsible').click(function () {
         $(this).toggleClass('collapsed');
     });
