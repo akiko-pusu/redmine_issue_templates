@@ -269,7 +269,7 @@ a.icon.icon-del[disabled=disabled] {
 }
 
 /*---- help tooltip --*/
-a.icon-help span, a#help-icon span {
+a.icon-help span {
     display: none;
     padding: 8px;
     font-size: 12px;
@@ -277,7 +277,7 @@ a.icon-help span, a#help-icon span {
     line-height: 1.6;
 }
 
-a.icon-help:hover span, a#help-icon:hover span {
+a.icon-help:hover span {
     display: inline;
     position: absolute;
     background-color: #FFFFFF;
