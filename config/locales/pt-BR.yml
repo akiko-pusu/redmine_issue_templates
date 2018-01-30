@@ -1,7 +1,7 @@
 # Brazilian strings go here for Rails i18n
 pt-BR:
   issue_templates: Modelos de tarefas
-  issue_template: Modelo de tarefas
+  issue_template: Modelo de tarefa
   issue_template_note: notas
   label_enabled: Habilitado
   label_disabled: Desabilitado
@@ -41,3 +41,18 @@ pt-BR:
   no_issue_templates_for_this_redmine: "Não há modelos de tarefa globais definidos neste redmine."
   only_admin_can_associate_global_template: "Somente administradores podem associar modelos globais a este projeto."
   text_no_tracker_enabled_for_global: "Nenhum tipo foi definido ainda.\nPor favor defina os tipos, pois os modelos são atribuídos a estes."
+  display_and_filter_issue_templates_in_dialog: "Visualizar conteúdo do template"
+  label_filter_template: "Filtrar modelos"
+  label_msg_confirm_to_replace: "Você quer substituir o assunto e a descrição?"
+  label_apply_global_template_to_all_projects: "Aplica modelos de problemas globais a todos os projetos."
+  note_apply_global_template_to_all_projects_setting_enabled: "Este modelo de problema global é aplicado a todos os projetos por configuração de plug-in."
+  project_list_associated_this_template: "Lista de projetos:  (aplicado: %{applied} of %{all})"
+  note_project_local_template_override_global_template: "Se existe um modelo local de projeto, substitua modelos globais e quaisquer modelos globais não são exibidos na tela criar tarefa."
+  help_project_local_template_override_global_template: "Se esta opção for ativada, todos os modelos de passagens globais serão aplicados a todos os projetos. Se um modelos específico do projeto por tipo tarefa estiver definido, ele se substituirá e o template global está oculto na tela de criação de nova tarefa."
+  warning_project_local_template_override_global_template: "Tenha cuidado ao registrar o template de tarefa global, que contém conteúdo confidencial para o qual deseja prestar atenção. Caso esta opção seja ativada, todos os modelos globais serão aplicados a todos os projetos."
+  revert_before_applying_template: "Reverter"
+  template_remove_confirm: "Tem certeza de remover esse template？ %{count} subprojetos usam este template."
+  label_number_of_subprojects_use_this_template: "%{count} subprojetos usam este template."
+  enabled_template_cannot_destroy: "Apenas o template desativado pode ser destruído. Verifique se outros subprojetos usam esse template ou não e desativá-lo antes de excluir."
+  orphaned_templates: "Modelos órfãos do tipo tarefa"
+  orphaned_template: "Modelos órfãos do tipo tarefa"
