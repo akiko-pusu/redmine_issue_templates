@@ -18,7 +18,7 @@ class GlobalIssueTemplatesController < ApplicationController
     template_map = {}
     trackers.each do |tracker|
       tracker_id = tracker.id
-      templates = GlobalIssueTemplate.search_by_tracker(tracker_id).order_by_position
+      templates = GlobalIssueTemplate.search_by_tracker(tracker_id).sorted
       template_map[Tracker.find(tracker_id)] = templates if templates.any?
     end
     render layout: !request.xhr?, locals: { template_map: template_map, trackers: trackers }

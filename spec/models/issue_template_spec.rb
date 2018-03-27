@@ -28,12 +28,12 @@ describe IssueTemplate do
   describe '#sort_by_position' do
     it 'do sort by position correctly' do
       expect([issue_template, issue_template2]).to eq [issue_template2, issue_template].sort
-      expect(IssueTemplate.order_by_position.first).to eq issue_template
+      expect(IssueTemplate.sorted.first).to eq issue_template
     end
 
     it 'do sort by position correctly after update' do
       issue_template.update(position: issue_template2.position + 100)
-      expect(IssueTemplate.order_by_position.first).to eq issue_template2
+      expect(IssueTemplate.sorted.first).to eq issue_template2
     end
   end
 

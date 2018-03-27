@@ -44,7 +44,7 @@ class GlobalIssueTemplate < ActiveRecord::Base
       GlobalIssueTemplate.search_by_tracker(tracker_id)
                          .search_by_project(project_id)
                          .enabled
-                         .order_by_position
+                         .sorted
     end
   end
 end

@@ -6,7 +6,7 @@ class IssueTemplatesController < ApplicationController
   include IssuesHelper
   include Concerns::IssueTemplatesCommon
   menu_item :issues
-  before_filter :find_object, only: [:show, :edit, :destroy]
+  before_filter :find_object, only: [:show, :edit, :update, :destroy]
   before_filter :find_user, :find_project, :authorize,
                 except: [:preview, :move_order_higher, :move_order_lower, :move_order_to_top, :move_order_to_bottom, :move]
   before_filter :find_tracker, :find_templates, only: [:set_pulldown, :list_templates]
@@ -21,7 +21,7 @@ class IssueTemplatesController < ApplicationController
 
     @template_map = {}
     tracker_ids.each do |tracker_id|
-      templates = project_templates.search_by_tracker(tracker_id).order_by_position
+      templates = project_templates.search_by_tracker(tracker_id).sorted
       @template_map[Tracker.find(tracker_id)] = templates if templates.any?
     end
 
@@ -56,6 +56,13 @@ class IssueTemplatesController < ApplicationController
     end
     render_form
   end
+
+  def update
+    @issue_template.safe_attributes = template_params
+    @issue_template.checklist_json = checklists.to_json
+    save_and_flash(:notice_successful_update)
+  end
+
 
   def edit
     # Change from request.post to request.patch for Rails4.
