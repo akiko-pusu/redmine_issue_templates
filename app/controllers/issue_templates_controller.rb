@@ -63,7 +63,6 @@ class IssueTemplatesController < ApplicationController
     save_and_flash(:notice_successful_update)
   end
 
-
   def edit
     # Change from request.post to request.patch for Rails4.
     return unless request.patch? || request.put?
@@ -196,8 +195,13 @@ class IssueTemplatesController < ApplicationController
 
   def save_and_flash(message)
     return unless @issue_template.save
-    flash[:notice] = l(message)
-    redirect_to action: 'show', id: @issue_template.id, project_id: @project
+    respond_to do |format|
+      format.html do
+        flash[:notice] = l(message)
+        redirect_to action: 'show', id: @issue_template.id, project_id: @project
+      end
+      format.js { head 200 }
+    end
   end
 
   def render_form

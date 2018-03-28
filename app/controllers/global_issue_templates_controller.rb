@@ -6,8 +6,8 @@ class GlobalIssueTemplatesController < ApplicationController
   include IssuesHelper
   include Concerns::IssueTemplatesCommon
   menu_item :issues
-  before_filter :find_object, only: [:show, :edit, :destroy]
-  before_filter :find_project, only: [:edit]
+  before_filter :find_object, only: [:show, :edit, :update, :destroy]
+  before_filter :find_project, only: [:edit, :update]
   before_filter :require_admin, only: [:index, :new, :show], excep: [:preview]
 
   #
@@ -42,6 +42,12 @@ class GlobalIssueTemplatesController < ApplicationController
 
   def show
     render_form
+  end
+
+  def update
+    @global_issue_template.safe_attributes = template_params
+    @global_issue_template.checklist_json = checklists.to_json
+    save_and_flash(:notice_successful_update)
   end
 
   def edit
@@ -100,8 +106,13 @@ class GlobalIssueTemplatesController < ApplicationController
 
   def save_and_flash(message)
     return unless @global_issue_template.save
-    flash[:notice] = l(message)
-    redirect_to action: 'show', id: @global_issue_template.id
+    respond_to do |format|
+      format.html do
+        flash[:notice] = l(message)
+        redirect_to action: 'show', id: @global_issue_template.id
+      end
+      format.js { head 200 }
+    end
   end
 
   def template_params

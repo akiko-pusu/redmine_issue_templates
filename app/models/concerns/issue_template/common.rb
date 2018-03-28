@@ -17,7 +17,7 @@ module Concerns
         validates :tracker, presence: true
         #acts_as_list scope: :tracker
 
-        acts_as_positioned
+        acts_as_positioned :scope => [:tracker_id]
 
         scope :enabled, -> { where(enabled: true) }
         #scope :sorted, -> { order(:position) }
