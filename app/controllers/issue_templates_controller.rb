@@ -7,8 +7,7 @@ class IssueTemplatesController < ApplicationController
   include Concerns::IssueTemplatesCommon
   menu_item :issues
   before_filter :find_object, only: [:show, :edit, :update, :destroy]
-  before_filter :find_user, :find_project, :authorize,
-                except: [:preview, :move_order_higher, :move_order_lower, :move_order_to_top, :move_order_to_bottom, :move]
+  before_filter :find_user, :find_project, :authorize, except: [:preview]
   before_filter :find_tracker, :find_templates, only: [:set_pulldown, :list_templates]
   accept_api_auth :index, :list_templates, :load
 
@@ -149,11 +148,6 @@ class IssueTemplatesController < ApplicationController
     render partial: 'common/preview'
   end
 
-  # Reorder templates
-  def move
-    move_order(params[:to])
-  end
-
   def orphaned_templates
     orphaned = IssueTemplate.orphaned(@project.id)
     render partial: 'orphaned_templates', locals: { orphaned_templates: orphaned }
@@ -186,11 +180,6 @@ class IssueTemplatesController < ApplicationController
     @issue_templates = issue_templates
     @inherit_templates = inherit_templates
     @global_templates = global_templates(@tracker.id)
-  end
-
-  def move_order(method)
-    IssueTemplate.find(params[:id]).send "move_#{method}"
-    render_for_move_with_format
   end
 
   def save_and_flash(message)

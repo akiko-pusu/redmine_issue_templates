@@ -10,13 +10,6 @@ module Concerns
       end
     end
 
-    def render_for_move_with_format
-      respond_to do |format|
-        format.html { redirect_to action: 'index' }
-        format.xml  { head :ok }
-      end
-    end
-
     def plugin_setting
       @plugin_setting ||= Setting.plugin_redmine_issue_templates
     end

@@ -78,10 +78,6 @@ class GlobalIssueTemplatesController < ApplicationController
     render partial: 'common/preview'
   end
 
-  def move
-    move_order(params[:to])
-  end
-
   def orphaned_templates
     orphaned = GlobalIssueTemplate.orphaned
     render partial: 'orphaned_templates', locals: { orphaned_templates: orphaned }
@@ -97,11 +93,6 @@ class GlobalIssueTemplatesController < ApplicationController
     @global_issue_template = GlobalIssueTemplate.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     render_404
-  end
-
-  def move_order(method)
-    GlobalIssueTemplate.find(params[:id]).send "move_#{method}"
-    render_for_move_with_format
   end
 
   def save_and_flash(message)

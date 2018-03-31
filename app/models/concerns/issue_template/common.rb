@@ -15,12 +15,10 @@ module Concerns
 
         validates :title, presence: true
         validates :tracker, presence: true
-        #acts_as_list scope: :tracker
 
-        acts_as_positioned :scope => [:tracker_id]
+        acts_as_positioned scope: [:tracker_id]
 
         scope :enabled, -> { where(enabled: true) }
-        #scope :sorted, -> { order(:position) }
         scope :sorted, -> { order(:position) }
         scope :search_by_tracker, lambda { |tracker_id|
           where(tracker_id: tracker_id) if tracker_id.present?
