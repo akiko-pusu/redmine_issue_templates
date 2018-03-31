@@ -61,10 +61,6 @@
                                                              id: issue_template.id, action: 'update' })) %>
               </td>
             </tr>
-            <tr class="<%= current_cycle %>" style="display: none;" id="global_template_description-<%= issue_template.id %>">
-              <td class="description" colspan="8">
-                <div class="wiki"><%= textilizable(issue_template.description) %></div></td>
-            </tr>
         <% end %>
         </tbody>
       </table>
