@@ -172,8 +172,8 @@ a.template_tooltip {
     text-align: left;
     display: block;
     position: absolute;
-    top: 10px;
-    left: -30px;
+    top: 12px;
+    left: 0px;
     font-size: 90%;
     background-color: #ffffff;
     width: 300px;
