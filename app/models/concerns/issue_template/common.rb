@@ -90,6 +90,10 @@ module Concerns
         errors.add :base, 'enabled_template_cannot_destroy'
         false
       end
+
+      def copy_title
+        "copy_of_#{title}"
+      end
     end
   end
 end

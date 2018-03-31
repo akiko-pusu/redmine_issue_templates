@@ -44,8 +44,13 @@ class IssueTemplatesController < ApplicationController
   end
 
   def new
-    # create empty instance
-    @issue_template ||= IssueTemplate.new(author: @user, project: @project)
+    if params[:id].present?
+      @issue_template = IssueTemplate.find(params[:id]).dup
+      @issue_template.title = @issue_template.copy_title
+    else
+      # create empty instance
+      @issue_template ||= IssueTemplate.new(author: @user, project: @project)
+    end
 
     if request.post?
       @issue_template.safe_attributes = template_params
