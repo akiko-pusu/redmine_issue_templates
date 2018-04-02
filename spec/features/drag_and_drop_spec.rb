@@ -51,10 +51,10 @@ feature 'Templates can be reorder via drag and drop', js: true do
 
   private
 
-  #   def visit_template_list(user)
-  #     # TODO: If does not user update, authentication is failed. This is workaround.
-  #     user.update_attribute(:admin, false)
-  #     log_user(user.login, user.password)
-  #     visit "/projects/#{project.identifier}/issue_templates"
-  #   end
+  def visit_template_list(user)
+    # TODO: If does not user update, authentication is failed. This is workaround.
+    user.update_attribute(:admin, false)
+    log_user(user.login, user.password)
+    visit "/projects/#{project.identifier}/issue_templates"
+  end
 end
