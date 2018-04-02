@@ -1,0 +1,14 @@
+# Ruby CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-ruby/ for more details
+#
+version: 2
+
+jobs:
+  build:
+    docker:
+      # specify the version you desire here (ruby 2.4.x)
+      - image: circleci/ruby:2.4-node-browsers
+    steps:
+      - checkout
+      - run: echo 'This is a empty config.'
