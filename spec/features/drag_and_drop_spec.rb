@@ -11,9 +11,10 @@ feature 'Templates can be reorder via drag and drop', js: true do
   given(:role) { FactoryGirl.create(:role, :manager_role) }
   given(:issue_priority) { FactoryGirl.create(:priority) }
 
-  given(:first_target) { page.find('#template_table > tbody > tr:nth-child(1) > td.buttons > span') }
-  given(:second_target) { page.find('#template_table > tbody > tr:nth-child(2) > td.buttons > span') }
-  given(:last_target) { page.find('#template_table > tbody > tr:nth-child(4) > td.buttons > span') }
+  given(:table) { page.find('table.list.issues.table-sortable:first-of-type > tbody') }
+  given(:first_target) { table.find('tr:nth-child(1) > td.buttons > span') }
+  given(:second_target) { table.find('tr:nth-child(2) > td.buttons > span') }
+  given(:last_target) { table.find('tr:nth-child(4) > td.buttons > span') }
 
   background do
     FactoryGirl.create_list(:issue_template, 4, project_id: project.id, tracker_id: tracker.id)
@@ -28,14 +29,11 @@ feature 'Templates can be reorder via drag and drop', js: true do
 
   scenario 'Can drag and drop' do
     visit_template_list(user)
-    within(:css, 'table#template_table') do
-      expect(page).to have_selector('tbody > tr:nth-child(1)')
-    end
 
     # change id: 1, 2, 3, 4 to 2, 3, 4, 1
     expect do
       first_target.drag_to(last_target)
-      sleep 5
+      sleep 0.2
     end.to change {
              IssueTemplate.pluck(:position).to_a
            }.from([1, 2, 3, 4]).to([4, 1, 2, 3])
@@ -43,7 +41,7 @@ feature 'Templates can be reorder via drag and drop', js: true do
     # change id: 2, 3, 4, 1 to 2, 4, 3, 1
     expect do
       second_target.drag_to(last_target)
-      sleep 5
+      sleep 0.2
     end.to change {
              IssueTemplate.pluck(:position).to_a
            }.from([4, 1, 2, 3]).to([4, 1, 3, 2])
