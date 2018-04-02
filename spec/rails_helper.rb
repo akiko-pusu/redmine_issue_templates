@@ -29,6 +29,7 @@ RSpec.configure do |config|
 
   config.before :each, type: :feature do
     Capybara.current_driver = ENV['DRIVER'] == 'selenium' ? :selenium_chrome : :poltergeist
+    Capybara.javascript_driver = :poltergeist
   end
 
   config.include Capybara::DSL

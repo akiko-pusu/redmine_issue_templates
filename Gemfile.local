@@ -8,6 +8,6 @@ group :test do
   gem 'factory_girl_rails'
   gem 'capybara'
   gem 'launchy'
-  gem 'poltergeist', require: false
+  gem 'poltergeist'
   gem 'database_cleaner'
 end
