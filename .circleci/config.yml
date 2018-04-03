@@ -39,7 +39,6 @@ jobs:
           command: |
             REDMINE_BRANCH=3.4-stable sh script/circleci-setup.sh
       - run: bundle install --path vendor/bundle --without postgresql rmagick && bundle update
-      - run: bundle exec rails g rspec:install
       - run: bundle exec rake db:create RAILS_ENV=test
       - run: bundle exec rake db:migrate RAILS_ENV=test
       - run: bundle exec rake redmine:plugins:migrate RAILS_ENV=test
