@@ -51,14 +51,6 @@ class GlobalIssueTemplatesControllerTest < ActionController::TestCase
                              action: 'index'
         assert_raise(ActiveRecord::RecordNotFound) { GlobalIssueTemplate.find(2) }
       end
-
-      should 'move to bottom and top' do
-        global_issue_template = GlobalIssueTemplate.find(1)
-        get :move, tracler_id: 1, id: 1, to: :to_bottom
-        assert_equal 3, global_issue_template.reload.position
-        get :move, tracler_id: 1, id: 1, to: :to_top
-        assert_equal 1, global_issue_template.reload.position
-      end
     end
   end
 

@@ -8,7 +8,7 @@ describe 'IssueTemplatesCommon' do
       include Concerns::IssueTemplatesCommon
     end
     allow_any_instance_of(FakesController).to receive(:action_name).and_return('fake_action')
-    User.current = FactoryGirl.build(:user)
+    User.current = FactoryBot.build(:user)
   end
   let(:mock_controller) { FakesController.new }
 

@@ -6,8 +6,8 @@ class GlobalIssueTemplatesController < ApplicationController
   include IssuesHelper
   include Concerns::IssueTemplatesCommon
   menu_item :issues
-  before_filter :find_object, only: [:show, :edit, :destroy]
-  before_filter :find_project, only: [:edit]
+  before_filter :find_object, only: [:show, :edit, :update, :destroy]
+  before_filter :find_project, only: [:edit, :update]
   before_filter :require_admin, only: [:index, :new, :show], excep: [:preview]
 
   #
@@ -18,7 +18,7 @@ class GlobalIssueTemplatesController < ApplicationController
     template_map = {}
     trackers.each do |tracker|
       tracker_id = tracker.id
-      templates = GlobalIssueTemplate.search_by_tracker(tracker_id).order_by_position
+      templates = GlobalIssueTemplate.search_by_tracker(tracker_id).sorted
       template_map[Tracker.find(tracker_id)] = templates if templates.any?
     end
     render layout: !request.xhr?, locals: { template_map: template_map, trackers: trackers }
@@ -42,6 +42,12 @@ class GlobalIssueTemplatesController < ApplicationController
 
   def show
     render_form
+  end
+
+  def update
+    @global_issue_template.safe_attributes = template_params
+    @global_issue_template.checklist_json = checklists.to_json
+    save_and_flash(:notice_successful_update)
   end
 
   def edit
@@ -72,10 +78,6 @@ class GlobalIssueTemplatesController < ApplicationController
     render partial: 'common/preview'
   end
 
-  def move
-    move_order(params[:to])
-  end
-
   def orphaned_templates
     orphaned = GlobalIssueTemplate.orphaned
     render partial: 'orphaned_templates', locals: { orphaned_templates: orphaned }
@@ -93,15 +95,15 @@ class GlobalIssueTemplatesController < ApplicationController
     render_404
   end
 
-  def move_order(method)
-    GlobalIssueTemplate.find(params[:id]).send "move_#{method}"
-    render_for_move_with_format
-  end
-
   def save_and_flash(message)
     return unless @global_issue_template.save
-    flash[:notice] = l(message)
-    redirect_to action: 'show', id: @global_issue_template.id
+    respond_to do |format|
+      format.html do
+        flash[:notice] = l(message)
+        redirect_to action: 'show', id: @global_issue_template.id
+      end
+      format.js { head 200 }
+    end
   end
 
   def template_params

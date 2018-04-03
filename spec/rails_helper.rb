@@ -10,25 +10,42 @@ ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/test/fixtures"
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
 
   config.before :suite, type: :feature do
-    if ENV['DRIVER'] == 'selenium'
-      require 'selenium-webdriver'
-      Capybara.register_driver :selenium_chrome do |app|
-        Capybara::Selenium::Driver.new(app, browser: :chrome)
+    require 'selenium-webdriver'
+    if ENV['DRIVER'] == 'headless'
+      Capybara.register_driver :headless_chrome do |app|
+        capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
+            #
+            # NOTE: When using Chrome headress, default window size is 800x600.
+            # In case window size is not specified, Redmine renderes its contents with responsive mode.
+            #
+            chromeOptions: { args: %w[headless disable-gpu window-size=1024,768] }
+        )
+        Capybara::Selenium::Driver.new(
+            app,
+            browser: :chrome,
+            desired_capabilities: capabilities
+        )
       end
     else
-      require 'capybara/poltergeist'
-      Capybara.register_driver :poltergeist do |app|
-        Capybara::Poltergeist::Driver.new(app, js_errors: false, inspector: true,
-                                               phantomjs_options: ['--ignore-ssl-errors=yes'], timeout: 120)
+      Capybara.register_driver :headless_chrome do |app|
+        capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
+            chromeOptions: { args: %w[] }
+        )
+        Capybara::Selenium::Driver.new(
+            app,
+            browser: :chrome,
+            desired_capabilities: capabilities
+        )
       end
     end
   end
 
   config.before :each, type: :feature do
-    Capybara.current_driver = ENV['DRIVER'] == 'selenium' ? :selenium_chrome : :poltergeist
+    Capybara.javascript_driver = :headless_chrome
+    Capybara.current_driver = :headless_chrome
   end
 
   config.include Capybara::DSL

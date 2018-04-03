@@ -4,7 +4,7 @@ Plugin to generate and use issue templates for each project to assist issue
 creation. For Redmine 2.1.x or higher, please use version 0.0.4 or higher. For
 Redmine 2.0, please use version 0.0.3 or higher.
 
-Build Status: [![wercker status](https://app.wercker.com/status/1782a97bc897492cead97ebdbe298755/s/master "wercker status")](https://app.wercker.com/project/byKey/1782a97bc897492cead97ebdbe298755)
+Build Status: [![CircleCI](https://circleci.com/gh/akiko-pusu/redmine_issue_templates.svg?style=svg)](https://circleci.com/gh/akiko-pusu/redmine_issue_templates)
 
 ### Repository
 
@@ -74,12 +74,25 @@ some trouble related "bundle intall", please try --without option.
 
 ## Changelog
 
+### 0.1.9
+
+Bugfix and refactoring release.
+
+* Bugfix: Fix wrong template sort ordering.  (GitHub: #174)
+* Change UI to reorder templates with using drag and drop.
+* Add feature to copy template (Now project scope template only.)
+* Code refactoring. Use Headless Chrome for feature spec. Change to use CircleCI for build and test.
+* PR: Update Bulgarian translation. Thank you so much, Ivan Cenov! (GitHub: #171)
+* PR: Update Update pt-BR.yml Thank you so much, Adriano Baptistella! (GitHub: #173)
+* Bugfix: Wrong column label in "Preview Template Contents" modal dialog. (GitHub: #154)
+* PR: Updates to German language file. Thank you so much, Tobias Fischer! (GitHub: #164)
+
 ### 0.1.8
 
 Bugfix release.
 
 * Bugfix: Prevent "undefined local variable or method" error when listing project orphaned templates. (GitHub: #150)
-* PR: Add Portuguese translation. Thank you so much, Adriano Baptistella! (GitHub: #149) 
+* PR: Add Portuguese translation. Thank you so much, Adriano Baptistella! (GitHub: #149)
 * Change url of Redmine Plugin Directory. (Changed identifier from issue_templates to redmine_issue_templates.)
 
 
@@ -351,12 +364,12 @@ Please see wercker.yml for more details.
     % cp plugins/redmine_issue_templates/Gemfile.local plugins/redmine_issue_templates/Gemfile
     % bundle install --with test
     % export RAILS_ENV=test
-    % bundle exec rake redmine_issue_templates:spec
+    % bundle exec rspec -I plugins/redmine_issue_templates/spec --format documentation plugins/redmine_issue_templates/spec/
 
-By default, use poltergeist as a webdriver. If you set environment variable
-'DRIVER' to 'selenium', selenium-webdriver is used.
+By default, use chrome as a webdriver. If you set environment variable
+'DRIVER' to 'headless', headless_chrome is used.
 
-    % bundle exec rake redmine_issue_templates:spec DRIVER='selenium'
+    % bundle exec rspec -I plugins/redmine_issue_templates/spec --format documentation plugins/redmine_issue_templates/spec/ DRIVER='headless'
 
 ### License
 

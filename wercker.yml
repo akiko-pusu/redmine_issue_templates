@@ -42,11 +42,6 @@ test-stable:
         code: |
           bundle exec rake ${WERCKER_APPLICATION_NAME}:test
     - script:
-        name: 'Run Plugin spec'
-        code: |
-          bundle exec rspec -I plugins/${WERCKER_APPLICATION_NAME}/spec \
-            --format documentation plugins/${WERCKER_APPLICATION_NAME}/spec/
-    - script:
         name: 'Uninstall Schema tests'
         code: |
           bundle exec rake redmine:plugins:migrate NAME=${WERCKER_APPLICATION_NAME} \
