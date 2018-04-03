@@ -30,21 +30,21 @@ feature 'Templates can be reorder via drag and drop', js: true do
   scenario 'Can drag and drop', js: true do
     visit_template_list(user)
 
-    # # change id: 1, 2, 3, 4 to 2, 3, 4, 1
-    # expect do
-    #   first_target.drag_to(last_target)
-    #   sleep 0.5
-    # end.to change {
-    #          IssueTemplate.pluck(:position).to_a
-    #        }.from([1, 2, 3, 4]).to([4, 1, 2, 3])
-    #
-    # # change id: 2, 3, 4, 1 to 2, 4, 3, 1
-    # expect do
-    #   second_target.drag_to(last_target)
-    #   sleep 0.5
-    # end.to change {
-    #          IssueTemplate.pluck(:position).to_a
-    #        }.from([4, 1, 2, 3]).to([4, 1, 3, 2])
+    # change id: 1, 2, 3, 4 to 2, 3, 4, 1
+    expect do
+      first_target.drag_to(last_target)
+      sleep 0.5
+    end.to change {
+             IssueTemplate.pluck(:position).to_a
+           }.from([1, 2, 3, 4]).to([4, 1, 2, 3])
+
+    # change id: 2, 3, 4, 1 to 2, 4, 3, 1
+    expect do
+      second_target.drag_to(last_target)
+      sleep 0.5
+    end.to change {
+             IssueTemplate.pluck(:position).to_a
+           }.from([4, 1, 2, 3]).to([4, 1, 3, 2])
   end
 
   private
