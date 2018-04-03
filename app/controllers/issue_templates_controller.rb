@@ -6,9 +6,8 @@ class IssueTemplatesController < ApplicationController
   include IssuesHelper
   include Concerns::IssueTemplatesCommon
   menu_item :issues
-  before_filter :find_object, only: [:show, :edit, :destroy]
-  before_filter :find_user, :find_project, :authorize,
-                except: [:preview, :move_order_higher, :move_order_lower, :move_order_to_top, :move_order_to_bottom, :move]
+  before_filter :find_object, only: [:show, :edit, :update, :destroy]
+  before_filter :find_user, :find_project, :authorize, except: [:preview]
   before_filter :find_tracker, :find_templates, only: [:set_pulldown, :list_templates]
   accept_api_auth :index, :list_templates, :load
 
@@ -21,7 +20,7 @@ class IssueTemplatesController < ApplicationController
 
     @template_map = {}
     tracker_ids.each do |tracker_id|
-      templates = project_templates.search_by_tracker(tracker_id).order_by_position
+      templates = project_templates.search_by_tracker(tracker_id).sorted
       @template_map[Tracker.find(tracker_id)] = templates if templates.any?
     end
 
@@ -45,8 +44,13 @@ class IssueTemplatesController < ApplicationController
   end
 
   def new
-    # create empty instance
-    @issue_template ||= IssueTemplate.new(author: @user, project: @project)
+    if params[:id].present?
+      @issue_template = IssueTemplate.find(params[:id]).dup
+      @issue_template.title = @issue_template.copy_title
+    else
+      # create empty instance
+      @issue_template ||= IssueTemplate.new(author: @user, project: @project)
+    end
 
     if request.post?
       @issue_template.safe_attributes = template_params
@@ -55,6 +59,12 @@ class IssueTemplatesController < ApplicationController
       save_and_flash(:notice_successful_create) && return
     end
     render_form
+  end
+
+  def update
+    @issue_template.safe_attributes = template_params
+    @issue_template.checklist_json = checklists.to_json
+    save_and_flash(:notice_successful_update)
   end
 
   def edit
@@ -143,11 +153,6 @@ class IssueTemplatesController < ApplicationController
     render partial: 'common/preview'
   end
 
-  # Reorder templates
-  def move
-    move_order(params[:to])
-  end
-
   def orphaned_templates
     orphaned = IssueTemplate.orphaned(@project.id)
     render partial: 'orphaned_templates', locals: { orphaned_templates: orphaned }
@@ -182,15 +187,15 @@ class IssueTemplatesController < ApplicationController
     @global_templates = global_templates(@tracker.id)
   end
 
-  def move_order(method)
-    IssueTemplate.find(params[:id]).send "move_#{method}"
-    render_for_move_with_format
-  end
-
   def save_and_flash(message)
     return unless @issue_template.save
-    flash[:notice] = l(message)
-    redirect_to action: 'show', id: @issue_template.id, project_id: @project
+    respond_to do |format|
+      format.html do
+        flash[:notice] = l(message)
+        redirect_to action: 'show', id: @issue_template.id, project_id: @project
+      end
+      format.js { head 200 }
+    end
   end
 
   def render_form

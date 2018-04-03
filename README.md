@@ -79,7 +79,7 @@ some trouble related "bundle intall", please try --without option.
 Bugfix release.
 
 * Bugfix: Prevent "undefined local variable or method" error when listing project orphaned templates. (GitHub: #150)
-* PR: Add Portuguese translation. Thank you so much, Adriano Baptistella! (GitHub: #149) 
+* PR: Add Portuguese translation. Thank you so much, Adriano Baptistella! (GitHub: #149)
 * Change url of Redmine Plugin Directory. (Changed identifier from issue_templates to redmine_issue_templates.)
 
 
@@ -351,12 +351,12 @@ Please see wercker.yml for more details.
     % cp plugins/redmine_issue_templates/Gemfile.local plugins/redmine_issue_templates/Gemfile
     % bundle install --with test
     % export RAILS_ENV=test
-    % bundle exec rake redmine_issue_templates:spec
+    % bundle exec rspec -I plugins/redmine_issue_templates/spec --format documentation plugins/redmine_issue_templates/spec/
 
-By default, use poltergeist as a webdriver. If you set environment variable
-'DRIVER' to 'selenium', selenium-webdriver is used.
+By default, use chrome as a webdriver. If you set environment variable
+'DRIVER' to 'headless', headless_chrome is used.
 
-    % bundle exec rake redmine_issue_templates:spec DRIVER='selenium'
+    % bundle exec rspec -I plugins/redmine_issue_templates/spec --format documentation plugins/redmine_issue_templates/spec/ DRIVER='headless'
 
 ### License
 

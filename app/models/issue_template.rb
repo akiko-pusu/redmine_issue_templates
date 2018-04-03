@@ -47,14 +47,14 @@ class IssueTemplate < ActiveRecord::Base
                    .search_by_tracker(tracker_id)
                    .enabled
                    .enabled_sharing
-                   .order_by_position
+                   .sorted
     end
 
     def get_templates_for_project_tracker(project_id, tracker_id = nil)
       IssueTemplate.search_by_project(project_id)
                    .search_by_tracker(tracker_id)
                    .enabled
-                   .order_by_position
+                   .sorted
     end
   end
 end
