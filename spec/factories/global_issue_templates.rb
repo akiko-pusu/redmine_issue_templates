@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :global_issue_template do |t|
     association :tracker
     t.sequence(:title) { |n| "global_template-title: #{n}" }

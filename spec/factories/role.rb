@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-FactoryGirl.define do
+FactoryBot.define do
   factory :role do
     sequence(:name) { |n| "Developer: #{n}" }
     builtin 0

@@ -1,10 +1,10 @@
 require_relative '../spec_helper'
 
 describe IssueTemplate do
-  let(:tracker) { FactoryGirl.create(:tracker, :with_default_status) }
-  let(:project) { FactoryGirl.create(:project) }
-  let(:issue_template) { FactoryGirl.create(:issue_template, tracker_id: tracker.id, project_id: project.id) }
-  let(:issue_template2) { FactoryGirl.create(:issue_template, tracker_id: tracker.id, project_id: project.id) }
+  let(:tracker) { FactoryBot.create(:tracker, :with_default_status) }
+  let(:project) { FactoryBot.create(:project) }
+  let(:issue_template) { FactoryBot.create(:issue_template, tracker_id: tracker.id, project_id: project.id) }
+  let(:issue_template2) { FactoryBot.create(:issue_template, tracker_id: tracker.id, project_id: project.id) }
   it 'Instance of IssueTemplate' do
     expect(issue_template).to be_an_instance_of(IssueTemplate)
   end
