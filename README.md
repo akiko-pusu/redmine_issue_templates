@@ -353,10 +353,10 @@ Please see wercker.yml for more details.
     % export RAILS_ENV=test
     % bundle exec rspec -I plugins/redmine_issue_templates/spec --format documentation plugins/redmine_issue_templates/spec/
 
-By default, use poltergeist as a webdriver. If you set environment variable
-'DRIVER' to 'selenium', selenium-webdriver is used.
+By default, use chrome as a webdriver. If you set environment variable
+'DRIVER' to 'headless', headless_chrome is used.
 
-    % bundle exec rspec -I plugins/redmine_issue_templates/spec --format documentation plugins/redmine_issue_templates/spec/ DRIVER='selenium'
+    % bundle exec rspec -I plugins/redmine_issue_templates/spec --format documentation plugins/redmine_issue_templates/spec/ DRIVER='headless'
 
 ### License
 
