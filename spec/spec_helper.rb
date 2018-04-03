@@ -4,7 +4,7 @@ require 'simplecov'
 require 'factory_bot_rails'
 require 'database_cleaner'
 
-SimpleCov.coverage_dir('coverage/redmine_issue_template_spec')
+SimpleCov.coverage_dir('coverage/redmine_issue_templates_spec')
 SimpleCov.start 'rails'
 
 RSpec.configure do |config|

@@ -21,7 +21,7 @@ else
   ]
 end
 
-SimpleCov.coverage_dir('coverage/redmine_issue_template_test')
+SimpleCov.coverage_dir('coverage/redmine_issue_templates_test')
 SimpleCov.start do
   add_filter do |source_file|
     # report this plugin only.
