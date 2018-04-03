@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative '../spec_helper'
 require File.expand_path(File.dirname(__FILE__) + '/../support/controller_helper')
 
@@ -138,6 +139,22 @@ describe IssueTemplatesController do
       after do
         clear_token
       end
+    end
+  end
+
+  # Spec for copy feature.
+  describe 'GET #new with existing template id' do
+    let(:original_template) { IssueTemplate.first }
+    before do
+      auth_with_user user
+      get :new, project_id: project.id, id: original_template.id
+    end
+
+    include_examples 'Right response', 200
+    it 'Render new form filled with copied template values' do
+      issue_template = assigns(:issue_template)
+      expect(issue_template.id).to be_nil
+      expect(issue_template.title).to eq "copy_of_#{original_template.title}"
     end
   end
 end
