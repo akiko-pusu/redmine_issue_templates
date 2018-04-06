@@ -159,7 +159,18 @@ class IssueTemplatesControllerTest < ActionController::TestCase
         assert_equal 'Update Test template2', issue_template.description
       end
 
-      should 'destroy template when request is delete' do
+      should 'not destroy enabled template when request is delete' do
+        post :destroy, id: 1, project_id: 1
+        project = Project.find 1
+        assert_redirected_to controller: 'issue_templates',
+                             action: 'show', project_id: project, id: 1
+        assert_match(/Only disabled template can be destroyed/, flash[:error])
+      end
+
+      should 'destroy disabled template when request is delete' do
+        template = IssueTemplate.find(1)
+        template.enabled = false
+        template.save
         post :destroy, id: 1, project_id: 1
         project = Project.find 1
         assert_redirected_to controller: 'issue_templates',
@@ -180,14 +191,6 @@ class IssueTemplatesControllerTest < ActionController::TestCase
         assert_equal 'Update Test template2', issue_template.description
         assert_equal(1, issue_template.project.id)
         assert_equal(1, issue_template.author.id)
-      end
-
-      should 'move to bottom and top' do
-        issue_template = IssueTemplate.find(1)
-        get :move, project_id: 1, id: 1, to: :to_bottom
-        assert_equal 3, issue_template.reload.position
-        get :move, project_id: 1, id: 1, to: :to_top
-        assert_equal 1, issue_template.reload.position
       end
     end
   end

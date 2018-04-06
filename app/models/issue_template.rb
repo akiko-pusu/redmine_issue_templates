@@ -1,7 +1,6 @@
 class IssueTemplate < ActiveRecord::Base
   include Redmine::SafeAttributes
   include Concerns::IssueTemplate::Common
-  unloadable
   belongs_to :project
   validates :project_id, presence: true
   validates_uniqueness_of :title, scope: :project_id
@@ -30,6 +29,14 @@ class IssueTemplate < ActiveRecord::Base
     self.class.search_by_project(project_id).search_by_tracker(tracker_id).update_all(is_default: false)
   end
 
+  # return projects that use this template
+  def used_projects
+    return [] unless enabled_sharing
+    projects = project.descendants
+                      .joins(:trackers, :enabled_modules).merge(Tracker.where(id: tracker_id)).merge(EnabledModule.where(name: 'issue_templates'))
+    IssueTemplateSetting.where(project_id: projects).inherit_templates.select(:project_id)
+  end
+
   #
   # Class method
   #
@@ -40,14 +47,14 @@ class IssueTemplate < ActiveRecord::Base
                    .search_by_tracker(tracker_id)
                    .enabled
                    .enabled_sharing
-                   .order_by_position
+                   .sorted
     end
 
     def get_templates_for_project_tracker(project_id, tracker_id = nil)
       IssueTemplate.search_by_project(project_id)
                    .search_by_tracker(tracker_id)
                    .enabled
-                   .order_by_position
+                   .sorted
     end
   end
 end

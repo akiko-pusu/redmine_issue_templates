@@ -1,0 +1,77 @@
+# Ruby CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-ruby/ for more details
+#
+version: 2
+
+general:
+  artifacts:
+    - coverage/${CIRCLE_PROJECT_REPONAME}_test/index.html
+
+jobs:
+  build:
+    docker:
+      # specify the version you desire here (ruby 2.4.x)
+      - image: circleci/ruby:2.4-node-browsers
+    steps:
+      - checkout
+
+  test:
+    docker:
+      # specify the version you desire here
+      - image: circleci/ruby:2.4-node-browsers
+        environment:
+          RAILS_ENV: test
+          DB_HOST: 127.0.0.1
+          DRIVER: headless
+          TZ: /usr/share/zoneinfo/Asia/Tokyo
+      - image: mysql:5.7
+        command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --innodb-large-prefix=true --innodb-file-format=Barracuda --sql-mode=""
+        environment:
+          MYSQL_USER: root
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: ready for redmine
+          command: |
+            REDMINE_BRANCH=3.4-stable sh script/circleci-setup.sh
+      - run: bundle install --path vendor/bundle --without postgresql rmagick && bundle update
+      - run: bundle exec rake db:create RAILS_ENV=test
+      - run: bundle exec rake db:migrate RAILS_ENV=test
+      - run: bundle exec rake redmine:plugins:migrate RAILS_ENV=test
+      - run:
+          command: |
+            bundle exec rake ${CIRCLE_PROJECT_REPONAME}:test RAILS_ENV=test
+      - run:
+          command: |
+            bundle exec rspec -I plugins/${CIRCLE_PROJECT_REPONAME}/spec --format documentation  \
+               plugins/redmine_issue_templates/spec/
+
+      - run:
+          command: |
+            bundle exec rake redmine:plugins:migrate NAME=${CIRCLE_PROJECT_REPONAME} \
+                    VERSION=0 RAILS_ENV=test
+      - run:
+          command: |
+            mkdir -p /tmp/coverage
+            cp -r coverage/${CIRCLE_PROJECT_REPONAME}_test /tmp/coverage/
+            cp -r coverage/${CIRCLE_PROJECT_REPONAME}_spec /tmp/coverage/
+      - store_artifacts:
+          path: /tmp/coverage
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore:
+                - support-rails5
+                - /trunk-.*/

@@ -1,8 +1,6 @@
 class GlobalIssueTemplate < ActiveRecord::Base
   include Redmine::SafeAttributes
   include Concerns::IssueTemplate::Common
-  unloadable
-
   validates_uniqueness_of :title, scope: :tracker_id
   has_and_belongs_to_many :projects
 
@@ -46,7 +44,7 @@ class GlobalIssueTemplate < ActiveRecord::Base
       GlobalIssueTemplate.search_by_tracker(tracker_id)
                          .search_by_project(project_id)
                          .enabled
-                         .order_by_position
+                         .sorted
     end
   end
 end

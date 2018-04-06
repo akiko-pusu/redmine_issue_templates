@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :project do
     sequence(:name) { |n| "project-name: #{n}" }
     sequence(:description) { |n| "project-description: #{n}" }
@@ -8,14 +8,14 @@ FactoryGirl.define do
 
     trait :with_enabled_modules do
       after(:build) do |tracker|
-        status = FactoryGirl.create(:issue_status)
+        status = FactoryBot.create(:issue_status)
         tracker.default_status_id = status.id
       end
     end
 
     factory :project_with_enabled_modules do
       after(:create) do |project, _evaluator|
-        FactoryGirl.create(:enabled_module, project_id: project.id)
+        FactoryBot.create(:enabled_module, project_id: project.id)
       end
     end
   end

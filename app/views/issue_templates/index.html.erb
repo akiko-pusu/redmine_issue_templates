@@ -21,9 +21,9 @@
 <% @template_map.each_key do |tracker| %>
     <div class="template_box">
       <h3 class="template_tracker"><%= tracker.name %></h3>
-      <%= non_project_tracker_msg(project_tracker?(tracker.id, @project)) %>
+      <%= non_project_tracker_msg(project_tracker?(tracker, @project)) %>
 
-      <table class="list issues">
+      <table class="list issues table-sortable">
         <thead>
         <tr>
           <th>#</th>
@@ -44,7 +44,7 @@
               <td>
                 <%= link_to h(issue_template.id),
                             { controller: :issue_templates, action: 'show',
-                              id: issue_template.id, project_id: @project
+                              id: issue_template.id, project_id: issue_template.project
                             },
                             { title: issue_template.note } %>
               </td>
@@ -55,7 +55,7 @@
                             { title: "#{html_escape(issue_template.note) }"} %>
 
                 <div class="template_tooltip_wrapper">
-                  <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"></a>
+                  <a class="icon template_tooltip" title="<%= l(:label_preview) %>"></a>
                   <div class="wiki template_tooltip_body">
                     <span class="title"><%= issue_template.title %></span>
                     <%= textilizable(issue_template.description) %>
@@ -69,35 +69,24 @@
               <td class="center"><%= checked_image issue_template.enabled? %></td>
 
               <% if authorize_for('issue_templates', 'edit') %>
-                  <td>
-                    <%= issue_template.first? ? '':
-                            link_to(image_tag('2uparrow.png', alt: l(:label_sort_highest)),
-                                    { action: 'move', id: issue_template, to: :to_top },
-                                    { title: l(:label_sort_highest) }) %>
-                    <%= issue_template.first? ? '':
-                            link_to(image_tag('1uparrow.png', alt: l(:label_sort_higher)),
-                                    { action: 'move', id: issue_template, to: :higher },
-                                    { title: l(:label_sort_higher) })  %>
-                    <%= issue_template.last? ? '':
-                            link_to(image_tag('1downarrow.png', alt: l(:label_sort_lower)),
-                                    { action: 'move', id: issue_template, to: :lower },
-                                    { title: l(:label_sort_lower) }) %>
-                    <%= issue_template.last? ? '':
-                            link_to(image_tag('2downarrow.png', alt: l(:label_sort_lowest)),
-                                    { action: 'move', id: issue_template, to: :to_bottom },
-                                    { title: l(:label_sort_lowest) }) %>
-                  </td>
+                <td class="buttons">
+                  <%= reorder_handle(issue_template,
+                                     url: url_for(:controller => 'issue_templates',
+                                                  :action => 'update', :id => issue_template.id,
+                                                  :project_id => issue_template.project)) %>
+                </td>
               <% end %>
-            </tr>
-            <tr class="<%= current_cycle %>" style="display: none;" id="template_description-<%= issue_template.id %>">
-              <td class="description" colspan="8">
-                <div class="wiki"><%= textilizable(issue_template.description) %></div></td>
+
             </tr>
 
         <% end %>
         </tbody>
       </table>
     </div>
+
+  <%= javascript_tag do %>
+    $(function() { $("table.table-sortable tbody").positionedItems(); });
+  <% end %>
 <% end %>
 
 
@@ -130,11 +119,12 @@
                 <td>
                   <%= link_to h(issue_template.title),
                               { controller: 'issue_templates',
+                                project_id: issue_template.project_id,
                                 id: issue_template.id, action: 'show' },
                               { title: "#{html_escape(issue_template.note)}" } %>
 
                   <div class="template_tooltip_wrapper">
-                    <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"></a>
+                    <a class="icon template_tooltip" title="<%= l(:label_preview) %>"></a>
                     <div class="wiki template_tooltip_body">
                       <span class="title"><%=h issue_template.title %></span>
                       <%=h textilizable(issue_template.description) %>
@@ -203,7 +193,7 @@
                               id: issue_template.id, action: 'show' },
                             { title: "#{html_escape(issue_template.note)}" } %>
                 <div class="template_tooltip_wrapper">
-                  <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"></a>
+                  <a class="icon template_tooltip" title="<%= l(:label_preview) %>"></a>
                   <div class="wiki template_tooltip_body">
                     <span class="title"><%=h issue_template.title %></span>
                     <%=h textilizable(issue_template.description) %>
@@ -225,3 +215,9 @@
 
     </div>
 <% end %>
+
+<%= link_to l(:orphaned_templates, default: 'Orphaned Templates'), project_orphaned_templates_path, remote: true,
+            id: 'orphaned_template_link', class: 'collapsible collapsed template_tooltip'
+%>
+
+<div id="orphaned_templates" style="display: none"></div>

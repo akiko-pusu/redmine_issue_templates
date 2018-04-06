@@ -1,6 +1,7 @@
 <table class="list template_list">
   <thead>
   <tr>
+    <th><%=h l(:issue_template_name) %></th>
     <th><%=h l(:issue_title) %></th>
     <th><%=h l(:issue_description) %></th>
     <th><%= l(:field_is_default) %></th>
@@ -13,6 +14,9 @@
           <%= template.title %>
         </td>
         <td>
+          <%= template.issue_title %>
+        </td>
+        <td>
           <div class="template_tooltip_wrapper">
             <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"></a>
             <div class="wiki template_tooltip_body">
@@ -23,8 +27,8 @@
         </td>
         <td class="center"><%= checked_image template.is_default? %></td>
         <td>
-          <a href="#" onclick="updateSelect(<%= template.id %>, false); return false;"
-             class="icon icon-test"></a>
+          <a data-issue-template-id="<%= template.id %>"
+             class="icon icon-test template-update-link"></a>
         </td>
       </tr>
 <% end %>
@@ -34,6 +38,9 @@
           <%= template.title %>
         </td>
         <td>
+          <%= template.issue_title %>
+        </td>
+        <td>
           <div class="template_tooltip_wrapper">
             <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"></a>
             <div class="wiki template_tooltip_body">
@@ -44,8 +51,8 @@
         </td>
         <td class="center"><%= checked_image template == default_template %></td>
         <td>
-          <a href="#" onclick="updateSelect(<%= template.id %>, false); return false;"
-             class="icon icon-test"></a>
+          <a data-issue-template-id="<%= template.id %>"
+             class="icon icon-test template-update-link"></a>
         </td>
       </tr>
 <% end %>
@@ -55,19 +62,28 @@
           <%= template.title %>
         </td>
         <td>
+          <%= template.issue_title %>
+        </td>
+        <td>
           <div class="template_tooltip_wrapper">
             <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"></a>
             <div class="wiki template_tooltip_body">
-              <span class="title"><%= template.title %></span>
+              <span class="title"><%= template.issue_title %></span>
               <%= textilizable(template.description) %>
             </div>
           </div>
         </td>
         <td class="center"><%= checked_image template == default_template %></td>
         <td>
-          <a href="#" onclick="updateSelect(<%= template.id %>, true); return false;"
-             class="icon icon-test"></a>
+          <a data-issue-template-id="<%= template.id %>"
+             class="icon icon-test template-update-link template-global"></a>
         </td>
       </tr>
 <% end %>
 </table>
+<script type="text/javascript">
+$(document).ready(function () {
+  // set plugin
+  $('a.template-update-link').issueTemplate('updateTemplateSelect');
+});
+</script>

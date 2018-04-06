@@ -1,21 +1,21 @@
 require File.expand_path('../../../../config/environment', __FILE__)
 require 'rspec/rails'
 require 'simplecov'
-require 'factory_girl_rails'
+require 'factory_bot_rails'
 require 'database_cleaner'
 
-SimpleCov.coverage_dir('coverage/redmine_issue_template_spec')
+SimpleCov.coverage_dir('coverage/redmine_issue_templates_spec')
 SimpleCov.start 'rails'
 
 RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/test/fixtures"
   config.use_transactional_fixtures = false
   config.infer_spec_type_from_file_location!
-  config.include FactoryGirl::Syntax::Methods
-  FactoryGirl.definition_file_paths = [File.expand_path('../factories', __FILE__)]
-  FactoryGirl.find_definitions
+  config.include FactoryBot::Syntax::Methods
+  FactoryBot.definition_file_paths = [File.expand_path('../factories', __FILE__)]
+  FactoryBot.find_definitions
   config.before(:all) do
-    FactoryGirl.reload
+    FactoryBot.reload
   end
 
   require 'database_cleaner'

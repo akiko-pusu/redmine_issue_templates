@@ -1,10 +1,10 @@
 require_relative '../spec_helper'
 
 describe IssueTemplateSetting do
-  let(:project) { FactoryGirl.create(:project) }
-  let(:independent_projects) { FactoryGirl.create_list(:project, 2) }
+  let(:project) { FactoryBot.create(:project) }
+  let(:independent_projects) { FactoryBot.create_list(:project, 2) }
   let(:subject) do
-    FactoryGirl.create(:issue_template_setting,
+    FactoryBot.create(:issue_template_setting,
                        project_id: project.id)
   end
   let(:child_projects) { Project.where(parent_id: project.id) }
@@ -17,17 +17,17 @@ describe IssueTemplateSetting do
       end
     end
 
-    context 'When invarid project id' do
+    context 'When invalid project id' do
       let(:param) { 0 }
-      it 'Raise  NotFound Exception if not specified varid project' do
+      it 'Raise  NotFound Exception if not specified valid project' do
         expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
-    context 'When varid project id' do
+    context 'When valid project id' do
       let(:param) { project.id }
       before do
-        FactoryGirl.create(:issue_template_setting, project_id: project.id)
+        FactoryBot.create(:issue_template_setting, project_id: project.id)
       end
 
       it 'instance method is called' do
@@ -56,7 +56,7 @@ describe IssueTemplateSetting do
 
     context 'has child projects' do
       before do
-        FactoryGirl.create_list(:project, 2, parent_id: project.id)
+        FactoryBot.create_list(:project, 2, parent_id: project.id)
       end
       it 'return right number of all the child projects' do
         expect(subject.child_projects.count).to eq 2
@@ -64,7 +64,7 @@ describe IssueTemplateSetting do
 
       context 'has descendent projects' do
         before do
-          FactoryGirl.create_list(:project, 2, parent_id: child_projects.last.id)
+          FactoryBot.create_list(:project, 2, parent_id: child_projects.last.id)
         end
 
         it 'return right number of all the descendent projects' do
@@ -84,20 +84,20 @@ describe IssueTemplateSetting do
   end
 
   describe '#apply_template_to_child_projects' do
-    let(:tracker) { FactoryGirl.create(:tracker, :with_default_status) }
-    let!(:enabled_module) { FactoryGirl.create(:enabled_module, project_id: project.id) }
+    let(:tracker) { FactoryBot.create(:tracker, :with_default_status) }
+    let!(:enabled_module) { FactoryBot.create(:enabled_module, project_id: project.id) }
     let!(:issue_templates) do
-      FactoryGirl.create_list(:issue_template, 4, project_id: project.id, tracker_id: tracker.id, enabled_sharing: true)
+      FactoryBot.create_list(:issue_template, 4, project_id: project.id, tracker_id: tracker.id, enabled_sharing: true)
     end
     let(:child_project_template_settings) do
       IssueTemplateSetting.where(project_id: child_projects.ids)
     end
 
     before do
-      FactoryGirl.create_list(:project, 4, parent_id: project.id)
+      FactoryBot.create_list(:project, 4, parent_id: project.id)
       # change to enabled issue template module
       child_projects.each do |c|
-        FactoryGirl.create(:enabled_module, project_id: c.id)
+        FactoryBot.create(:enabled_module, project_id: c.id)
         IssueTemplateSetting.find_or_create(c.id)
         c.trackers = [tracker]
         c.save

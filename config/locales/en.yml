@@ -6,7 +6,7 @@ en:
   label_enabled: Enable
   label_disabled: Disable
   label_help_message: About templates
-  label_show_help_message: Show help message when creating/updating issues. 
+  label_show_help_message: Show help message when creating/updating issues.
   about_help_message: Each project can have custom help messages for templates.
   close_help: Close help message.
   about_template_help_message: You can see the instruction of issue templates on this project.
@@ -21,7 +21,7 @@ en:
   help_for_this_field: "Help for this field."
   permission_manage_issue_templates: "Manage Templates"
   permission_edit_issue_templates: "Edit Templates"
-  permission_show_issue_templates: "Show Templates"  
+  permission_show_issue_templates: "Show Templates"
   project_module_issue_templates: "Issue Templates"
   label_isdefault_help_message: "Check and you can use this as a default template for the target tracker."
   defaulf_template_loaded: "Loaded default template into description textarea. (Tracker: %{tracker})"
@@ -51,3 +51,8 @@ en:
   help_project_local_template_override_global_template: "If this option is activated, every global ticket templates will be applied to all projects. If a project-specific template per tracker is set, it takes override and the global template is hidden on the new ticket creation screen."
   warning_project_local_template_override_global_template: "Please be careful when registering global issue template, that contain confidential content you want to pay attention to. In case this option is activated, all the global templates will be applied to all projects."
   revert_before_applying_template: "Revert"
+  template_remove_confirm: "Are you sure to remove this template？ %{count} subprojects use this template."
+  label_number_of_subprojects_use_this_template: "%{count} subprojects use this template."
+  enabled_template_cannot_destroy: "Only disabled template can be destroyed. Check if other subprojects use this template or not, and disable this before deleting."
+  orphaned_templates: "Orphaned templates from tracker"
+  orphaned_template: "Orphaned template from tracker"
