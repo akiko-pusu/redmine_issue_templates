@@ -11,8 +11,8 @@
       <% else %>
           <%= f.select :tracker_id, template_target_trackers(project, issue_template),
                        required: true, label: l(:label_tracker), selected: issue_template.tracker.id %>
-          <% unless project_tracker?(issue_template.tracker.id, project) %><br/>
-              <%= non_project_tracker_msg(project_tracker?(issue_template.tracker.id, project)) %>
+          <% unless project_tracker?(issue_template.tracker, project) %><br/>
+              <%= non_project_tracker_msg(project_tracker?(issue_template.tracker, project)) %>
           <% end %>
       <% end %>
     </p>
