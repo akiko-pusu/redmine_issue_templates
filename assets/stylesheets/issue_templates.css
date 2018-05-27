@@ -271,19 +271,19 @@ a.icon.icon-del[disabled=disabled] {
 /*------------ for responsive -----------------*/
 
 @media (max-width: 899px) {
+    #orphaned_templates > table > thead > tr > th.hideable {
+        display: none
+    }
+
+    #orphaned_templates > table > tbody > tr > td.hideable {
+        display: none
+    }
+
     #content > div.template_box > table > thead > tr > th.hideable {
         display: none
     }
 
     #content > div.template_box > table > tbody > tr > td.hideable {
-        display: none
-    }
-
-    div#orphaned_templates > table > thead > tr > th.hideable {
-        display: none
-    }
-
-    div#orphaned_templates > table > tbody > tr > td.hideable {
         display: none
     }
 }
