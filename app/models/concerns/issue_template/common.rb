@@ -35,8 +35,6 @@ module Concerns
 
         scope :orphaned, lambda { |project_id = nil|
           condition = all
-          ids = []
-
           if project_id.present? && try(:name) == 'IssueTemplate'
             condition = condition.where(project_id: project_id)
             ids = Tracker.joins(:projects).where(projects: { id: project_id }).pluck(:id)
@@ -121,7 +119,7 @@ module Concerns
       end
 
       def remove_position
-        self.class.where(tracker_id: tracker_id).where('position >= ? AND id <> ?', position_was, id).update_all('position = position - 1')
+        self.class.where(tracker_id: tracker_id_was).where('position >= ? AND id <> ?', position_was, id).update_all('position = position - 1')
       end
 
       def insert_position
