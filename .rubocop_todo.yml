@@ -47,3 +47,6 @@ Documentation:
 
 EndOfLine:
   Enabled: false
+
+Metrics/ModuleLength:
+  Max: 120

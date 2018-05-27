@@ -5,7 +5,7 @@ describe IssueTemplatesHelper do
     let(:trackers) { FactoryBot.create_list(:tracker, 2, :with_default_status) }
     let(:project) { FactoryBot.create(:project) }
     let(:tracker) { trackers.first }
-    subject { helper.project_tracker?(tracker.id, project) }
+    subject { helper.project_tracker?(tracker, project) }
 
     context 'Tracker is associated' do
       before do

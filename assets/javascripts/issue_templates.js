@@ -4,9 +4,9 @@
  */
 
 // For namespace setting.
-var ISSUE_TEMPLATE = ISSUE_TEMPLATE || function() {};
+var ISSUE_TEMPLATE = ISSUE_TEMPLATE || function () {};
 ISSUE_TEMPLATE.prototype = {
-    eraseSubjectAndDescription: function() {
+    eraseSubjectAndDescription: function () {
         $('#issue_description').val('');
         $('#issue_subject').val('');
 
@@ -17,23 +17,21 @@ ISSUE_TEMPLATE.prototype = {
             // do nothing.
         }
     },
-    openDialog: function(url, title) {
+    openDialog: function (url, title) {
         // Open dialog (modal window) to display selectable templates list.
         $.ajax({
             url: url,
             success: function (data) {
                 $("#filtered_templates_list").html(data);
-                $("#issue_template_dialog").dialog(
-                    {
-                        modal: true,
-                        dialogClass: "modal overflow_dialog",
-                        draggable: true,
-                        title: title,
-                        minWidth: 400,
-                        width: 'auto',
-                        maxWidth: 'auto'
-                    }
-                );
+                $("#issue_template_dialog").dialog({
+                    modal: true,
+                    dialogClass: "modal overflow_dialog",
+                    draggable: true,
+                    title: title,
+                    minWidth: 400,
+                    width: 'auto',
+                    maxWidth: 'auto'
+                });
             }
         });
     },
@@ -50,8 +48,8 @@ ISSUE_TEMPLATE.prototype = {
         old_description.text = '';
         $('#revert_template').addClass('disabled');
     },
-    load_template: function(target_url, confirm_msg, should_replaced,
-                            confirm_to_replace, confirmation, general_text_Yes, general_text_No) {
+    load_template: function (target_url, confirm_msg, should_replaced,
+        confirm_to_replace, confirmation, general_text_Yes, general_text_No) {
         var selected_template = $('#issue_template');
         var ns = this;
         if (selected_template.val() !== '') {
@@ -63,7 +61,10 @@ ISSUE_TEMPLATE.prototype = {
                 url: target_url,
                 async: true,
                 type: 'post',
-                data: $.param({issue_template: selected_template.val(), template_type: template_type})
+                data: $.param({
+                    issue_template: selected_template.val(),
+                    template_type: template_type
+                })
             }).done(function (data) {
                 // NOTE: Workaround for GiHub Issue, to prevent overwrite with default template
                 // when operator submits new issue form without required field and returns
@@ -129,34 +130,32 @@ ISSUE_TEMPLATE.prototype = {
             });
         }
     },
-    confirmToReplace: function(target_url, confirm_msg, should_replaced,
-                                confirmation, general_text_Yes, general_text_No) {
+    confirmToReplace: function (target_url, confirm_msg, should_replaced,
+        confirmation, general_text_Yes, general_text_No) {
         var ns = this;
-        $("#issue_template_confirm_to_replace_dialog").dialog(
-            {
-                modal: true,
-                dialogClass: "modal overflow_dialog",
-                draggable: true,
-                title: confirmation,
-                width: 400,
-                buttons: [
-                    {
-                        text: general_text_Yes,
-                        click: function () {
-                            $(this).dialog("close");
-                            ns.load_template(target_url, confirm_msg, should_replaced, true, confirmation, general_text_Yes, general_text_No)
-                        }
-                    },
-                    {
-                        text: general_text_No,
-                        click: function () {
-                            $(this).dialog("close");
-                        }
-                    }]
-            }
-        );
+        $("#issue_template_confirm_to_replace_dialog").dialog({
+            modal: true,
+            dialogClass: "modal overflow_dialog",
+            draggable: true,
+            title: confirmation,
+            width: 400,
+            buttons: [{
+                    text: general_text_Yes,
+                    click: function () {
+                        $(this).dialog("close");
+                        ns.load_template(target_url, confirm_msg, should_replaced, true, confirmation, general_text_Yes, general_text_No)
+                    }
+                },
+                {
+                    text: general_text_No,
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
+        });
     },
-    show_loaded_message: function(confirm_msg, target) {
+    show_loaded_message: function (confirm_msg, target) {
         var template_status_area = $('#template_status-area');
         template_status_area.insertBefore(target);
         template_status_area.issueTemplate('flash_message', {
@@ -164,19 +163,21 @@ ISSUE_TEMPLATE.prototype = {
             how: 'append'
         });
     },
-    set_pulldown: function(tracker, target_url) {
+    set_pulldown: function (tracker, target_url) {
         var allow_overwrite = $('#allow_overwrite_description').prop('checked');
         $.ajax({
             url: target_url,
             async: true,
             type: 'post',
-            data: $.param({issue_tracker_id: tracker})
+            data: $.param({
+                issue_tracker_id: tracker
+            })
         }).done(function (data) {
             $('#issue_template').html(data);
             $('#allow_overwrite_description').attr('checked', allow_overwrite);
         });
     },
-    addCheckList: function(obj) {
+    addCheckList: function (obj) {
         var list = obj.checklist;
         if (list === undefined) return false;
         if ($('#checklist_form').length === 0) return;
@@ -192,20 +193,18 @@ ISSUE_TEMPLATE.prototype = {
             $("span.checklist-item.new > span.icon.icon-add.save-new-by-button").click();
         }
     },
-    escapeHTML: function(val) {
+    escapeHTML: function (val) {
         return $('<div>').text(val).html();
     },
-    unescapeHTML: function(val) {
+    unescapeHTML: function (val) {
         return $('<div>').html(val).text();
     }
 };
 
-
 // jQuery plugin for issue template
-;(function ($) {
+(function ($) {
     var methods = {
-        init: function (options) {
-        },
+        init: function (options) {},
         updateTemplateSelect: function (options) {
             options = $.extend({
                 target: '#issue_template',
@@ -266,14 +265,14 @@ ISSUE_TEMPLATE.prototype = {
             });
         },
         disabled_link: function (options) {
-            options = $.extend({ }, options);
+            options = $.extend({}, options);
             return $(this).each(function () {
                 $(this).click(function (event) {
                     title = event.target.title;
                     if (title.length && event.target.hasAttribute('disabled')) {
-                      event.stopPropagation();
-                      alert(title);
-                      return false;
+                        event.stopPropagation();
+                        alert(title);
+                        return false;
                     }
                 });
             });
@@ -313,3 +312,45 @@ $(function () {
     });
 });
 
+/*------- TODO: Remove these styles Redmine v3.3 or higher -----------*/
+(function ($) {
+    $.fn.positionedItems = function (sortableOptions, options) {
+        var settings = $.extend({
+            firstPosition: 1
+        }, options);
+
+        return this.sortable($.extend({
+            axis: 'y',
+            handle: ".sort-handle",
+            helper: function (event, ui) {
+                ui.children('td').each(function () {
+                    $(this).width($(this).width());
+                });
+                return ui;
+            },
+            update: function (event, ui) {
+                var sortable = $(this);
+                var handle = ui.item.find(".sort-handle").addClass("ajax-loading");
+                var url = handle.data("reorder-url");
+                var param = handle.data("reorder-param");
+                var data = {};
+                data[param] = {
+                    position: ui.item.index() + settings['firstPosition']
+                };
+                $.ajax({
+                    url: url,
+                    type: 'put',
+                    dataType: 'script',
+                    data: data,
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert(jqXHR.status);
+                        sortable.sortable("cancel");
+                    },
+                    complete: function (jqXHR, textStatus, errorThrown) {
+                        handle.removeClass("ajax-loading");
+                    }
+                });
+            },
+        }, sortableOptions));
+    }
+}(jQuery));

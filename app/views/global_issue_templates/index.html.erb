@@ -23,9 +23,9 @@
         <tr>
           <th>#</th>
           <th><%= l(:issue_template_name) %></th>
-          <th><%= l(:field_tracker) %></th>
-          <th><%= l(:field_author) %></th>
-          <th><%= l(:field_updated_on) %></th>
+          <th class='hideable'><%= l(:field_tracker) %></th>
+          <th class='hideable'><%= l(:field_author) %></th>
+          <th class='hideable'><%= l(:field_updated_on) %></th>
           <th><%= l(:field_is_default) %></th>
           <th><%= l(:label_enabled) %></th>
           <th><%=l(:button_sort)%></th>
@@ -50,9 +50,9 @@
 
                 </a>
               </td>
-              <td><%=h issue_template.tracker.name %></td>
-              <td><%=h issue_template.author %></td>
-              <td><%= format_time(issue_template.updated_on)%> </td>
+              <td class='hideable'><%=h issue_template.tracker.name %></td>
+              <td class='hideable'><%=h issue_template.author %></td>
+              <td class='hideable'><%= format_time(issue_template.updated_on)%> </td>
               <td class="center"><%= checked_image issue_template.is_default? %></td>
               <td class="center"><%= checked_image issue_template.enabled? %></td>
 
