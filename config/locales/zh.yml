@@ -1,4 +1,4 @@
-# Simplified Chinese strings go here for Rails i18n
+# Simplified Chinese strings go here for Rails i18n, based on file ja.yml
 zh:
   issue_templates: ISSUE模板管理
   issue_template: ISSUE模板管理
@@ -41,8 +41,8 @@ zh:
   no_issue_templates_for_this_redmine: "当前未定义全局ISSUE模板。请联系Redmine系统管理员。"
   only_admin_can_associate_global_template: "只有Redmine系统管理员才能在当前项目中关联全局ISSUE模板。"
   text_no_tracker_enabled_for_global: "未指定跟踪类型。\n在使用ISSUE模板前，请先指定模板适用的跟踪类型。"
-  display_and_filter_issue_templates_in_dialog: "模板查询"
-  label_filter_template: "模板查询"
+  display_and_filter_issue_templates_in_dialog: "模板过滤器"
+  label_filter_template: "模板过滤器"
   label_msg_confirm_to_replace: "确认替换主题及描述信息？"
   label_apply_global_template_to_all_projects: "将全局问题模板应用于全部项目。"
   note_apply_global_template_to_all_projects_setting_enabled: "该全局问题模板通过插件设置配置后，应用于所有项目。"
@@ -51,3 +51,8 @@ zh:
   help_project_local_template_override_global_template: "如果启用此选项，则问题的全局模板将应用于所有项目。 如果设置了每个跟踪器的项目特定模板，则会覆盖对应的全局模板，并在创建新问题时，隐藏全局模板。"
   warning_project_local_template_override_global_template: "注册全局问题模板时，务必注意模板信息中的特定项目的机密信息。 一旦启用此选项，则所有全局模板将应用于所有项目。"
   revert_before_applying_template: "回退"
+  template_remove_confirm: "您确定要删除此模板吗？ 当前有 %{count} 个项目正在使用此模板。"
+  label_number_of_subprojects_use_this_template: "%{count} 个项目正在使用此模板 "
+  enabled_template_cannot_destroy: "已启用的模板不能删除。检查您正在使用的模板是否在其他项目中存在，并在删除之前将其禁用。"
+  orphaned_templates: "基于跟踪的个性化模板"
+  orphaned_template: "基于跟踪的个性化模板"

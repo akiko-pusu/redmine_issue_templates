@@ -4,9 +4,9 @@
   <tr>
     <th>#</th>
     <th><%= l(:issue_template_name) %></th>
-    <th><%= l(:field_tracker) %></th>
-    <th><%= l(:field_author) %></th>
-    <th><%= l(:field_updated_on) %></th>
+    <th class='hideable'><%= l(:field_tracker) %></th>
+    <th class='hideable'><%= l(:field_author) %></th>
+    <th class='hideable'><%= l(:field_updated_on) %></th>
   </tr>
   </thead>
   <tbody>
@@ -31,9 +31,9 @@
             </div>
           </div>
         </td>
-        <td><%= "ID: #{issue_template.tracker_id}" %></td>
-        <td><%=h issue_template.author %></td>
-        <td><%= format_time(issue_template.updated_on)%> </td>
+        <td class='hideable'><%= "ID: #{issue_template.tracker_id}" %></td>
+        <td class='hideable'><%=h issue_template.author %></td>
+        <td class='hideable'><%= format_time(issue_template.updated_on)%> </td>
       </tr>
       <tr class="<%= current_cycle %>" style="display: none;" id="template_description-<%= issue_template.id %>">
         <td class="description" colspan="8">

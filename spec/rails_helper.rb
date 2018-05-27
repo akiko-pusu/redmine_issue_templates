@@ -14,6 +14,7 @@ RSpec.configure do |config|
 
   config.before :suite, type: :feature do
     require 'selenium-webdriver'
+    Capybara.server = :webrick
     if ENV['DRIVER'] == 'headless'
       Capybara.register_driver :headless_chrome do |app|
         capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
