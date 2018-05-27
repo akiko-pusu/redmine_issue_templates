@@ -86,6 +86,8 @@ for plugin's compatibility. (To support Redmine 3.0 - 3.4)
 * Updated Simplified Chinese translation, thanks Steven.W. (GitHub PR: #179)
 * Applied responsive layout against template list (index) page.
 
+Thank you for reviewing, Tatsuya Saito!
+
 ### 0.1.9
 
 Bugfix and refactoring release.
