@@ -23,9 +23,9 @@ module IssueTemplatesHelper
 
   #
   # TODO: This is a workaround to keep compatibility against Redmine3.1 and 3.2.
-  # rubocop:disable Lint/ShadowingOuterLocalVariable, Style/MethodMissing
+  # rubocop:disable Lint/ShadowingOuterLocalVariable
   def method_missing(name, *args)
-    if Redmine::VERSION::MINOR > 3 && name.to_s != 'reorder_handle'
+    if Redmine::VERSION::MINOR > 3
       super
     else
       class_eval do
@@ -45,5 +45,9 @@ module IssueTemplatesHelper
       send(name, *args)
     end
   end
-  # rubocop:enable Lint/ShadowingOuterLocalVariable, Style/MethodMissing, Style/MissingRespondToMissing
+  # rubocop:enable Lint/ShadowingOuterLocalVariable, Style/MethodMissing
+
+  def respond_to_missing?(method_name, include_private = false)
+    method_name.to_s == 'reorder_handle' || super
+  end
 end
