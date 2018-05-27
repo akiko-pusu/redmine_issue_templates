@@ -45,5 +45,5 @@ module IssueTemplatesHelper
       send(name, *args)
     end
   end
-  # rubocop:enable Lint/ShadowingOuterLocalVariable, Style/MethodMissing
+  # rubocop:enable Lint/ShadowingOuterLocalVariable, Style/MethodMissing, Style/MissingRespondToMissing
 end
