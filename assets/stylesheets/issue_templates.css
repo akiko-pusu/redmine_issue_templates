@@ -267,3 +267,23 @@ div.form-inline.issue_templates #enabled_help_content {
 a.icon.icon-del[disabled=disabled] {
     opacity: 0.5;
 }
+
+/*------------ for responsive -----------------*/
+
+@media (max-width: 899px) {
+    #content > div.template_box > table > thead > tr > th.hideable {
+        display: none
+    }
+
+    #content > div.template_box > table > tbody > tr > td.hideable {
+        display: none
+    }
+
+    div#orphaned_templates > table > thead > tr > th.hideable {
+        display: none
+    }
+
+    div#orphaned_templates > table > tbody > tr > td.hideable {
+        display: none
+    }
+}
