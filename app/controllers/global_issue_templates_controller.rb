@@ -1,9 +1,8 @@
 # noinspection RubocopInspection
 class GlobalIssueTemplatesController < ApplicationController
   layout 'base'
-  include IssueTemplatesHelper
-  helper :issues
-  include IssuesHelper
+  helper IssueTemplatesHelper
+  helper IssuesHelper
   include Concerns::IssueTemplatesCommon
   menu_item :issues
   before_filter :find_object, only: [:show, :edit, :update, :destroy]
