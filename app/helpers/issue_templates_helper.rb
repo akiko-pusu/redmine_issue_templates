@@ -20,4 +20,31 @@ module IssueTemplatesHelper
       content_tag_string(:option, text, option, true)
     end.join("\n").html_safe
   end
+
+  def respond_to_missing?
+    true
+  end
+
+  #
+  # TODO: This is a workaround to keep compatibility against Redmine3.1 and 3.2.
+  # rubocop:disable Lint/ShadowingOuterLocalVariable
+  def method_missing(name, *args)
+    if Redmine::VERSION::MINOR < 3 && name == 'reorder_handle'
+      class_eval do
+        define_method 'reorder_handle' do |*args|
+          (object, options) = args
+          data = {
+            reorder_url: options[:url] || url_for(object),
+            reorder_param: options[:param] || object.class.name.underscore
+          }
+          content_tag('span', '',
+                      class: 'sort-handle',
+                      data: data,
+                      title: l(:button_sort))
+        end
+      end
+      super
+    end
+    send(name, *args)
+  end
 end
