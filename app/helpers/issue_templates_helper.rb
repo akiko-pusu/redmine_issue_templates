@@ -21,18 +21,17 @@ module IssueTemplatesHelper
     end.join("\n").html_safe
   end
 
-  def respond_to_missing?
-    true
-  end
-
   #
   # TODO: This is a workaround to keep compatibility against Redmine3.1 and 3.2.
-  # rubocop:disable Lint/ShadowingOuterLocalVariable
+  # rubocop:disable Lint/ShadowingOuterLocalVariable, Style/MethodMissing
   def method_missing(name, *args)
-    if Redmine::VERSION::MINOR < 3 && name == 'reorder_handle'
+    if Redmine::VERSION::MINOR > 3 && name.to_s != 'reorder_handle'
+      super
+    else
       class_eval do
-        define_method 'reorder_handle' do |*args|
-          (object, options) = args
+        define_method name.to_s do |*args|
+          object = args[0]
+          options = args[1]
           data = {
             reorder_url: options[:url] || url_for(object),
             reorder_param: options[:param] || object.class.name.underscore
@@ -43,8 +42,8 @@ module IssueTemplatesHelper
                       title: l(:button_sort))
         end
       end
-      super
+      send(name, *args)
     end
-    send(name, *args)
   end
+  # rubocop:enable Lint/ShadowingOuterLocalVariable, Style/MethodMissing
 end

@@ -273,9 +273,6 @@ a.icon.icon-del[disabled=disabled] {
 .sort-handle {
     display: inline-block;
     vertical-align: middle;
-}
-
-.sort-handle {
     width: 16px;
     height: 16px;
     background: url("../images/reorder.png") no-repeat 0 50%;

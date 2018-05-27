@@ -201,9 +201,7 @@ ISSUE_TEMPLATE.prototype = {
     }
 };
 
-
 // jQuery plugin for issue template
-;
 (function ($) {
     var methods = {
         init: function (options) {},
