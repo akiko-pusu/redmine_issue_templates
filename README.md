@@ -1,16 +1,17 @@
 # Redmine Issue Templates Plugin
 
+[![Plugin info at redmine.org](https://img.shields.io/badge/Redmine-plugin-green.svg?)](http://www.redmine.org/plugins/redmine_issue_templates)
+[![CircleCI](https://circleci.com/gh/akiko-pusu/redmine_issue_templates/tree/master.svg?style=shield)](https://circleci.com/gh/akiko-pusu/redmine_issue_templates/tree/master)
+[![SideCI](https://img.shields.io/badge/Special%20Thanks!-SideCI-blue.svg?)](https://sideci.com/features)
+
 Plugin to generate and use issue templates for each project to assist issue
 creation. For Redmine 2.1.x or higher, please use version 0.0.4 or higher. For
 Redmine 2.0, please use version 0.0.3 or higher.
 
-Build Status: [![CircleCI](https://circleci.com/gh/akiko-pusu/redmine_issue_templates.svg?style=svg)](https://circleci.com/gh/akiko-pusu/redmine_issue_templates)
 
 ### Repository
 
 *   https://github.com/akiko-pusu/redmine_issue_templates
-*   https://bitbucket.org/akiko_pusu/redmine_issue_templates (Obsoleted)
-
 
 ### Plugin installation
 
@@ -65,7 +66,9 @@ some trouble related "bundle intall", please try --without option.
 
 * https://www.redmine.org/plugins/redmine_issue_templates (Redmine Plugin List)
 * http://www.r-labs.org/projects/issue-template (Project Page)
+* https://github.com/akiko-pusu/redmine_issue_templates (Repository & Issues)
 
+If you have any requests, bug reports, please use GitHub issues.https://github.com/akiko-pusu/redmine_issue_templates
 
 ### Description and usage info
 
