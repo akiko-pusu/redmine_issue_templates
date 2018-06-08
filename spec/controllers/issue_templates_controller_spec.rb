@@ -147,7 +147,7 @@ describe IssueTemplatesController do
     let(:original_template) { IssueTemplate.first }
     before do
       auth_with_user user
-      get :new, project_id: project.id, id: original_template.id
+      get :new, project_id: project.id, copy_from: original_template.id
     end
 
     include_examples 'Right response', 200
