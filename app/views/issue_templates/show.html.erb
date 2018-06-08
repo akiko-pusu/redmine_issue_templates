@@ -6,7 +6,7 @@
                             onclick: "$('#edit-issue_template').show(); return false;" %>
   <%= link_to l(:button_copy),
               { controller: 'issue_templates',
-                action: 'new', project_id: project },
+                action: 'new', project_id: project, copy_from: issue_template.id },
                 class: 'icon icon-copy' %>
   <%= link_to_if_authorized l(:button_delete),
                             { controller: 'issue_templates', action: 'destroy',
