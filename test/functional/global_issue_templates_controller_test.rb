@@ -1,4 +1,4 @@
-require File.expand_path('../../test_helper', __FILE__)
+require File.expand_path('../test_helper', __dir__)
 
 class GlobalIssueTemplatesControllerTest < ActionController::TestCase
   fixtures :projects, :users, :trackers,
@@ -19,96 +19,76 @@ class GlobalIssueTemplatesControllerTest < ActionController::TestCase
     @project.save!
   end
 
-  context '#index' do
-    setup do
-    end
-
-    should 'get index' do
-      get :index
-      assert_response :success
-      assert_template 'index'
-    end
+  def test_get_index
+    get :index
+    assert_response :success
+    assert_template 'index'
   end
 
-  context '#edit' do
-    context 'with permission' do
-      setup do
-      end
-
-      should 'edit template when request is put' do
-        put :edit, id: 2,
-                   global_issue_template: { description: 'Update Test Global template2' }
-        assert_response :redirect # show
-        global_issue_template = GlobalIssueTemplate.find(2)
-        assert_redirected_to controller: 'global_issue_templates',
-                             action: 'show', id: global_issue_template.id
-        assert_equal 'Update Test Global template2', global_issue_template.description
-      end
-
-      should 'destroy template when request is delete' do
-        post :destroy, id: 2
-        assert_redirected_to controller: 'global_issue_templates',
-                             action: 'index'
-        assert_raise(ActiveRecord::RecordNotFound) { GlobalIssueTemplate.find(2) }
-      end
-    end
+  def test_edit_template
+    put :edit, id: 2,
+               global_issue_template: { description: 'Update Test Global template2' }
+    assert_response :redirect # show
+    global_issue_template = GlobalIssueTemplate.find(2)
+    assert_redirected_to controller: 'global_issue_templates',
+                         action: 'show', id: global_issue_template.id
+    assert_equal 'Update Test Global template2', global_issue_template.description
   end
 
-  context '#new' do
-    context 'with permission' do
-      setup do
-      end
+  def test_destroy_template
+    post :destroy, id: 2
+    assert_redirected_to controller: 'global_issue_templates',
+                         action: 'index'
+    assert_raise(ActiveRecord::RecordNotFound) { GlobalIssueTemplate.find(2) }
+  end
 
-      should 'return new global template instance when request is get' do
-        get :new
-        assert_response :success
+  def test_new_template
+    get :new
+    assert_response :success
 
-        template = assigns(:global_issue_template)
-        assert_not_nil template
-        assert template.title.blank?
-        assert template.description.blank?
-        assert template.note.blank?
-        assert template.tracker.blank?
-      end
+    template = assigns(:global_issue_template)
+    assert_not_nil template
+    assert template.title.blank?
+    assert template.description.blank?
+    assert template.note.blank?
+    assert template.tracker.blank?
+  end
 
-      # do post
-      should 'insert new global template record when request is post' do
-        num = GlobalIssueTemplate.count
-        post :new, global_issue_template: { title: 'Global Template newtitle for creation test', note: 'Global note for creation test',
-                                            description: 'Global Template description for creation test',
-                                            tracker_id: 1, enabled: 1, author_id: 1 }
+  def test_create_template
+    num = GlobalIssueTemplate.count
+    post :new, global_issue_template: { title: 'Global Template newtitle for creation test', note: 'Global note for creation test',
+                                        description: 'Global Template description for creation test',
+                                        tracker_id: 1, enabled: 1, author_id: 1 }
 
-        template = GlobalIssueTemplate.order('id DESC').first
-        assert_response :redirect # show
+    template = GlobalIssueTemplate.order('id DESC').first
+    assert_response :redirect # show
 
-        assert_equal(num + 1, GlobalIssueTemplate.count)
+    assert_equal(num + 1, GlobalIssueTemplate.count)
 
-        assert_not_nil template
-        assert_equal('Global Template newtitle for creation test', template.title)
-        assert_equal('Global note for creation test', template.note)
-        assert_equal('Global Template description for creation test', template.description)
-        assert_equal(1, template.tracker.id)
-        assert_equal(1, template.author.id)
-      end
+    assert_not_nil template
+    assert_equal('Global Template newtitle for creation test', template.title)
+    assert_equal('Global note for creation test', template.note)
+    assert_equal('Global Template description for creation test', template.description)
+    assert_equal(1, template.tracker.id)
+    assert_equal(1, template.author.id)
+  end
 
-      # fail check
-      should 'not be able to save if title is empty' do
-        num = GlobalIssueTemplate.count
+  def test_create_template_fail
+    num = GlobalIssueTemplate.count
 
-        # when title blank, validation bloks to save.
-        post :new, global_issue_template: { title: '', note: 'note',
-                                            description: 'description', tracker_id: 1, enabled: 1,
-                                            author_id: 1 }
+    # when title blank, validation bloks to save.
+    post :new, global_issue_template: { title: '', note: 'note',
+                                        description: 'description', tracker_id: 1, enabled: 1,
+                                        author_id: 1 }
 
-        assert_response :success
-        assert_equal(num, GlobalIssueTemplate.count)
-      end
+    assert_response :success
+    assert_select 'div#errorExplanation ul li', text: 'Title cannot be blank'
+    assert_equal(num, GlobalIssueTemplate.count)
+  end
 
-      should 'preview template' do
-        get :preview, global_issue_template: { description: 'h1. Global Test data.' }
-        assert_template 'common/_preview'
-        assert_select 'h1', /Global Test data\./, @response.body.to_s
-      end
-    end
+  def test_preview_template
+    get :preview, global_issue_template: { description: 'h1. Global Test data.' }
+    assert_template 'common/_preview'
+    assert_select 'h1', /Global Test data\./, @response.body.to_s
   end
 end
