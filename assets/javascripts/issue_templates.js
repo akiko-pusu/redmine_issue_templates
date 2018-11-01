@@ -205,6 +205,9 @@ ISSUE_TEMPLATE.prototype = {
     },
     unescapeHTML: function (val) {
         return $('<div>').html(val).text();
+    },
+    replaceCkeContent: function () {
+        return CKEDITOR.instances.issue_description.setData($('#issue_description').val());
     }
 };
 
