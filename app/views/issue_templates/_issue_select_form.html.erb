@@ -104,5 +104,40 @@
                 }
             })
         });
+
+        // NOTE: Workaround for GitHub issue: 193
+        // Start observing the target node for configured mutations
+        try {
+            if (CKEDITOR.instances) {
+                // Create an observer instance linked to the callback function
+                var observer = new MutationObserver(callback);
+
+                // Select the node that will be observed for mutations
+                var targetNode = document.querySelector('#issue_description_and_toolbar');
+
+                // Options for the observer (which mutations to observe)
+                var config = {attributes: true, childList: true, characterData: true, subtree: true};
+
+                // Callback function to execute when mutations are observed
+                var callback = function (mutationsList) {
+                    for (var i = 0, len = mutationsList.length; i < len; ++i) {
+                        var mutation = mutationsList[i];
+                        if (mutation.type === 'attributes') {
+                            console.log('The ' + mutation.attributeName + ' attribute was modified.');
+                            if (mutation.target.className == 'cke_contents cke_reset') {
+                                // Wait for a while til CKE Editor's textarea is rendered, and after that
+                                // apply template text.
+                                setTimeout('templateNS.replaceCkeContent()', 200);
+                                observer.disconnect();
+                            }
+
+                        }
+                    }
+                };
+                observer.observe(targetNode, config);
+            }
+        } catch (e) {
+            // do nothing.
+        }
     });
 </script>

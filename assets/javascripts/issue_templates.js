@@ -44,6 +44,13 @@ ISSUE_TEMPLATE.prototype = {
 
         issue_subject.val(templateNS.unescapeHTML(old_subject.text()));
         issue_description.val(templateNS.unescapeHTML(old_description.text()));
+
+        try {
+            if (CKEDITOR.instances.issue_description)
+                CKEDITOR.instances.issue_description.setData(templateNS.unescapeHTML(old_description.text()));
+        } catch (e) {
+            // do nothing.
+        }
         old_description.text = '';
         old_description.text = '';
         $('#revert_template').addClass('disabled');
@@ -198,6 +205,9 @@ ISSUE_TEMPLATE.prototype = {
     },
     unescapeHTML: function (val) {
         return $('<div>').html(val).text();
+    },
+    replaceCkeContent: function () {
+        return CKEDITOR.instances.issue_description.setData($('#issue_description').val());
     }
 };
 
