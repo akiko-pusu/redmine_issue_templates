@@ -213,7 +213,7 @@ ISSUE_TEMPLATE.prototype = {
         return CKEDITOR.instances.issue_description.setData($('#issue_description').val());
     },
     hideOverwiteConfirm: function () {
-        var cookie_array = new Array();
+        var cookie_array = [];
         if (document.cookie != '') {
             var tmp = document.cookie.split('; ');
             for (var i = 0; i < tmp.length; i++) {
