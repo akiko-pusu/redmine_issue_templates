@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
+require File.expand_path('../test_helper', __dir__)
 
 class IssuteTemplatesSettingControllerTest < ActionController::TestCase
   fixtures :projects,
@@ -17,55 +17,43 @@ class IssuteTemplatesSettingControllerTest < ActionController::TestCase
     enabled_module.project_id = 1
     enabled_module.name = 'issue_templates'
     enabled_module.save
+
+    # set default user to 2 (as member)
+    @request.session[:user_id] = 2
+    Role.find(1).add_permission! :manage_issue_templates
+
+    @project = Project.find(1)
   end
 
-  context '#update' do
-    context 'by member' do
-      setup do
-        @request.session[:user_id] = 2
-      end
+  def test_update_without_permission
+    Role.find(1).remove_permission! :manage_issue_templates
+    post :edit, project_id: @project,
+                settings: { enabled: '1', help_message: 'Hoo', inherit_templates: true },
+                setting_id: 1, tab: 'issue_templates'
+    assert_response 403
+  end
 
-      context 'without permission' do
-        should '403 post' do
-          project = Project.find 1
-          post :edit, project_id: project,
-                      settings: { enabled: '1', help_message: 'Hoo', inherit_templates: true },
-                      setting_id: 1, tab: 'issue_templates'
-          assert_response 403
-        end
-      end
+  def test_update_with_permission_and_non_project
+    post :edit, project_id: 'dummy',
+                settings: { enabled: '1', help_message: 'Hoo', project_id: 2, inherit_templates: true },
+                setting_id: 1, tab: 'issue_templates'
+    assert_response 404
+  end
 
-      context 'with permission' do
-        setup do
-          Role.find(1).add_permission! :manage_issue_templates
-          @project = Project.find 1
-        end
+  def test_update_with_permission_and_redirect
+    post :edit, project_id: @project,
+                settings: { enabled: '1', help_message: 'Hoo', project_id: 2, inherit_templates: true },
+                setting_id: 1, tab: 'issue_templates'
+    assert_response :redirect
+    assert_redirected_to controller: 'projects',
+                         action: 'settings', id: @project, tab: 'issue_templates'
+  end
 
-        should 'non existing project return 404' do
-          # set non existing project
-          post :edit, project_id: 'dummy',
-                      settings: { enabled: '1', help_message: 'Hoo', project_id: 2, inherit_templates: true },
-                      setting_id: 1, tab: 'issue_templates'
-          assert_response 404
-        end
-
-        should 'redirect post' do
-          post :edit, project_id: @project,
-                      settings: { enabled: '1', help_message: 'Hoo', project_id: 2, inherit_templates: true },
-                      setting_id: 1, tab: 'issue_templates'
-          assert_response :redirect
-          assert_redirected_to controller: 'projects',
-                               action: 'settings', id: @project, tab: 'issue_templates'
-        end
-
-        should 'preview template setting' do
-          post :preview, settings: { help_message: 'h1. Preview test.',
-                                     enabled: '1' },
-                         project_id: @project
-          assert_template 'common/_preview'
-          assert_select 'h1', /Preview test\./, @response.body.to_s
-        end
-      end
-    end
+  def test_preview_template_setting
+    post :preview, settings: { help_message: 'h1. Preview test.',
+                               enabled: '1' },
+                   project_id: @project
+    assert_template 'common/_preview'
+    assert_select 'h1', /Preview test\./, @response.body.to_s
   end
 end
