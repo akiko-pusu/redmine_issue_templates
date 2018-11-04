@@ -102,8 +102,8 @@ class IssueTemplatesControllerTest < ActionController::TestCase
       # do post
       should 'insert new template record when request is post' do
         num = IssueTemplate.count
-        post :new, issue_template: {title: 'newtitle', note: 'note',
-                                    description: 'description', tracker_id: 1, enabled: 1, author_id: 3}, project_id: 1
+        post :new, issue_template: { title: 'newtitle', note: 'note',
+                                     description: 'description', tracker_id: 1, enabled: 1, author_id: 3 }, project_id: 1
 
         template = assigns(:issue_template)
         assert_response :redirect # show
@@ -124,16 +124,16 @@ class IssueTemplatesControllerTest < ActionController::TestCase
         num = IssueTemplate.count
 
         # when title blank, validation bloks to save.
-        post :new, issue_template: {title: '', note: 'note',
-                                    description: 'description', tracker_id: 1, enabled: 1,
-                                    author_id: 1}, project_id: 1
+        post :new, issue_template: { title: '', note: 'note',
+                                     description: 'description', tracker_id: 1, enabled: 1,
+                                     author_id: 1 }, project_id: 1
 
         assert_response :success
         assert_equal(num, IssueTemplate.count)
       end
 
       should 'preview template' do
-        get :preview, issue_template: {description: 'h1. Test data.'}
+        get :preview, issue_template: { description: 'h1. Test data.' }
         assert_template 'common/_preview'
         assert_select 'h1', /Test data\./, @response.body.to_s
       end
@@ -149,8 +149,8 @@ class IssueTemplatesControllerTest < ActionController::TestCase
 
       should 'edit template when request is put' do
         put :edit, id: 2,
-            issue_template: {description: 'Update Test template2'},
-            project_id: 1
+                   issue_template: { description: 'Update Test template2' },
+                   project_id: 1
         project = Project.find 1
         assert_response :redirect # show
         issue_template = IssueTemplate.find(2)
@@ -175,14 +175,14 @@ class IssueTemplatesControllerTest < ActionController::TestCase
         project = Project.find 1
         assert_redirected_to controller: 'issue_templates',
                              action: 'index', project_id: project
-        assert_raise(ActiveRecord::RecordNotFound) {IssueTemplate.find(1)}
+        assert_raise(ActiveRecord::RecordNotFound) { IssueTemplate.find(1) }
       end
 
       should 'not be able to change project id and safe attributes' do
         put :edit, id: 2,
-            issue_template: {description: 'Update Test template2',
-                             project_id: 2, author_id: 2},
-            project_id: 1
+                   issue_template: { description: 'Update Test template2',
+                                     project_id: 2, author_id: 2 },
+                   project_id: 1
         project = Project.find 1
         assert_response :redirect # show
         issue_template = IssueTemplate.find(2)
