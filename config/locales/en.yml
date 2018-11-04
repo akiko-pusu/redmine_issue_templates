@@ -56,3 +56,5 @@ en:
   enabled_template_cannot_destroy: "Only disabled template can be destroyed. Check if other subprojects use this template or not, and disable this before deleting."
   orphaned_templates: "Orphaned templates from tracker"
   orphaned_template: "Orphaned template from tracker"
+  label_template_applied: "Issue template is applied. You can revert with click 'Revert' link."
+  label_hide_confirm_dialog_in_the_future: "Hide this confirmation in the future, just overwrite."

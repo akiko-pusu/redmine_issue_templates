@@ -57,3 +57,5 @@ ja:
   enabled_template_cannot_destroy: "有効になっているテンプレートは削除できません。他に利用しているサブプロジェクトの有無を確認して、無効化してから削除を行なってください"
   orphaned_templates: "トラッカーから孤立したテンプレート"
   orphaned_template: "トラッカーから孤立したテンプレート"
+  label_template_applied: "テンプレートが適用されました。（元に戻す場合：「テンプレート適用前に戻す」をクリック）"
+  label_hide_confirm_dialog_in_the_future: "次回からは、この上書きの確認メッセージを表示しない"

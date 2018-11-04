@@ -2,7 +2,7 @@
 
 [![Plugin info at redmine.org](https://img.shields.io/badge/Redmine-plugin-green.svg?)](http://www.redmine.org/plugins/redmine_issue_templates)
 [![CircleCI](https://circleci.com/gh/akiko-pusu/redmine_issue_templates/tree/master.svg?style=shield)](https://circleci.com/gh/akiko-pusu/redmine_issue_templates/tree/master)
-[![SideCI](https://img.shields.io/badge/Special%20Thanks!-SideCI-blue.svg?)](https://sideci.com/features)
+[![Sider](https://img.shields.io/badge/Special%20Thanks!-Sider-blue.svg?)](https://sider.review/features)
 
 Plugin to generate and use issue templates for each project to assist issue
 creation. For Redmine 2.1.x or higher, please use version 0.0.4 or higher. For
@@ -76,6 +76,20 @@ If you have any requests, bug reports, please use GitHub issues.https://github.c
 
 
 ## Changelog
+
+### 0.2.1
+
+Mainly, bugfix and refactoring release.
+Updating to 0.2.1 is highly recommended in case using CKEditor or MySQL replication.
+NOTE: Migration is required, especially using MySQL replication.
+
+* Bugfix: Fix "Page not found" error when try to create project template from project setting. (GitHub: #192, #199)
+* Bugfix: Add composite unique index to support MySQL group replication. (GitHub: #197)
+* Workaround: Wait fot 200 msec until CKE Editor's ajax callback done. (GitHub: #193)
+* Add feature to hide confirmation dialog when overwritten issue subject and description, with using user cookie. (GitHub: #190)
+* Refactoring: Minitest and so on.
+
+A cookie named "issue_template_confirm_to_replace_hide_dialog" is stored from this release. (Related: #190) 
 
 ### 0.2.0
 
