@@ -85,6 +85,7 @@ NOTE: Migration is required, especially using MySQL replication.
 
 * Bugfix: Fix "Page not found" error when try to create project template from project setting. (GitHub: #192, #199)
 * Bugfix: Add composite unique index to support MySQL group replication. (GitHub: #197)
+* Workaround: Wait fot 200 msec until CKE Editor's ajax callback done. (GitHub: #193)
 * Add feature to hide confirmation dialog when overwritten issue subject and description, with using user cookie. (GitHub: #190)
 * Refactoring: Minitest and so on.
 
