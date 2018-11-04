@@ -46,6 +46,12 @@
     <label>
       <%=h l(:label_msg_confirm_to_replace) %>
     </label>
+    <p/>
+    <label><input type="checkbox" id="issue_template_confirm_to_replace_hide_dialog">
+      <%= h l(:label_hide_confirm_dialog_in_the_future,
+              default: "Hide this confirmation in the future, just overwrite.") %>
+    </label>
+    </span>
   </div>
   <!-- dialog box -->
 
@@ -69,8 +75,12 @@
             var confirmation = '<%=h l(:label_confirmation) %>';
             var general_text_Yes = '<%=h l(:general_text_Yes) %>';
             var general_text_No = '<%=h l(:general_text_No) %>';
+            var confirm_message = undefined;
+            if (should_replaced) {
+                confirm_message = '<%=h l(:label_template_applied, default: "Issue template is applied. You can revert with click 'Revert' link.") %>';
+            }
 
-            templateNS.load_template(load_url, undefined, should_replaced, false, confirmation, general_text_Yes, general_text_No);
+            templateNS.load_template(load_url, confirm_message, should_replaced, false, confirmation, general_text_Yes, general_text_No);
         });
 
         // Show dialog
