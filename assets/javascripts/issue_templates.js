@@ -105,8 +105,11 @@ ISSUE_TEMPLATE.prototype = {
 
                         if (confirm_to_replace !== true && should_replaced === 'true' && (issue_description.val() !== '' || issue_subject.val() !== '')) {
                             if (oldVal !== obj.description || oldSubj !== obj.issue_title) {
-                                ns.confirmToReplace(target_url, confirm_msg, should_replaced, confirmation, general_text_Yes, general_text_No);
-                                return;
+                                var hide_confirm_flag = ns.hideOverwiteConfirm();
+                                if (hide_confirm_flag == false) {
+                                    ns.confirmToReplace(target_url, confirm_msg, should_replaced, confirmation, general_text_Yes, general_text_No);
+                                    return;
+                                }
                             }
                         }
 
@@ -147,12 +150,12 @@ ISSUE_TEMPLATE.prototype = {
             title: confirmation,
             width: 400,
             buttons: [{
-                    text: general_text_Yes,
-                    click: function () {
-                        $(this).dialog("close");
-                        ns.load_template(target_url, confirm_msg, should_replaced, true, confirmation, general_text_Yes, general_text_No)
-                    }
-                },
+                text: general_text_Yes,
+                click: function () {
+                    $(this).dialog("close");
+                    ns.load_template(target_url, confirm_msg, should_replaced, true, confirmation, general_text_Yes, general_text_No)
+                }
+            },
                 {
                     text: general_text_No,
                     click: function () {
@@ -208,6 +211,21 @@ ISSUE_TEMPLATE.prototype = {
     },
     replaceCkeContent: function () {
         return CKEDITOR.instances.issue_description.setData($('#issue_description').val());
+    },
+    hideOverwiteConfirm: function () {
+        var cookie_array = new Array();
+        if (document.cookie != '') {
+            var tmp = document.cookie.split('; ');
+            for (var i = 0; i < tmp.length; i++) {
+                var data = tmp[i].split('=');
+                cookie_array[data[0]] = decodeURIComponent(data[1]);
+            }
+        }
+        var confirmation_cookie = cookie_array['issue_template_confirm_to_replace_hide_dialog'];
+        if (confirmation_cookie == undefined || parseInt(confirmation_cookie) == 0) {
+            return false;
+        }
+        return true;
     }
 };
 
@@ -319,6 +337,16 @@ $(function () {
                 return $('#orphaned_templates').html(data);
             };
         })(this)
+    });
+
+    // Hide overwrite confirmation dialog using cookie.
+    $('#issue_template_confirm_to_replace_hide_dialog').click(function () {
+        if ($(this).is(':checked')) {
+            // NOTE: Use document.cookie because Redmine itself does not use jquery.cookie.js.
+            document.cookie = 'issue_template_confirm_to_replace_hide_dialog=1';
+        } else {
+            document.cookie = 'issue_template_confirm_to_replace_hide_dialog=0';
+        }
     });
 });
 
