@@ -1,4 +1,4 @@
-class AddPrimaryKeyToGlobalIssueTemplatesProjects < ActiveRecord::Migration
+class AddUniqueKeyToGlobalIssueTemplatesProjects < ActiveRecord::Migration
   def self.up
     add_index :global_issue_templates_projects,
               [:project_id, :global_issue_template_id], unique: true,
