@@ -11,14 +11,12 @@
       <%= labelled_form_for :issue_template,  @issue_template,
                             url: { controller: 'issue_templates', action: 'create', project_id: project },
                             html: { id: 'issue_template-form', class: nil, multipart: false } do |f| %>
-          
+
           <%= render 'form', { f: f, checklist_enabled: checklist_enabled,
                                issue_template: issue_template, project: project } %>
           <div id="preview" class="wiki"></div>
           <%= submit_tag l(:button_create) %>
       <% end %>
-      <%= preview_link url_for( controller: 'issue_templates', action: 'preview', id: @issue_template ),
-                       'issue_template_description', target='preview' %> |
       <%= link_to l(:button_cancel), { action: 'index'}, data: { confirm: l(:text_are_you_sure) } %>
     </div>
 <% end %>

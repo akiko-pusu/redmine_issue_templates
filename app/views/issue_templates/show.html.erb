@@ -34,9 +34,6 @@
 
           <%= submit_tag l(:button_save) %>
       <% end %>
-      <%= preview_link url_for(controller: 'issue_templates', action: 'preview',
-                               id: issue_template),
-                       'issue_template_description', target='preview' %> |
       <%= link_to l(:button_cancel), { action: 'index' },
                   onclick: 'Element.hide("edit-issue_template"); return false;' %>
       <div id="preview" class="wiki"></div>

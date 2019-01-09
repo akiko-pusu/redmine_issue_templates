@@ -21,14 +21,14 @@
       <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
          data-tooltip-area="#issue_title_help_area"
          data-tooltip-content="#issue_title_help_content">
-        <%= l(:help_for_this_field) %>
+        <%= l(:help_for_this_field) %> 
         <span class="tooltip-area" id="issue_title_help_area"></span>
       </a>
     </p>
     <p>
       <%= f.text_area :description, cols: 78, rows: 12,
                       required: true,
-                      label: l(:issue_description), style: 'overflow:auto;' %>
+                      label: l(:issue_description), class: 'wiki-edit', style: 'overflow:auto;' %>
     </p>
     <!-- for Checklist -->
     <% if checklist_enabled %>
@@ -81,9 +81,6 @@
 <%= wikitoolbar_for 'global_issue_template_description' %>
 
 <div id="preview" class="wiki"></div>
-<%= preview_link url_for(controller: 'global_issue_templates', action: 'preview',
-                         id: issue_template),
-                 'global_issue_template_description', target='preview' %> |
 <%= link_to l(:button_cancel), {action: 'index'}, data: {confirm: l(:text_are_you_sure)} %>
 
 
