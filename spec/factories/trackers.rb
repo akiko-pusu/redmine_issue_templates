@@ -5,7 +5,7 @@ FactoryBot.define do
     default_status_id 1
     trait :with_default_status do
       after(:build) do |tracker|
-        status = create(:issue_status)
+        status = FactoryBot.create(:issue_status)
         tracker.default_status_id = status.id
       end
     end

@@ -2,7 +2,9 @@ require_relative '../spec_helper'
 require_relative '../rails_helper'
 require_relative '../support/login_helper'
 
-include LoginHelper
+RSpec.configure do |c|
+  c.include LoginHelper
+end
 
 feature 'IssueTemplate', js: true do
   #
@@ -45,8 +47,8 @@ feature 'IssueTemplate', js: true do
   end
 
   feature 'view fook for issues_sidebar' do
-    given(:issue_template) { create(:issue_template) }
-    given!(:enabled_module) { create(:enabled_module) }
+    given(:issue_template) { FactoryBot.create(:issue_template) }
+    given!(:enabled_module) { FactoryBot.create(:enabled_module) }
     context 'When user has no priv to use issue template' do
       background do
         assign_template_priv(role, remove_permission: :show_issue_templates)
@@ -74,14 +76,14 @@ feature 'IssueTemplate', js: true do
 
   feature 'Template feature at new issue screen' do
     given!(:issue_templates) do
-      create_list(:issue_template, 2, project_id: 1, tracker_id: 1)
+      FactoryBot.create_list(:issue_template, 2, project_id: 1, tracker_id: 1)
     end
 
     given!(:named_template) do
-      create(:issue_template, project_id: 1, tracker_id: 1,
-                              title: 'Sample Title for rspec', description: 'Sample description for rspec')
+      FactoryBot.create(:issue_template, project_id: 1, tracker_id: 1,
+                                          title: 'Sample Title for rspec', description: 'Sample description for rspec')
     end
-    given!(:enabled_module) { create(:enabled_module) }
+    given!(:enabled_module) { FactoryBot.create(:enabled_module) }
 
     background do
       assign_template_priv(role, add_permission: :show_issue_templates)
@@ -139,16 +141,16 @@ feature 'IssueTemplate', js: true do
     given(:expected_description) { 'Sample description for rspec' }
 
     given!(:named_template) do
-      create(:issue_template, project_id: 1, tracker_id: 1,
-                              title: 'bug template',
-                              issue_title: expected_title, description: expected_description)
+      FactoryBot.create(:issue_template, project_id: 1, tracker_id: 1,
+                                          title: 'bug template',
+                                          issue_title: expected_title, description: expected_description)
     end
 
     given!(:issue_template_setting) do
-      create(:issue_template_setting, project_id: 1, should_replaced: false)
+      FactoryBot.create(:issue_template_setting, project_id: 1, should_replaced: false)
     end
 
-    given!(:enabled_module) { create(:enabled_module) }
+    given!(:enabled_module) { FactoryBot.create(:enabled_module) }
     given(:issue_description) { page.find('#issue_description') }
     given(:issue_subject) { page.find('#issue_subject') }
     given(:table) { page.find('div#filtered_templates_list table') }
@@ -202,11 +204,11 @@ feature 'IssueTemplate', js: true do
     given(:expected_description) { 'Sample description for rspec' }
 
     given!(:named_template) do
-      create(:issue_template, project_id: 1, tracker_id: 1,
-                              title: 'Sample Title for rspec',
-                              issue_title: 'Sample Title for rspec', description: 'Sample description for rspec')
+      FactoryBot.create(:issue_template, project_id: 1, tracker_id: 1,
+                                          title: 'Sample Title for rspec',
+                                          issue_title: 'Sample Title for rspec', description: 'Sample description for rspec')
     end
-    given!(:enabled_module) { create(:enabled_module) }
+    given!(:enabled_module) { FactoryBot.create(:enabled_module) }
 
     background do
       assign_template_priv(role, add_permission: :show_issue_templates)

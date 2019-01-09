@@ -44,6 +44,12 @@
     <label>
       <%=h l(:label_msg_confirm_to_replace) %>
     </label>
+    <p/>
+    <label><input type="checkbox" id="issue_template_confirm_to_replace_hide_dialog">
+      <%= h l(:label_hide_confirm_dialog_in_the_future,
+              default: "Hide this confirmation in the future, just overwrite.") %>
+    </label>
+    </span>
   </div>
   <!-- dialog box -->
 
@@ -70,8 +76,12 @@
             var confirmation = '<%=h l(:label_confirmation) %>';
             var general_text_Yes = '<%=h l(:general_text_Yes) %>';
             var general_text_No = '<%=h l(:general_text_No) %>';
+            var confirm_message = undefined;
+            if (should_replaced) {
+                confirm_message = '<%=h l(:label_template_applied, default: "Issue template is applied. You can revert with click 'Revert' link.") %>';
+            }
 
-            templateNS.load_template(load_url, undefined, should_replaced, false, confirmation, general_text_Yes, general_text_No);
+            templateNS.load_template(load_url, confirm_message, should_replaced, false, confirmation, general_text_Yes, general_text_No);
         });
 
         // Show dialog
@@ -105,5 +115,40 @@
                 }
             })
         });
+
+        // NOTE: Workaround for GitHub issue: 193
+        // Start observing the target node for configured mutations
+        try {
+            if (CKEDITOR.instances) {
+                // Create an observer instance linked to the callback function
+                var observer = new MutationObserver(callback);
+
+                // Select the node that will be observed for mutations
+                var targetNode = document.querySelector('#issue_description_and_toolbar');
+
+                // Options for the observer (which mutations to observe)
+                var config = {attributes: true, childList: true, characterData: true, subtree: true};
+
+                // Callback function to execute when mutations are observed
+                var callback = function (mutationsList) {
+                    for (var i = 0, len = mutationsList.length; i < len; ++i) {
+                        var mutation = mutationsList[i];
+                        if (mutation.type === 'attributes') {
+                            console.log('The ' + mutation.attributeName + ' attribute was modified.');
+                            if (mutation.target.className == 'cke_contents cke_reset') {
+                                // Wait for a while til CKE Editor's textarea is rendered, and after that
+                                // apply template text.
+                                setTimeout('templateNS.replaceCkeContent()', 200);
+                                observer.disconnect();
+                            }
+
+                        }
+                    }
+                };
+                observer.observe(targetNode, config);
+            }
+        } catch (e) {
+            // do nothing.
+        }
     });
 </script>

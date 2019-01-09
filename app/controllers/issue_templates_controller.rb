@@ -4,7 +4,8 @@ class IssueTemplatesController < ApplicationController
   helper :issues
   include Concerns::IssueTemplatesCommon
   menu_item :issues
-  before_action :find_object, only: %i[show update destroy]
+
+  before_action :find_object, only: %i[show edit update destroy]
   before_action :find_user, :find_project, :authorize, except: [:preview]
   before_action :find_tracker, :find_templates, only: %i[set_pulldown list_templates]
   accept_api_auth :index, :list_templates, :load
@@ -136,6 +137,11 @@ class IssueTemplatesController < ApplicationController
     issue_template = params[:issue_template]
     @text = (issue_template ? issue_template[:description] : nil)
     render partial: 'common/preview'
+  end
+
+  def orphaned_templates
+    orphaned = IssueTemplate.orphaned(@project.id)
+    render partial: 'orphaned_templates', locals: { orphaned_templates: orphaned }
   end
 
   private

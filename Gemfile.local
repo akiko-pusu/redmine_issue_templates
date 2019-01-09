@@ -1,9 +1,5 @@
 group :test do
   gem 'simplecov-rcov', require: false
-  #
-  # TODO: change test not to use shoulda.
-  #
-  gem 'shoulda', require: false
   gem 'rspec-rails'
   gem 'factory_bot_rails'
   gem 'launchy'

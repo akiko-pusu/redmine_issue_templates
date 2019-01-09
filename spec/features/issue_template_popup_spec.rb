@@ -2,7 +2,9 @@ require_relative '../spec_helper'
 require_relative '../rails_helper'
 require_relative '../support/login_helper'
 
-include LoginHelper
+RSpec.configure do |c|
+  c.include LoginHelper
+end
 
 feature 'Confirm dialog before overwrite description', js: true do
   background(:all) do
@@ -12,11 +14,11 @@ feature 'Confirm dialog before overwrite description', js: true do
     end
   end
 
-  given(:user) { create(:user, :password_same_login, login: 'plugin_admin', language: 'en') }
+  given(:user) { FactoryBot.create(:user, :password_same_login, login: 'manager', language: 'en', admin: false) }
   given(:project) { create(:project_with_enabled_modules) }
-  given(:tracker) { create(:tracker, :with_default_status) }
-  given(:role) { create(:role, :manager_role) }
-  given(:issue_priority) { create(:priority) }
+  given(:tracker) { FactoryBot.create(:tracker, :with_default_status) }
+  given(:role) { FactoryBot.create(:role, :manager_role) }
+  given(:issue_priority) { FactoryBot.create(:priority) }
   given(:first_target) { page.find('#issue_template > optgroup > option:nth-child(1)') }
   given(:second_target) { page.find('#issue_template > optgroup > option:nth-child(2)') }
   given(:issue_subject) { page.find('#issue_subject') }
@@ -25,7 +27,7 @@ feature 'Confirm dialog before overwrite description', js: true do
   given(:second_template) { IssueTemplate.second }
 
   background do
-    create_list(:issue_template, 2, project_id: project.id, tracker_id: tracker.id)
+    FactoryBot.create_list(:issue_template, 2, project_id: project.id, tracker_id: tracker.id)
 
     project.trackers << tracker
     assign_template_priv(role, add_permission: :show_issue_templates)
@@ -85,6 +87,7 @@ feature 'Confirm dialog before overwrite description', js: true do
           setting = IssueTemplateSetting.find_or_create(project.id)
           setting.update_attribute(:should_replaced, true)
         end
+
         scenario 'Conform window apperead.' do
           visit_new_issue(user)
           expect(page).to have_selector('div#template_area select#issue_template')
@@ -93,6 +96,17 @@ feature 'Confirm dialog before overwrite description', js: true do
           expect(page).to have_selector('#issue_template_confirm_to_replace_dialog')
           expect(issue_subject.value).not_to eq "#{first_template.issue_title} #{second_template.issue_title}"
           expect(issue_description.value).not_to eq "#{first_template.description}\n\n#{second_template.description}"
+        end
+
+        scenario 'Conform window not apperead with using cookie.' do
+          visit_new_issue(user)
+
+          # set cookie
+          page.driver.browser.manage.add_cookie(name: 'issue_template_confirm_to_replace_hide_dialog', value: '1')
+          expect(page).to have_selector('div#template_area select#issue_template')
+          second_target.select_option
+          wait_for_ajax
+          expect(page).not_to have_selector('#issue_template_confirm_to_replace_dialog')
         end
       end
     end

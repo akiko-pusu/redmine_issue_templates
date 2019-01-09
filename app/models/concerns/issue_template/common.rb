@@ -13,9 +13,12 @@ module Concerns
 
         before_destroy :confirm_disabled
 
+        before_save :set_default_position
+        after_save :update_position
+        after_destroy :remove_position
+
         validates :title, presence: true
         validates :tracker, presence: true
-        acts_as_positioned
 
         scope :enabled, -> { where(enabled: true) }
         scope :sorted, -> { order(:position) }
@@ -28,8 +31,6 @@ module Concerns
 
         scope :orphaned, lambda { |project_id = nil|
           condition = all
-          ids = []
-
           if project_id.present? && try(:name) == 'IssueTemplate'
             condition = condition.where(project_id: project_id)
             ids = Tracker.joins(:projects).where(projects: { id: project_id }).pluck(:id)
@@ -90,6 +91,10 @@ module Concerns
 
         errors.add :base, 'enabled_template_cannot_destroy'
         throw :abort
+      end
+
+      def copy_title
+        "copy_of_#{title}"
       end
     end
   end

@@ -1,8 +1,6 @@
 module IssueTemplatesHelper
   def project_tracker?(tracker, project)
-    return false if tracker.blank?
-
-    project.trackers.exists?(id: tracker)
+    project.trackers.exists?(tracker.id)
   end
 
   def non_project_tracker_msg(flag)

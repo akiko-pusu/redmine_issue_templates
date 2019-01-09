@@ -23,7 +23,7 @@ FactoryBot.define do
 
     trait :as_group do
       type 'Group'
-      lastname 'Group#{n}'
+      lastname "Group#{n}"
     end
   end
 end

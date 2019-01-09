@@ -1,5 +1,5 @@
 .template {
-    background: url(../images/issue_templates.png) no-repeat 3px center;
+    background: url("../images/issue_templates.png") no-repeat 3px center;
     padding-top: 3px;
     padding-left: 18px;
     margin-bottom: 0;
@@ -20,14 +20,14 @@
     border: solid #BBB 1px;
     background-color: #F0F0F0;
     padding: 1em;
-    margin-top: 0.5em;
+    margin-top: .5em;
     margin-bottom: 1em;
 }
 
 #template_help_content {
     position: relative;
     text-align: left;
-    margin-left: 0.5em;
+    margin-left: .5em;
 }
 
 #template_help_content p {
@@ -43,14 +43,14 @@ div.template_help div#template_help_hide {
     background: none;
     color: #000;
     filter: alpha(opacity=30);
-    -moz-opacity: 0.3;
-    opacity: 0.3;
+    -moz-opacity: .3;
+    opacity: .3;
 }
 
 div.template_help div#template_help_hide:hover {
     filter: alpha(opacity=80);
-    -moz-opacity: 0.8;
-    opacity: 0.8;
+    -moz-opacity: .8;
+    opacity: .8;
 }
 
 fieldset.issue {
@@ -63,7 +63,7 @@ fieldset.issue {
 
 div.issue_template {
     margin-left: 100pt;
-    border: 0.1pt solid #E4E4E4;
+    border: .1pt solid #E4E4E4;
     padding: 4pt;
     background-color: white;
 }
@@ -84,7 +84,7 @@ div.issue_template {
     font-style: italic;
     padding: 8px 10px 8px 20px;
     color: #31708f;
-    background: #eaf5fb url(../images/lamp.png) no-repeat 3px center;
+    background: #eaf5fb url("../images/lamp.png") no-repeat 3px center;
     border: solid #a7e4fd 1px;
 }
 
@@ -100,7 +100,7 @@ option.global {
 }
 
 .non_project_tracker {
-    background: url(../images/lamp.png) no-repeat 3px center;
+    background: url("../images/lamp.png") no-repeat 3px center;
     color: #dd8888;
     font-style: italic;
     font-weight: lighter;
@@ -109,7 +109,7 @@ option.global {
 }
 
 .template_tracker {
-    background: url(../images/ticket.png) no-repeat 3px center;
+    background: url("../images/ticket.png") no-repeat 3px center;
     padding-top: 3px;
     padding-left: 18px;
 }
@@ -123,15 +123,15 @@ option.global {
 }
 
 .icon-erase {
-    background-image: url(../images/eraser.png);
+    background-image: url("../images/eraser.png");
 }
 
 .icon-global_issue_templates {
-    background-image: url(../images/issue_templates.png);
+    background-image: url("../images/issue_templates.png");
 }
 
 a.template_tooltip {
-    background-image: url(../images/preview.png);
+    background-image: url("../images/preview.png");
 }
 
 #issue_template-form textarea {
@@ -168,8 +168,8 @@ a.template_tooltip {
     text-align: left;
     display: block;
     position: absolute;
-    top: 10px;
-    left: -30px;
+    top: 12px;
+    left: 0;
     font-size: 90%;
     background-color: #ffffff;
     width: 300px;
@@ -218,11 +218,11 @@ select.issue_template {
 }
 
 .issue_template.icon.settings {
-    background: url(../images/lamp.png) no-repeat 3px center;
+    background: url("../images/lamp.png") no-repeat 3px center;
 }
 
 .issue_template.icon.plugins {
-    background: url(../../../images/plugin.png) no-repeat 3px center;
+    background: url("../../../images/plugin.png") no-repeat 3px center;
 }
 
 .contextual.issue_templates {
@@ -253,8 +253,8 @@ select.issue_template {
 
 #revert_template.disabled {
     filter: alpha(opacity=20);
-    -moz-opacity: 0.2;
-    opacity: 0.2;
+    -moz-opacity: .2;
+    opacity: .2;
 }
 
 div.form-inline.issue_templates #enabled_help_content {
@@ -265,7 +265,43 @@ div.form-inline.issue_templates #enabled_help_content {
 }
 
 a.icon.icon-del[disabled=disabled] {
-    opacity: 0.5;
+    opacity: .5;
+}
+
+/*------- TODO: Remove these styles Redmine v3.3 or higher -----------*/
+
+.sort-handle {
+    display: inline-block;
+    vertical-align: middle;
+    width: 16px;
+    height: 16px;
+    background: url("../images/reorder.png") no-repeat 0 50%;
+    cursor: move;
+}
+
+.sort-handle.ajax-loading {
+    background-image: url("../../../images/loading.gif");
+}
+
+tr.ui-sortable-helper {
+    border: 1px solid #e4e4e4;
+}
+
+/*------------ for responsive -----------------*/
+
+@media (max-width: 899px) {
+    #orphaned_templates>table>thead>tr>th.hideable {
+        display: none;
+    }
+    #orphaned_templates>table>tbody>tr>td.hideable {
+        display: none;
+    }
+    #content>div.template_box>table>thead>tr>th.hideable {
+        display: none;
+    }
+    #content>div.template_box>table>tbody>tr>td.hideable {
+        display: none;
+    }
 }
 
 /*---- help tooltip --*/

@@ -8,14 +8,14 @@ FactoryBot.define do
 
     trait :with_enabled_modules do
       after(:build) do |tracker|
-        status = create(:issue_status)
+        status = FactoryBot.create(:issue_status)
         tracker.default_status_id = status.id
       end
     end
 
     factory :project_with_enabled_modules do
       after(:create) do |project, _evaluator|
-        create(:enabled_module, project_id: project.id)
+        FactoryBot.create(:enabled_module, project_id: project.id)
       end
     end
   end

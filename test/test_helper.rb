@@ -1,7 +1,6 @@
 begin
   require 'simplecov'
   require 'simplecov-rcov'
-  require 'shoulda'
 rescue LoadError => ex
   puts <<-"EOS"
   This test should be called only for redmine issue template test.

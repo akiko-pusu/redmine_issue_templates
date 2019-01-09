@@ -5,8 +5,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../support/controller_helper
 
 describe GlobalIssueTemplatesController, type: :controller do
   let(:count) { 4 }
-  let(:tracker) { create(:tracker, :with_default_status) }
-  let(:projects) { create_list(:project, count) }
+  let(:tracker) { FactoryBot.create(:tracker, :with_default_status) }
+  let(:projects) { FactoryBot.create_list(:project, count) }
 
   before do
     @request.session[:user_id] = user.id
@@ -33,8 +33,8 @@ describe GlobalIssueTemplatesController, type: :controller do
   describe 'GET #new' do
     render_views
     before do
-      create_list(:project, count)
-      create(:tracker, :with_default_status)
+      FactoryBot.create_list(:project, count)
+      FactoryBot.create(:tracker, :with_default_status)
       get :new
     end
     include_examples 'Right response', 200

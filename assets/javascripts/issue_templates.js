@@ -4,8 +4,7 @@
  */
 
 // For namespace setting.
-var ISSUE_TEMPLATE = ISSUE_TEMPLATE || function () {
-};
+var ISSUE_TEMPLATE = ISSUE_TEMPLATE || function () {};
 ISSUE_TEMPLATE.prototype = {
     eraseSubjectAndDescription: function () {
         $('#issue_description').val('');
@@ -24,17 +23,15 @@ ISSUE_TEMPLATE.prototype = {
             url: url,
             success: function (data) {
                 $("#filtered_templates_list").html(data);
-                $("#issue_template_dialog").dialog(
-                    {
-                        modal: true,
-                        dialogClass: "modal overflow_dialog",
-                        draggable: true,
-                        title: title,
-                        minWidth: 400,
-                        width: 'auto',
-                        maxWidth: 'auto'
-                    }
-                );
+                $("#issue_template_dialog").dialog({
+                    modal: true,
+                    dialogClass: "modal overflow_dialog",
+                    draggable: true,
+                    title: title,
+                    minWidth: 400,
+                    width: 'auto',
+                    maxWidth: 'auto'
+                });
             }
         });
     },
@@ -47,12 +44,19 @@ ISSUE_TEMPLATE.prototype = {
 
         issue_subject.val(templateNS.unescapeHTML(old_subject.text()));
         issue_description.val(templateNS.unescapeHTML(old_description.text()));
+
+        try {
+            if (CKEDITOR.instances.issue_description)
+                CKEDITOR.instances.issue_description.setData(templateNS.unescapeHTML(old_description.text()));
+        } catch (e) {
+            // do nothing.
+        }
         old_description.text = '';
         old_description.text = '';
         $('#revert_template').addClass('disabled');
     },
     load_template: function (target_url, confirm_msg, should_replaced,
-                             confirm_to_replace, confirmation, general_text_Yes, general_text_No) {
+        confirm_to_replace, confirmation, general_text_Yes, general_text_No) {
         var selected_template = $('#issue_template');
         var ns = this;
         if (selected_template.val() !== '') {
@@ -64,7 +68,10 @@ ISSUE_TEMPLATE.prototype = {
                 url: target_url,
                 async: true,
                 type: 'post',
-                data: $.param({id: selected_template.val(), template_type: template_type})
+                data: $.param({
+                    issue_template: selected_template.val(),
+                    template_type: template_type
+                })
             }).done(function (data) {
                 // NOTE: Workaround for GiHub Issue, to prevent overwrite with default template
                 // when operator submits new issue form without required field and returns
@@ -98,8 +105,11 @@ ISSUE_TEMPLATE.prototype = {
 
                         if (confirm_to_replace !== true && should_replaced === 'true' && (issue_description.val() !== '' || issue_subject.val() !== '')) {
                             if (oldVal !== obj.description || oldSubj !== obj.issue_title) {
-                                ns.confirmToReplace(target_url, confirm_msg, should_replaced, confirmation, general_text_Yes, general_text_No);
-                                return;
+                                var hide_confirm_flag = ns.hideOverwiteConfirm();
+                                if (hide_confirm_flag == false) {
+                                    ns.confirmToReplace(target_url, confirm_msg, should_replaced, confirmation, general_text_Yes, general_text_No);
+                                    return;
+                                }
                             }
                         }
 
@@ -133,29 +143,27 @@ ISSUE_TEMPLATE.prototype = {
     confirmToReplace: function (target_url, confirm_msg, should_replaced,
                                 confirmation, general_text_Yes, general_text_No) {
         var ns = this;
-        $("#issue_template_confirm_to_replace_dialog").dialog(
-            {
-                modal: true,
-                dialogClass: "modal overflow_dialog",
-                draggable: true,
-                title: confirmation,
-                width: 400,
-                buttons: [
-                    {
-                        text: general_text_Yes,
-                        click: function () {
-                            $(this).dialog("close");
-                            ns.load_template(target_url, confirm_msg, should_replaced, true, confirmation, general_text_Yes, general_text_No)
-                        }
-                    },
-                    {
-                        text: general_text_No,
-                        click: function () {
-                            $(this).dialog("close");
-                        }
-                    }]
-            }
-        );
+        $("#issue_template_confirm_to_replace_dialog").dialog({
+            modal: true,
+            dialogClass: "modal overflow_dialog",
+            draggable: true,
+            title: confirmation,
+            width: 400,
+            buttons: [{
+                text: general_text_Yes,
+                click: function () {
+                    $(this).dialog("close");
+                    ns.load_template(target_url, confirm_msg, should_replaced, true, confirmation, general_text_Yes, general_text_No)
+                }
+            },
+                {
+                    text: general_text_No,
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
+        });
     },
     show_loaded_message: function (confirm_msg, target) {
         var template_status_area = $('#template_status-area');
@@ -171,7 +179,9 @@ ISSUE_TEMPLATE.prototype = {
             url: target_url,
             async: true,
             type: 'post',
-            data: $.param({issue_tracker_id: tracker})
+            data: $.param({
+                issue_tracker_id: tracker
+            })
         }).done(function (data) {
             $('#issue_template').html(data);
             $('#allow_overwrite_description').attr('checked', allow_overwrite);
@@ -198,15 +208,31 @@ ISSUE_TEMPLATE.prototype = {
     },
     unescapeHTML: function (val) {
         return $('<div>').html(val).text();
+    },
+    replaceCkeContent: function () {
+        return CKEDITOR.instances.issue_description.setData($('#issue_description').val());
+    },
+    hideOverwiteConfirm: function () {
+        var cookie_array = [];
+        if (document.cookie != '') {
+            var tmp = document.cookie.split('; ');
+            for (var i = 0; i < tmp.length; i++) {
+                var data = tmp[i].split('=');
+                cookie_array[data[0]] = decodeURIComponent(data[1]);
+            }
+        }
+        var confirmation_cookie = cookie_array['issue_template_confirm_to_replace_hide_dialog'];
+        if (confirmation_cookie == undefined || parseInt(confirmation_cookie) == 0) {
+            return false;
+        }
+        return true;
     }
 };
-
 
 // jQuery plugin for issue template
 (function ($) {
     var methods = {
-        init: function (options) {
-        },
+        init: function (options) {},
         updateTemplateSelect: function (options) {
             options = $.extend({
                 target: '#issue_template',
@@ -319,5 +345,25 @@ $(function () {
     });
 
     $('a.template-disabled-link').issueTemplate('disabled_link');
+
+    // display orphaned template list
+    $('#orphaned_template_link').on({
+        'ajax:success': (function (_this) {
+            return function (e, data) {
+                $('#orphaned_templates').toggle();
+                return $('#orphaned_templates').html(data);
+            };
+        })(this)
+    });
+
+    // Hide overwrite confirmation dialog using cookie.
+    $('#issue_template_confirm_to_replace_hide_dialog').click(function () {
+        if ($(this).is(':checked')) {
+            // NOTE: Use document.cookie because Redmine itself does not use jquery.cookie.js.
+            document.cookie = 'issue_template_confirm_to_replace_hide_dialog=1';
+        } else {
+            document.cookie = 'issue_template_confirm_to_replace_hide_dialog=0';
+        }
+    });
 });
 

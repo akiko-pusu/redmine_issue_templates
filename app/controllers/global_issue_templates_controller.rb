@@ -5,8 +5,8 @@ class GlobalIssueTemplatesController < ApplicationController
   include IssueTemplatesHelper
   include Concerns::IssueTemplatesCommon
   menu_item :issues
-  before_action :find_object, only: %i[show update destroy]
-  before_action :find_project, only: [:update]
+  before_action :find_object, only: %i[show edit update destroy]
+  before_action :find_project, only: %i[edit update]
   before_action :require_admin, only: %i[index new show], excep: [:preview]
 
   #
@@ -47,6 +47,15 @@ class GlobalIssueTemplatesController < ApplicationController
     save_and_flash(:notice_successful_update)
   end
 
+  def edit
+    # Change from request.post to request.patch for Rails4.
+    return unless request.patch? || request.put?
+
+    @global_issue_template.safe_attributes = template_params
+    @global_issue_template.checklist_json = checklists.to_json
+    save_and_flash(:notice_successful_update)
+  end
+
   def destroy
     unless @global_issue_template.destroy
       flash[:error] = l(:enabled_template_cannot_destroy)
@@ -65,6 +74,11 @@ class GlobalIssueTemplatesController < ApplicationController
     @text = (global_issue_template ? global_issue_template[:description] : nil)
     @global_issue_template = GlobalIssueTemplate.find(id) if id
     render partial: 'common/preview'
+  end
+
+  def orphaned_templates
+    orphaned = GlobalIssueTemplate.orphaned
+    render partial: 'orphaned_templates', locals: { orphaned_templates: orphaned }
   end
 
   private

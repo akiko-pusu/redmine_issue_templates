@@ -2,10 +2,10 @@ require_relative '../spec_helper'
 
 describe IssueTemplatesHelper do
   describe '#project_tracker?' do
-    let(:trackers) { create_list(:tracker, 2, :with_default_status) }
-    let(:project) { create(:project) }
+    let(:trackers) { FactoryBot.create_list(:tracker, 2, :with_default_status) }
+    let(:project) { FactoryBot.create(:project) }
     let(:tracker) { trackers.first }
-    subject { helper.project_tracker?(tracker.id, project) }
+    subject { helper.project_tracker?(tracker, project) }
 
     context 'Tracker is associated' do
       before do
@@ -27,11 +27,11 @@ describe IssueTemplatesHelper do
   end
 
   describe '#template_target_trackers' do
-    let(:trackers) { create_list(:tracker, 2, :with_default_status) }
-    let(:project) { create(:project) }
+    let(:trackers) { FactoryBot.create_list(:tracker, 2, :with_default_status) }
+    let(:project) { FactoryBot.create(:project) }
     let(:tracker) { trackers.last }
     let(:template) do
-      create(:issue_template, tracker_id: tracker.id, project_id: project.id)
+      FactoryBot.create(:issue_template, tracker_id: tracker.id, project_id: project.id)
     end
     subject { helper.template_target_trackers(project, template) }
     before do
