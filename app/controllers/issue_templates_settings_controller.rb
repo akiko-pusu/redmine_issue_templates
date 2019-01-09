@@ -5,6 +5,7 @@ class IssueTemplatesSettingsController < ApplicationController
 
   def edit
     return if params[:settings].blank?
+
     update_template_setting
     flash[:notice] = l(:notice_successful_update)
     redirect_to controller: 'projects', action: 'settings', id: @project, tab: 'issue_templates'

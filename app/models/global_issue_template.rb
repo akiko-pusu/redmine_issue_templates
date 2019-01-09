@@ -30,6 +30,7 @@ class GlobalIssueTemplate < ActiveRecord::Base
   #
   def check_default
     return unless is_default? && is_default_changed?
+
     self.class.search_by_tracker(tracker_id).update_all(is_default: false)
   end
 

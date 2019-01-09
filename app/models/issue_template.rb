@@ -24,12 +24,14 @@ class IssueTemplate < ActiveRecord::Base
   #
   def check_default
     return unless is_default? && is_default_changed?
+
     self.class.search_by_project(project_id).search_by_tracker(tracker_id).update_all(is_default: false)
   end
 
   # return projects that use this template
   def used_projects
     return [] unless enabled_sharing
+
     projects = project.descendants
                       .joins(:trackers, :enabled_modules).merge(Tracker.where(id: tracker_id)).merge(EnabledModule.where(name: 'issue_templates'))
     IssueTemplateSetting.where(project_id: projects).inherit_templates.select(:project_id)

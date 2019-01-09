@@ -31,8 +31,8 @@ module Concerns
     end
 
     def checklist_enabled?
-      Redmine::Plugin.registered_plugins.keys.include? :redmine_checklists
-    rescue
+      Redmine::Plugin.registered_plugins.key? :redmine_checklists
+    rescue StandardError
       false
     end
   end

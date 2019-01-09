@@ -1,9 +1,8 @@
 # noinspection RubocopInspection
 class GlobalIssueTemplatesController < ApplicationController
   layout 'base'
-  include IssueTemplatesHelper
   helper :issues
-  include IssuesHelper
+  include IssueTemplatesHelper
   include Concerns::IssueTemplatesCommon
   menu_item :issues
   before_action :find_object, only: %i[show update destroy]
@@ -86,6 +85,7 @@ class GlobalIssueTemplatesController < ApplicationController
 
   def save_and_flash(message)
     return unless @global_issue_template.save
+
     respond_to do |format|
       format.html do
         flash[:notice] = l(message)

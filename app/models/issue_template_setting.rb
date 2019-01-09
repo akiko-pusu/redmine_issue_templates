@@ -37,8 +37,10 @@ class IssueTemplateSetting < ActiveRecord::Base
 
     def find_setting(project_id)
       raise ArgumentError, 'Please specify valid project_id.' if project_id.blank?
+
       setting = IssueTemplateSetting.where(project_id: project_id).first
       raise ActiveRecord::RecordNotFound if setting.blank?
+
       setting
     end
   end

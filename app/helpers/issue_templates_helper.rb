@@ -1,11 +1,13 @@
 module IssueTemplatesHelper
   def project_tracker?(tracker, project)
     return false if tracker.blank?
+
     project.trackers.exists?(id: tracker)
   end
 
   def non_project_tracker_msg(flag)
     return '' if flag
+
     "<font class=\"non_project_tracker\">#{l(:unused_tracker_at_this_project)}</font>".html_safe
   end
 

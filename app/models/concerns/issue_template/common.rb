@@ -57,9 +57,10 @@ module Concerns
 
       def checklist
         return [] if checklist_json.blank?
+
         begin
           JSON.parse(checklist_json)
-        rescue
+        rescue StandardError
           []
         end
       end
@@ -86,6 +87,7 @@ module Concerns
 
       def confirm_disabled
         return unless enabled?
+
         errors.add :base, 'enabled_template_cannot_destroy'
         throw :abort
       end

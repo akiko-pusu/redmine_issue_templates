@@ -1,9 +1,7 @@
 # noinspection ALL
 class IssueTemplatesController < ApplicationController
   layout 'base'
-  include IssueTemplatesHelper
   helper :issues
-  include IssuesHelper
   include Concerns::IssueTemplatesCommon
   menu_item :issues
   before_action :find_object, only: %i[show update destroy]
@@ -54,7 +52,7 @@ class IssueTemplatesController < ApplicationController
     @issue_template.author = User.current
     @issue_template.project = @project
     @issue_template.checklist_json = checklists.to_json
-
+    # TODO: Should return validation error in case mandatory fields are blank.
     save_and_flash(:notice_successful_create) && return
   end
 
@@ -175,6 +173,7 @@ class IssueTemplatesController < ApplicationController
 
   def save_and_flash(message)
     return unless @issue_template.save
+
     respond_to do |format|
       format.html do
         flash[:notice] = l(message)
@@ -195,9 +194,8 @@ class IssueTemplatesController < ApplicationController
   end
 
   def global_templates(tracker_id)
-    if apply_all_projects? && (@inherit_templates.present? || @issue_templates.present?)
-      return []
-    end
+    return [] if apply_all_projects? && templates_exist?
+
     project_id = apply_all_projects? ? nil : @project.id
     GlobalIssueTemplate.get_templates_for_project_tracker(project_id, tracker_id)
   end
@@ -216,6 +214,7 @@ class IssueTemplatesController < ApplicationController
     templates.each do |template|
       @group << template.template_struct(option)
       next unless template.is_default == true
+
       @default_template = default_template_index
     end
   end
@@ -231,5 +230,9 @@ class IssueTemplatesController < ApplicationController
   def template_params
     params.require(:issue_template).permit(:tracker_id, :title, :note, :issue_title, :description, :is_default,
                                            :enabled, :author_id, :position, :enabled_sharing, checklists: [])
+  end
+
+  def templates_exist?
+    @inherit_templates.present? || @issue_templates.present?
   end
 end
