@@ -13,10 +13,6 @@ module Concerns
 
         before_destroy :confirm_disabled
 
-        before_save :set_default_position
-        after_save :update_position
-        after_destroy :remove_position
-
         validates :title, presence: true
         validates :tracker, presence: true
 

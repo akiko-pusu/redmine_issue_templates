@@ -40,9 +40,8 @@ Redmine::Plugin.register :redmine_issue_templates do
        caption: :global_issue_templates, html: { class: 'icon icon-global_issue_templates' }
 
   project_module :issue_templates do
-    permission :edit_issue_templates, issue_templates: %i[new create update destroy move]
-    permission :show_issue_templates,
-               issue_templates: %i[index show load set_pulldown list_templates orphaned_templates]
+    permission :edit_issue_templates, issue_templates: %i[new create edit update destroy move]
+    permission :show_issue_templates, issue_templates: %i[index show load set_pulldown list_templates orphaned_templates]
     permission :manage_issue_templates,
                { issue_templates_settings: %i[show edit] }, require: :member
   end
