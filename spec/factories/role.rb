@@ -3,11 +3,11 @@
 FactoryBot.define do
   factory :role do
     sequence(:name) { |n| "Developer: #{n}" }
-    builtin 0
-    issues_visibility 'default'
-    users_visibility 'all'
-    position 1
-    permissions %i[
+    builtin { 0 }
+    issues_visibility { 'default' }
+    users_visibility { 'all' }
+    position { 1 }
+    permissions { %i[
       edit_project
       manage_members
       manage_versions
@@ -46,13 +46,13 @@ FactoryBot.define do
       manage_files
       browse_repository
       view_changesets
-    ]
+    ] }
 
     trait :manager_role do
-      name 'Manager'
-      issues_visibility 'all'
-      users_visibility 'all'
-      permissions %i[
+      name { 'Manager' }
+      issues_visibility { 'all' }
+      users_visibility { 'all' }
+      permissions { %i[
         add_project
         edit_project
         close_project
@@ -104,7 +104,7 @@ FactoryBot.define do
         view_changesets
         manage_related_issues
         manage_project_activities
-      ]
+      ] }
     end
   end
 end

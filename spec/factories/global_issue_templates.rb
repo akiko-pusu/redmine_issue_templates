@@ -11,7 +11,7 @@ FactoryBot.define do
 
     factory :global_issue_template_with_projects do
       transient do
-        projects_count 5
+        projects_count { 5 }
       end
 
       after(:create) do |global_issue_template, evaluator|
