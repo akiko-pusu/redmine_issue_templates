@@ -25,33 +25,32 @@ class IssueTemplatesSettingsControllerTest < Redmine::ControllerTest
 
   def test_update_without_permission
     Role.find(1).remove_permission! :manage_issue_templates
-    post :edit, project_id: @project,
-                settings: { enabled: '1', help_message: 'Hoo', inherit_templates: true },
-                setting_id: 1, tab: 'issue_templates'
+    post :edit, params: { project_id: @project,
+                          settings: { enabled: '1', help_message: 'Hoo', inherit_templates: true },
+                          setting_id: 1, tab: 'issue_templates' }
     assert_response 403
   end
 
   def test_update_with_permission_and_non_project
-    post :edit, project_id: 'dummy',
-                settings: { enabled: '1', help_message: 'Hoo', project_id: 2, inherit_templates: true },
-                setting_id: 1, tab: 'issue_templates'
+    post :edit, params: { project_id: 'dummy',
+                          settings: { enabled: '1', help_message: 'Hoo', project_id: 2, inherit_templates: true },
+                          setting_id: 1, tab: 'issue_templates' }
     assert_response 404
   end
 
   def test_update_with_permission_and_redirect
-    post :edit, project_id: @project,
-                settings: { enabled: '1', help_message: 'Hoo', project_id: 2, inherit_templates: true },
-                setting_id: 1, tab: 'issue_templates'
+    post :edit, params: { project_id: @project,
+                          settings: { enabled: '1', help_message: 'Hoo', project_id: 2, inherit_templates: true },
+                          setting_id: 1, tab: 'issue_templates' }
     assert_response :redirect
     assert_redirected_to controller: 'projects',
                          action: 'settings', id: @project, tab: 'issue_templates'
   end
 
   def test_preview_template_setting
-    post :preview, settings: { help_message: 'h1. Preview test.',
-                               enabled: '1' },
-                   project_id: @project
-    assert_template 'common/_preview'
+    post :preview, params: { settings: { help_message: 'h1. Preview test.',
+                                         enabled: '1' },
+                             project_id: @project }
     assert_select 'h1', /Preview test\./, @response.body.to_s
   end
 end
