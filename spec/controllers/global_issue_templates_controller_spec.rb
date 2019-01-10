@@ -9,6 +9,8 @@ describe GlobalIssueTemplatesController, type: :controller do
   let(:projects) { FactoryBot.create_list(:project, count) }
 
   before do
+    # Prevent to call User.deliver_security_notification when user is created.
+    expect_any_instance_of(User).to receive(:deliver_security_notification).and_return(true)
     @request.session[:user_id] = user.id
   end
 
