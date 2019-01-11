@@ -17,15 +17,7 @@ describe IssueTemplate do
     it { is_expected.to eq 1 }
   end
 
-  describe '#enabled?' do
-    it 'return true / false correctly' do
-      expect(issue_template.enabled?).to be_truthy
-      issue_template.enabled = false
-      expect(issue_template.enabled?).to be_falsey
-    end
-  end
-
-  describe '#sort_by_position' do
+  describe 'scope: .sorted' do
     it 'do sort by position correctly' do
       expect([issue_template, issue_template2]).to eq [issue_template2, issue_template].sort
       expect(IssueTemplate.sorted.first).to eq issue_template
@@ -40,7 +32,10 @@ describe IssueTemplate do
   describe '#destroy' do
     subject { issue_template.destroy }
     context 'Template is enabled' do
-      before { issue_template.enabled = true }
+      before do
+        issue_template.enabled = true
+        issue_template.save
+      end
       it 'Failed to remove with invalid message' do
         expect(Rails.logger).to receive(:info).with(/\[Destroy\] IssueTemplate: /).never
         subject

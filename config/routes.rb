@@ -2,17 +2,29 @@
 # TODO: Clean up routing.
 #
 Rails.application.routes.draw do
-  get 'projects/:project_id/issue_templates', to: 'issue_templates#index'
-  match 'projects/:project_id/issue_templates/new', to: 'issue_templates#new', via: [:post, :get]
-  match 'projects/:project_id/issue_templates/:action', controller: 'issue_templates', via: [:patch, :put, :post, :get]
-  match 'projects/:project_id/issue_templates/:action/:id', to: 'issue_templates#edit', via: [:patch, :put, :post, :get]
-  match 'projects/:project_id/issue_templates_settings/:action', controller: 'issue_templates_settings', via: [:get, :post, :patch, :put]
-  match 'issue_templates/preview', to: 'issue_templates#preview', via: [:get, :post]
-  match 'projects/:project_id/issue_templates_settings/preview', to: 'issue_templates_settings#preview', via: [:get, :post]
-  get 'global_issue_templates', to: 'global_issue_templates#index'
-  match 'global_issue_templates/:action', controller: 'global_issue_templates', via: [:get, :post]
-  match 'global_issue_templates/:action/:id', to: 'global_issue_templates#edit', via: [:patch, :put, :post, :get]
-  match 'global_issue_templates/preview', to: 'global_issue_templates#preview', via: [:get, :post]
-  get 'projects/:project_id/issue_templates/orphaned_templates', to: 'issue_templates#orphaned_templates', as: 'project_orphaned_templates'
-  get 'global_issue_templates/orphaned_templates', to: 'global_issue_templates#orphaned_templates', as: 'global_orphaned_templates'
+  concern :tamplate_common do
+    get 'orphaned_templates', on: :collection
+  end
+
+  concern :previewable do
+    post 'preview', on: :collection
+  end
+
+  resources :global_issue_templates, except: [:edit], concerns: %i[tamplate_common previewable]
+
+  # for project issue template
+  resources :projects, only: [] do
+    resources :issue_templates, except: [:edit], concerns: [:tamplate_common] do
+      post 'set_pulldown', on: :collection
+      get 'list_templates', on: :collection
+    end
+
+    resources :issue_templates_settings, only: [], concerns: [:previewable] do
+      patch 'edit', on: :collection
+    end
+  end
+
+  resources :issue_templates, only: %i[load preview], concerns: [:previewable] do
+    post 'load', on: :collection
+  end
 end

@@ -69,7 +69,7 @@ ISSUE_TEMPLATE.prototype = {
                 async: true,
                 type: 'post',
                 data: $.param({
-                    issue_template: selected_template.val(),
+                    template_id: selected_template.val(),
                     template_type: template_type
                 })
             }).done(function (data) {
@@ -141,7 +141,7 @@ ISSUE_TEMPLATE.prototype = {
         }
     },
     confirmToReplace: function (target_url, confirm_msg, should_replaced,
-        confirmation, general_text_Yes, general_text_No) {
+                                confirmation, general_text_Yes, general_text_No) {
         var ns = this;
         $("#issue_template_confirm_to_replace_dialog").dialog({
             modal: true,
@@ -253,6 +253,22 @@ ISSUE_TEMPLATE.prototype = {
                 });
             });
         },
+        displayTooltip: function (options) {
+            options = $.extend({
+                tooltip_body_id: 'data-tooltip-content',
+                tooltip_target_id: 'data-tooltip-area'
+            }, options);
+            return $(this).each(function () {
+                $(this).hover(function () {
+                    var content = $(this).attr(options.tooltip_body_id);
+                    var target = $(this).attr(options.tooltip_target_id);
+                    var obj = $(content);
+                    if (obj.length)
+                        $(target).html(obj);
+                    obj.toggle();
+                });
+            });
+        },
         expandHelp: function (options) {
             options = $.extend({
                 attr_name: 'data-template-help-target'
@@ -322,7 +338,8 @@ ISSUE_TEMPLATE.prototype = {
 
 $(function () {
     // set plugin
-    $('a.template-help').issueTemplate('expandHelp');
+    $('a.template-help').issueTemplate('displayTooltip');
+    $('a.template-help.collapsible').issueTemplate('expandHelp');
     $('a.template-help.collapsible').click(function () {
         $(this).toggleClass('collapsed');
     });
@@ -350,45 +367,3 @@ $(function () {
     });
 });
 
-/*------- TODO: Remove these styles Redmine v3.3 or higher -----------*/
-(function ($) {
-    $.fn.positionedItems = function (sortableOptions, options) {
-        var settings = $.extend({
-            firstPosition: 1
-        }, options);
-
-        return this.sortable($.extend({
-            axis: 'y',
-            handle: ".sort-handle",
-            helper: function (event, ui) {
-                ui.children('td').each(function () {
-                    $(this).width($(this).width());
-                });
-                return ui;
-            },
-            update: function (event, ui) {
-                var sortable = $(this);
-                var handle = ui.item.find(".sort-handle").addClass("ajax-loading");
-                var url = handle.data("reorder-url");
-                var param = handle.data("reorder-param");
-                var data = {};
-                data[param] = {
-                    position: ui.item.index() + settings['firstPosition']
-                };
-                $.ajax({
-                    url: url,
-                    type: 'put',
-                    dataType: 'script',
-                    data: data,
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        alert(jqXHR.status);
-                        sortable.sortable("cancel");
-                    },
-                    complete: function (jqXHR, textStatus, errorThrown) {
-                        handle.removeClass("ajax-loading");
-                    }
-                });
-            },
-        }, sortableOptions));
-    }
-}(jQuery));

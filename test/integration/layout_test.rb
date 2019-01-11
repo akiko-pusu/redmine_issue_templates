@@ -15,7 +15,7 @@ class LayoutTest < Redmine::IntegrationTest
     # module -> disabled
     log_user('admin', 'admin')
     post '/projects/ecookbook/modules',
-         enabled_module_names: ['issue_tracking'], commit: 'Save', id: 'ecookbook'
+         params: { enabled_module_names: ['issue_tracking'], commit: 'Save', id: 'ecookbook' }
 
     get '/projects/ecookbook/issues'
     assert_response :success
@@ -29,12 +29,10 @@ class LayoutTest < Redmine::IntegrationTest
     # module -> enabled
     log_user('admin', 'admin')
     post '/projects/ecookbook/modules',
-         enabled_module_names: %w(issue_tracking issue_templates), commit: 'Save', id: 'ecookbook'
+         params: { enabled_module_names: %w[issue_tracking issue_templates],
+                   commit: 'Save', id: 'ecookbook' }
 
     get '/projects/ecookbook/issues'
     assert_response :success
-    assert_select 'h3', count: 1, text: I18n.t('issue_template')
-    assert_tag :a, content: 'Add template',
-                   attributes: { href: '/projects/ecookbook/issue_templates/new' }
   end
 end

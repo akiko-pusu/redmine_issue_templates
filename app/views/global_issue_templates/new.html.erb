@@ -7,7 +7,7 @@
 <div class="box">
   <%= error_messages_for 'global_issue_template' %>
   <%= labelled_form_for :global_issue_template,  issue_template,
-                        url: { controller: 'global_issue_templates', action: 'new' },
+                        url: { controller: 'global_issue_templates', action: 'create' },
                         html: { id: 'global_issue_template-form',
                                    class: nil, multipart: false } do |f| %>
 

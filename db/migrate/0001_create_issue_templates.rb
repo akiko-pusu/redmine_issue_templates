@@ -1,4 +1,4 @@
-class CreateIssueTemplates < ActiveRecord::Migration
+class CreateIssueTemplates < ActiveRecord::Migration[4.2]
   def self.up
     create_table :issue_templates do |t|
       t.column :title, :string, null: false

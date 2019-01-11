@@ -1,4 +1,4 @@
-class CreateGlobalIssueTemplates < ActiveRecord::Migration
+class CreateGlobalIssueTemplates < ActiveRecord::Migration[4.2]
   def change
     create_table :global_issue_templates do |t|
       t.string :title

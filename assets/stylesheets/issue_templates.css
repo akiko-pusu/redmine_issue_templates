@@ -268,25 +268,6 @@ a.icon.icon-del[disabled=disabled] {
     opacity: .5;
 }
 
-/*------- TODO: Remove these styles Redmine v3.3 or higher -----------*/
-
-.sort-handle {
-    display: inline-block;
-    vertical-align: middle;
-    width: 16px;
-    height: 16px;
-    background: url("../images/reorder.png") no-repeat 0 50%;
-    cursor: move;
-}
-
-.sort-handle.ajax-loading {
-    background-image: url("../../../images/loading.gif");
-}
-
-tr.ui-sortable-helper {
-    border: 1px solid #e4e4e4;
-}
-
 /*------------ for responsive -----------------*/
 
 @media (max-width: 899px) {
@@ -302,4 +283,26 @@ tr.ui-sortable-helper {
     #content>div.template_box>table>tbody>tr>td.hideable {
         display: none;
     }
+}
+
+/*---- help tooltip --*/
+a.icon-help span {
+    display: none;
+    padding: 8px;
+    font-size: 12px;
+    margin-left: 8px;
+    line-height: 1.6;
+}
+
+a.icon-help:hover span {
+    display: inline;
+    position: absolute;
+    background-color: #FFFFFF;
+    border: 1px solid #cccccc;
+    color: #000000;
+    width: 300px;
+}
+
+#template-help-wiki > p {
+    padding-left: 5px;
 }

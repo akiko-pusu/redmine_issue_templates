@@ -15,9 +15,7 @@ if ENV['JENKINS'] == 'true'
   SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
   true
 else
-  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
-      SimpleCov::Formatter::HTMLFormatter
-  ]
+  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([SimpleCov::Formatter::HTMLFormatter])
 end
 
 SimpleCov.coverage_dir('coverage/redmine_issue_templates_test')

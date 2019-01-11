@@ -1,4 +1,4 @@
-require File.expand_path('../../test_helper', __FILE__)
+require File.expand_path('../test_helper', __dir__)
 
 class GlobalIssueTemplatesTest < ActiveSupport::TestCase
   fixtures :global_issue_templates, :users, :trackers

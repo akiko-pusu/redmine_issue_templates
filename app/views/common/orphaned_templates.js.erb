@@ -1,0 +1,2 @@
+$('#orphaned_templates').toggle();
+$('#orphaned_templates').html('<%= escape_javascript(render 'orphaned', orphaned_templates: orphaned_templates) %>');

@@ -1,19 +1,9 @@
-require_dependency 'projects_helper'
+require 'projects_helper'
 
 module IssueTemplates
   module ProjectsHelperPatch
-    def self.included(base)
-      base.send(:include, ProjectsHelperMethodsIssueTemplates)
-      base.class_eval do
-        alias_method_chain :project_settings_tabs, :issue_templates
-      end
-    end
-  end
-
-  module ProjectsHelperMethodsIssueTemplates
-    # Append tab for issue templates to project settings tabs.
-    def project_settings_tabs_with_issue_templates
-      tabs = project_settings_tabs_without_issue_templates
+    def project_settings_tabs
+      tabs = super
       @issue_templates_setting = IssueTemplateSetting.find_or_create(@project.id)
       action = { name: 'issue_templates',
                  controller: 'issue_templates_settings',
@@ -24,3 +14,5 @@ module IssueTemplates
     end
   end
 end
+
+ProjectsHelper.prepend IssueTemplates::ProjectsHelperPatch

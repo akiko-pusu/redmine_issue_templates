@@ -1,6 +1,6 @@
 require File.expand_path('../test_helper', __dir__)
 
-class IssueTemplatesControllerTest < ActionController::TestCase
+class IssueTemplatesControllerTest < Redmine::ControllerTest
   fixtures :projects, :users, :roles, :trackers, :members, :member_roles, :enabled_modules,
            :issue_templates,
            :projects_trackers
@@ -8,10 +8,7 @@ class IssueTemplatesControllerTest < ActionController::TestCase
   include Redmine::I18n
 
   def setup
-    @controller = IssueTemplatesController.new
-    @request = ActionController::TestRequest.new
     @request.session[:user_id] = 2
-    @response = ActionController::TestResponse.new
     @request.env['HTTP_REFERER'] = '/'
     # Enabled Template module
     @project = Project.find(1)
@@ -24,73 +21,62 @@ class IssueTemplatesControllerTest < ActionController::TestCase
 
   def test_get_index_with_non_existing_project
     # set non existing project
-    get :index, project_id: 100
+    get :index, params: { project_id: 100 }
     assert_response 404
   end
 
   def test_get_index_without_show_permission
     Role.find(1).remove_permission! :show_issue_templates
-    get :index, project_id: 1
+    get :index, params: { project_id: 1 }
     assert_response 403
   end
 
   def test_get_index_with_normal
-    get :index, project_id: 1
+    get :index, params: { project_id: 1 }
     assert_response :success
-    assert_template 'index'
-    assert_not_nil assigns(:global_issue_templates)
   end
 
   def test_show_with_non_existing_template
-    get :show, id: 100, project_id: 1
+    get :show, params: { id: 100, project_id: 1 }
     assert_response 404
   end
 
   def test_show_return_json_hash
-    get :load, project_id: 1, issue_template: 1
+    get :load, params: { project_id: 1, template_id: 1 }
     assert_response :success
     assert_equal 'description1', json_response['issue_template']['description']
   end
 
   def test_show_return_json_hash_of_global
-    get :load, project_id: 1, issue_template: 1, template_type: 'global'
+    get :load, params: { project_id: 1, template_id: 1, template_type: 'global' }
     assert_response :success
     assert_equal 'global description1', json_response['global_issue_template']['description']
   end
 
   def test_show_render_pulldown
-    get :set_pulldown, project_id: 1, issue_tracker_id: 1
+    get :set_pulldown, params: { project_id: 1, issue_tracker_id: 1 }
     tracker = Tracker.find(1)
     assert_response :success
-    assert_template 'issue_templates/_template_pulldown'
     assert_select "optgroup[label=#{tracker.name}]"
   end
 
   def test_new_template
     edit_permission
 
-    get :new, project_id: 1, author_id: 2
+    get :new, params: { project_id: 1, author_id: 2 }
     assert_response :success
-
-    template = assigns(:issue_template)
-    assert_not_nil template
-    assert template.title.blank?
-    assert template.description.blank?
-    assert template.note.blank?
-    assert template.tracker.blank?
-    assert_equal(2, template.author.id)
-    assert_equal(1, template.project.id)
   end
 
   def test_create_template
     edit_permission
 
     num = IssueTemplate.count
-    post :new, issue_template: { title: 'newtitle', note: 'note',
-                                 description: 'description', tracker_id: 1, enabled: 1, author_id: 3 }, project_id: 1
+    post :create, params: { issue_template: { title: 'newtitle', note: 'note',
+                                              description: 'description', tracker_id: 1, enabled: 1, author_id: 3 },
+                            project_id: 1 }
 
-    template = assigns(:issue_template)
-    assert_response :redirect # show
+    template = IssueTemplate.last
+    assert_response :redirect
 
     assert_equal(num + 1, IssueTemplate.count)
 
@@ -109,9 +95,9 @@ class IssueTemplatesControllerTest < ActionController::TestCase
     num = IssueTemplate.count
 
     # when title blank, validation bloks to save.
-    post :new, issue_template: { title: '', note: 'note',
-                                 description: 'description', tracker_id: 1, enabled: 1,
-                                 author_id: 1 }, project_id: 1
+    post :new, params: { issue_template: { title: '', note: 'note',
+                                           description: 'description', tracker_id: 1, enabled: 1,
+                                           author_id: 1 }, project_id: 1 }
 
     assert_response :success
     assert_equal(num, IssueTemplate.count)
@@ -120,17 +106,16 @@ class IssueTemplatesControllerTest < ActionController::TestCase
   def test_preview_template
     edit_permission
 
-    get :preview, issue_template: { description: 'h1. Test data.' }
-    assert_template 'common/_preview'
+    get :preview, params: { issue_template: { description: 'h1. Test data.' } }
     assert_select 'h1', /Test data\./, @response.body.to_s
   end
 
-  def test_edit_template
+  def test_update_template
     edit_permission
 
-    put :edit, id: 2,
-               issue_template: { description: 'Update Test template2' },
-               project_id: 1
+    put :update, params: { id: 2,
+                           issue_template: { description: 'Update Test template2' },
+                           project_id: 1 }
     project = Project.find 1
     assert_response :redirect # show
     issue_template = IssueTemplate.find(2)
@@ -142,7 +127,7 @@ class IssueTemplatesControllerTest < ActionController::TestCase
   def test_delete_template_fail_if_enabled
     edit_permission
 
-    post :destroy, id: 1, project_id: 1
+    post :destroy, params: { id: 1, project_id: 1 }
     project = Project.find 1
     assert_redirected_to controller: 'issue_templates',
                          action: 'show', project_id: project, id: 1
@@ -155,7 +140,7 @@ class IssueTemplatesControllerTest < ActionController::TestCase
     template = IssueTemplate.find(1)
     template.enabled = false
     template.save
-    post :destroy, id: 1, project_id: 1
+    post :destroy, params: { id: 1, project_id: 1 }
     project = Project.find 1
     assert_redirected_to controller: 'issue_templates',
                          action: 'index', project_id: project
@@ -165,10 +150,10 @@ class IssueTemplatesControllerTest < ActionController::TestCase
   def test_edit_template_failed_with_project_id_and_safe_attributes
     edit_permission
 
-    put :edit, id: 2,
-               issue_template: { description: 'Update Test template2',
-                                 project_id: 2, author_id: 2 },
-               project_id: 1
+    put :update, params: { id: 2,
+                           issue_template: { description: 'Update Test template2',
+                                             project_id: 2, author_id: 2 },
+                           project_id: 1 }
     project = Project.find 1
     assert_response :redirect # show
     issue_template = IssueTemplate.find(2)
@@ -182,15 +167,13 @@ class IssueTemplatesControllerTest < ActionController::TestCase
   def test_child_project_index
     child_project_setup
 
-    get :index, project_id: 1
+    get :index, params: { project_id: 1 }
     assert_response :success
-    assert_template 'index'
     assert_select 'h2', text: l(:issue_template).to_s, count: 1
     assert !@response.body.match(%r{<h3>#{l(:label_inherited_templates)}</h3>})
 
-    get :index, project_id: 3
+    get :index, params: { project_id: 3 }
     assert_response :success
-    assert_template 'index'
     assert_select 'h2', text: l(:issue_template).to_s, count: 1
     assert !@response.body.match(%r{<h3>#{l(:label_inherited_templates)}</h3>})
   end
@@ -202,9 +185,8 @@ class IssueTemplatesControllerTest < ActionController::TestCase
     setting.inherit_templates = true
     setting.save!
 
-    get :index, project_id: 3
+    get :index, params: { project_id: 3 }
     assert_response :success
-    assert_template 'index'
     assert_select 'h2', text: l(:issue_template).to_s, count: 1
   end
 
@@ -215,8 +197,7 @@ class IssueTemplatesControllerTest < ActionController::TestCase
     setting.inherit_templates = true
     setting.save!
     tracker = Tracker.find(1)
-    get :set_pulldown, project_id: 3, issue_tracker_id: 1
-    assert_template 'issue_templates/_template_pulldown'
+    get :set_pulldown, params: { project_id: 3, issue_tracker_id: 1 }
     assert_select "optgroup[label='#{tracker.name}']"
     assert_select 'option[value="1"]'
     assert_select 'option[class="global"]'
