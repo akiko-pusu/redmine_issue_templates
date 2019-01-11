@@ -17,6 +17,9 @@ feature 'PluginSetting to apply Global issue templates to all the projects', js:
   end
 
   background do
+    # Prevent to call User.deliver_security_notification when user is created.
+    allow_any_instance_of(User).to receive(:deliver_security_notification).and_return(true)
+
     Setting.send 'plugin_redmine_issue_templates=', 'apply_global_template_to_all_projects' => 'false'
     user.update_attribute(:admin, true)
     log_user(user.login, user.login)
