@@ -118,6 +118,7 @@ workflows:
               ignore:
                 - support-rails5
                 - /trunk-.*/
+                - develop
       - trunk_test:
           requires:
             - build
@@ -126,3 +127,4 @@ workflows:
               only:
                 - support-rails5
                 - /trunk-.*/
+                - develop
