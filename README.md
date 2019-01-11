@@ -72,6 +72,17 @@ If you have any requests, bug reports, please use GitHub issues. <https://github
 
 ## Changelog
 
+### 0.3.0
+
+* Support Redmine 4.x.
+  * Now master branch unsupports Redmine 3.x.
+  * Please use ver **0.2.x** or ``v0.2.x-support-Redmine3`` branch
+    in case using Redmine3.x.
+* Follow Redmine's preview option to the wiki toolbar.
+* Show additional navigation message when plugin is applied to Redmine 3.x.
+
+NOTE: Mainly, maintenance, bugfix and refactoring only. There is no additional feature, translation in this release.
+
 ### 0.2.1
 
 Mainly, bugfix and refactoring release.
