@@ -76,7 +76,7 @@ class IssueTemplatesController < ApplicationController
 
   # load template description
   def load
-    issue_template_id = params[:id]
+    issue_template_id = params[:template_id]
     template_type = params[:template_type]
     issue_template = if !template_type.blank? && template_type == 'global'
                        GlobalIssueTemplate.find(issue_template_id)

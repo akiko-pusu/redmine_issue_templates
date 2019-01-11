@@ -42,13 +42,13 @@ class IssueTemplatesControllerTest < Redmine::ControllerTest
   end
 
   def test_show_return_json_hash
-    get :load, params: { project_id: 1, id: 1 }
+    get :load, params: { project_id: 1, template_id: 1 }
     assert_response :success
     assert_equal 'description1', json_response['issue_template']['description']
   end
 
   def test_show_return_json_hash_of_global
-    get :load, params: { project_id: 1, id: 1, template_type: 'global' }
+    get :load, params: { project_id: 1, template_id: 1, template_type: 'global' }
     assert_response :success
     assert_equal 'global description1', json_response['global_issue_template']['description']
   end

@@ -69,7 +69,7 @@ ISSUE_TEMPLATE.prototype = {
                 async: true,
                 type: 'post',
                 data: $.param({
-                    issue_template: selected_template.val(),
+                    template_id: selected_template.val(),
                     template_type: template_type
                 })
             }).done(function (data) {
