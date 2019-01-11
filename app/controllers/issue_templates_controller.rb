@@ -43,8 +43,13 @@ class IssueTemplatesController < ApplicationController
   end
 
   def new
-    # create empty instance
-    @issue_template = IssueTemplate.new
+    if params[:copy_from].present?
+      @issue_template = IssueTemplate.find(params[:copy_from]).dup
+      @issue_template.title = @issue_template.copy_title
+    else
+      # create empty instance
+      @issue_template ||= IssueTemplate.new(author: @user, project: @project)
+    end
     render_form
   end
 
