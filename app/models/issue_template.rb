@@ -4,6 +4,7 @@ class IssueTemplate < ActiveRecord::Base
   belongs_to :project
   validates :project_id, presence: true
   validates_uniqueness_of :title, scope: :project_id
+  acts_as_positioned :scope => [:project_id, :tracker_id]
 
   # author and project should be stable.
   safe_attributes 'title', 'description', 'tracker_id', 'note', 'enabled', 'issue_title', 'is_default',

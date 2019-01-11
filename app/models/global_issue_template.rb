@@ -4,6 +4,8 @@ class GlobalIssueTemplate < ActiveRecord::Base
   validates_uniqueness_of :title, scope: :tracker_id
   has_and_belongs_to_many :projects
 
+  acts_as_positioned :scope => [:tracker_id]
+
   safe_attributes 'title',
                   'description',
                   'tracker_id',
