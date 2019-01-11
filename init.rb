@@ -23,16 +23,16 @@ require 'issue_templates/issues_hook'
 require 'issue_templates/projects_helper_patch'
 
 # NOTE: Keep error message for a while to support Redmine3.x users.
-def issue_template_version_message(original_message=nil)
-  <<~"USAGE"
+def issue_template_version_message(original_message = nil)
+  <<-"USAGE"
 
-    ==========================
-    #{original_message}
+  ==========================
+  #{original_message}
 
-    If you use Redmine3.x, please use Redmine Issue Templates version 0.2.x or clone via
-    'v0.2.x-support-Redmine3' branch.
-    You can download older version from here: https://github.com/akiko-pusu/redmine_issue_templates/releases
-    ==========================
+  If you use Redmine3.x, please use Redmine Issue Templates version 0.2.x or clone via
+  'v0.2.x-support-Redmine3' branch.
+  You can download older version from here: https://github.com/akiko-pusu/redmine_issue_templates/releases
+  ==========================
   USAGE
 end
 
@@ -48,7 +48,7 @@ Redmine::Plugin.register :redmine_issue_templates do
 
     settings partial: 'settings/redmine_issue_templates',
              default: {
-               'apply_global_template_to_all_projects' => 'false'
+               apply_global_template_to_all_projects: 'false'
              }
 
     menu :admin_menu, :redmine_issue_templates, { controller: 'global_issue_templates', action: 'index' },
@@ -60,6 +60,6 @@ Redmine::Plugin.register :redmine_issue_templates do
       permission :manage_issue_templates, { issue_templates_settings: %i[show edit] }, require: :member
     end
   rescue ::Redmine::PluginRequirementError => e
-    raise ::Redmine::PluginRequirementError.new(issue_template_version_message(e.message))
+    raise ::Redmine::PluginRequirementError issue_template_version_message(e.message)
   end
 end
