@@ -6,3 +6,6 @@ wercker.yml export-ignore
 script/ export-ignore
 .rubocop* export-ignore
 Gemfile.local export-ignore
+.circleci/ export-ignore
+docker-compose.yml export-ignore
+Dockerfile export-ignore
