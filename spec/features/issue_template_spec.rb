@@ -74,6 +74,30 @@ feature 'IssueTemplate', js: true do
     end
   end
 
+  feature 'create template' do
+    given!(:enabled_module) { FactoryBot.create(:enabled_module) }
+    context 'When user has priv to  issue template' do
+      given(:issue_template_title) { page.find('#issue_template_title') }
+      given(:issue_template_description) { page.find('#issue_template_description') }
+      given(:create_button) { page.find('#issue_template-form > input[type="submit"]') }
+      given(:error_message) { page.find('#errorExplanation') }
+      background do
+        assign_template_priv(role, add_permission: :edit_issue_templates)
+        log_user('jsmith', 'jsmith')
+        visit '/projects/ecookbook/issue_templates/new'
+
+        issue_template_title.set('')
+        issue_template_description.set('Test for issue template description')
+        create_button.click
+        sleep(0.2)
+      end
+
+      scenario 'create template failed' do
+        expect(error_message).to have_content('Title cannot be blank')
+      end
+    end
+  end
+
   feature 'Template feature at new issue screen' do
     given!(:issue_templates) do
       FactoryBot.create_list(:issue_template, 2, project_id: 1, tracker_id: 1)

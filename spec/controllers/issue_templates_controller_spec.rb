@@ -3,7 +3,10 @@
 require_relative '../spec_helper'
 require File.expand_path(File.dirname(__FILE__) + '/../support/controller_helper')
 
-include ControllerHelper
+RSpec.configure do |c|
+  c.include ControllerHelper
+end
+
 #
 # Shared Example
 #

@@ -95,12 +95,14 @@ class IssueTemplatesControllerTest < Redmine::ControllerTest
     num = IssueTemplate.count
 
     # when title blank, validation bloks to save.
-    post :new, params: { issue_template: { title: '', note: 'note',
-                                           description: 'description', tracker_id: 1, enabled: 1,
-                                           author_id: 1 }, project_id: 1 }
+    post :create, params: { issue_template:
+      { title: '', note: 'note', description: 'description', tracker_id: 1, enabled: 1, author_id: 1 }, project_id: 1 }
 
     assert_response :success
     assert_equal(num, IssueTemplate.count)
+
+    # Error message should be displayed.
+    assert_select 'div#errorExplanation', /Title cannot be blank/, @response.body.to_s
   end
 
   def test_preview_template
