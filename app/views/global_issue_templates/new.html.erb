@@ -5,7 +5,6 @@
 <h2 class="template"><%=h "#{l(:issue_templates)} / #{l(:button_add)}" %></h2>
 
 <div class="box">
-  <%= error_messages_for 'global_issue_template' %>
   <%= labelled_form_for :global_issue_template,  issue_template,
                         url: { controller: 'global_issue_templates', action: 'create' },
                         html: { id: 'global_issue_template-form',
