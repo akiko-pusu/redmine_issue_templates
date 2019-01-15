@@ -82,6 +82,7 @@ If you have any requests, bug reports, please use GitHub issues. <https://github
 * Show additional navigation message when plugin is applied to Redmine 3.x.
 
 NOTE: Mainly, maintenance, bugfix and refactoring only. There is no additional feature, translation in this release.
+Thank you for creating patch, Mizuki Ishikawa!
 
 ### 0.2.1
 
