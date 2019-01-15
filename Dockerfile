@@ -1,4 +1,4 @@
-FROM ruby:2.4.2
+FROM ruby:2.5
 LABEL maintainer="AKIKO TAKANO / (Twitter: @akiko_pusu)" \
   description="Image to run Redmine simply with sqlite to try/review plugin."
 
@@ -11,7 +11,8 @@ RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 RUN apt-get update
 RUN apt-get install -qq -y \
     git vim mercurial         \
-    sqlite3 libmysqlclient-dev
+    sqlite3 default-libmysqlclient-dev
+RUN apt-get install -qq -y build-essential libc6-dev
 
 RUN cd /tmp && hg clone https://bitbucket.org/redmine/redmine-all redmine
 WORKDIR /tmp/redmine
@@ -26,12 +27,6 @@ development:\n\
   adapter: sqlite3\n\
   database: /tmp/data/redmine_development.sqlite3\n\
   encoding: utf8mb4\n\
-development_mssql:\n\
-  adapter: sqlserver\n\
-  host: mssql\n\
-  database: redmine_development\n\
-  username: sa\n\
-  password: StrongPassw0rd!\n\
 development_mysql:\n\
   adapter: mysql2\n\
   host: mysql\n\

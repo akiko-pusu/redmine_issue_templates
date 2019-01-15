@@ -2,7 +2,7 @@ version: '3'
 services:
   # start service for redmine with plugin
   # 1. $ docker-compose build --force-rm --no-cache
-  # 2. $ docker-compose up -d
+  # 2. $ docker-compose up -d web
   #
   #
   web:
@@ -22,36 +22,9 @@ services:
       - .:/tmp/redmine/plugins/redmine_issue_templates
     ports:
       - "3000:3000"
-#  webmssql:
-#    build:
-#      context: .
-#    image: redmine_base
-#    container_name: redmine_mssql
-#    command: >
-#      bash -c "bundle &&
-#           bundle exec rake db:migrate &&
-#           bundle exec rake redmine:plugins:migrate &&
-#           bundle exec rake generate_secret_token &&
-#           bundle exec rails s -p 3001 -b '0.0.0.0'"
-#    environment:
-#      RAILS_ENV: development
-#    volumes:
-#      - .:/tmp/redmine/plugins/redmine_issue_templates
-#    ports:
-#      - "3001:3001"
-#    depends_on:
-#      - mssql
   mysql:
     image: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: pasword
     ports:
       - "3306:3306"
-  mssql:
-    image: microsoft/mssql-server-linux:2017-latest
-    environment:
-      ACCEPT_EULA: Y
-      MSSQL_SA_PASSWORD: StrongPassw0rd!
-      MSSQL_PID: Developer
-    ports:
-      - '1433:1433'
