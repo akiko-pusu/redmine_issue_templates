@@ -26,7 +26,7 @@ class GlobalIssueTemplatesController < ApplicationController
   def new
     # create empty instance
     @global_issue_template = GlobalIssueTemplate.new
-    render_form
+    render render_form_params
   end
 
   def create
@@ -34,17 +34,17 @@ class GlobalIssueTemplatesController < ApplicationController
     @global_issue_template.author = User.current
     @global_issue_template.checklist_json = checklists.to_json if checklists
 
-    save_and_flash(:notice_successful_create) && return
+    save_and_flash(:notice_successful_create, :new) && return
   end
 
   def show
-    render_form
+    render render_form_params
   end
 
   def update
     @global_issue_template.safe_attributes = template_params
     @global_issue_template.checklist_json = checklists.to_json
-    save_and_flash(:notice_successful_update)
+    save_and_flash(:notice_successful_update, :show)
   end
 
   def edit
@@ -53,7 +53,7 @@ class GlobalIssueTemplatesController < ApplicationController
 
     @global_issue_template.safe_attributes = template_params
     @global_issue_template.checklist_json = checklists.to_json
-    save_and_flash(:notice_successful_update)
+    save_and_flash(:notice_successful_update, :show)
   end
 
   def destroy
@@ -97,8 +97,11 @@ class GlobalIssueTemplatesController < ApplicationController
     render_404
   end
 
-  def save_and_flash(message)
-    return unless @global_issue_template.save
+  def save_and_flash(message, action_on_failure)
+    unless @global_issue_template.save
+      render render_form_params.merge(action: action_on_failure)
+      return
+    end
 
     respond_to do |format|
       format.html do
@@ -115,11 +118,12 @@ class GlobalIssueTemplatesController < ApplicationController
                   :author_id, :position, project_ids: [], checklists: [])
   end
 
-  def render_form
+  def render_form_params
     trackers = Tracker.all
     projects = Project.all
-    render(layout: !request.xhr?,
-           locals: { checklist_enabled: checklist_enabled?, trackers: trackers, apply_all_projects: apply_all_projects?,
-                     issue_template: @global_issue_template, projects: projects })
+    { layout: !request.xhr?,
+      locals: { checklist_enabled: checklist_enabled?, trackers: trackers, apply_all_projects: apply_all_projects?,
+                issue_template: @global_issue_template, projects: projects }
+    }
   end
 end

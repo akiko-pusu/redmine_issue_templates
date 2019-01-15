@@ -101,6 +101,8 @@ class IssueTemplatesControllerTest < Redmine::ControllerTest
     assert_response :success
     assert_equal(num, IssueTemplate.count)
 
+    # render :new
+    assert_select 'h2', text: "#{l(:issue_templates)} / #{l(:button_add)}"
     # Error message should be displayed.
     assert_select 'div#errorExplanation', /Title cannot be blank/, @response.body.to_s
   end
@@ -124,6 +126,25 @@ class IssueTemplatesControllerTest < Redmine::ControllerTest
     assert_redirected_to controller: 'issue_templates',
                          action: 'show', id: issue_template.id, project_id: project
     assert_equal 'Update Test template2', issue_template.description
+  end
+
+  def test_update_template_with_empty_title
+    edit_permission
+    num = IssueTemplate.count
+
+    # when title blank, validation bloks to save.
+    put :update, params: { id: 2,
+                           issue_template: { title: '' },
+                           project_id: 1 }
+
+    assert_response :success
+    assert_equal(num, IssueTemplate.count)
+
+    # render :show
+    assert_select 'h2.template', "#{l(:issue_templates)}: #2"
+    assert_select 'div#edit-issue_template'
+    # Error message should be displayed.
+    assert_select 'div#errorExplanation', /Title cannot be blank/, @response.body.to_s
   end
 
   def test_delete_template_fail_if_enabled
