@@ -31,6 +31,19 @@ class GlobalIssueTemplatesControllerTest < Redmine::ControllerTest
     assert_equal 'Update Test Global template2', global_issue_template.description
   end
 
+  def test_update_template_with_empty_title
+    put :update, params: { id: 2, global_issue_template:
+      { title: '' } }
+    assert_response :success
+    global_issue_template = GlobalIssueTemplate.find(2)
+    assert_not_equal '', global_issue_template.title
+
+    # render :show
+    assert_select 'h2.template', "#{l(:global_issue_templates)}: ##{global_issue_template.id}"
+    # Error message should be displayed.
+    assert_select 'div#errorExplanation', /Title cannot be blank/, @response.body.to_s
+  end
+
   def test_destroy_template
     post :destroy, params: { id: 2 }
     assert_redirected_to controller: 'global_issue_templates',
@@ -66,12 +79,17 @@ class GlobalIssueTemplatesControllerTest < Redmine::ControllerTest
     num = GlobalIssueTemplate.count
 
     # when title blank, validation bloks to save.
-    post :new, params: { global_issue_template: { title: '', note: 'note',
+    post :create, params: { global_issue_template: { title: '', note: 'note',
                                                   description: 'description', tracker_id: 1, enabled: 1,
                                                   author_id: 1 } }
 
     assert_response :success
     assert_equal(num, GlobalIssueTemplate.count)
+
+    # render :new
+    assert_select 'h2', text: "#{l(:issue_templates)} / #{l(:button_add)}"
+    # Error message should be displayed.
+    assert_select 'div#errorExplanation ul li', /Title cannot be blank/, @response.body.to_s
   end
 
   def test_preview_template

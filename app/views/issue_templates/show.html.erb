@@ -28,7 +28,7 @@
 </h2>
 
 <% if authorize_for('issue_templates', 'update') %>
-    <div id="edit-issue_template" style="display:none;">
+    <div id="edit-issue_template" style="<%= 'display:none;' if issue_template.valid? %>">
       <%= labelled_form_for :issue_template, issue_template,
                             url: { controller: 'issue_templates', action: 'update',
                                    project_id: project, id: issue_template },

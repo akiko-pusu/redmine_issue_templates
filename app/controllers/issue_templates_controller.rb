@@ -39,7 +39,7 @@ class IssueTemplatesController < ApplicationController
   end
 
   def show
-    render_form
+    render render_form_params
   end
 
   def new
@@ -50,7 +50,7 @@ class IssueTemplatesController < ApplicationController
       # create empty instance
       @issue_template ||= IssueTemplate.new(author: @user, project: @project)
     end
-    render_form
+    render render_form_params
   end
 
   def create
@@ -59,13 +59,13 @@ class IssueTemplatesController < ApplicationController
     @issue_template.project = @project
     @issue_template.checklist_json = checklists.to_json
     # TODO: Should return validation error in case mandatory fields are blank.
-    save_and_flash(:notice_successful_create) && return
+    save_and_flash(:notice_successful_create, :new) && return
   end
 
   def update
     @issue_template.safe_attributes = template_params
     @issue_template.checklist_json = checklists.to_json
-    save_and_flash(:notice_successful_update)
+    save_and_flash(:notice_successful_update, :show)
   end
 
   def destroy
@@ -182,8 +182,11 @@ class IssueTemplatesController < ApplicationController
     @global_templates = global_templates(@tracker.id)
   end
 
-  def save_and_flash(message)
-    return unless @issue_template.save
+  def save_and_flash(message, action_on_failure)
+    unless @issue_template.save
+      render render_form_params.merge(action: action_on_failure)
+      return
+    end
 
     respond_to do |format|
       format.html do
@@ -194,10 +197,11 @@ class IssueTemplatesController < ApplicationController
     end
   end
 
-  def render_form
-    render(layout: !request.xhr?,
-           locals: { checklist_enabled: checklist_enabled?,
-                     issue_template: @issue_template, project: @project })
+  def render_form_params
+    { layout: !request.xhr?,
+      locals: { checklist_enabled: checklist_enabled?,
+               issue_template: @issue_template, project: @project }
+    }
   end
 
   def setting
