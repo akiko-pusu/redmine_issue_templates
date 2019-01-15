@@ -1,0 +1,30 @@
+version: '3'
+services:
+  # start service for redmine with plugin
+  # 1. $ docker-compose build --force-rm --no-cache
+  # 2. $ docker-compose up -d web
+  #
+  #
+  web:
+    build:
+      context: .
+    image: redmine_sqlite3
+    container_name: redmine_sqlite3
+    command: >
+      bash -c "bundle &&
+           bundle exec rake db:migrate &&
+           bundle exec rake redmine:plugins:migrate &&
+           bundle exec rake generate_secret_token &&
+           bundle exec rails s -p 3000 -b '0.0.0.0'"
+    environment:
+      RAILS_ENV: development
+    volumes:
+      - .:/tmp/redmine/plugins/redmine_issue_templates
+    ports:
+      - "3000:3000"
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: pasword
+    ports:
+      - "3306:3306"

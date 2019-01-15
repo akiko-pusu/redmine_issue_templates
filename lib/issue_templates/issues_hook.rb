@@ -13,9 +13,7 @@ module IssueTemplates
 
     def view_layouts_base_html_head(context = {})
       o = stylesheet_link_tag('issue_templates', plugin: 'redmine_issue_templates')
-      if need_template_js?(context[:controller])
-        o << javascript_include_tag('issue_templates', plugin: 'redmine_issue_templates')
-      end
+      o << javascript_include_tag('issue_templates', plugin: 'redmine_issue_templates') if need_template_js?(context[:controller])
       o
     end
 

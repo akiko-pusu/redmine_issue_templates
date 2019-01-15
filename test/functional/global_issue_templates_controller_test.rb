@@ -1,6 +1,6 @@
 require File.expand_path('../test_helper', __dir__)
 
-class GlobalIssueTemplatesControllerTest < ActionController::TestCase
+class GlobalIssueTemplatesControllerTest < Redmine::ControllerTest
   fixtures :projects, :users, :trackers,
            :global_issue_templates,
            :global_issue_templates_projects
@@ -8,10 +8,7 @@ class GlobalIssueTemplatesControllerTest < ActionController::TestCase
   include Redmine::I18n
 
   def setup
-    @controller = GlobalIssueTemplatesController.new
-    @request    = ActionController::TestRequest.new
     @request.session[:user_id] = 1 # Admin
-    @response = ActionController::TestResponse.new
     @request.env['HTTP_REFERER'] = '/'
     # Enabled Template module
     @project = Project.find(1)
@@ -22,12 +19,11 @@ class GlobalIssueTemplatesControllerTest < ActionController::TestCase
   def test_get_index
     get :index
     assert_response :success
-    assert_template 'index'
   end
 
-  def test_edit_template
-    put :edit, id: 2,
-               global_issue_template: { description: 'Update Test Global template2' }
+  def test_update_template
+    put :update, params: { id: 2, global_issue_template:
+      { description: 'Update Test Global template2' } }
     assert_response :redirect # show
     global_issue_template = GlobalIssueTemplate.find(2)
     assert_redirected_to controller: 'global_issue_templates',
@@ -35,8 +31,21 @@ class GlobalIssueTemplatesControllerTest < ActionController::TestCase
     assert_equal 'Update Test Global template2', global_issue_template.description
   end
 
+  def test_update_template_with_empty_title
+    put :update, params: { id: 2, global_issue_template:
+      { title: '' } }
+    assert_response :success
+    global_issue_template = GlobalIssueTemplate.find(2)
+    assert_not_equal '', global_issue_template.title
+
+    # render :show
+    assert_select 'h2.template', "#{l(:global_issue_templates)}: ##{global_issue_template.id}"
+    # Error message should be displayed.
+    assert_select 'div#errorExplanation', { count: 1, text: /Title cannot be blank/ }, @response.body.to_s
+  end
+
   def test_destroy_template
-    post :destroy, id: 2
+    post :destroy, params: { id: 2 }
     assert_redirected_to controller: 'global_issue_templates',
                          action: 'index'
     assert_raise(ActiveRecord::RecordNotFound) { GlobalIssueTemplate.find(2) }
@@ -45,23 +54,16 @@ class GlobalIssueTemplatesControllerTest < ActionController::TestCase
   def test_new_template
     get :new
     assert_response :success
-
-    template = assigns(:global_issue_template)
-    assert_not_nil template
-    assert template.title.blank?
-    assert template.description.blank?
-    assert template.note.blank?
-    assert template.tracker.blank?
   end
 
   def test_create_template
     num = GlobalIssueTemplate.count
-    post :new, global_issue_template: { title: 'Global Template newtitle for creation test', note: 'Global note for creation test',
-                                        description: 'Global Template description for creation test',
-                                        tracker_id: 1, enabled: 1, author_id: 1 }
+    post :create, params: { global_issue_template: { title: 'Global Template newtitle for creation test', note: 'Global note for creation test',
+                                                     description: 'Global Template description for creation test',
+                                                     tracker_id: 1, enabled: 1, author_id: 1 } }
 
     template = GlobalIssueTemplate.order('id DESC').first
-    assert_response :redirect # show
+    assert_response :redirect
 
     assert_equal(num + 1, GlobalIssueTemplate.count)
 
@@ -77,18 +79,21 @@ class GlobalIssueTemplatesControllerTest < ActionController::TestCase
     num = GlobalIssueTemplate.count
 
     # when title blank, validation bloks to save.
-    post :new, global_issue_template: { title: '', note: 'note',
-                                        description: 'description', tracker_id: 1, enabled: 1,
-                                        author_id: 1 }
+    post :create, params: { global_issue_template: { title: '', note: 'note',
+                                                  description: 'description', tracker_id: 1, enabled: 1,
+                                                  author_id: 1 } }
 
     assert_response :success
-    assert_select 'div#errorExplanation ul li', text: 'Title cannot be blank'
     assert_equal(num, GlobalIssueTemplate.count)
+
+    # render :new
+    assert_select 'h2', text: "#{l(:issue_templates)} / #{l(:button_add)}"
+    # Error message should be displayed.
+    assert_select 'div#errorExplanation', { count: 1, text: /Title cannot be blank/ }, @response.body.to_s
   end
 
   def test_preview_template
-    get :preview, global_issue_template: { description: 'h1. Global Test data.' }
-    assert_template 'common/_preview'
+    get :preview, params: { global_issue_template: { description: 'h1. Global Test data.' } }
     assert_select 'h1', /Global Test data\./, @response.body.to_s
   end
 end

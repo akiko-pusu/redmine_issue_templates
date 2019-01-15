@@ -22,35 +22,44 @@ require 'redmine'
 require 'issue_templates/issues_hook'
 require 'issue_templates/projects_helper_patch'
 
+# NOTE: Keep error message for a while to support Redmine3.x users.
+def issue_template_version_message(original_message = nil)
+  <<-"USAGE"
+
+  ==========================
+  #{original_message}
+
+  If you use Redmine3.x, please use Redmine Issue Templates version 0.2.x or clone via
+  'v0.2.x-support-Redmine3' branch.
+  You can download older version from here: https://github.com/akiko-pusu/redmine_issue_templates/releases
+  ==========================
+  USAGE
+end
+
 Redmine::Plugin.register :redmine_issue_templates do
-  name 'Redmine Issue Templates plugin'
-  author 'Akiko Takano'
-  description 'Plugin to generate and use issue templates for each project to assist issue creation.'
-  version '0.2.1'
-  author_url 'http://twitter.com/akiko_pusu'
-  requires_redmine version_or_higher: '3.0'
-  url 'https://github.com/akiko-pusu/redmine_issue_templates'
+  begin
+    name 'Redmine Issue Templates plugin'
+    author 'Akiko Takano'
+    description 'Plugin to generate and use issue templates for each project to assist issue creation.'
+    version '0.3.0'
+    author_url 'http://twitter.com/akiko_pusu'
+    requires_redmine version_or_higher: '4.0'
+    url 'https://github.com/akiko-pusu/redmine_issue_templates'
 
-  settings partial: 'settings/redmine_issue_templates',
-           default: {
-             'apply_global_template_to_all_projects' => 'false'
-           }
+    settings partial: 'settings/redmine_issue_templates',
+             default: {
+               apply_global_template_to_all_projects: 'false'
+             }
 
-  menu :admin_menu, :redmine_issue_templates, { controller: 'global_issue_templates', action: 'index' },
-       caption: :global_issue_templates, html: { class: 'icon icon-global_issue_templates' }
+    menu :admin_menu, :redmine_issue_templates, { controller: 'global_issue_templates', action: 'index' },
+         caption: :global_issue_templates, html: { class: 'icon icon-global_issue_templates' }
 
-  project_module :issue_templates do
-    permission :edit_issue_templates, issue_templates: [:new, :edit, :update, :destroy, :move]
-    permission :show_issue_templates,
-               issue_templates: [:index, :show, :load, :set_pulldown, :list_templates, :orphaned_templates]
-    permission :manage_issue_templates,
-               { issue_templates_settings: [:show, :edit] }, require: :member
-  end
-
-  Rails.configuration.to_prepare do
-    require_dependency 'projects_helper'
-    unless ProjectsHelper.included_modules.include? IssueTemplates::ProjectsHelperPatch
-      ProjectsHelper.send(:include, IssueTemplates::ProjectsHelperPatch)
+    project_module :issue_templates do
+      permission :edit_issue_templates, issue_templates: %i[new create edit update destroy move]
+      permission :show_issue_templates, issue_templates: %i[index show load set_pulldown list_templates orphaned_templates]
+      permission :manage_issue_templates, { issue_templates_settings: %i[show edit] }, require: :member
     end
+  rescue ::Redmine::PluginRequirementError => e
+    raise ::Redmine::PluginRequirementError issue_template_version_message(e.message)
   end
 end

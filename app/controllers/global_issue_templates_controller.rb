@@ -1,13 +1,13 @@
 # noinspection RubocopInspection
 class GlobalIssueTemplatesController < ApplicationController
   layout 'base'
-  helper IssueTemplatesHelper
-  helper IssuesHelper
+  helper :issues
+  include IssueTemplatesHelper
   include Concerns::IssueTemplatesCommon
   menu_item :issues
-  before_filter :find_object, only: [:show, :edit, :update, :destroy]
-  before_filter :find_project, only: [:edit, :update]
-  before_filter :require_admin, only: [:index, :new, :show], excep: [:preview]
+  before_action :find_object, only: %i[show edit update destroy]
+  before_action :find_project, only: %i[edit update]
+  before_action :require_admin, only: %i[index new show], excep: [:preview]
 
   #
   # Action for global template : Admin right is required.
@@ -26,44 +26,43 @@ class GlobalIssueTemplatesController < ApplicationController
   def new
     # create empty instance
     @global_issue_template = GlobalIssueTemplate.new
+    render render_form_params
+  end
 
-    if request.post?
-      # Case post, set attributes passed as parameters.
-      @global_issue_template.safe_attributes = template_params
-      @global_issue_template.author = User.current
-      @global_issue_template.checklist_json = checklists.to_json if checklists
+  def create
+    @global_issue_template = GlobalIssueTemplate.new(template_params)
+    @global_issue_template.author = User.current
+    @global_issue_template.checklist_json = checklists.to_json if checklists
 
-      save_and_flash(:notice_successful_create) && return
-    end
-
-    render_form
+    save_and_flash(:notice_successful_create, :new) && return
   end
 
   def show
-    render_form
+    render render_form_params
   end
 
   def update
     @global_issue_template.safe_attributes = template_params
     @global_issue_template.checklist_json = checklists.to_json
-    save_and_flash(:notice_successful_update)
+    save_and_flash(:notice_successful_update, :show)
   end
 
   def edit
     # Change from request.post to request.patch for Rails4.
     return unless request.patch? || request.put?
+
     @global_issue_template.safe_attributes = template_params
     @global_issue_template.checklist_json = checklists.to_json
-    save_and_flash(:notice_successful_update)
+    save_and_flash(:notice_successful_update, :show)
   end
 
   def destroy
-    return unless request.post?
     unless @global_issue_template.destroy
       flash[:error] = l(:enabled_template_cannot_destroy)
       redirect_to action: :show, id: @global_issue_template
       return
     end
+
     flash[:notice] = l(:notice_successful_delete)
     redirect_to action: 'index'
   end
@@ -84,6 +83,10 @@ class GlobalIssueTemplatesController < ApplicationController
 
   private
 
+  def orphaned
+    GlobalIssueTemplate.orphaned
+  end
+
   def find_project
     @projects = Project.all
   end
@@ -94,8 +97,12 @@ class GlobalIssueTemplatesController < ApplicationController
     render_404
   end
 
-  def save_and_flash(message)
-    return unless @global_issue_template.save
+  def save_and_flash(message, action_on_failure)
+    unless @global_issue_template.save
+      render render_form_params.merge(action: action_on_failure)
+      return
+    end
+
     respond_to do |format|
       format.html do
         flash[:notice] = l(message)
@@ -111,11 +118,12 @@ class GlobalIssueTemplatesController < ApplicationController
                   :author_id, :position, project_ids: [], checklists: [])
   end
 
-  def render_form
+  def render_form_params
     trackers = Tracker.all
     projects = Project.all
-    render(layout: !request.xhr?,
-           locals: { checklist_enabled: checklist_enabled?, trackers: trackers, apply_all_projects: apply_all_projects?,
-                     issue_template: @global_issue_template, projects: projects })
+    { layout: !request.xhr?,
+      locals: { checklist_enabled: checklist_enabled?, trackers: trackers, apply_all_projects: apply_all_projects?,
+                issue_template: @global_issue_template, projects: projects }
+    }
   end
 end

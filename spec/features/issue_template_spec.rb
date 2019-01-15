@@ -1,5 +1,10 @@
-require File.expand_path(File.dirname(__FILE__) + '/../rails_helper')
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require_relative '../spec_helper'
+require_relative '../rails_helper'
+require_relative '../support/login_helper'
+
+RSpec.configure do |c|
+  c.include LoginHelper
+end
 
 feature 'IssueTemplate', js: true do
   #
@@ -16,6 +21,7 @@ feature 'IssueTemplate', js: true do
            :projects_trackers,
            :enabled_modules
 
+  given(:role) { Role.find(1) }
   after do
     page.execute_script 'window.close();'
   end
@@ -45,7 +51,7 @@ feature 'IssueTemplate', js: true do
     given!(:enabled_module) { FactoryBot.create(:enabled_module) }
     context 'When user has no priv to use issue template' do
       background do
-        assign_template_priv(remove_permission: :show_issue_templates)
+        assign_template_priv(role, remove_permission: :show_issue_templates)
         log_user('jsmith', 'jsmith')
         visit '/projects/ecookbook/issues'
       end
@@ -57,13 +63,37 @@ feature 'IssueTemplate', js: true do
 
     context 'When user has priv to use issue template' do
       background do
-        assign_template_priv(add_permission: :show_issue_templates)
+        assign_template_priv(role, add_permission: :show_issue_templates)
         log_user('jsmith', 'jsmith')
         visit '/projects/ecookbook/issues'
       end
 
       scenario 'Link to issue template list is displayed.' do
         expect(page).to have_selector('h3', text: I18n.t('issue_template'))
+      end
+    end
+  end
+
+  feature 'create template' do
+    given!(:enabled_module) { FactoryBot.create(:enabled_module) }
+    context 'When user has priv to  issue template' do
+      given(:issue_template_title) { page.find('#issue_template_title') }
+      given(:issue_template_description) { page.find('#issue_template_description') }
+      given(:create_button) { page.find('#issue_template-form > input[type="submit"]') }
+      given(:error_message) { page.find('#errorExplanation') }
+      background do
+        assign_template_priv(role, add_permission: :edit_issue_templates)
+        log_user('jsmith', 'jsmith')
+        visit '/projects/ecookbook/issue_templates/new'
+
+        issue_template_title.set('')
+        issue_template_description.set('Test for issue template description')
+        create_button.click
+        sleep(0.2)
+      end
+
+      scenario 'create template failed' do
+        expect(error_message).to have_content('Title cannot be blank')
       end
     end
   end
@@ -80,7 +110,7 @@ feature 'IssueTemplate', js: true do
     given!(:enabled_module) { FactoryBot.create(:enabled_module) }
 
     background do
-      assign_template_priv(add_permission: :show_issue_templates)
+      assign_template_priv(role, add_permission: :show_issue_templates)
       log_user('jsmith', 'jsmith')
       visit '/projects/ecookbook/issues/new'
     end
@@ -151,7 +181,7 @@ feature 'IssueTemplate', js: true do
     given(:modal_close) { page.find('span.ui-icon-closethick') }
 
     background do
-      assign_template_priv(add_permission: :show_issue_templates)
+      assign_template_priv(role, add_permission: :show_issue_templates)
       log_user('jsmith', 'jsmith')
       visit '/projects/ecookbook/issues/new'
     end
@@ -205,7 +235,7 @@ feature 'IssueTemplate', js: true do
     given!(:enabled_module) { FactoryBot.create(:enabled_module) }
 
     background do
-      assign_template_priv(add_permission: :show_issue_templates)
+      assign_template_priv(role, add_permission: :show_issue_templates)
       log_user('jsmith', 'jsmith')
       visit '/projects/ecookbook/issues/new'
 
@@ -225,26 +255,6 @@ feature 'IssueTemplate', js: true do
       page.find('#revert_template').click
       expect(issue_description.value).to eq 'Test for revert description'
       expect(issue_subject.value).to eq 'Test for revert subject'
-    end
-  end
-
-  private
-
-  def assign_template_priv(add_permission: nil, remove_permission: nil)
-    return if add_permission.blank? && remove_permission.blank?
-    role = Role.find(1)
-    role.add_permission! add_permission if add_permission.present?
-    role.remove_permission! remove_permission if remove_permission.present?
-  end
-
-  def log_user(login, password)
-    visit '/my/page'
-    assert_equal '/login', current_path
-    within('#login-form form') do
-      fill_in 'username', with: login
-      fill_in 'password', with: password
-      find('input[name=login]').click
-      page.save_screenshot('capture/issues.png', full: true)
     end
   end
 end

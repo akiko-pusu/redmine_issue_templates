@@ -10,6 +10,14 @@ module Concerns
       end
     end
 
+    def orphaned_templates
+      respond_to do |format|
+        format.js do
+          render 'common/orphaned_templates', locals: { orphaned_templates: orphaned }
+        end
+      end
+    end
+
     def plugin_setting
       @plugin_setting ||= Setting.plugin_redmine_issue_templates
     end
@@ -23,8 +31,8 @@ module Concerns
     end
 
     def checklist_enabled?
-      Redmine::Plugin.registered_plugins.keys.include? :redmine_checklists
-    rescue
+      Redmine::Plugin.registered_plugins.key? :redmine_checklists
+    rescue StandardError
       false
     end
   end

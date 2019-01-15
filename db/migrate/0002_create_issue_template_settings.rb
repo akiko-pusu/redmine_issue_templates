@@ -1,4 +1,4 @@
-class CreateIssueTemplateSettings < ActiveRecord::Migration
+class CreateIssueTemplateSettings < ActiveRecord::Migration[4.2]
   def self.up
     create_table :issue_template_settings do |t|
       t.column :project_id, :integer

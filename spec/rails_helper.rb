@@ -1,6 +1,6 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
-require File.expand_path('../../../../config/environment', __FILE__)
+require File.expand_path('../../../config/environment', __dir__)
 
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'spec_helper'
@@ -14,31 +14,30 @@ RSpec.configure do |config|
 
   config.before :suite, type: :feature do
     require 'selenium-webdriver'
-    Capybara.server = :webrick
     if ENV['DRIVER'] == 'headless'
       Capybara.register_driver :headless_chrome do |app|
         capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-            #
-            # NOTE: When using Chrome headress, default window size is 800x600.
-            # In case window size is not specified, Redmine renderes its contents with responsive mode.
-            #
-            chromeOptions: { args: %w[headless disable-gpu window-size=1024,768] }
+          #
+          # NOTE: When using Chrome headress, default window size is 800x600.
+          # In case window size is not specified, Redmine renderes its contents with responsive mode.
+          #
+          chromeOptions: { args: %w[headless disable-gpu window-size=1280,800] }
         )
         Capybara::Selenium::Driver.new(
-            app,
-            browser: :chrome,
-            desired_capabilities: capabilities
+          app,
+          browser: :chrome,
+          desired_capabilities: capabilities
         )
       end
     else
       Capybara.register_driver :headless_chrome do |app|
         capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-            chromeOptions: { args: %w[] }
+          chromeOptions: { args: %w[ window-size=1280,800 ] }
         )
         Capybara::Selenium::Driver.new(
-            app,
-            browser: :chrome,
-            desired_capabilities: capabilities
+          app,
+          browser: :chrome,
+          desired_capabilities: capabilities
         )
       end
     end

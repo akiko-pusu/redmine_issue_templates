@@ -4,6 +4,8 @@ class GlobalIssueTemplate < ActiveRecord::Base
   validates_uniqueness_of :title, scope: :tracker_id
   has_and_belongs_to_many :projects
 
+  acts_as_positioned :scope => [:tracker_id]
+
   safe_attributes 'title',
                   'description',
                   'tracker_id',
@@ -14,9 +16,6 @@ class GlobalIssueTemplate < ActiveRecord::Base
                   'project_ids',
                   'position',
                   'author_id'
-
-  attr_accessible :title, :tracker_id, :issue_title, :description, :note,
-                  :is_default, :enabled, :author_id, :position, :project_ids
 
   # for intermediate table assosciations
   scope :search_by_project, lambda { |project_id|
@@ -33,6 +32,7 @@ class GlobalIssueTemplate < ActiveRecord::Base
   #
   def check_default
     return unless is_default? && is_default_changed?
+
     self.class.search_by_tracker(tracker_id).update_all(is_default: false)
   end
 

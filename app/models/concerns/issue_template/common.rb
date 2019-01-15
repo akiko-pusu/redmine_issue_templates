@@ -13,14 +13,6 @@ module Concerns
 
         before_destroy :confirm_disabled
 
-        # FIXME: Porting a part of lib/redmine/acts/positioned.rb, in order to support
-        #    Redmine 3.0 to 3.4 compatibility
-        # Ref: https://github.com/akiko-pusu/redmine_issue_templates/issues/180
-        #
-        before_save :set_default_position
-        after_save :update_position
-        after_destroy :remove_position
-
         validates :title, presence: true
         validates :tracker, presence: true
 
@@ -62,9 +54,10 @@ module Concerns
 
       def checklist
         return [] if checklist_json.blank?
+
         begin
           JSON.parse(checklist_json)
-        rescue
+        rescue StandardError
           []
         end
       end
@@ -91,53 +84,13 @@ module Concerns
 
       def confirm_disabled
         return unless enabled?
+
         errors.add :base, 'enabled_template_cannot_destroy'
-        false
+        throw :abort
       end
 
       def copy_title
         "copy_of_#{title}"
-      end
-
-      private
-
-      # NOTE: set_default_position to reset_positions_in_list should be removed when this plugin's target Redmine
-      #   version is changed to Redmine4.
-      def set_default_position
-        return unless position.nil?
-        self.position = self.class.where(tracker_id: tracker_id).maximum(:position).to_i + (new_record? ? 1 : 0)
-      end
-
-      def update_position
-        position_scope_changed = (changed & ['tracker_id']).any?
-        if !new_record? && position_scope_changed
-          remove_position
-          insert_position
-        elsif position_changed?
-          position_was.nil? ? insert_position : shift_positions
-        end
-      end
-
-      def remove_position
-        self.class.where(tracker_id: tracker_id_was).where('position >= ? AND id <> ?', position_was, id).update_all('position = position - 1')
-      end
-
-      def insert_position
-        self.class.where(tracker_id: tracker_id).where('position >= ? AND id <> ?', position, id).update_all('position = position + 1')
-      end
-
-      def shift_positions
-        offset = position_was <=> position
-        min, max = [position, position_was].sort
-        r = self.class.where(tracker_id: tracker_id).where('id <> ? AND position BETWEEN ? AND ?', id, min, max)
-                .update_all(['position = position + ?', offset])
-        reset_positions_in_list if r != max - min
-      end
-
-      def reset_positions_in_list
-        self.class.where(tracker_id: tracker_id).reorder(:position, :id).pluck(:id).each_with_index do |record_id, p|
-          self.class.where(id: record_id).update_all(position: p + 1)
-        end
       end
     end
   end

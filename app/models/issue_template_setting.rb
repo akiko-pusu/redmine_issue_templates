@@ -6,7 +6,6 @@ class IssueTemplateSetting < ActiveRecord::Base
   validates_presence_of :project_id
 
   safe_attributes 'help_message', 'enabled', 'inherit_templates', 'should_replaced'
-  attr_accessible :help_message, :enabled, :inherit_templates, :should_replaced
 
   scope :inherit_templates, -> { where(inherit_templates: true) }
 
@@ -38,8 +37,10 @@ class IssueTemplateSetting < ActiveRecord::Base
 
     def find_setting(project_id)
       raise ArgumentError, 'Please specify valid project_id.' if project_id.blank?
+
       setting = IssueTemplateSetting.where(project_id: project_id).first
       raise ActiveRecord::RecordNotFound if setting.blank?
+
       setting
     end
   end
