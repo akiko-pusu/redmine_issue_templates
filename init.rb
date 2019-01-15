@@ -60,6 +60,6 @@ Redmine::Plugin.register :redmine_issue_templates do
       permission :manage_issue_templates, { issue_templates_settings: %i[show edit] }, require: :member
     end
   rescue ::Redmine::PluginRequirementError => e
-    raise ::Redmine::PluginRequirementError issue_template_version_message(e.message)
+    raise ::Redmine::PluginRequirementError.new(issue_template_version_message(e.message)) # rubocop:disable Style/RaiseArgs
   end
 end
