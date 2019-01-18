@@ -172,10 +172,13 @@ a.template_tooltip {
     left: 0;
     font-size: 90%;
     background-color: #ffffff;
-    width: 300px;
+    min-width: 300px;
     padding: 8px 10px 12px;
     border: 1px solid #CCCCCC;
     z-index: 20000;
+    word-break: break-all;
+    word-wrap: break-word;
+    white-space: normal;
 }
 
 .template_tooltip_wrapper:hover .template_tooltip_body .title {
