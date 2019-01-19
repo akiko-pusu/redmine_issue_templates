@@ -30,7 +30,8 @@ class IssueTemplatesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        render layout: !request.xhr?, locals: { apply_all_projects: apply_all_projects? }
+        render layout: !request.xhr?,
+          locals: { apply_all_projects: apply_all_projects?, tracker_ids: tracker_ids }
       end
       format.api do
         render formats: :json, locals: { project_templates: project_templates }
@@ -142,11 +143,6 @@ class IssueTemplatesController < ApplicationController
     issue_template = params[:issue_template]
     @text = (issue_template ? issue_template[:description] : nil)
     render partial: 'common/preview'
-  end
-
-  def orphaned_templates
-    orphaned = IssueTemplate.orphaned(@project.id)
-    render partial: 'orphaned_templates', locals: { orphaned_templates: orphaned }
   end
 
   private

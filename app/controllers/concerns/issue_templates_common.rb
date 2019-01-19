@@ -11,11 +11,7 @@ module Concerns
     end
 
     def orphaned_templates
-      respond_to do |format|
-        format.js do
-          render 'common/orphaned_templates', locals: { orphaned_templates: orphaned }
-        end
-      end
+      render partial: 'common/orphaned', locals: { orphaned_templates: orphaned }
     end
 
     def plugin_setting

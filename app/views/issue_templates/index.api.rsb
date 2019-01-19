@@ -3,7 +3,7 @@ api.array :global_issue_templates do
     api.template do
       api.id template.id
       api.tracker_id template.tracker_id
-      api.tracker_name template.tracker.name
+      api.tracker_name template.tracker.try(:name) || nil
       api.title template.title
       api.issue_title template.issue_title
       api.description template.description
@@ -20,7 +20,7 @@ api.array :inherit_templates do
     api.template do
       api.id template.id
       api.tracker_id template.tracker_id
-      api.tracker_name template.tracker.name
+      api.tracker_name template.tracker.tracker.try(:name) || nil
       api.title template.title
       api.issue_title template.issue_title
       api.description template.description
@@ -40,7 +40,7 @@ api.array :issue_templates do
     api.template do
       api.id template.id
       api.tracker_id template.tracker_id
-      api.tracker_name template.tracker.name
+      api.tracker_name template.tracker.try(:name) || nil
       api.title template.title
       api.issue_title template.issue_title
       api.description template.description

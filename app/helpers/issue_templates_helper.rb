@@ -1,5 +1,7 @@
 module IssueTemplatesHelper
   def project_tracker?(tracker, project)
+    return false unless tracker.present?
+
     project.trackers.exists?(tracker.id)
   end
 

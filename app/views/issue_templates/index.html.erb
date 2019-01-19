@@ -1,5 +1,5 @@
 <h2 class="template"><%=h "#{l(:issue_template)}" %></h2>
-<%= render partial: "common/nodata", locals: { trackers: @project.trackers } %>
+<%= render partial: "common/nodata", locals: { trackers: tracker_ids } %>
 <div class="contextual issue_templates">
   <%= link_to_if_authorized(l(:label_new_templates),
                             { controller: 'issue_templates', action: 'new', project_id: @project },
