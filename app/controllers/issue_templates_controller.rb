@@ -30,7 +30,8 @@ class IssueTemplatesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        render layout: !request.xhr?, locals: { apply_all_projects: apply_all_projects? }
+        render layout: !request.xhr?,
+          locals: { apply_all_projects: apply_all_projects?, tracker_ids: tracker_ids }
       end
       format.api do
         render formats: :json, locals: { project_templates: project_templates }
