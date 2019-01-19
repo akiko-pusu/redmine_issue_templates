@@ -194,6 +194,12 @@ table.list.template_list {
     margin: 8px 0;
 }
 
+td.template_title {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .list.template_list th {
     text-align: left;
 }

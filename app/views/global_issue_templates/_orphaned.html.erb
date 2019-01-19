@@ -3,9 +3,10 @@
   <thead>
   <tr>
     <th>#</th>
-    <th><%= l(:issue_template_name) %></th>
+    <th class='hideable'><%= l(:issue_template_name) %></th>
+    <th><%= l(:label_preview) %></th>
     <th class='hideable'><%= l(:field_tracker) %></th>
-    <th class='hideable'><%= l(:field_author) %></th>
+    <th><%= l(:field_author) %></th>
     <th class='hideable'><%= l(:field_updated_on) %></th>
   </tr>
   </thead>
@@ -17,13 +18,14 @@
                       { controller: :global_issue_templates, action: 'show', id: issue_template.id },
                       { title: issue_template.note } %>
         </td>
-        <td>
+        <td class='hideable template_title'>
           <%= link_to h(issue_template.title),
                       { controller: 'global_issue_templates',
                         id: issue_template.id, action: 'show' },
                       { title: "#{html_escape(issue_template.note) }"} %>
-
-          <div class="template_tooltip_wrapper">
+        </td>
+        <td>
+            <div class="template_tooltip_wrapper">
             <a class="icon template_tooltip" title="<%= l(:label_preview) %>"></a>
             <div class="wiki template_tooltip_body">
               <span class="title"><%= issue_template.title %></span>
@@ -32,7 +34,7 @@
           </div>
         </td>
         <td class='hideable'><%= "ID: #{issue_template.tracker_id}" %></td>
-        <td class='hideable'><%=h issue_template.author %></td>
+        <td><%=h issue_template.author %></td>
         <td class='hideable'><%= format_time(issue_template.updated_on)%> </td>
       </tr>
       <tr class="<%= current_cycle %>" style="display: none;" id="template_description-<%= issue_template.id %>">

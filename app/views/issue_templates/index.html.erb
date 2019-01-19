@@ -27,7 +27,8 @@
         <thead>
         <tr>
           <th>#</th>
-          <th><%= l(:issue_template_name) %></th>
+          <th class='hideable'><%= l(:issue_template_name) %></th>
+          <th><%= l(:label_preview) %></th>
           <th class='hideable'><%= l(:field_tracker) %></th>
           <th class='hideable'><%= l(:field_author) %></th>
           <th class='hideable'><%= l(:field_updated_on) %></th>
@@ -48,12 +49,13 @@
                             },
                             { title: issue_template.note } %>
               </td>
-              <td>
+              <td class="hideable template_title">
                 <%= link_to h(issue_template.title),
                             { controller: 'issue_templates',
                               id: issue_template.id, action: 'show' },
                             { title: "#{html_escape(issue_template.note) }"} %>
-
+              </td>
+              <td>
                 <div class="template_tooltip_wrapper">
                   <a class="icon template_tooltip" title="<%= l(:label_preview) %>"></a>
                   <div class="wiki template_tooltip_body">
@@ -95,7 +97,8 @@
           <thead>
           <tr>
             <th>#</th>
-            <th><%= l(:issue_template_name) %></th>
+            <th class='hideable'><%= l(:issue_template_name) %></th>
+            <th><%= l(:label_preview) %></th>
             <th class='hideable'><%= l(:field_tracker) %></th>
             <th class='hideable'><%= l(:field_author) %></th>
             <th class='hideable'><%= l(:field_updated_on) %></th>
@@ -113,13 +116,14 @@
                                 project_id: issue_template.project_id },
                               { title: issue_template.note } %>
                 </td>
-                <td>
+                <td class="hideable template_title">
                   <%= link_to h(issue_template.title),
                               { controller: 'issue_templates',
                                 project_id: issue_template.project_id,
                                 id: issue_template.id, action: 'show' },
                               { title: "#{html_escape(issue_template.note)}" } %>
-
+                </td>
+                <td>
                   <div class="template_tooltip_wrapper">
                     <a class="icon template_tooltip" title="<%= l(:label_preview) %>"></a>
                     <div class="wiki template_tooltip_body">
@@ -163,7 +167,8 @@
         <thead>
         <tr>
           <th>#</th>
-          <th><%= l(:issue_template_name) %></th>
+          <th class='hideable'><%= l(:issue_template_name) %></th>
+          <th><%= l(:label_preview) %></th>
           <th class='hideable'><%= l(:field_tracker) %></th>
           <th class='hideable'><%= l(:field_author) %></th>
           <th class='hideable'><%= l(:field_updated_on) %></th>
@@ -184,11 +189,13 @@
                 <% end %>
                </td>
 
-              <td>
+              <td class="hideable template_title">
                 <%= link_to h(issue_template.title),
                             { controller: 'global_issue_templates',
                               id: issue_template.id, action: 'show' },
                             { title: "#{html_escape(issue_template.note)}" } %>
+              </td>
+              <td>
                 <div class="template_tooltip_wrapper">
                   <a class="icon template_tooltip" title="<%= l(:label_preview) %>"></a>
                   <div class="wiki template_tooltip_body">
@@ -197,7 +204,15 @@
                   </div>
                 </div>
               </td>
-              <td class='hideable'><%=h issue_template.tracker.name %></td>
+              <td class='hideable'>
+                <% if issue_template.tracker.present? %>
+                  <%= h issue_template&.tracker.name || "ID: #{issue_template.tracker_id}" %>
+                <% else %>
+                  <span title="<%= l(:orphaned_template, default: 'Orphaned template from tracker') %>">
+                    <%= "ID: #{issue_template.tracker_id}" %>
+                  </span>
+                <% end %>
+              </td>
               <td class='hideable'><%=h issue_template.author %></td>
               <td class='hideable'><%=h format_time(issue_template.updated_on)%> </td>
               <td class="center"><%= checked_image issue_template.is_default? %></td>
