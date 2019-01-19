@@ -145,11 +145,6 @@ class IssueTemplatesController < ApplicationController
     render partial: 'common/preview'
   end
 
-  def orphaned_templates
-    orphaned = IssueTemplate.orphaned(@project.id)
-    render partial: 'orphaned_templates', locals: { orphaned_templates: orphaned }
-  end
-
   private
 
   def orphaned
