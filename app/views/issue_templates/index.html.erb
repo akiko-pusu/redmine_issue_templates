@@ -206,7 +206,7 @@
               </td>
               <td class='hideable'>
                 <% if issue_template.tracker.present? %>
-                  <%= h issue_template&.tracker.name || "ID: #{issue_template.tracker_id}" %>
+                  <%= h issue_template.tracker.try(:name) || "ID: #{issue_template.tracker_id}" %>
                 <% else %>
                   <span title="<%= l(:orphaned_template, default: 'Orphaned template from tracker') %>">
                     <%= "ID: #{issue_template.tracker_id}" %>
