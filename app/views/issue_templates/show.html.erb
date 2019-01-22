@@ -27,6 +27,7 @@
   <%= avatar(issue_template.author, size: '24') %>
 </h2>
 
+<%= render partial: "common/nodata", locals: { trackers: project.trackers } %>
 <% if authorize_for('issue_templates', 'update') %>
     <div id="edit-issue_template" style="<%= 'display:none;' if issue_template.valid? %>">
       <%= labelled_form_for :issue_template, issue_template,
