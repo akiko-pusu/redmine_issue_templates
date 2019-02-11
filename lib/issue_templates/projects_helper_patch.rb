@@ -15,4 +15,4 @@ module IssueTemplates
   end
 end
 
-ProjectsHelper.prepend IssueTemplates::ProjectsHelperPatch
+ProjectsController.helper(IssueTemplates::ProjectsHelperPatch)
