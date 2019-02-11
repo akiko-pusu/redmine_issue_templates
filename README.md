@@ -36,12 +36,11 @@ See also:
 ## Required Settings
 
 1. Login to your Redmine install as an Administrator
-2. Enable the permissions for your Roles.
+2. Enable the permissions for your Roles:
 
-    Show issue templates: User can show issue templates and use templates when
-    creating/updating issues. Edit issue templates: User can
-    create/update/activate templates for each project. Manage issue templates:
-    User can edit help message of templates for each project.
+    * Show issue templates: User can show issue templates and use templates when creating/updating issues.
+    * Edit issue templates: User can create/update/activate templates for each project.
+    * Manage issue templates: User can edit help message of templates for each project.
 
 3. Enable the module "Issue Template" on the project setting page.
 4. The link to the plugin should appear on that project's navigation.
