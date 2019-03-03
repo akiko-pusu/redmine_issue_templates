@@ -22,9 +22,17 @@ Rails.application.routes.draw do
     resources :issue_templates_settings, only: [], concerns: [:previewable] do
       patch 'edit', on: :collection
     end
+
+    resources :note_templates, except: [:edit]
   end
 
   resources :issue_templates, only: %i[load preview], concerns: [:previewable] do
     post 'load', on: :collection
+  end
+
+  # for note temlate
+  resources :note_templates, only: %i[load preview list_templates] do
+    post 'load', on: :collection
+    get 'list_templates', on: :collection
   end
 end

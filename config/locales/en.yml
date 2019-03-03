@@ -58,4 +58,5 @@ en:
   orphaned_template: "Orphaned template from tracker"
   label_template_applied: "Issue template is applied. You can revert with click 'Revert' link."
   label_hide_confirm_dialog_in_the_future: "Hide this confirmation in the future, just overwrite."
+  label_template_for_note: "Template for note"
   label_use_template_when_edit: "Use templates when edit issue"
