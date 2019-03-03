@@ -48,7 +48,8 @@ Redmine::Plugin.register :redmine_issue_templates do
 
     settings partial: 'settings/redmine_issue_templates',
              default: {
-               apply_global_template_to_all_projects: 'false'
+               apply_global_template_to_all_projects: 'false',
+               apply_template_when_edit_issue: 'false'
              }
 
     menu :admin_menu, :redmine_issue_templates, { controller: 'global_issue_templates', action: 'index' },

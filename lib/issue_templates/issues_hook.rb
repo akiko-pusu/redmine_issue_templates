@@ -46,15 +46,21 @@ module IssueTemplates
     end
 
     def existing_issue?(issue)
+      return false if apply_template_when_edit_issue?
+
       issue.id.present? || issue.tracker_id.blank?
     end
 
     def copied_issue?(parameters)
+      return false if apply_template_when_edit_issue?
+
       copy_from = parameters[:copy_from]
       copy_from.present?
     end
 
     def create_action?(action)
+      return true if apply_template_when_edit_issue?
+
       ACTIONS.include?(action)
     end
 
@@ -64,6 +70,14 @@ module IssueTemplates
 
     def need_template_js?(controller)
       CONTROLLERS.include?(controller.class.name)
+    end
+
+    def plugin_setting
+      @plugin_setting ||= Setting.plugin_redmine_issue_templates
+    end
+
+    def apply_template_when_edit_issue?
+      plugin_setting['apply_template_when_edit_issue'].to_s == 'true'
     end
   end
 end
