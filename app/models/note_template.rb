@@ -2,7 +2,7 @@ class NoteTemplate < ActiveRecord::Base
   include Redmine::SafeAttributes
 
   # author and project should be stable.
-  safe_attributes 'name', 'description', 'enabled', 'memo'
+  safe_attributes 'name', 'description', 'enabled', 'memo', 'tracker_id', 'project_id'
 
   belongs_to :project
   belongs_to :author, class_name: 'User', foreign_key: 'author_id'

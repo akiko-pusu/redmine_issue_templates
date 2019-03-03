@@ -1,5 +1,6 @@
 class NoteTemplatesController < ApplicationController
   layout 'base'
+  helper :issue_templates
   menu_item :issues
   before_action :find_object, only: %i[show update destroy]
   before_action :find_user, :find_project, :authorize, except: %i[preview load]
@@ -12,20 +13,29 @@ class NoteTemplatesController < ApplicationController
     # pick up used tracker ids
     tracker_ids = @project.trackers.pluck(:id)
 
-    @note_template_map = {}
+    @template_map = {}
     tracker_ids.each do |tracker_id|
       templates = note_templates.search_by_tracker(tracker_id)
-      @note_template_map[Tracker.find(tracker_id)] = templates if templates.any?
+      @template_map[Tracker.find(tracker_id)] = templates if templates.any?
     end
 
     respond_to do |format|
       format.html do
-        render layout: !request.xhr?
+        render layout: !request.xhr?, locals: { tracker_ids: tracker_ids }
       end
       format.api do
         render formats: :json, locals: { note_templates: note_templates }
       end
     end
+  end
+
+  def show
+    render render_form_params
+  end
+
+  def update
+    @note_template.safe_attributes = template_params
+    save_and_flash(:notice_successful_update, :show)
   end
 
   # load template description
@@ -75,6 +85,27 @@ class NoteTemplatesController < ApplicationController
   end
 
   def template_params
-    params.require(:note_template).permit(:note_template_id)
+    params.require(:note_template).permit(:tracker_id, :name, :memo, :description, :enabled, :author_id, :position)
+  end
+
+  def render_form_params
+    { layout: !request.xhr?,
+      locals: { note_template: @note_template, project: @project }
+    }
+  end
+
+  def save_and_flash(message, action_on_failure)
+    unless @note_template.save
+      render render_form_params.merge(action: action_on_failure)
+      retur
+    end
+
+    respond_to do |format|
+      format.html do
+        flash[:notice] = l(message)
+        redirect_to action: 'show', id: @note_template.id, project_id: @project
+      end
+      format.js { head 200 }
+    end
   end
 end
