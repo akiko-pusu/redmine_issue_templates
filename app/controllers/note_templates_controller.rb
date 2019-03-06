@@ -85,13 +85,13 @@ class NoteTemplatesController < ApplicationController
   end
 
   def template_params
-    params.require(:note_template).permit(:tracker_id, :name, :memo, :description, :enabled, :author_id, :position)
+    params.require(:note_template).permit(:note_template_id, :tracker_id,
+                                          :name, :memo, :description, :enabled, :author_id, :position)
   end
 
   def render_form_params
     { layout: !request.xhr?,
-      locals: { note_template: @note_template, project: @project }
-    }
+      locals: { note_template: @note_template, project: @project } }
   end
 
   def save_and_flash(message, action_on_failure)
