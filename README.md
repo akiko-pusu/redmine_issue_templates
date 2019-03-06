@@ -387,8 +387,7 @@ Please see wercker.yml for more details.
 % cp plugins/redmine_issue_templates/Gemfile.local plugins/redmine_issue_templates/Gemfile
 % bundle install --with test
 % export RAILS_ENV=test
-% bundle exec ruby -I"lib:test" -I plugins/redmine_issue_templates/spec \
-  --format documentation plugins/redmine_issue_templates/spec/
+% bundle exec ruby -I"lib:test" -I plugins/redmine_issue_templates/test plugins/redmine_issue_templates/test/functional/issue_templates_controller_test.rb 
 ```
 
 or
