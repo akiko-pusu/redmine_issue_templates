@@ -60,9 +60,7 @@
     //<![CDATA[
     $(function() {
         var templateNS = new ISSUE_TEMPLATE();
-        var pulldown_url = '<%= url_for(controller: 'issue_templates',
-          action:'set_pulldown', project_id: project_id, is_triggered_by_status: is_triggered_by_status,
-          is_update_issue: @issue.try(:id).present?) %>';
+        var pulldown_url = '<%= pulldown_url %>';
         var tracker =  '<%= @issue.tracker.id %>';
         templateNS.set_pulldown(tracker, pulldown_url);
 

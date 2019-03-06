@@ -31,8 +31,7 @@ module IssueTemplates
       context[:controller].send(
         :render_to_string,
         partial: 'issue_templates/issue_select_form',
-        locals: { setting: setting(project_id), issue: issue, is_triggered_by_status: is_triggered_by_status,
-                  project_id: project_id }
+        locals: locals_params(issue, project_id, is_triggered_by_status)
       )
     end
 
@@ -78,6 +77,26 @@ module IssueTemplates
 
     def apply_template_when_edit_issue?
       plugin_setting['apply_template_when_edit_issue'].to_s == 'true'
+    end
+
+    def locals_params(issue, project_id, is_triggered_by_status)
+      { setting: setting(project_id),
+        issue: issue,
+        is_triggered_by_status: is_triggered_by_status,
+        project_id: project_id,
+        pulldown_url: pulldown_url(issue, project_id, is_triggered_by_status) }
+    end
+
+    def pulldown_url(issue, project_id, is_triggered_by_status)
+      pulldown_url = if issue.try(:id).present?
+                       url_for(controller: 'issue_templates',
+                               action: 'set_pulldown', project_id: project_id, is_triggered_by_status: is_triggered_by_status,
+                               is_update_issue: issue.try(:id).present?)
+                     else
+                       url_for(controller: 'issue_templates',
+                               action: 'set_pulldown', project_id: project_id, is_triggered_by_status: is_triggered_by_status)
+                     end
+      pulldown_url
     end
   end
 end

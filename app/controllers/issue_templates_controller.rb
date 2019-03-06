@@ -103,7 +103,7 @@ class IssueTemplatesController < ApplicationController
 
     is_triggered_by_status = request.parameters[:is_triggered_by_status]
     is_update_issue = request.parameters[:is_update_issue]
-    @group[@default_template].selected = 'selected' unless is_update_issue.present? || is_update_issue == 'true'
+    @group[@default_template].selected = 'selected' if is_update_issue.present? || is_update_issue != 'true'
 
     render action: '_template_pulldown', layout: false,
            locals: { is_triggered_by_status: is_triggered_by_status, grouped_options: @group,
