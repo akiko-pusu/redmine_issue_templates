@@ -1,6 +1,6 @@
 <%= error_messages_for 'note_template' %>
 <div class="box tabular box-white">
-  <p><%= f.text_field :name, required: true, size: 80, label: l(:note_template_name) %></p>
+  <p><%= f.text_field :name, required: true, size: 80, label: l(:issue_template_name) %></p>
 
   <fieldset class="issue">
     <legend class="issue"><%= l(:label_applied_for_issue) %></legend>
@@ -28,7 +28,7 @@
   <p>
     <%= f.text_area :memo, cols: 70, rows: 3,
                     required: false,
-                    label: l(:note_template_note) %>
+                    label: l(:issue_template_note) %>
   </p>
 
   <p>

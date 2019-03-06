@@ -61,3 +61,4 @@ ja:
   label_hide_confirm_dialog_in_the_future: "次回からは、この上書きの確認メッセージを表示しない"
   label_template_for_note: "コメント用テンプレート"
   label_use_template_when_edit: "チケットの編集時にもテンプレートを利用する"
+  note_template: "コメント用テンプレート"
