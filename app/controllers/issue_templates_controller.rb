@@ -31,7 +31,7 @@ class IssueTemplatesController < ApplicationController
     respond_to do |format|
       format.html do
         render layout: !request.xhr?,
-          locals: { apply_all_projects: apply_all_projects?, tracker_ids: tracker_ids }
+               locals: { apply_all_projects: apply_all_projects?, tracker_ids: tracker_ids }
       end
       format.api do
         render formats: :json, locals: { project_templates: project_templates }
@@ -102,7 +102,8 @@ class IssueTemplatesController < ApplicationController
     add_templates_to_group(@global_templates, class: 'global')
 
     is_triggered_by_status = request.parameters[:is_triggered_by_status]
-    @group[@default_template].selected = 'selected' if @default_template.present?
+    is_update_issue = request.parameters[:is_update_issue]
+    @group[@default_template].selected = 'selected' unless is_update_issue == 'true'
 
     render action: '_template_pulldown', layout: false,
            locals: { is_triggered_by_status: is_triggered_by_status, grouped_options: @group,
@@ -196,8 +197,7 @@ class IssueTemplatesController < ApplicationController
   def render_form_params
     { layout: !request.xhr?,
       locals: { checklist_enabled: checklist_enabled?,
-               issue_template: @issue_template, project: @project }
-    }
+                issue_template: @issue_template, project: @project } }
   end
 
   def setting
