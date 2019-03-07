@@ -2,15 +2,28 @@
   <%= render partial: "common/nodata", locals: { trackers: @project.trackers } %>
 
   <h2><%= l(:link_to_index_edit_template) %></h2>
-  <p>
-    <%= link_to(l(:label_list_templates),
+  <div style="display: flex;">
+    <div class="template_link_area">
+      <label><%= l(:issue_template) %>: </label>
+      <%= link_to(l(:label_list_templates),
                 { controller: 'issue_templates',
                   action: 'index',
                   project_id: @project}, class: 'template') %>   |
-    <%= link_to_if_authorized(l(:label_new_templates),
+      <%= link_to_if_authorized(l(:label_new_templates),
                               { controller: 'issue_templates', action: 'new', project_id: @project },
                               class: 'icon icon-add') %>
-  </p>
+    </div>
+    <div class="template_link_area">
+      <label><%= l(:note_template) %>: </label>
+      <%= link_to(l(:label_list_templates),
+                { controller: 'note_templates',
+                  action: 'index',
+                  project_id: @project}, class: 'template') %>   |
+      <%= link_to_if_authorized(l(:label_new_templates),
+                              { controller: 'note_templates', action: 'new', project_id: @project },
+                              class: 'icon icon-add') %>
+    </div> 
+  </div> 
   <p></p>
   <div class="template_box">
     <h2>Optional settings</h2>

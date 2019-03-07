@@ -8,7 +8,7 @@ class NoteTemplatesController < ApplicationController
 
   def index
     project_id = @project.id
-    note_templates = NoteTemplate.search_by_project(project_id)
+    note_templates = NoteTemplate.search_by_project(project_id).sorted
 
     # pick up used tracker ids
     tracker_ids = @project.trackers.pluck(:id)
@@ -27,6 +27,18 @@ class NoteTemplatesController < ApplicationController
         render formats: :json, locals: { note_templates: note_templates }
       end
     end
+  end
+
+  def new
+    @note_template ||= NoteTemplate.new(author: @user, project: @project)
+    render render_form_params
+  end
+
+  def create
+    @note_template = NoteTemplate.new(template_params)
+    @note_templateauthor = User.current
+    @note_template.project = @project
+    save_and_flash(:notice_successful_create, :new) && return
   end
 
   def show

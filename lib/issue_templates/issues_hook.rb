@@ -6,7 +6,7 @@ module IssueTemplates
 
     CONTROLLERS = %(
       'IssuesController' 'IssueTemplatesController' 'ProjectsController'
-      'GlobalIssueTemplatesController' 'SettingsController'
+      'GlobalIssueTemplatesController' 'SettingsController' 'NoteTemplatesController'
     ).freeze
 
     ACTIONS = %('new' 'update_form' 'create', 'show').freeze

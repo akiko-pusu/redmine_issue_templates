@@ -15,6 +15,9 @@
               { controller: 'note_templates',
                 action: 'index',
                 project_id: project }, class: 'template') %>
+  <%= link_to_if_authorized(l(:label_new_templates),
+                            { controller: 'note_templates', action: 'new', project_id: @project },
+                              class: 'icon icon-add') %>            
 </div>
 
 <h2 class="template">

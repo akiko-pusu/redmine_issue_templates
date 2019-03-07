@@ -13,3 +13,18 @@
   </li>
 </ul>
 <%- end -%>
+<% if authorize_for('note_templates', 'show') %>
+<h3><%= l(:note_template) %></h3>
+<ul>
+  <li>
+    <%= link_to(l(:label_list_templates),
+    controller: 'note_templates',
+    action: 'index',
+    project_id: @project) %>
+  </li>
+  <li>
+    <%= link_to_if_authorized(l(:label_new_templates),
+    { controller: 'note_templates', action: 'new', project_id: @project }) %>
+  </li>
+</ul>
+<%- end -%>

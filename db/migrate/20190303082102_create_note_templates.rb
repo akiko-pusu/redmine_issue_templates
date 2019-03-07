@@ -8,6 +8,7 @@ class CreateNoteTemplates < ActiveRecord::Migration[5.1]
       t.integer :tracker_id
       t.integer :author_id
       t.boolean :enabled
+      t.integer :position
       t.timestamps
     end
     add_index :note_templates, :author_id

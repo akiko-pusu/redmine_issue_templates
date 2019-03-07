@@ -61,3 +61,5 @@ en:
   label_template_for_note: "Template for note"
   label_use_template_when_edit: "Use templates when edit issue"
   note_template: "Template for note"
+  no_note_templates_for_this_project: "No comment templates are defined for this project."
+  label_memo_help_message: "Please set up a note explaining when applying this template."

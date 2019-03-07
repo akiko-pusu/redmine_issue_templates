@@ -38,7 +38,7 @@ div.template_help div#template_help_hide {
     display: block;
     position: absolute;
     bottom: 5px;
-    right: 10px;
+    left: 20px;
     font-size: smaller;
     background: none;
     color: #000;
@@ -368,4 +368,23 @@ a.icon-help:hover span {
 .popup .content {
   max-height:50%;
   overflow: auto;
+}
+
+#note_template_memo {
+  width: 50%;
+}
+
+div.template_link_area {
+  margin-right: 10px;
+  border: rgb(202, 200, 197);
+  border-width: 1px;
+  border-style: solid;
+  padding-left: 10px;
+  padding-right: 40px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+div.template_link_area label {
+  font-weight: bold;
 }

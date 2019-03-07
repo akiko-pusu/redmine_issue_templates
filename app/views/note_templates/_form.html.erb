@@ -22,13 +22,19 @@
     <p>
       <%= f.text_area :description, cols: 78, rows: 12,
                       required: true,
-                      label: l(:issue_description), class: 'wiki-edit' %>
+                      label: l(:label_comment), class: 'wiki-edit' %>
     </p>
   </fieldset>
   <p>
     <%= f.text_area :memo, cols: 70, rows: 3,
                     required: false,
                     label: l(:issue_template_note) %>
+    <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
+       data-tooltip-area="#memo_help_area"
+       data-tooltip-content="#memo_help_content">
+      <%= l(:help_for_this_field) %>
+      <span class="tooltip-area" id="memo_help_area"></span>
+    </a>
   </p>
 
   <p>
@@ -51,6 +57,10 @@
 
 <div id="enabled_help_content" class="wiki" style="display: none;">
   <%= l(:label_enabled_help_message) %>
+</div>
+
+<div id="memo_help_content" class="wiki" style="display: none;">
+  <%= l(:label_memo_help_message, default: "Please set up a note explaining when applying this template.") %>
 </div>
 <!-- help content -->
 
