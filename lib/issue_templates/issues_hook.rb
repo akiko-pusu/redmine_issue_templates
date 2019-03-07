@@ -6,7 +6,7 @@ module IssueTemplates
 
     CONTROLLERS = %(
       'IssuesController' 'IssueTemplatesController' 'ProjectsController'
-      'GlobalIssueTemplatesController' 'SettingsController'
+      'GlobalIssueTemplatesController' 'SettingsController' 'NoteTemplatesController'
     ).freeze
 
     ACTIONS = %('new' 'update_form' 'create', 'show').freeze
@@ -31,8 +31,7 @@ module IssueTemplates
       context[:controller].send(
         :render_to_string,
         partial: 'issue_templates/issue_select_form',
-        locals: { setting: setting(project_id), issue: issue, is_triggered_by_status: is_triggered_by_status,
-                  project_id: project_id }
+        locals: locals_params(issue, project_id, is_triggered_by_status)
       )
     end
 
@@ -46,15 +45,21 @@ module IssueTemplates
     end
 
     def existing_issue?(issue)
+      return false if apply_template_when_edit_issue?
+
       issue.id.present? || issue.tracker_id.blank?
     end
 
     def copied_issue?(parameters)
+      return false if apply_template_when_edit_issue?
+
       copy_from = parameters[:copy_from]
       copy_from.present?
     end
 
     def create_action?(action)
+      return true if apply_template_when_edit_issue?
+
       ACTIONS.include?(action)
     end
 
@@ -64,6 +69,34 @@ module IssueTemplates
 
     def need_template_js?(controller)
       CONTROLLERS.include?(controller.class.name)
+    end
+
+    def plugin_setting
+      @plugin_setting ||= Setting.plugin_redmine_issue_templates
+    end
+
+    def apply_template_when_edit_issue?
+      plugin_setting['apply_template_when_edit_issue'].to_s == 'true'
+    end
+
+    def locals_params(issue, project_id, is_triggered_by_status)
+      { setting: setting(project_id),
+        issue: issue,
+        is_triggered_by_status: is_triggered_by_status,
+        project_id: project_id,
+        pulldown_url: pulldown_url(issue, project_id, is_triggered_by_status) }
+    end
+
+    def pulldown_url(issue, project_id, is_triggered_by_status)
+      pulldown_url = if issue.try(:id).present?
+                       url_for(controller: 'issue_templates',
+                               action: 'set_pulldown', project_id: project_id, is_triggered_by_status: is_triggered_by_status,
+                               is_update_issue: issue.try(:id).present?)
+                     else
+                       url_for(controller: 'issue_templates',
+                               action: 'set_pulldown', project_id: project_id, is_triggered_by_status: is_triggered_by_status)
+                     end
+      pulldown_url
     end
   end
 end

@@ -1,0 +1,87 @@
+<div class="contextual">
+  <%= link_to_if_authorized l(:button_edit),
+                            { controller: 'note_templates', action: 'update', id: note_template,
+                              project_id: project },
+                            class: 'icon icon-edit', accesskey: accesskey(:edit),
+                            onclick: "$('#edit-note_template').show(); return false;" %>
+  <%= link_to_if_authorized l(:button_delete),
+                            { controller: 'note_templates', action: 'destroy',
+                              id: note_template, project_id: project },
+                              data: {confirm: l(:template_remove_confirm,
+                              default: "Are you sure to remove this template? %{count} subprojects use this template.")},
+                              title: l(:enabled_template_cannot_destroy, default: 'Only disabled template can be destroyed.'),
+                            method: 'delete', class: 'icon icon-del template-disabled-link', disabled: note_template.enabled? %>
+  <%= link_to(l(:label_list_templates),
+              { controller: 'note_templates',
+                action: 'index',
+                project_id: project }, class: 'template') %>
+  <%= link_to_if_authorized(l(:label_new_templates),
+                            { controller: 'note_templates', action: 'new', project_id: @project },
+                              class: 'icon icon-add') %>            
+</div>
+
+<h2 class="template">
+  <%= l(:note_template) %>: #<%= note_template.id %> <%= note_template.name %>
+  <%= avatar(note_template.author, size: '24') %>
+</h2>
+
+<%= render partial: "common/nodata", locals: { trackers: project.trackers } %>
+<% if authorize_for('note_templates', 'update') %>
+    <div id="edit-note_template" style="<%= 'display:none;' if note_template.valid? %>">
+      <%= labelled_form_for :note_template, note_template,
+                            url: { controller: 'note_templates', action: 'update',
+                                   project_id: project, id: note_template },
+                            html: { id: 'note_template-form', class: nil, multipart: false } do |f| %>
+          <%= render 'form', { f: f, note_template: note_template, project: project } %>
+
+          <%= submit_tag l(:button_save) %>
+      <% end %>
+      <%= link_to l(:button_cancel), { action: 'index' },
+                  onclick: 'Element.hide("edit-note_template"); return false;' %>
+      <div id="preview" class="wiki"></div>
+      <hr/>
+    </div>
+<% end %>
+
+
+<div class="box tabular box-white">
+  <p>
+    <label><%= l(:issue_template_name) %></label>
+    <%= h note_template.name %>
+  </p>
+  <fieldset class="issue">
+    <legend class="issue"><%= l(:label_applied_for_issue) %></legend>
+    <p>
+      <label><%= l(:label_tracker) %></label>
+      <%= h note_template.tracker.name %>
+    </p>
+
+    <p>
+      <label><%= l(:issue_title) %></label>
+      <%= h note_template.name %>
+    </p>
+
+    <p>
+      <strong style="margin-left: -100px;"><%= l(:issue_description) %></strong>
+    </p>
+
+    <div class="wiki note_template"><%= textilizable(note_template.description) %></div>
+
+  </fieldset>
+
+  <p><label><%= l(:issue_template_note) %></label>
+    <%= note_template.memo.blank? ? l(:label_none) : note_template.memo %>
+  </p>
+
+  <p><label><%= l(:label_enabled) %></label>
+    <%= checked_image note_template.enabled? %>
+  </p>
+
+  <p><label><%= l(:field_author) %></label>
+    <%= authoring note_template.created_at, note_template.author %>
+    <% if note_template.created_at != note_template.updated_at %>
+        (<%= l(:label_updated_time, time_tag(note_template.updated_at)).html_safe %>)
+    <% end %>
+  </p>
+
+</div>

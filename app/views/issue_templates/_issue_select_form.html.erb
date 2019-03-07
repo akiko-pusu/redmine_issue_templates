@@ -44,7 +44,6 @@
     <label>
       <%=h l(:label_msg_confirm_to_replace) %>
     </label>
-    <p/>
     <label><input type="checkbox" id="issue_template_confirm_to_replace_hide_dialog">
       <%= h l(:label_hide_confirm_dialog_in_the_future,
               default: "Hide this confirmation in the future, just overwrite.") %>
@@ -61,8 +60,7 @@
     //<![CDATA[
     $(function() {
         var templateNS = new ISSUE_TEMPLATE();
-        var pulldown_url = '<%= url_for(controller: 'issue_templates',
-        action:'set_pulldown', project_id: project_id, is_triggered_by_status: is_triggered_by_status) %>';
+        var pulldown_url = '<%= pulldown_url %>';
         var tracker =  '<%= @issue.tracker.id %>';
         templateNS.set_pulldown(tracker, pulldown_url);
 

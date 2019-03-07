@@ -8,19 +8,24 @@
        data-tooltip-content="#enabled_help_content">
       <%= l(:help_for_this_field) %>
     </a>
-    <div id="enabled_help_content" class="wiki" style="display: none;">
-      <%= l(:help_project_local_template_override_global_template) %>
-      <p>
-        <span class="icon icon-warning"></span>
-        <span class="issue_template help_content">
-          <%= l(:warning_project_local_template_override_global_template) %>
-        </span>
-      </p>
+  </p>
+  <div id="enabled_help_content" class="wiki" style="display: none;">
+    <%= l(:help_project_local_template_override_global_template) %>
+    <div>
+      <span class="icon icon-warning"></span>
+      <span class="issue_template help_content">
+        <%= l(:warning_project_local_template_override_global_template) %>
+      </span>
     </div>
+  </div>
+  <p>
+    <%= hidden_field_tag("settings[apply_template_when_edit_issue]", 0, :id => nil).html_safe %>
+    <%= check_box_tag 'settings[apply_template_when_edit_issue]', true, @settings['apply_template_when_edit_issue'] == "true" %>
+    <%= content_tag(:b, l(:label_use_template_when_edit))%>
+  </p>
+  <p>
     <%= link_to(l(:link_to_index_edit_template),
               { controller: 'global_issue_templates', action: 'index' },
               class: 'template pull-right') %>
   </p>
 </div>
-<script>
-</script>
