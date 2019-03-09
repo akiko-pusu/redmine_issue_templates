@@ -54,6 +54,16 @@ feature 'Update issue', js: true do
     expect(page).to have_selector('div#template_area select#issue_template')
   end
 
+  scenario 'Click edit link without apply_template_when_edit_issue flag', js: true do
+    Setting.send 'plugin_redmine_issue_templates=', 'apply_template_when_edit_issue' => 'false'
+    visit_update_issue(user)
+    issue = Issue.last
+    visit "/issues/#{issue.id}"
+    page.find('#content > div:nth-child(1) > a.icon.icon-edit').click
+    sleep(0.2)
+    expect(page).not_to have_selector('div#template_area select#issue_template')
+  end
+
   private
 
   def visit_update_issue(user)
