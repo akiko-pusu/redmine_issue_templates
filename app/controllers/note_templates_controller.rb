@@ -1,10 +1,8 @@
 class NoteTemplatesController < ApplicationController
+  include Concerns::ProjectTemplatesCommon
   layout 'base'
   helper :issue_templates
   menu_item :issues
-  before_action :find_object, only: %i[show update destroy]
-  before_action :find_user, :find_project, :authorize, except: %i[preview load]
-  accept_api_auth :index, :load
 
   def index
     project_id = @project.id
@@ -39,10 +37,6 @@ class NoteTemplatesController < ApplicationController
     @note_templateauthor = User.current
     @note_template.project = @project
     save_and_flash(:notice_successful_create, :new) && return
-  end
-
-  def show
-    render render_form_params
   end
 
   def update
@@ -86,23 +80,9 @@ class NoteTemplatesController < ApplicationController
 
   private
 
-  def find_user
-    @user = User.current
-  end
-
-  def find_tracker
-    @tracker = Tracker.find(params[:issue_tracker_id])
-  end
-
   def find_object
     @note_template = NoteTemplate.find(params[:id])
     @project = @note_template.project
-  rescue ActiveRecord::RecordNotFound
-    render_404
-  end
-
-  def find_project
-    @project = Project.find(params[:project_id])
   rescue ActiveRecord::RecordNotFound
     render_404
   end
@@ -112,23 +92,12 @@ class NoteTemplatesController < ApplicationController
                                           :name, :memo, :description, :enabled, :author_id, :position)
   end
 
-  def render_form_params
-    { layout: !request.xhr?,
-      locals: { note_template: @note_template, project: @project } }
+  def template
+    @note_template
   end
 
-  def save_and_flash(message, action_on_failure)
-    unless @note_template.save
-      render render_form_params.merge(action: action_on_failure)
-      retur
-    end
-
-    respond_to do |format|
-      format.html do
-        flash[:notice] = l(message)
-        redirect_to action: 'show', id: @note_template.id, project_id: @project
-      end
-      format.js { head 200 }
-    end
+  def render_form_params
+    { layout: !request.xhr?,
+      locals: { note_template: template, project: @project } }
   end
 end

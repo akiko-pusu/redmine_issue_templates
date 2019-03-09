@@ -3,12 +3,9 @@ class IssueTemplatesController < ApplicationController
   layout 'base'
   helper :issues
   include Concerns::IssueTemplatesCommon
+  include Concerns::ProjectTemplatesCommon
   menu_item :issues
-
-  before_action :find_object, only: %i[show edit update destroy]
-  before_action :find_user, :find_project, :authorize, except: [:preview]
   before_action :find_tracker, :find_templates, only: %i[set_pulldown list_templates]
-  accept_api_auth :index, :list_templates, :load
 
   def index
     project_id = @project.id
@@ -39,10 +36,6 @@ class IssueTemplatesController < ApplicationController
     end
   end
 
-  def show
-    render render_form_params
-  end
-
   def new
     if params[:copy_from].present?
       @issue_template = IssueTemplate.find(params[:copy_from]).dup
@@ -67,17 +60,6 @@ class IssueTemplatesController < ApplicationController
     @issue_template.safe_attributes = template_params
     @issue_template.checklist_json = checklists.to_json
     save_and_flash(:notice_successful_update, :show)
-  end
-
-  def destroy
-    unless @issue_template.destroy
-      flash[:error] = l(:enabled_template_cannot_destroy)
-      redirect_to action: :show, project_id: @project, id: @issue_template
-      return
-    end
-
-    flash[:notice] = l(:notice_successful_delete)
-    redirect_to action: 'index', project_id: @project
   end
 
   # load template description
@@ -152,23 +134,9 @@ class IssueTemplatesController < ApplicationController
     IssueTemplate.orphaned(@project.id)
   end
 
-  def find_user
-    @user = User.current
-  end
-
-  def find_tracker
-    @tracker = Tracker.find(params[:issue_tracker_id])
-  end
-
   def find_object
     @issue_template = IssueTemplate.find(params[:id])
     @project = @issue_template.project
-  rescue ActiveRecord::RecordNotFound
-    render_404
-  end
-
-  def find_project
-    @project = Project.find(params[:project_id])
   rescue ActiveRecord::RecordNotFound
     render_404
   end
@@ -179,25 +147,8 @@ class IssueTemplatesController < ApplicationController
     @global_templates = global_templates(@tracker.id)
   end
 
-  def save_and_flash(message, action_on_failure)
-    unless @issue_template.save
-      render render_form_params.merge(action: action_on_failure)
-      return
-    end
-
-    respond_to do |format|
-      format.html do
-        flash[:notice] = l(message)
-        redirect_to action: 'show', id: @issue_template.id, project_id: @project
-      end
-      format.js { head 200 }
-    end
-  end
-
-  def render_form_params
-    { layout: !request.xhr?,
-      locals: { checklist_enabled: checklist_enabled?,
-                issue_template: @issue_template, project: @project } }
+  def template
+    @issue_template
   end
 
   def setting
@@ -246,4 +197,11 @@ class IssueTemplatesController < ApplicationController
   def templates_exist?
     @inherit_templates.present? || @issue_templates.present?
   end
+
+  def render_form_params
+    { layout: !request.xhr?,
+      locals: { issue_template: template, project: @project,
+        checklist_enabled: checklist_enabled? }
+    }
+  end  
 end
