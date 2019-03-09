@@ -13,14 +13,12 @@ feature 'Update issue', js: true do
   given(:role) { FactoryBot.create(:role, :manager_role) }
   given(:status) { IssueStatus.create(name: 'open', is_closed: false) }
 
-  background(:all) do
+  background do
     Redmine::Plugin.register(:redmine_issue_templates) do
       settings partial: 'settings/redmine_issue_templates',
                default: { 'apply_global_template_to_all_projects' => 'false', 'apply_template_when_edit_issue' => 'true' }
     end
-  end
 
-  background do
     FactoryBot.create_list(:issue_template, 2, project_id: project.id, tracker_id: tracker.id)
 
     project.trackers << tracker
@@ -45,6 +43,7 @@ feature 'Update issue', js: true do
   end
 
   scenario 'Click edit link with apply_template_when_edit_issue flag', js: true do
+    Setting.send 'plugin_redmine_issue_templates=', 'apply_template_when_edit_issue' => 'true'
     visit_update_issue(user)
     issue = Issue.last
     visit "/issues/#{issue.id}"
@@ -56,7 +55,7 @@ feature 'Update issue', js: true do
   private
 
   def visit_update_issue(user)
-    user.update_attribute(:admin, false)
+    #user.update_attribute(:admin, false)
     log_user(user.login, user.password)
   end
 end
