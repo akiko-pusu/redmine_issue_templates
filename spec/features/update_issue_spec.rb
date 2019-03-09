@@ -64,6 +64,22 @@ feature 'Update issue', js: true do
     expect(page).not_to have_selector('div#template_area select#issue_template')
   end
 
+  context 'Have note template' do
+    before do
+      NoteTemplate.create(project_id: project.id, tracker_id: tracker.id,
+                          name: 'Note Template name', description: 'Note Template desctiption', enabled: true)
+    end
+
+    scenario 'Template for note exists' do
+      visit_update_issue(user)
+      issue = Issue.last
+      visit "/issues/#{issue.id}"
+      page.find('#content > div:nth-child(1) > a.icon.icon-edit').click
+      sleep(0.2)
+      expect(page).to have_selector('a#link_template_issue_notes_dialog')
+    end
+  end
+
   private
 
   def visit_update_issue(user)
