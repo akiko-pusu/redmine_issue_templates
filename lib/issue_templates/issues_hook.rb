@@ -72,7 +72,11 @@ module IssueTemplates
     end
 
     def plugin_setting
-      @plugin_setting ||= Setting.plugin_redmine_issue_templates
+      Setting.plugin_redmine_issue_templates
+    end
+
+    def apply_all_projects?
+      plugin_setting['apply_global_template_to_all_projects'].to_s == 'true'
     end
 
     def apply_template_when_edit_issue?
