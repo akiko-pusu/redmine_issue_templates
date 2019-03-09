@@ -67,6 +67,17 @@ class NoteTemplatesController < ApplicationController
     end
   end
 
+  def destroy
+    unless @note_template.destroy
+      flash[:error] = l(:enabled_template_cannot_destroy)
+      redirect_to action: :show, project_id: @project, id: @note_template
+      return
+    end
+
+    flash[:notice] = l(:notice_successful_delete)
+    redirect_to action: 'index', project_id: @project
+  end
+
   private
 
   def find_object
@@ -83,5 +94,10 @@ class NoteTemplatesController < ApplicationController
 
   def template
     @note_template
+  end
+
+  def render_form_params
+    { layout: !request.xhr?,
+      locals: { note_template: template, project: @project } }
   end
 end

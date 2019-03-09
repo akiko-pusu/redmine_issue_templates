@@ -56,11 +56,5 @@ module Concerns
     rescue ActiveRecord::RecordNotFound
       render_404
     end
-
-    def render_form_params
-      { layout: !request.xhr?,
-        locals: { checklist_enabled: checklist_enabled?,
-                  issue_template: template, project: @project } }
-    end
   end
 end

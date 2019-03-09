@@ -62,17 +62,6 @@ class IssueTemplatesController < ApplicationController
     save_and_flash(:notice_successful_update, :show)
   end
 
-  def destroy
-    unless @issue_template.destroy
-      flash[:error] = l(:enabled_template_cannot_destroy)
-      redirect_to action: :show, project_id: @project, id: @issue_template
-      return
-    end
-
-    flash[:notice] = l(:notice_successful_delete)
-    redirect_to action: 'index', project_id: @project
-  end
-
   # load template description
   def load
     issue_template_id = params[:template_id]
@@ -208,4 +197,11 @@ class IssueTemplatesController < ApplicationController
   def templates_exist?
     @inherit_templates.present? || @issue_templates.present?
   end
+
+  def render_form_params
+    { layout: !request.xhr?,
+      locals: { issue_template: template, project: @project,
+        checklist_enabled: checklist_enabled? }
+    }
+  end  
 end

@@ -7,18 +7,17 @@ RSpec.configure do |c|
 end
 
 feature 'Update issue', js: true do
+  given(:user) { FactoryBot.create(:user, :password_same_login, login: 'manager', language: 'en', admin: false) }
+  given(:project) { create(:project_with_enabled_modules) }
+  given(:tracker) { FactoryBot.create(:tracker, :with_default_status) }
+  given(:role) { FactoryBot.create(:role, :manager_role) }
+  given(:status) { IssueStatus.create(name: 'open', is_closed: false) }
+
   background(:all) do
     Redmine::Plugin.register(:redmine_issue_templates) do
       settings partial: 'settings/redmine_issue_templates',
                default: { 'apply_global_template_to_all_projects' => 'false', 'apply_template_when_edit_issue': 'true' }
     end
-
-    given(:user) { FactoryBot.create(:user, :password_same_login, login: 'manager', language: 'en', admin: false) }
-    given(:project) { create(:project_with_enabled_modules) }
-    given(:tracker) { FactoryBot.create(:tracker, :with_default_status) }
-    given(:role) { FactoryBot.create(:role, :manager_role) }
-    given(:issue_priority) { FactoryBot.create(:priority) }
-    given(:status) { IssueStatus.create(name: 'open', is_closed: false) }
   end
 
   background do
@@ -30,13 +29,28 @@ feature 'Update issue', js: true do
     member.member_roles << MemberRole.new(role: role)
     member.save
 
+    priority = IssuePriority.create(
+      name: 'Low',
+      position: 1, is_default: false, type: 'IssuePriority', active: true, project_id: nil, parent_id: nil,
+      position_name: 'lowest'
+    )
+
     issue = Issue.create(project_id: project.id, tracker_id: tracker.id,
                          author_id: user.id,
-                         status_id: 1, priority: issue_priority,
+                         priority: priority,
                          subject: 'test_create',
-                         issue_status: status.id,
+                         status_id: status.id,
                          description: 'IssueTest#test_create')
     issue.save
+  end
+
+  scenario 'Click edit link with apply_template_when_edit_issue flag', js: true do
+    visit_update_issue(user)
+    issue = Issue.last
+    visit "/issues/#{issue.id}"
+    page.find('#content > div:nth-child(1) > a.icon.icon-edit').click
+    sleep(0.2)
+    expect(page).to have_selector('div#template_area select#issue_template')
   end
 
   private
@@ -44,9 +58,5 @@ feature 'Update issue', js: true do
   def visit_update_issue(user)
     user.update_attribute(:admin, false)
     log_user(user.login, user.password)
-    issue = Issue.last
-    visit "/projects/#{project.identifier}/issues/#{issue.id}"
-    page.find('a.icon.icon-edit:first-of-types').click
-    expect(page).to have_selector('div#template_area select#issue_template')
   end
 end
