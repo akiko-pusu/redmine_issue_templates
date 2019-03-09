@@ -63,3 +63,5 @@ en:
   note_template: "Template for note"
   no_note_templates_for_this_project: "No comment templates are defined for this project."
   label_memo_help_message: "Please set up a note explaining when applying this template."
+  note_template_name: "Template name for note"
+  note_description: "Comment body"

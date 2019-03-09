@@ -64,3 +64,5 @@ ja:
   note_template: "コメント用テンプレート"
   no_note_templates_for_this_project: "このプロジェクトのコメント用テンプレートは未だ登録されていません。"
   label_memo_help_message: "このテンプレートは、どのような場合に利用すればいいか説明を入力してください。"
+  note_template_name: "コメント用テンプレート名"
+  note_description: "コメント本文"
