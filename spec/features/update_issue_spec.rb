@@ -16,7 +16,7 @@ feature 'Update issue', js: true do
   background(:all) do
     Redmine::Plugin.register(:redmine_issue_templates) do
       settings partial: 'settings/redmine_issue_templates',
-               default: { 'apply_global_template_to_all_projects' => 'false', 'apply_template_when_edit_issue': 'true' }
+               default: { 'apply_global_template_to_all_projects' => 'false', 'apply_template_when_edit_issue' => 'true' }
     end
   end
 
