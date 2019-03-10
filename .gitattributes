@@ -9,3 +9,4 @@ Gemfile.local export-ignore
 .circleci/ export-ignore
 docker-compose.yml export-ignore
 Dockerfile export-ignore
+goodcheck.yml export-ignore

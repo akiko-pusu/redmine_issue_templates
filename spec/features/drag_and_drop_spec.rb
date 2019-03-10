@@ -9,8 +9,6 @@ feature 'Templates can be reorder via drag and drop', js: true do
   given(:project) { create(:project_with_enabled_modules) }
   given(:tracker) { FactoryBot.create(:tracker, :with_default_status) }
   given(:role) { FactoryBot.create(:role, :manager_role) }
-  given(:issue_priority) { FactoryBot.create(:priority) }
-
   given(:table) { page.find('table.list.issues.table-sortable:first-of-type > tbody') }
 
   background do
