@@ -2,7 +2,7 @@ module Concerns
   module ProjectTemplatesCommon
     extend ActiveSupport::Concern
     included do
-      before_action :find_user, :find_project, :authorize, except: [:preview]
+      before_action :find_user, :find_project, :authorize, except: [:preview, :load]
       before_action :find_object, only: %i[show edit update destroy]
       accept_api_auth :index, :list_templates, :load
     end
