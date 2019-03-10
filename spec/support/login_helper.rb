@@ -13,6 +13,7 @@ module LoginHelper
 
   def assign_template_priv(role, add_permission: nil, remove_permission: nil)
     return if add_permission.blank? && remove_permission.blank?
+
     role.add_permission! add_permission if add_permission.present?
     role.remove_permission! remove_permission if remove_permission.present?
   end
