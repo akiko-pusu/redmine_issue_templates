@@ -1,0 +1,17 @@
+rules:
+  - id: akiko.redmine.user_password
+    pattern: ':password_same_login,' 
+    message: |
+      FactoryBotで trait: ":password_same_login" を使ってログイン名とパスワードを同じユーザを
+      作ってテストする場合は、ログイン名（ = パスワード）の長さは8以上になるようにして下さい。
+
+      "admin" や "manager" では8文字未満のため失敗します。
+    glob:
+      - "**/*_spec.rb"
+    fail:
+      - "FactoryBot.create(:user, :password_same_login, login: 'manager')"
+      - "FactoryBot.create(:user, :password_same_login, login: 'admin')"
+    pass:
+      - "FactoryBot.create(:user, :password_same_login, login: 'test-manager')"
+
+
