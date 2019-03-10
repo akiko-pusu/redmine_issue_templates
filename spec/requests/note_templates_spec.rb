@@ -30,7 +30,10 @@ RSpec.describe 'Note Template', type: :request do
 
     get "/projects/#{project.identifier}/note_templates/new"
     expect(response.status).to eq 200
+  end
 
+  it 'create note template and load' do
+    login_request(user.login, user.login)
     post "/projects/#{project.identifier}/note_templates",
          params: { note_template:
            { tracker_id: tracker.id, name: 'Note template name',
