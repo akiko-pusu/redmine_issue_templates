@@ -7,7 +7,7 @@ RSpec.configure do |c|
 end
 
 feature 'PluginSetting to apply Global issue templates to all the projects', js: true do
-  given(:user) { FactoryBot.create(:user, :password_same_login, login: 'admin', language: 'en') }
+  given(:user) { create(:user, :password_same_login, login: 'admin', language: 'en') }
 
   background(:all) do
     Redmine::Plugin.register(:redmine_issue_templates) do
