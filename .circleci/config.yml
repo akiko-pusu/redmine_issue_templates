@@ -47,8 +47,7 @@ jobs:
             bundle exec rake ${CIRCLE_PROJECT_REPONAME}:test RAILS_ENV=test
       - run:
           command: |
-            bundle exec rspec -I plugins/redmine_issue_templates/spec --format RspecJunitFormatter \
-              -o $CIRCLE_TEST_REPORTS/rspec/junit.xml plugins/redmine_issue_templates/spec/
+            bundle exec rspec -I plugins/redmine_issue_templates/spec --format documentation plugins/redmine_issue_templates/spec/
       - run:
           command: |
             bundle exec rake redmine:plugins:migrate NAME=${CIRCLE_PROJECT_REPONAME} \
