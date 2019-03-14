@@ -7,8 +7,8 @@ RSpec.configure do |c|
 end
 
 feature 'Update issue', js: true do
-  given(:user) { FactoryBot.create(:user, :password_same_login, login: 'manager', language: 'en', admin: false) }
-  given(:project) { create(:project_with_enabled_modules) }
+  given(:user) { FactoryBot.create(:user, :password_same_login, login: 'test-manager', language: 'en', admin: false) }
+  given(:project) { FactoryBot.create(:project_with_enabled_modules) }
   given(:tracker) { FactoryBot.create(:tracker, :with_default_status) }
   given(:role) { FactoryBot.create(:role, :manager_role) }
   given(:status) { IssueStatus.create(name: 'open', is_closed: false) }

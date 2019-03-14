@@ -9,7 +9,7 @@ end
 
 RSpec.describe 'Note Template', type: :request do
   let(:user) { FactoryBot.create(:user, :password_same_login, login: 'test-manager', language: 'en', admin: false) }
-  let(:project) { create(:project_with_enabled_modules) }
+  let(:project) { FactoryBot.create(:project_with_enabled_modules) }
   let(:tracker) { FactoryBot.create(:tracker, :with_default_status) }
   let(:role) { FactoryBot.create(:role, :manager_role) }
   let(:target_template) { NoteTemplate.last }
