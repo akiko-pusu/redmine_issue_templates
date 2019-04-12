@@ -10,11 +10,11 @@ RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
 RUN apt-get update
 RUN apt-get install -qq -y \
-    git vim mercurial         \
+    git vim        \
     sqlite3 default-libmysqlclient-dev
 RUN apt-get install -qq -y build-essential libc6-dev
 
-RUN cd /tmp && hg clone https://bitbucket.org/redmine/redmine-all redmine
+RUN cd /tmp && svn co http://svn.redmine.org/redmine/trunk redmine
 WORKDIR /tmp/redmine
 
 
