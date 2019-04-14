@@ -3,8 +3,8 @@ FactoryBot.define do
     sequence(:name) { |n| "project-name: #{n}" }
     sequence(:description) { |n| "project-description: #{n}" }
     sequence(:identifier) { |n| "project-#{n}" }
-    homepage 'http://ecookbook.somenet.foo/'
-    is_public true
+    homepage { 'http://ecookbook.somenet.foo/' }
+    is_public { true }
 
     trait :with_enabled_modules do
       after(:build) do |tracker|
@@ -20,3 +20,4 @@ FactoryBot.define do
     end
   end
 end
+
