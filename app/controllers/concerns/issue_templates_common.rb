@@ -31,5 +31,12 @@ module Concerns
     rescue StandardError
       false
     end
+
+    def valid_params
+      # convert attribute name and data for checklist plugin supporting
+      attributes = template_params.except(:checklists)
+      attributes[:checklist_json] = checklists.to_json if checklist_enabled? && checklists.present?
+      attributes
+    end
   end
 end

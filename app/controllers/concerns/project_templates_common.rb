@@ -2,7 +2,7 @@ module Concerns
   module ProjectTemplatesCommon
     extend ActiveSupport::Concern
     included do
-      before_action :find_user, :find_project, :authorize, except: [:preview, :load]
+      before_action :find_user, :find_project, :authorize, except: %i[preview load]
       before_action :find_object, only: %i[show edit update destroy]
       accept_api_auth :index, :list_templates, :load
     end
@@ -17,7 +17,7 @@ module Concerns
         redirect_to action: :show, project_id: @project, id: template
         return
       end
-  
+
       flash[:notice] = l(:notice_successful_delete)
       redirect_to action: 'index', project_id: @project
     end
