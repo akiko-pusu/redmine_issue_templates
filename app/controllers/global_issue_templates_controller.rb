@@ -30,10 +30,8 @@ class GlobalIssueTemplatesController < ApplicationController
   end
 
   def create
-    @global_issue_template = GlobalIssueTemplate.new(template_params)
+    @global_issue_template = GlobalIssueTemplate.new(valid_params)
     @global_issue_template.author = User.current
-    @global_issue_template.checklist_json = checklists.to_json if checklists
-
     save_and_flash(:notice_successful_create, :new) && return
   end
 
@@ -42,8 +40,7 @@ class GlobalIssueTemplatesController < ApplicationController
   end
 
   def update
-    @global_issue_template.safe_attributes = template_params
-    @global_issue_template.checklist_json = checklists.to_json
+    @global_issue_template.safe_attributes = valid_params
     save_and_flash(:notice_successful_update, :show)
   end
 
@@ -51,8 +48,7 @@ class GlobalIssueTemplatesController < ApplicationController
     # Change from request.post to request.patch for Rails4.
     return unless request.patch? || request.put?
 
-    @global_issue_template.safe_attributes = template_params
-    @global_issue_template.checklist_json = checklists.to_json
+    @global_issue_template.safe_attributes = valid_params
     save_and_flash(:notice_successful_update, :show)
   end
 
@@ -118,7 +114,6 @@ class GlobalIssueTemplatesController < ApplicationController
     projects = Project.all
     { layout: !request.xhr?,
       locals: { checklist_enabled: checklist_enabled?, trackers: trackers, apply_all_projects: apply_all_projects?,
-                issue_template: @global_issue_template, projects: projects }
-    }
+                issue_template: @global_issue_template, projects: projects } }
   end
 end

@@ -71,9 +71,11 @@ class IssueTemplatesControllerTest < Redmine::ControllerTest
     edit_permission
 
     num = IssueTemplate.count
-    post :create, params: { issue_template: { title: 'newtitle', note: 'note',
-                                              description: 'description', tracker_id: 1, enabled: 1, author_id: 3 },
-                            project_id: 1 }
+    post :create, params: {
+      issue_template: { title: 'newtitle', note: 'note', checklists: %w[check1 check2],
+                        description: 'description', tracker_id: 1, enabled: 1, author_id: 3 },
+      project_id: 1
+    }
 
     template = IssueTemplate.last
     assert_response :redirect
@@ -87,6 +89,34 @@ class IssueTemplatesControllerTest < Redmine::ControllerTest
     assert_equal(1, template.project.id)
     assert_equal(1, template.tracker.id)
     assert_equal(2, template.author.id)
+
+    assert_nil(template.checklist_json)
+    assert_equal([], template.checklist)
+  end
+
+  def test_create_template_when_checklist_enable
+    edit_permission
+    checklist_plugin_enabled
+
+    checklists_param = %w[check1 check2]
+
+    num = IssueTemplate.count
+    post :create, params: {
+      issue_template: { title: 'newtitle', note: 'note', checklists: checklists_param,
+                        description: 'description', tracker_id: 1, enabled: 1, author_id: 3 },
+      project_id: 1
+    }
+
+    template = IssueTemplate.last
+    assert_response :redirect
+
+    assert_equal(num + 1, IssueTemplate.count)
+
+    assert_not_nil template
+    assert_equal(checklists_param.to_json, template.checklist_json)
+    assert_equal(checklists_param, template.checklist)
+
+    Redmine::Plugin.unregister(:redmine_checklists)
   end
 
   def test_create_template_with_empty_title
@@ -237,6 +267,12 @@ class IssueTemplatesControllerTest < Redmine::ControllerTest
 
     # do as Admin
     @request.session[:user_id] = 1
+  end
+
+  def checklist_plugin_enabled
+    Redmine::Plugin.register(:redmine_checklists) do
+      name 'Redmine Checklists plugin (for Test Dummy)'
+    end
   end
 
   def edit_permission
