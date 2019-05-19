@@ -48,17 +48,15 @@ class IssueTemplatesController < ApplicationController
   end
 
   def create
-    @issue_template = IssueTemplate.new(template_params)
+    @issue_template = IssueTemplate.new(valid_params)
     @issue_template.author = User.current
     @issue_template.project = @project
-    @issue_template.checklist_json = checklists.to_json
     # TODO: Should return validation error in case mandatory fields are blank.
     save_and_flash(:notice_successful_create, :new) && return
   end
 
   def update
-    @issue_template.safe_attributes = template_params
-    @issue_template.checklist_json = checklists.to_json
+    @issue_template.safe_attributes = valid_params
     save_and_flash(:notice_successful_update, :show)
   end
 
@@ -201,7 +199,6 @@ class IssueTemplatesController < ApplicationController
   def render_form_params
     { layout: !request.xhr?,
       locals: { issue_template: template, project: @project,
-        checklist_enabled: checklist_enabled? }
-    }
-  end  
+                checklist_enabled: checklist_enabled? } }
+  end
 end

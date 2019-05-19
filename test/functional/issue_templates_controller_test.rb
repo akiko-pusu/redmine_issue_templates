@@ -1,4 +1,5 @@
 require File.expand_path('../test_helper', __dir__)
+require 'minitest/autorun'
 
 class IssueTemplatesControllerTest < Redmine::ControllerTest
   fixtures :projects, :users, :roles, :trackers, :members, :member_roles, :enabled_modules,
@@ -71,9 +72,11 @@ class IssueTemplatesControllerTest < Redmine::ControllerTest
     edit_permission
 
     num = IssueTemplate.count
-    post :create, params: { issue_template: { title: 'newtitle', note: 'note',
-                                              description: 'description', tracker_id: 1, enabled: 1, author_id: 3 },
-                            project_id: 1 }
+    post :create, params: {
+      issue_template: { title: 'newtitle', note: 'note', checklists: %w[check1 check2],
+                        description: 'description', tracker_id: 1, enabled: 1, author_id: 3 },
+      project_id: 1
+    }
 
     template = IssueTemplate.last
     assert_response :redirect
@@ -87,6 +90,37 @@ class IssueTemplatesControllerTest < Redmine::ControllerTest
     assert_equal(1, template.project.id)
     assert_equal(1, template.tracker.id)
     assert_equal(2, template.author.id)
+
+    assert_nil(template.checklist_json)
+    assert_equal([], template.checklist)
+  end
+
+  def test_create_template_when_checklist_enable
+    edit_permission
+
+    # Use stub to test with other plugin
+    mock = MiniTest::Mock.new
+    mock.expect(:call, true, [:redmine_checklists])
+    Redmine::Plugin.registered_plugins.stub(:key?, mock) do
+      checklists_param = %w[check1 check2]
+
+      num = IssueTemplate.count
+      post :create, params: {
+        issue_template: { title: 'newtitle', note: 'note', checklists: checklists_param,
+                          description: 'description', tracker_id: 1, enabled: 1, author_id: 3 },
+        project_id: 1
+      }
+
+      template = IssueTemplate.last
+      assert_response :redirect
+
+      assert_equal(num + 1, IssueTemplate.count)
+
+      assert_not_nil template
+      assert_equal(checklists_param.to_json, template.checklist_json)
+      assert_equal(checklists_param, template.checklist)
+    end
+    mock.verify
   end
 
   def test_create_template_with_empty_title
