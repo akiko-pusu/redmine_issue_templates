@@ -27,7 +27,7 @@ Redmine 2.0, please use version 0.0.3 or higher.
 
 Try this:
 
-* rake db:migrate_plugins NAME=redmine_issue_templates VERSION=0
+* rake redmine:plugins:migrate NAME=redmine_issue_templates VERSION=0
     RAILS_ENV=production
 
 See also:
@@ -70,6 +70,13 @@ If you have any requests, bug reports, please use GitHub issues. <https://github
 * <http://www.r-labs.org/projects/issue-template/wiki/About_en>
 
 ## Changelog
+
+### 0.3.2
+
+* Bugfix: Adding issue templates with checklists occurs internal error.(#243)
+* Merge PR commit: bca2fe481 by @two-pack, restored missing newline. (Related: #242)
+* Feature: Add clear subject/body option when tracker changed which has no template. (#230)
+* Code refactoring.
 
 ### 0.3.1
 
@@ -125,6 +132,7 @@ for plugin's compatibility. (To support Redmine 3.0 - 3.4)
 
 Thank you for reviewing, Tatsuya Saito!
 
+For release notes before v0.2.0, please see: [RELEASE-NOTES.md](RELEASE-NOTES.md)
 
 ### Language and I18n contributors
 
