@@ -1,4 +1,5 @@
 require File.expand_path('../test_helper', __dir__)
+require 'minitest/autorun'
 
 class IssueTemplatesControllerTest < Redmine::ControllerTest
   fixtures :projects, :users, :roles, :trackers, :members, :member_roles, :enabled_modules,
@@ -96,27 +97,30 @@ class IssueTemplatesControllerTest < Redmine::ControllerTest
 
   def test_create_template_when_checklist_enable
     edit_permission
-    checklist_plugin_enabled
 
-    checklists_param = %w[check1 check2]
+    # Use stub to test with other plugin
+    mock = MiniTest::Mock.new
+    mock.expect(:call, true, [:redmine_checklists])
+    Redmine::Plugin.registered_plugins.stub(:key?, mock) do
+      checklists_param = %w[check1 check2]
 
-    num = IssueTemplate.count
-    post :create, params: {
-      issue_template: { title: 'newtitle', note: 'note', checklists: checklists_param,
-                        description: 'description', tracker_id: 1, enabled: 1, author_id: 3 },
-      project_id: 1
-    }
+      num = IssueTemplate.count
+      post :create, params: {
+        issue_template: { title: 'newtitle', note: 'note', checklists: checklists_param,
+                          description: 'description', tracker_id: 1, enabled: 1, author_id: 3 },
+        project_id: 1
+      }
 
-    template = IssueTemplate.last
-    assert_response :redirect
+      template = IssueTemplate.last
+      assert_response :redirect
 
-    assert_equal(num + 1, IssueTemplate.count)
+      assert_equal(num + 1, IssueTemplate.count)
 
-    assert_not_nil template
-    assert_equal(checklists_param.to_json, template.checklist_json)
-    assert_equal(checklists_param, template.checklist)
-
-    Redmine::Plugin.unregister(:redmine_checklists)
+      assert_not_nil template
+      assert_equal(checklists_param.to_json, template.checklist_json)
+      assert_equal(checklists_param, template.checklist)
+    end
+    mock.verify
   end
 
   def test_create_template_with_empty_title
@@ -267,12 +271,6 @@ class IssueTemplatesControllerTest < Redmine::ControllerTest
 
     # do as Admin
     @request.session[:user_id] = 1
-  end
-
-  def checklist_plugin_enabled
-    Redmine::Plugin.register(:redmine_checklists) do
-      name 'Redmine Checklists plugin (for Test Dummy)'
-    end
   end
 
   def edit_permission
