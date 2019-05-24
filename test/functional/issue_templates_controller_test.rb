@@ -181,6 +181,31 @@ class IssueTemplatesControllerTest < Redmine::ControllerTest
     assert_select 'div#errorExplanation', { count: 1, text: /Title cannot be blank/ }, @response.body.to_s
   end
 
+  def test_update_template_when_checklist_enable
+    edit_permission
+
+    # Use stub to test with other plugin
+    mock = MiniTest::Mock.new
+    mock.expect(:call, true, [:redmine_checklists])
+    Redmine::Plugin.registered_plugins.stub(:key?, mock) do
+      checklists_param = %w[check1 check2]
+
+      num = IssueTemplate.count
+      # when title blank, validation bloks to save.
+      put :update, params: { id: 2,
+                             issue_template: { title: 'update with checklist param', checklists: checklists_param }, project_id: 1 }
+
+      assert_response :redirect # show
+      assert_equal(num, IssueTemplate.count)
+
+      issue_template = IssueTemplate.find(2)
+
+      assert_equal(checklists_param.to_json, issue_template.checklist_json)
+      assert_equal(checklists_param, issue_template.checklist)
+    end
+    mock.verify
+  end
+
   def test_delete_template_fail_if_enabled
     edit_permission
 
