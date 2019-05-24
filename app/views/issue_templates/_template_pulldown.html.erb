@@ -2,12 +2,6 @@
     var length = $('#issue_template > optgroup > option').length;
     if (length < 1) {
         $('#template_area').hide();
-        if ($('#issue-form.new_issue').length > 0) {
-          // Uncaught ReferenceError: templateNS is not defined
-          if (typeof templateNS !== 'undefined') {
-            templateNS.eraseSubjectAndDescription();
-          }
-        }
     } else {
         $('#template_area').show();
     }
