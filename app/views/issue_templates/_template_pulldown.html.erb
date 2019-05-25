@@ -18,7 +18,7 @@
 <optgroup label="<%=h @tracker.name %>">
   <%= options_for_template_pulldown(grouped_options) %>
 </optgroup>
-<% if is_triggered_by.blank? || (is_triggered_by.present? && is_triggered_by == 'issue_status_id') %>
+<% if is_triggered_by.blank? || (is_triggered_by.present? && is_triggered_by == 'issue_tracker_id') %>
     <script type="text/javascript">
         var load_url = '<%= url_for(controller: 'issue_templates', action: 'load', project_id: @project) %>';
         var should_replaced = '<%= should_replaced %>';
