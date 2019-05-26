@@ -60,22 +60,22 @@
 <script type="text/javascript">
     //<![CDATA[
     $(function() {
-        var templateNS = new ISSUE_TEMPLATE();
-        var pulldown_url = '<%= pulldown_url %>';
-        var tracker =  '<%= @issue.tracker.id %>';
+        var templateNS = templateNS || new ISSUE_TEMPLATE();
+        let pulldown_url = '<%= pulldown_url %>';
+        let tracker = '<%= @issue.tracker.id %>';
         templateNS.set_pulldown(tracker, pulldown_url);
 
         $('#template_area').insertBefore($('#issue_subject').parent());
 
         $("#issue_template").change(function(){
-            var is_triggered_by = '<%= is_triggered_by %>';
-            var load_url = '<%= url_for(controller: 'issue_templates', action: 'load',
-        project_id: project_id, is_triggered_by: is_triggered_by) %>';
-            var should_replaced = '<%= setting.should_replaced %>';
-            var confirmation = '<%=h l(:label_confirmation) %>';
-            var general_text_Yes = '<%=h l(:general_text_Yes) %>';
-            var general_text_No = '<%=h l(:general_text_No) %>';
-            var confirm_message = undefined;
+            let is_triggered_by = '<%= is_triggered_by %>';
+            let load_url = '<%= url_for(controller: 'issue_templates', action: 'load',
+                project_id: project_id, is_triggered_by: is_triggered_by) %>';
+            let should_replaced = '<%= setting.should_replaced %>';
+            let confirmation = '<%=h l(:label_confirmation) %>';
+            let general_text_Yes = '<%=h l(:general_text_Yes) %>';
+            let general_text_No = '<%=h l(:general_text_No) %>';
+            let confirm_message = undefined;
             if (should_replaced) {
                 confirm_message = '<%=h l(:label_template_applied, default: "Issue template is applied. You can revert with click 'Revert' link.") %>';
             }
@@ -85,9 +85,9 @@
 
         // Show dialog
         $('#link_template_dialog').click(function() {
-            var template_list_url = '<%= url_for(controller: 'issue_templates',
-        action:'list_templates', project_id: project_id, issue_tracker_id: @issue.tracker.id) %>';
-            var template_list_title = '<%= "#{l(:issue_template)}: #{@issue.tracker.name}".html_safe %>';
+            let template_list_url = '<%= url_for(controller: 'issue_templates',
+                action:'list_templates', project_id: project_id, issue_tracker_id: @issue.tracker.id) %>';
+            let template_list_title = '<%= "#{l(:issue_template)}: #{@issue.tracker.name}".html_safe %>';
 
             templateNS.openDialog(template_list_url, template_list_title);
         });
@@ -102,14 +102,14 @@
         });
 
         $("input[name='template_search_filter']").on("keydown keyup",function(){
-            var cols = $(".template_data");
-            var searchWord = $(this).val();
-            reg = new RegExp(searchWord,"gi");
+            let cols = $('.template_data');
+            let searchWord = $(this).val();
+            reg = new RegExp(searchWord,'gi');
             cols.each(function(i,val){
-                var col_name = $(val).children("td").text();
-                if(col_name.match(reg)){
+                let col_name = $(val).children('td').text();
+                if (col_name.match(reg)) {
                     $(val).show();
-                }else{
+                } else {
                     $(val).hide();
                 }
             })
@@ -120,18 +120,18 @@
         try {
             if (CKEDITOR.instances) {
                 // Create an observer instance linked to the callback function
-                var observer = new MutationObserver(callback);
+                let observer = new MutationObserver(callback);
 
                 // Select the node that will be observed for mutations
-                var targetNode = document.querySelector('#issue_description_and_toolbar');
+                let targetNode = document.querySelector('#issue_description_and_toolbar');
 
                 // Options for the observer (which mutations to observe)
-                var config = {attributes: true, childList: true, characterData: true, subtree: true};
+                let config = {attributes: true, childList: true, characterData: true, subtree: true};
 
                 // Callback function to execute when mutations are observed
-                var callback = function (mutationsList) {
-                    for (var i = 0, len = mutationsList.length; i < len; ++i) {
-                        var mutation = mutationsList[i];
+                let callback = function (mutationsList) {
+                    for (let i = 0, len = mutationsList.length; i < len; ++i) {
+                        let mutation = mutationsList[i];
                         if (mutation.type === 'attributes') {
                             console.log('The ' + mutation.attributeName + ' attribute was modified.');
                             if (mutation.target.className == 'cke_contents cke_reset') {
@@ -140,7 +140,6 @@
                                 setTimeout('templateNS.replaceCkeContent()', 200);
                                 observer.disconnect();
                             }
-
                         }
                     }
                 };
