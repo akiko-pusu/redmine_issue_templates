@@ -76,7 +76,8 @@ If you have any requests, bug reports, please use GitHub issues. <https://github
 This is bugfix release against v0.3.2. 
 Updating to 0.3.3 is highly recommended!
 
-* Revert: #230
+* Revert and Bugfix #230
+  * Merge pull request #252 from ishikawa999/fix/248 by @ishikawa999
 * Bugfix: #234 / Enable to save checklists when updating a template.
 
 ### 0.3.2
