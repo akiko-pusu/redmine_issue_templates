@@ -21,10 +21,10 @@ services:
     volumes:
       - .:/tmp/redmine/plugins/redmine_issue_templates
     ports:
-      - 3000:3000
+      - "3000:3000"
   mysql:
     image: mysql
     environment:
       MYSQL_ROOT_PASSWORD: pasword
     ports:
-      - 3306:3306
+      - "3306:3306"
