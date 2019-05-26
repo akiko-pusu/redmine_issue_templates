@@ -81,12 +81,12 @@ class IssueTemplatesController < ApplicationController
     add_templates_to_group(@inherit_templates, class: 'inherited')
     add_templates_to_group(@global_templates, class: 'global')
 
-    is_triggered_by_status = request.parameters[:is_triggered_by_status]
+    is_triggered_by = request.parameters[:is_triggered_by]
     is_update_issue = request.parameters[:is_update_issue]
     @group[@default_template].selected = 'selected' if @default_template.present? && (is_update_issue.blank? || is_update_issue != 'true')
 
     render action: '_template_pulldown', layout: false,
-           locals: { is_triggered_by_status: is_triggered_by_status, grouped_options: @group,
+           locals: { is_triggered_by: is_triggered_by, grouped_options: @group,
                      should_replaced: setting.should_replaced, default_template: @default_template }
   end
 

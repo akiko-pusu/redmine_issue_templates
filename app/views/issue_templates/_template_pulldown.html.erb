@@ -2,6 +2,14 @@
     var length = $('#issue_template > optgroup > option').length;
     if (length < 1) {
         $('#template_area').hide();
+        <% if is_triggered_by.blank? || (is_triggered_by.present? && is_triggered_by == 'issue_tracker_id') %>
+        if ($('#issue-form.new_issue').length > 0) {
+          // Uncaught ReferenceError: templateNS is not defined
+          if (typeof templateNS !== 'undefined') {
+            templateNS.eraseSubjectAndDescription();
+          }
+        }
+        <% end %>
     } else {
         $('#template_area').show();
     }
@@ -10,7 +18,7 @@
 <optgroup label="<%=h @tracker.name %>">
   <%= options_for_template_pulldown(grouped_options) %>
 </optgroup>
-<% if is_triggered_by_status.blank? || (is_triggered_by_status.present? && is_triggered_by_status == 'false') %>
+<% if is_triggered_by.blank? || (is_triggered_by.present? && is_triggered_by == 'issue_tracker_id') %>
     <script type="text/javascript">
         var load_url = '<%= url_for(controller: 'issue_templates', action: 'load', project_id: @project) %>';
         var should_replaced = '<%= should_replaced %>';
