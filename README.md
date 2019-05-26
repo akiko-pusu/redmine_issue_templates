@@ -19,7 +19,7 @@ Redmine 2.0, please use version 0.0.3 or higher.
     changed, some migration task will be failed.
 2. Do migration task.
 
-    e.g. rake redmine:plugins:migrate RAILS_ENV=production
+    e.g. rails redmine:plugins:migrate RAILS_ENV=production
 
 3. (Re)Start Redmine.
 
@@ -27,7 +27,7 @@ Redmine 2.0, please use version 0.0.3 or higher.
 
 Try this:
 
-* rake redmine:plugins:migrate NAME=redmine_issue_templates VERSION=0
+* rails redmine:plugins:migrate NAME=redmine_issue_templates VERSION=0
     RAILS_ENV=production
 
 See also:
@@ -71,6 +71,15 @@ If you have any requests, bug reports, please use GitHub issues. <https://github
 
 ## Changelog
 
+### 0.3.3
+
+This is bugfix release against v0.3.2. 
+Updating to 0.3.3 is highly recommended!
+
+* Revert and Bugfix #230
+  * Merge pull request #252 from ishikawa999/fix/248 by @ishikawa999
+* Bugfix: #234 / Enable to save checklists when updating a template.
+
 ### 0.3.2
 
 * Bugfix: Adding issue templates with checklists occurs internal error.(#243)
@@ -89,7 +98,7 @@ If you have any requests, bug reports, please use GitHub issues. <https://github
 NOTE: This version requires migration command to use note template feature.
 
 ```
-$ rake redmine:plugins:migrate RAILS_ENV=production
+$ rails redmine:plugins:migrate RAILS_ENV=production
 ```
 
 ### 0.3.0
@@ -201,7 +210,7 @@ Please see wercker.yml for more details.
 or
 
 ```bash
-% bundle exec rake redmine_issue_templates:test
+% bundle exec rails redmine_issue_templates:test
 ```
 
 #### Run spec

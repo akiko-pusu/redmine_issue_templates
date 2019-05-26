@@ -68,9 +68,9 @@
         $('#template_area').insertBefore($('#issue_subject').parent());
 
         $("#issue_template").change(function(){
-            var is_triggered_by_status = '<%= is_triggered_by_status %>';
+            var is_triggered_by = '<%= is_triggered_by %>';
             var load_url = '<%= url_for(controller: 'issue_templates', action: 'load',
-        project_id: project_id, is_triggered_by_status: is_triggered_by_status) %>';
+        project_id: project_id, is_triggered_by: is_triggered_by) %>';
             var should_replaced = '<%= setting.should_replaced %>';
             var confirmation = '<%=h l(:label_confirmation) %>';
             var general_text_Yes = '<%=h l(:general_text_Yes) %>';
