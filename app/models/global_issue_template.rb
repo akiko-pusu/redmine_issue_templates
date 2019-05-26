@@ -15,7 +15,8 @@ class GlobalIssueTemplate < ActiveRecord::Base
                   'issue_title',
                   'project_ids',
                   'position',
-                  'author_id'
+                  'author_id',
+                  'checklist_json'
 
   # for intermediate table assosciations
   scope :search_by_project, lambda { |project_id|
