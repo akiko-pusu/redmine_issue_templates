@@ -37,7 +37,7 @@ jobs:
           name: ready for redmine
           command: |
             REDMINE_BRANCH=master sh script/circleci-setup.sh
-      - run: perl -pi -e "s/gem \"capybara\".*$/gem \"capybara\", '~> 3.2'/g" Gemfile
+      - run: perl -pi -e "s/gem \"capybara\".*$/gem \"capybara\", '~> 3.24'/g" Gemfile
       - run: bundle install --path vendor/bundle --without postgresql rmagick && bundle update
       - run: bundle exec rails g rspec:install
       - run: bundle exec rake db:create RAILS_ENV=test
