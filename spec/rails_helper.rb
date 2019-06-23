@@ -12,7 +12,7 @@ RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/test/fixtures"
   config.include FactoryBot::Syntax::Methods
 
-  config.before :suite, type: :feature do
+  config.before :suite do
     require 'selenium-webdriver'
     if ENV['DRIVER'] == 'headless'
       Capybara.register_driver :headless_chrome do |app|
@@ -46,6 +46,7 @@ RSpec.configure do |config|
   config.before :each, type: :feature do
     Capybara.javascript_driver = :headless_chrome
     Capybara.current_driver = :headless_chrome
+    Capybara.default_max_wait_time = 30
   end
 
   config.include Capybara::DSL

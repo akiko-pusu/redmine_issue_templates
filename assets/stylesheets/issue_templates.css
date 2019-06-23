@@ -132,6 +132,8 @@ option.global {
 
 a.template_tooltip {
     background-image: url("../images/preview.png");
+    background-repeat: no-repeat;
+    padding-left: 20px;
 }
 
 #issue_template-form textarea {

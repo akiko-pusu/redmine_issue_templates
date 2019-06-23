@@ -23,7 +23,7 @@ module Concerns
     end
 
     def checklists
-      template_params[:checklists].blank? ? {} : template_params[:checklists]
+      template_params[:checklists].blank? ? [] : template_params[:checklists]
     end
 
     def checklist_enabled?
@@ -35,7 +35,7 @@ module Concerns
     def valid_params
       # convert attribute name and data for checklist plugin supporting
       attributes = template_params.except(:checklists)
-      attributes[:checklist_json] = checklists.to_json if checklist_enabled? && checklists.present?
+      attributes[:checklist_json] = checklists.to_json if checklist_enabled?
       attributes
     end
   end
