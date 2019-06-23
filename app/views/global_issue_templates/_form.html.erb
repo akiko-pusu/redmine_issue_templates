@@ -138,15 +138,15 @@
 <%= submit_tag l(issue_template.new_record? ? :button_create : :button_save) %>
 
 <script type="text/javascript">
-    var checklist = $('.checklist');
+    let checklist = $('.checklist');
 
     function removeCheckList(obj) {
-        var target = obj.closest('li')
+        let target = obj.closest('li')
         target.remove();
     }
 
     function addCheckList() {
-        var text = $('#checklist_text').val();
+        let text = $('#checklist_text').val();
         if (text == '') return false;
 
         $('.checklist-item').each(function (i, elem) {
@@ -160,9 +160,9 @@
     }
 
     function addCheckListItem(value) {
-        var li = $('<li>');
-        var text = $('<span class="text">').text(value);
-        var hidden = $("<input>", {
+        let li = $('<li>');
+        let text = $('<span class="text">').text(value);
+        let hidden = $("<input>", {
             type: 'hidden',
             id: 'global_issue_template_checklist',
             name: 'global_issue_template[checklists][]',
@@ -170,7 +170,7 @@
             value: value
         }).appendTo(li);
 
-        var remove_link = $("<a>", {
+        let remove_link = $("<a>", {
             class: 'icon icon-del',
         });
 
