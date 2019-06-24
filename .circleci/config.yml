@@ -11,14 +11,14 @@ general:
 jobs:
   build:
     docker:
-      # specify the version you desire here (ruby 2.4.x)
-      - image: circleci/ruby:2.5-browsers-legacy
+      # specify the version you desire here (ruby 2.6.x)
+      - image: circleci/ruby:2.6-browsers-legacy
     steps:
       - checkout
   test:
     docker:
       # specify the version you desire here
-      - image: circleci/ruby:2.5-browsers-legacy
+      - image: circleci/ruby:2.6-browsers-legacy
         environment:
           RAILS_ENV: test
           DB_HOST: 127.0.0.1
@@ -37,6 +37,7 @@ jobs:
           name: ready for redmine
           command: |
             REDMINE_BRANCH=master sh script/circleci-setup.sh
+      - run: perl -pi -e "s/gem \"capybara\".*$/gem \"capybara\"/g" Gemfile
       - run: bundle install --path vendor/bundle --without postgresql rmagick && bundle update
       - run: bundle exec rails g rspec:install
       - run: bundle exec rake db:create RAILS_ENV=test
@@ -47,7 +48,20 @@ jobs:
             bundle exec rake ${CIRCLE_PROJECT_REPONAME}:test RAILS_ENV=test
       - run:
           command: |
-            bundle exec rspec -I plugins/redmine_issue_templates/spec --format documentation plugins/redmine_issue_templates/spec/
+            bundle exec rspec -I plugins/redmine_issue_templates/spec --format documentation plugins/redmine_issue_templates/spec/models/
+      - run:
+          command: |
+            bundle exec rspec -I plugins/redmine_issue_templates/spec --format documentation plugins/redmine_issue_templates/spec/helpers/
+      - run:
+          command: |
+            bundle exec rspec -I plugins/redmine_issue_templates/spec --format documentation plugins/redmine_issue_templates/spec/controllers/
+      - run:
+          command: |
+            bundle exec rspec -I plugins/redmine_issue_templates/spec --format documentation plugins/redmine_issue_templates/spec/requests/
+      - run:
+          command: |
+            bundle exec rspec -I plugins/redmine_issue_templates/spec --format documentation plugins/redmine_issue_templates/spec/features/
+
       - run:
           command: |
             bundle exec rake redmine:plugins:migrate NAME=${CIRCLE_PROJECT_REPONAME} \

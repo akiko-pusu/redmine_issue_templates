@@ -71,9 +71,18 @@ If you have any requests, bug reports, please use GitHub issues. <https://github
 
 ## Changelog
 
+### 0.3.4
+
+This is bugfix release against v0.3.3.
+
+* Add navigation link between issue template and note template.
+* Refactor: Change to use let / const instead of var.
+* Update test environment, especially E2E. (Follow up Redmine4.1)
+* Bugfix #256 / Related to checklists.
+
 ### 0.3.3
 
-This is bugfix release against v0.3.2. 
+This is bugfix release against v0.3.2.
 Updating to 0.3.3 is highly recommended!
 
 * Revert and Bugfix #230
@@ -204,7 +213,7 @@ Please see wercker.yml for more details.
 % cp plugins/redmine_issue_templates/Gemfile.local plugins/redmine_issue_templates/Gemfile
 % bundle install --with test
 % export RAILS_ENV=test
-% bundle exec ruby -I"lib:test" -I plugins/redmine_issue_templates/test plugins/redmine_issue_templates/test/functional/issue_templates_controller_test.rb 
+% bundle exec ruby -I"lib:test" -I plugins/redmine_issue_templates/test plugins/redmine_issue_templates/test/functional/issue_templates_controller_test.rb
 ```
 
 or

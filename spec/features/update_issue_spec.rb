@@ -84,6 +84,6 @@ feature 'Update issue', js: true do
 
   def visit_update_issue(user)
     user.update_attribute(:admin, false)
-    log_user(user.login, user.password)
+    log_user(user.login, user.login)
   end
 end

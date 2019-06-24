@@ -7,3 +7,4 @@ Gemfile.local export-ignore
 .circleci/ export-ignore
 docker-compose.yml export-ignore
 Dockerfile export-ignore
+_config.yml export-ignore
