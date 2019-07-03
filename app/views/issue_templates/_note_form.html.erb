@@ -95,7 +95,7 @@ function applyNoteTemplate(event, template_id) {
       }
     }
   }
-  req.open('POST', '/note_templates/load', true);
+  req.open('POST', '<%= load_note_templates_path %>', true);
   req.setRequestHeader('X-CSRF-Token', token.value);
   req.setRequestHeader("Content-Type", "application/json");
   req.send(JSON.stringify(JSONdata));
