@@ -1,4 +1,4 @@
-<h2 class="template"><%=h "#{l(:note_template)}" %></h2>
+<h2><%=h "#{l(:note_template)}" %></h2>
 <%= render partial: "common/nodata", locals: { trackers: tracker_ids } %>
 <div class="contextual note_templates">
   <%= link_to_if_authorized(l(:label_new_templates),

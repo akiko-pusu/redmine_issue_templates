@@ -18,10 +18,10 @@
   <%= link_to(l(:label_list_templates),
               { controller: 'issue_templates',
                 action: 'index',
-                project_id: project }, class: 'template') %>
+                project_id: project }, class: 'icon icon-template') %>
 </div>
 
-<h2 class="template">
+<h2>
   <%= l(:issue_templates) %>: #<%= issue_template.id %> <%= issue_template.title %>
   <%= avatar(issue_template.author, size: '24') %>
 </h2>
