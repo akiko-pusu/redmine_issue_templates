@@ -14,33 +14,33 @@
   <%= link_to(l(:label_list_templates),
               { controller: 'note_templates',
                 action: 'index',
-                project_id: project }, class: 'template') %>
+                project_id: project }, class: 'icon icon-template') %>
   <%= link_to_if_authorized(l(:label_new_templates),
                             { controller: 'note_templates', action: 'new', project_id: @project },
                               class: 'icon icon-add') %>            
 </div>
 
-<h2 class="template">
+<h2>
   <%= l(:note_template) %>: #<%= note_template.id %> <%= note_template.name %>
   <%= avatar(note_template.author, size: '24') %>
 </h2>
 
 <%= render partial: "common/nodata", locals: { trackers: project.trackers } %>
 <% if authorize_for('note_templates', 'update') %>
-    <div id="edit-note_template" style="<%= 'display:none;' if note_template.valid? %>">
-      <%= labelled_form_for :note_template, note_template,
-                            url: { controller: 'note_templates', action: 'update',
-                                   project_id: project, id: note_template },
-                            html: { id: 'note_template-form', class: nil, multipart: false } do |f| %>
-          <%= render 'form', { f: f, note_template: note_template, project: project } %>
+  <div id="edit-note_template" style="<%= 'display:none;' if note_template.valid? %>">
+    <%= labelled_form_for :note_template, note_template,
+                          url: { controller: 'note_templates', action: 'update',
+                                  project_id: project, id: note_template },
+                          html: { id: 'note_template-form', class: nil, multipart: false } do |f| %>
 
-          <%= submit_tag l(:button_save) %>
-      <% end %>
-      <%= link_to l(:button_cancel), { action: 'index' },
-                  onclick: 'Element.hide("edit-note_template"); return false;' %>
-      <div id="preview" class="wiki"></div>
-      <hr/>
-    </div>
+        <%= render 'form', { f: f, note_template: note_template, project: project } %>
+        <div id="preview" class="wiki"></div>
+        <%= submit_tag l(:button_save) %>
+        <%= link_to l(:button_cancel), { action: 'index' },
+                      onclick: 'Element.hide("edit-note_template"); return false;' %>
+    <% end %>
+    <hr/>
+  </div>
 <% end %>
 
 

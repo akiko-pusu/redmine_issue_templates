@@ -81,7 +81,6 @@
 <%= wikitoolbar_for 'global_issue_template_description' %>
 
 <div id="preview" class="wiki"></div>
-<%= link_to l(:button_cancel), {action: 'index'}, data: {confirm: l(:text_are_you_sure)} %>
 
 
 <!-- tooltip content -->
@@ -136,6 +135,7 @@
 
 
 <%= submit_tag l(issue_template.new_record? ? :button_create : :button_save) %>
+<%= link_to l(:button_cancel), {action: 'index'}, data: {confirm: l(:text_are_you_sure)} %>
 
 <script type="text/javascript">
     let checklist = $('.checklist');
