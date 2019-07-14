@@ -1,4 +1,4 @@
-<h2><%=h "#{l(:issue_template)}" %></h2>
+<h2 class="issue_template"><%=h "#{l(:issue_template)}" %></h2>
 <%= render partial: "common/nodata", locals: { trackers: tracker_ids } %>
 <div class="contextual issue_templates">
   <%= link_to_if_authorized(l(:label_new_templates),
@@ -90,7 +90,7 @@
 
 
 <% unless @inherit_templates.blank? %>
-<h2><%=h "#{l(:label_inherited_templates)}" %></h2>
+<h2 class="issue_template"><%=h "#{l(:label_inherited_templates)}" %></h2>
   <div class="template_box">
 
         <table class="list issues">
@@ -149,7 +149,7 @@
  <% end %>
 
 <% unless  @global_issue_templates.blank? %>
-    <h2><%=h "#{l(:global_issue_templates)}" %></h2>
+    <h2 class="issue_template"><%=h "#{l(:global_issue_templates)}" %></h2>
     <div class="template_box">
 
       <% if apply_all_projects %>

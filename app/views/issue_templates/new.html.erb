@@ -3,7 +3,7 @@
               { controller: 'issue_templates',
                 action: 'index', project_id: project }, class: 'icon icon-template') %>
 </div>
-<h2><%=h "#{l(:issue_templates)} / #{l(:button_add)}" %></h2>
+<h2 class="issue_template"><%=h "#{l(:issue_templates)} / #{l(:button_add)}" %></h2>
 <%= render partial: "common/nodata", locals: { trackers: project.trackers } %>
 <% if project.trackers.any? %>
   <%= labelled_form_for :issue_template,  @issue_template,

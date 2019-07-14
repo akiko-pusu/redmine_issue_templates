@@ -3,7 +3,7 @@
               { controller: 'note_templates',
                 action: 'index', project_id: project }, class: 'icon icon-template') %>
 </div>
-<h2><%=h "#{l(:note_template)} / #{l(:button_add)}" %></h2>
+<h2 class="note_template"><%=h "#{l(:note_template)} / #{l(:button_add)}" %></h2>
 <% if project.trackers.any? %>
   <%= labelled_form_for :note_template,  @note_template,
                         url: { controller: 'note_templates', action: 'create', project_id: project },
