@@ -1,17 +1,22 @@
+# frozen_string_literal: true
+
 class NoteTemplate < ActiveRecord::Base
   include Redmine::SafeAttributes
 
   # author and project should be stable.
-  safe_attributes 'name', 'description', 'enabled', 'memo', 'tracker_id', 'project_id', 'position'
+  safe_attributes 'name', 'description', 'enabled', 'memo', 'tracker_id',
+                  'project_id', 'position', 'visibility'
 
   belongs_to :project
   belongs_to :author, class_name: 'User', foreign_key: 'author_id'
   belongs_to :tracker
 
   validates :project_id, presence: true
-  validates_uniqueness_of :name, scope: :project_id
+  validates :name, uniqueness: { scope: :project_id }
   validates :name, presence: true
   acts_as_positioned scope: %i[project_id tracker_id]
+
+  enum visibility: { open: 0, role_only: 1, mine: 3 }
 
   scope :enabled, -> { where(enabled: true) }
   scope :sorted, -> { order(:position) }

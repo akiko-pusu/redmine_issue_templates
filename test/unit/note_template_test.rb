@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class NoteTemplateTest < ActiveSupport::TestCase
@@ -17,6 +19,8 @@ class NoteTemplateTest < ActiveSupport::TestCase
     @template = NoteTemplate.create(params)
   end
 
+  def teardown; end
+
   def test_truth
     assert_kind_of NoteTemplate, @template
   end
@@ -35,5 +39,18 @@ class NoteTemplateTest < ActiveSupport::TestCase
     a = NoteTemplate.new(name: 'Template1', position: 2, project_id: 1, tracker_id: 1)
     b = NoteTemplate.new(name: 'Template2', position: 1, project_id: 1, tracker_id: 1)
     assert_equal [b, a], [a, b].sort
+  end
+
+  def test_visibility
+    NoteTemplate.delete_all
+    NoteTemplate.create(name: 'Template1', position: 2, project_id: 1, tracker_id: 1,
+                        visibility: 'role_only')
+    a = NoteTemplate.first
+    assert_equal a.visibility_before_type_cast, 1
+
+    a.visibility = 'mine'
+    a.save
+    # visibility: { mine: 3 }
+    assert_equal a.visibility_before_type_cast, 3
   end
 end
