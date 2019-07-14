@@ -5,21 +5,19 @@
     title: l(:enabled_template_cannot_destroy, default: 'Only disabled template can be destroyed.'),
     disabled: issue_template.enabled?, method: 'delete', class: 'icon icon-del template-disabled-link' %>
 <%= link_to(l(:label_list_templates),
-              { controller: 'global_issue_templates', action: 'index' }, class: 'template') %>
+              { controller: 'global_issue_templates', action: 'index' }, class: 'icon icon-template') %>
 </div>
 
-<h2 class="template">
+<h2 class="global_issue_template">
   <%= l(:global_issue_templates) %>: #<%= issue_template.id %> <%= issue_template.title %>
   <%= avatar(issue_template.author, size: '24') %>
 </h2>
 
-<div class="box">
-  <%= labelled_form_for :global_issue_template,
-                        issue_template,
-                        url: { controller: 'global_issue_templates', action: 'update', id: issue_template },
-                        html: { id: 'global_issue_template-form', class: nil,
-                                multipart: false } do |f| %>
-      <%= render 'form', { f: f, checklist_enabled: checklist_enabled, trackers: trackers,
-                           issue_template: issue_template, projects: projects, apply_all_projects: apply_all_projects } %>
-  <% end %>
-</div>
+<%= labelled_form_for :global_issue_template,
+                      issue_template,
+                      url: { controller: 'global_issue_templates', action: 'update', id: issue_template },
+                      html: { id: 'global_issue_template-form', class: nil,
+                              multipart: false } do |f| %>
+  <%= render 'form', { f: f, checklist_enabled: checklist_enabled, trackers: trackers,
+                        issue_template: issue_template, projects: projects, apply_all_projects: apply_all_projects } %>
+<% end %>

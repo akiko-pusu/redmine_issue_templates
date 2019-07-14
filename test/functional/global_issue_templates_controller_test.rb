@@ -63,7 +63,7 @@ class GlobalIssueTemplatesControllerTest < Redmine::ControllerTest
     assert_not_equal '', global_issue_template.title
 
     # render :show
-    assert_select 'h2.template', "#{l(:global_issue_templates)}: ##{global_issue_template.id}"
+    assert_select 'h2.global_issue_template', "#{l(:global_issue_templates)}: ##{global_issue_template.id}"
     # Error message should be displayed.
     assert_select 'div#errorExplanation', { count: 1, text: /Title cannot be blank/ }, @response.body.to_s
   end

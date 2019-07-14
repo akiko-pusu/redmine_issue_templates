@@ -175,7 +175,7 @@ class IssueTemplatesControllerTest < Redmine::ControllerTest
     assert_equal(num, IssueTemplate.count)
 
     # render :show
-    assert_select 'h2.template', "#{l(:issue_templates)}: #2"
+    assert_select 'h2.issue_template', "#{l(:issue_templates)}: #2"
     assert_select 'div#edit-issue_template'
     # Error message should be displayed.
     assert_select 'div#errorExplanation', { count: 1, text: /Title cannot be blank/ }, @response.body.to_s
