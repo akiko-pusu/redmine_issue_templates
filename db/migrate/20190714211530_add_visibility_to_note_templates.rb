@@ -2,7 +2,7 @@
 
 class AddVisibilityToNoteTemplates < ActiveRecord::Migration[5.1]
   def self.up
-    add_column :note_templates, :visibility, :integer, default: 0
+    add_column :note_templates, :visibility, :integer, default: 2
   end
 
   def self.down

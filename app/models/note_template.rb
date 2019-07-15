@@ -11,12 +11,21 @@ class NoteTemplate < ActiveRecord::Base
   belongs_to :author, class_name: 'User', foreign_key: 'author_id'
   belongs_to :tracker
 
+  has_many :note_visible_roles, dependent: :nullify
+
   validates :project_id, presence: true
   validates :name, uniqueness: { scope: :project_id }
   validates :name, presence: true
   acts_as_positioned scope: %i[project_id tracker_id]
 
-  enum visibility: { open: 0, role_only: 1, mine: 3 }
+  enum visibility: { mine: 0, roles: 1, open: 2 }
+
+  scope :mine_condition, lambda { |user_id|
+    where(author_id: user_id).mine if user_id.present?
+  }
+  scope :roles_condition, lambda { |role_ids|
+    joins(:note_visible_roles).where(note_visible_roles: { role_id: role_ids })
+  }
 
   scope :enabled, -> { where(enabled: true) }
   scope :sorted, -> { order(:position) }
@@ -26,6 +35,8 @@ class NoteTemplate < ActiveRecord::Base
   scope :search_by_project, lambda { |prolect_id|
     where(project_id: prolect_id) if prolect_id.present?
   }
+
+  before_save :check_visible_roles
 
   def <=>(other)
     position <=> other.position
@@ -39,5 +50,36 @@ class NoteTemplate < ActiveRecord::Base
 
   def generate_json
     attributes
+  end
+
+  private
+
+  def check_visible_roles
+    return if roles? || note_visible_roles.empty?
+
+    # Remove roles in case template visible scope is not "roles".
+    # This remove action is included the same transaction scope.
+    NoteVisibleRole.where(note_template_id: id).delete_all
+  end
+
+  #
+  # Class method
+  #
+  class << self
+    def visible_note_templates_condition(user_id, project_id, tracker_id)
+      user = User.find(user_id)
+      project = Project.find(project_id)
+      user_project_roles = user.roles_for_project(project).pluck(:id)
+
+      base_condition = NoteTemplate.search_by_project(project_id).search_by_tracker(tracker_id)
+
+      open_ids = base_condition.open.pluck(:id)
+      mine_ids = base_condition.mine_condition(user_id).pluck(:id)
+      role_ids = base_condition.roles_condition(user_project_roles).pluck(:id)
+
+      # return uniq ids
+      ids = open_ids | mine_ids | role_ids
+      NoteTemplate.where(id: ids).includes(:note_visible_roles)
+    end
   end
 end

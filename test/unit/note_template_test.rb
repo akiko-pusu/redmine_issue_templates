@@ -44,13 +44,13 @@ class NoteTemplateTest < ActiveSupport::TestCase
   def test_visibility
     NoteTemplate.delete_all
     NoteTemplate.create(name: 'Template1', position: 2, project_id: 1, tracker_id: 1,
-                        visibility: 'role_only')
+                        visibility: 'roles')
     a = NoteTemplate.first
     assert_equal a.visibility_before_type_cast, 1
 
     a.visibility = 'mine'
     a.save
-    # visibility: { mine: 3 }
-    assert_equal a.visibility_before_type_cast, 3
+    # visibility: { mine: 0 }
+    assert_equal a.visibility_before_type_cast, 0
   end
 end
