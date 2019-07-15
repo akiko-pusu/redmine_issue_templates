@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NoteTemplatesController < ApplicationController
   include Concerns::ProjectTemplatesCommon
   layout 'base'
@@ -34,12 +36,15 @@ class NoteTemplatesController < ApplicationController
 
   def create
     @note_template = NoteTemplate.new(template_params)
-    @note_templateauthor = User.current
+    @note_template.author = User.current
     @note_template.project = @project
     save_and_flash(:notice_successful_create, :new) && return
   end
 
   def update
+    # Workaround in case author id is null
+    @note_template.author = User.current if @note_template.author.blank?
+
     @note_template.safe_attributes = template_params
     save_and_flash(:notice_successful_update, :show)
   end
