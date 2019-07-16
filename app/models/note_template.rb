@@ -52,6 +52,15 @@ class NoteTemplate < ActiveRecord::Base
     attributes
   end
 
+  def note_visible_roles!(role_ids)
+    ActiveRecord::Base.transaction do
+      NoteVisibleRole.where(note_template_id: id).delete_all if note_visible_roles.present?
+      role_ids.each do |role_id|
+        NoteVisibleRole.create!(note_template_id: id, role_id: role_id)
+      end
+    end
+  end
+
   private
 
   def check_visible_roles

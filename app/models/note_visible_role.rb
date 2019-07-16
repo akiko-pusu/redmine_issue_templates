@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 class NoteVisibleRole < ActiveRecord::Base
+  include Redmine::SafeAttributes
+
+  safe_attributes 'note_template_id', 'role_id'
   belongs_to :role
-  belongs_to :note_template
+  belongs_to :note_template, optional: true
 
   validates :role_id, presence: true
   validates :note_template_id, presence: true
