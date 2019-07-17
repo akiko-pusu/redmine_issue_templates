@@ -17,6 +17,8 @@ RUN apt-get install -qq -y build-essential libc6-dev
 RUN cd /tmp && svn co http://svn.redmine.org/redmine/trunk redmine
 WORKDIR /tmp/redmine
 
+COPY . /tmp/redmine/plugins/redmine_issue_templates/
+
 
 # add database.yml (for development, development with mysql, test)
 RUN echo $'test:\n\
@@ -38,3 +40,5 @@ development_mysql:\n\
 RUN gem update bundler
 RUN bundle install --without postgresql rmagick
 RUN bundle exec rake db:migrate
+EXPOSE  3000
+CMD ["rails", "server", "-b", "0.0.0.0"]
