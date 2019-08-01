@@ -1,7 +1,7 @@
 # English strings go here for Rails i18n
 en:
   issue_templates: Issue templates
-  issue_template: Issue template
+  issue_template: Template
   issue_template_note: Note
   label_enabled: Enable
   label_disabled: Disable

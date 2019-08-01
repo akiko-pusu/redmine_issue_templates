@@ -10,6 +10,15 @@
     margin: 4px;
 }
 
+#template_area {
+    display: inline-block;
+}
+
+#template_area label {
+    float: none;
+    margin-left: 10px;
+}
+
 #template_area a {
     display: inline-block;
     margin-right: .85em;
@@ -389,4 +398,11 @@ div.template_link_area {
 
 div.template_link_area label {
   font-weight: bold;
+}
+
+@media screen and (max-width: 899px)
+{
+    #template_area label {
+        margin-left: 0;
+    }
 }
