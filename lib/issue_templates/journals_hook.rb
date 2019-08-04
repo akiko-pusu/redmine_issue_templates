@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # To change this template, choose Tools | Templates
 # and open the template in the editor.
 module IssueTemplates
@@ -15,7 +17,7 @@ module IssueTemplates
       )
     end
 
-    # Add journaal with edit issue
+    # Add journal with edit issue
     def view_issues_edit_notes_bottom(context = {})
       issue = context[:issue]
       tracker_id = issue.try(:tracker_id)
@@ -30,7 +32,9 @@ module IssueTemplates
 
     def target_templates(context, tracker_id)
       (tracker_id, project_id) = tracker_project_ids(context, tracker_id)
-      NoteTemplate.search_by_tracker(tracker_id).search_by_project(project_id)
+      NoteTemplate.visible_note_templates_condition(
+        user_id: User.current.id, project_id: project_id, tracker_id: tracker_id
+      )
     end
 
     def tracker_project_ids(context, tracker_id)
@@ -40,4 +44,3 @@ module IssueTemplates
     end
   end
 end
-

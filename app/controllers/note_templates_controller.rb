@@ -54,7 +54,13 @@ class NoteTemplatesController < ApplicationController
   def load
     note_template_id = template_params[:note_template_id]
     note_template = NoteTemplate.find(note_template_id)
+
+    # prevent to load if the template visibility does not match.
+    render_404 unless note_template.loadable?(user_id: User.current.id)
+
     render plain: note_template.template_json
+  rescue ActiveRecord::RecordNotFound
+    render_404
   end
 
   def list_templates
