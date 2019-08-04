@@ -3,7 +3,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class NoteTemplateTest < ActiveSupport::TestCase
-  fixtures :projects, :users, :trackers
+  fixtures :projects, :users, :trackers, :roles
 
   def setup
     tracker = Tracker.first
@@ -41,16 +41,28 @@ class NoteTemplateTest < ActiveSupport::TestCase
     assert_equal [b, a], [a, b].sort
   end
 
-  def test_visibility
+  def test_visibility_with_success
     NoteTemplate.delete_all
     NoteTemplate.create(name: 'Template1', position: 2, project_id: 1, tracker_id: 1,
-                        visibility: 'roles')
+                        visibility: 'roles', role_ids: [Role.first.id])
     a = NoteTemplate.first
     assert_equal a.visibility_before_type_cast, 1
 
     a.visibility = 'mine'
     a.save
-    # visibility: { mine: 0 }
     assert_equal a.visibility_before_type_cast, 0
+  end
+
+  def test_visibility_without_role_ids
+    NoteTemplate.delete_all
+
+    # Raise: NoteTemplate::NoteTemplateError: Please select at least one role.
+    e = assert_raises NoteTemplate::NoteTemplateError do
+      NoteTemplate.create(name: 'Template1', position: 2, project_id: 1, tracker_id: 1,
+                          visibility: 'roles')
+    end
+
+    # Check error message.
+    assert_equal 'Please select at least one role.', e.message
   end
 end
