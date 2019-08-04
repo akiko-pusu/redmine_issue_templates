@@ -3,15 +3,20 @@
 class NoteTemplate < ActiveRecord::Base
   include Redmine::SafeAttributes
 
+  class NoteTemplateError < StandardError; end
+
   # author and project should be stable.
   safe_attributes 'name', 'description', 'enabled', 'memo', 'tracker_id',
                   'project_id', 'position', 'visibility'
+
+  attr_accessor :role_ids
 
   belongs_to :project
   belongs_to :author, class_name: 'User', foreign_key: 'author_id'
   belongs_to :tracker
 
   has_many :note_visible_roles, dependent: :nullify
+  has_many :roles, through: :note_visible_roles
 
   validates :project_id, presence: true
   validates :name, uniqueness: { scope: :project_id }
@@ -37,6 +42,7 @@ class NoteTemplate < ActiveRecord::Base
   }
 
   before_save :check_visible_roles
+  after_save :note_visible_roles!
 
   def <=>(other)
     position <=> other.position
@@ -52,7 +58,14 @@ class NoteTemplate < ActiveRecord::Base
     attributes
   end
 
-  def note_visible_roles!(role_ids)
+  def note_visible_roles!
+    return unless roles?
+
+    if role_ids.blank?
+      raise NoteTemplateError, l(:please_select_at_least_one_role,
+                                 default: 'Please select at least one role.')
+    end
+
     ActiveRecord::Base.transaction do
       NoteVisibleRole.where(note_template_id: id).delete_all if note_visible_roles.present?
       role_ids.each do |role_id|

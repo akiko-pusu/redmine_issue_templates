@@ -72,3 +72,4 @@ ja:
       mine: 自分のみ
       roles: 次のロールのみ
       open: すべてのユーザー
+  please_select_at_least_one_role: 1つ以上のロールを指定してください。

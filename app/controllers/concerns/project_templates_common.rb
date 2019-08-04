@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Concerns
   module ProjectTemplatesCommon
     extend ActiveSupport::Concern
@@ -35,6 +37,10 @@ module Concerns
         end
         format.js { head 200 }
       end
+    rescue NoteTemplate::NoteTemplateError => e
+      flash[:error] = e.message
+      render render_form_params.merge(action: action_on_failure)
+      nil
     end
 
     private

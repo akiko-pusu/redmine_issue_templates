@@ -38,18 +38,15 @@ class NoteTemplatesController < ApplicationController
     @note_template = NoteTemplate.new(template_params)
     @note_template.author = User.current
     @note_template.project = @project
-
-    set_visible_roles!
     save_and_flash(:notice_successful_create, :new) && return
   end
 
   def update
     # Workaround in case author id is null
     @note_template.author = User.current if @note_template.author.blank?
-
     @note_template.safe_attributes = template_params
+    @note_template.role_ids = template_params[:role_ids]
 
-    set_visible_roles!
     save_and_flash(:notice_successful_update, :show)
   end
 
@@ -99,13 +96,7 @@ class NoteTemplatesController < ApplicationController
   def template_params
     params.require(:note_template)
           .permit(:note_template_id, :tracker_id, :name, :memo, :description,
-                  :enabled, :author_id, :position, :visibility)
-  end
-
-  def visible_role_params
-    return params.require(:note_visible_roles).permit(role_ids: []) if template_params[:visibility] == 'roles'
-
-    {}
+                  :enabled, :author_id, :position, :visibility, role_ids: [])
   end
 
   def template
@@ -115,13 +106,5 @@ class NoteTemplatesController < ApplicationController
   def render_form_params
     { layout: !request.xhr?,
       locals: { note_template: template, project: @project } }
-  end
-
-  def set_visible_roles!
-    # TODO: this update with association should be handled via FormObject.
-    return if template_params[:visibility] != 'roles'
-
-    role_ids = visible_role_params[:role_ids]
-    @note_template.note_visible_roles!(role_ids) if role_ids.any?
   end
 end

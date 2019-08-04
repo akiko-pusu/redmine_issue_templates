@@ -26,16 +26,16 @@
     </p>
 
     <p>
-      <%= f.select :visibility, NoteTemplate.visibilities.map { |k, v| [t("note_templates.visibility.#{k}"), k] }, 
+      <%= f.select :visibility, NoteTemplate.visibilities.map { |k, v| [t("note_templates.visibility.#{k}"), k] },
             selected: note_template.visibility,
             required: true, label: l(:field_template_visibility) %>
     </p>
-    <p id="visible_roles_checkbox" 
+    <p id="visible_roles_checkbox"
       style="display: <%= note_template.visibility == 'roles' ? 'block;' : 'none;' %>">
       <label for="note_visible_roles[role_ids]">対象のロール</label>
-        <% Role.givable.each do |role| %>
-          <%= check_box_tag('note_visible_roles[role_ids][]',
-                        role.id, 
+         <% Role.givable.each do |role| %>
+          <%= check_box_tag('note_template[role_ids][]',
+                        role.id,
                         note_template.note_visible_roles.pluck(:role_id).to_a.include?(role.id)) %>
           <%= role.name %>
         <% end %>

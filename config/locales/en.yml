@@ -71,3 +71,4 @@ en:
       mine: to me only
       roles: to these roles only
       open: to any users
+  please_select_at_least_one_role: "Please select at least one role."
