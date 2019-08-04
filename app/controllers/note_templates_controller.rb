@@ -61,9 +61,9 @@ class NoteTemplatesController < ApplicationController
     tracker_id = params[:tracker_id]
     project_id = params[:project_id]
 
-    note_templates = NoteTemplate.search_by_tracker(tracker_id)
-                                 .search_by_project(project_id)
-
+    note_templates = NoteTemplate.visible_note_templates_condition(
+      user_id: User.current.id, project_id: project_id, tracker_id: tracker_id
+    )
     respond_to do |format|
       format.html do
         render action: '_list_note_templates',

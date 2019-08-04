@@ -88,7 +88,7 @@ class NoteTemplate < ActiveRecord::Base
   # Class method
   #
   class << self
-    def visible_note_templates_condition(user_id, project_id, tracker_id)
+    def visible_note_templates_condition(user_id:, project_id:, tracker_id:)
       user = User.find(user_id)
       project = Project.find(project_id)
       user_project_roles = user.roles_for_project(project).pluck(:id)
