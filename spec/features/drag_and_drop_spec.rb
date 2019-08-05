@@ -29,15 +29,12 @@ feature 'Templates can be reorder via drag and drop', js: true do
     first_target = table.find('tr:nth-child(1) > td.buttons > span')
     last_target = table.find('tr:nth-child(4) > td.buttons > span')
 
-    action = page.driver.browser.action
-
     # change id: 1, 2, 3, 4 to 4, 1, 2, 3
     expect do
-      action.drag_and_drop_by(first_target.native,
-                              *offset_array(first_target, last_target)).perform
+      first_target.drag_to(last_target)
       sleep 0.5
     end.to change {
-             IssueTemplate.pluck(:position).to_a
+             IssueTemplate.order(:id).pluck(:position).to_a
            }.from([1, 2, 3, 4]).to([4, 1, 2, 3])
 
     # change id: 4, 1, 2, 3 to 3, 1, 4, 2
@@ -45,11 +42,10 @@ feature 'Templates can be reorder via drag and drop', js: true do
     last_target = table.find('tr:nth-child(4) > td.buttons > span')
 
     expect do
-      action.drag_and_drop_by(second_target.native,
-                              *offset_array(second_target, last_target)).perform
+      second_target.drag_to(last_target)
       sleep 0.5
     end.to change {
-             IssueTemplate.pluck(:position).to_a
+             IssueTemplate.order(:id).pluck(:position).to_a
            }.from([4, 1, 2, 3]).to([3, 1, 4, 2])
   end
 

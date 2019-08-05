@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../../config/environment', __dir__)
@@ -23,21 +25,27 @@ RSpec.configure do |config|
           #
           chromeOptions: { args: %w[headless disable-gpu window-size=1280,800] }
         )
+        options = Selenium::WebDriver::Chrome::Options.new
+        options.add_option('w3c', false)
         Capybara::Selenium::Driver.new(
           app,
           browser: :chrome,
-          desired_capabilities: capabilities
+          desired_capabilities: capabilities,
+          options: options
         )
       end
     else
       Capybara.register_driver :headless_chrome do |app|
         capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-          chromeOptions: { args: %w[ window-size=1280,800 ] }
+          chromeOptions: { args: %w[window-size=1280,800] }
         )
+        options = Selenium::WebDriver::Chrome::Options.new
+        options.add_option('w3c', false)
         Capybara::Selenium::Driver.new(
           app,
           browser: :chrome,
-          desired_capabilities: capabilities
+          desired_capabilities: capabilities,
+          options: options
         )
       end
     end
