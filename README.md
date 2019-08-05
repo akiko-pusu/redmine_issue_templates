@@ -152,6 +152,19 @@ Thank you for reviewing, Tatsuya Saito!
 
 For release notes before v0.2.0, please see: [RELEASE-NOTES.md](RELEASE-NOTES.md)
 
+### Contributing
+
+Pull requests, reporting issues, stars are always welcome!
+
+I'm always thrilled to receive pull requests, and do my best to process them as fast as possible.
+Not sure if that typo is worth a pull request? Do it! I will appreciate it.
+
+* Fork it!
+* Create your feature branch: git checkout -b my-new-feature
+* Commit your changes: git commit -am 'Add some feature'
+* Push to the branch: git push origin my-new-feature
+* Submit a pull request :D
+
 ### Language and I18n contributors
 
 * Brazilian: Adriano Ceccarelli / Pedro Moritz de Carvalho Neto
