@@ -17,7 +17,7 @@
                 project_id: project }, class: 'icon icon-template') %>
   <%= link_to_if_authorized(l(:label_new_templates),
                             { controller: 'note_templates', action: 'new', project_id: @project },
-                              class: 'icon icon-add') %>            
+                              class: 'icon icon-add') %>
 </div>
 
 <h2 class="note_template">
@@ -27,7 +27,7 @@
 
 <%= render partial: "common/nodata", locals: { trackers: project.trackers } %>
 <% if authorize_for('note_templates', 'update') %>
-  <div id="edit-note_template" style="<%= 'display:none;' if note_template.valid? %>">
+  <div id="edit-note_template">
     <%= labelled_form_for :note_template, note_template,
                           url: { controller: 'note_templates', action: 'update',
                                   project_id: project, id: note_template },
