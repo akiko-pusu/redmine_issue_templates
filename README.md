@@ -71,6 +71,18 @@ If you have any requests, bug reports, please use GitHub issues. <https://github
 
 ## Changelog
 
+### 0.3.5
+
+NOTE: This version requires migration command to enhance note template's feature.
+``Note Template visibility per role`` feature is still a prototype, so feedback highly appreciate!
+
+* Design: PR / Mrliptontea theme compatibility #266 (by mrliptontea)
+* Bugfix: #270 / Apply polyfill code for IE11. (reported by yui-har)
+* Feature: Note Template visibility per role. #267
+* Bugfix: Fix the request URL for accessing note_templates/load #261 (by ishikawa999)
+* Bugfix: Note Template does not work on CKEDitor. #275
+* Update README for contribution #273
+
 ### 0.3.4
 
 This is bugfix release against v0.3.3.
