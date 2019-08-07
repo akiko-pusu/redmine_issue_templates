@@ -22,7 +22,7 @@
       </div>
     </div>
   </div>
-</div> 
+</div>
 
 
 <script type="text/javascript">
@@ -37,18 +37,27 @@ if (content.length == 1) {
     element.insertBefore(content[0], element.firstChild);
   } else {
     element = content[0].closest('form');
-    element.insertBefore(content[0], element.firstChild);    
-  } 
+    element.insertBefore(content[0], element.firstChild);
+  }
 }
 
 function setDescription(target, value) {
   var element = document.getElementById(target);
   if (element.value.length === 0) {
-    element.value = value;  
+    element.value = value;
   } else {
     element.value += '\n\n' + value;
   }
   element.focus();
+
+  try {
+    if (CKEDITOR.instances.issue_notes) {
+      CKEDITOR.instances.issue_notes.setData(value);
+      CKEDITOR.instances.issue_notes.focus();
+    }
+  } catch (e) {
+    // do nothing.
+  }
 }
 
 // Show dialog
@@ -56,7 +65,7 @@ var dialog_link = document.getElementById('link_<%= element_id %>_dialog');
 dialog_link.addEventListener("click",function() {
   var target = document.getElementById('issue_tracker_id');
   var tracker_id = target.options[target.selectedIndex].value;
-  var template_list_url = '<%= url_for(controller: 'note_templates', 
+  var template_list_url = '<%= url_for(controller: 'note_templates',
         action:'list_templates', project_id: project_id) %>'
         + '&tracker_id=' + tracker_id;
   var token = document.querySelectorAll('#issue-form input[name="authenticity_token"]')[0];
@@ -80,7 +89,7 @@ dialog_link.addEventListener("click",function() {
 
 function applyNoteTemplate(event, template_id) {
   var JSONdata = {
-    note_template: { note_template_id: template_id }      
+    note_template: { note_template_id: template_id }
   };
   var token = document.querySelectorAll('#issue-form input[name="authenticity_token"]')[0];
   var req = new XMLHttpRequest();
