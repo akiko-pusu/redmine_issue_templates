@@ -32,7 +32,7 @@
     </p>
     <p id="visible_roles_checkbox"
       style="display: <%= note_template.visibility == 'roles' ? 'block;' : 'none;' %>">
-      <label for="note_visible_roles[role_ids]">対象のロール</label>
+      <label for="note_visible_roles[role_ids]"><%= l(:label_role) %></label>
          <% Role.givable.each do |role| %>
           <%= check_box_tag('note_template[role_ids][]',
                         role.id,
