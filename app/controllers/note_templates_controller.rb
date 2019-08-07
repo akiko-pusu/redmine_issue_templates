@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NoteTemplatesController < ApplicationController
   include Concerns::ProjectTemplatesCommon
   layout 'base'
@@ -34,13 +36,17 @@ class NoteTemplatesController < ApplicationController
 
   def create
     @note_template = NoteTemplate.new(template_params)
-    @note_templateauthor = User.current
+    @note_template.author = User.current
     @note_template.project = @project
     save_and_flash(:notice_successful_create, :new) && return
   end
 
   def update
+    # Workaround in case author id is null
+    @note_template.author = User.current if @note_template.author.blank?
     @note_template.safe_attributes = template_params
+    @note_template.role_ids = template_params[:role_ids]
+
     save_and_flash(:notice_successful_update, :show)
   end
 
@@ -48,16 +54,22 @@ class NoteTemplatesController < ApplicationController
   def load
     note_template_id = template_params[:note_template_id]
     note_template = NoteTemplate.find(note_template_id)
+
+    # prevent to load if the template visibility does not match.
+    render_404 unless note_template.loadable?(user_id: User.current.id)
+
     render plain: note_template.template_json
+  rescue ActiveRecord::RecordNotFound
+    render_404
   end
 
   def list_templates
     tracker_id = params[:tracker_id]
     project_id = params[:project_id]
 
-    note_templates = NoteTemplate.search_by_tracker(tracker_id)
-                                 .search_by_project(project_id)
-
+    note_templates = NoteTemplate.visible_note_templates_condition(
+      user_id: User.current.id, project_id: project_id, tracker_id: tracker_id
+    )
     respond_to do |format|
       format.html do
         render action: '_list_note_templates',
@@ -88,8 +100,9 @@ class NoteTemplatesController < ApplicationController
   end
 
   def template_params
-    params.require(:note_template).permit(:note_template_id, :tracker_id,
-                                          :name, :memo, :description, :enabled, :author_id, :position)
+    params.require(:note_template)
+          .permit(:note_template_id, :tracker_id, :name, :memo, :description,
+                  :enabled, :author_id, :position, :visibility, role_ids: [])
   end
 
   def template

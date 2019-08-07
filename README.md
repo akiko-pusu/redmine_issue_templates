@@ -71,6 +71,18 @@ If you have any requests, bug reports, please use GitHub issues. <https://github
 
 ## Changelog
 
+### 0.3.5
+
+NOTE: This version requires migration command to enhance note template's feature.
+``Note Template visibility per role`` feature is still a prototype, so feedback highly appreciate!
+
+* Design: PR / Mrliptontea theme compatibility #266 (by mrliptontea)
+* Bugfix: #270 / Apply polyfill code for IE11. (reported by yui-har)
+* Feature: Note Template visibility per role. #267
+* Bugfix: Fix the request URL for accessing note_templates/load #261 (by ishikawa999)
+* Bugfix: Note Template does not work on CKEDitor. #275
+* Update README for contribution #273
+
 ### 0.3.4
 
 This is bugfix release against v0.3.3.
@@ -151,6 +163,19 @@ for plugin's compatibility. (To support Redmine 3.0 - 3.4)
 Thank you for reviewing, Tatsuya Saito!
 
 For release notes before v0.2.0, please see: [RELEASE-NOTES.md](RELEASE-NOTES.md)
+
+### Contributing
+
+Pull requests, reporting issues, stars are always welcome!
+
+I'm always thrilled to receive pull requests, and do my best to process them as fast as possible.
+Not sure if that typo is worth a pull request? Do it! I will appreciate it.
+
+* Fork it!
+* Create your feature branch: git checkout -b my-new-feature
+* Commit your changes: git commit -am 'Add some feature'
+* Push to the branch: git push origin my-new-feature
+* Submit a pull request :D
 
 ### Language and I18n contributors
 

@@ -5,6 +5,7 @@
 
 // For namespace setting.
 var ISSUE_TEMPLATE = ISSUE_TEMPLATE || function () {};
+
 ISSUE_TEMPLATE.prototype = {
     eraseSubjectAndDescription: function () {
         $('#issue_description').val('');
@@ -367,3 +368,22 @@ $(function () {
     });
 });
 
+// for IE11 compatibility (IE11 does not support native Element.closest)
+// Ref. https://developer.mozilla.org/en-US/docs/Web/API/Element/closest#Polyfill
+// Ref. https://github.com/akiko-pusu/redmine_issue_templates/issues/270
+if (!Element.prototype.matches) {
+    Element.prototype.matches = Element.prototype.msMatchesSelector ||
+        Element.prototype.webkitMatchesSelector;
+}
+
+if (!Element.prototype.closest) {
+    Element.prototype.closest = function(s) {
+        var el = this;
+
+        do {
+            if (el.matches(s)) return el;
+            el = el.parentElement || el.parentNode;
+        } while (el !== null && el.nodeType === 1);
+        return null;
+    };
+}

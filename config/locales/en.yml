@@ -65,3 +65,10 @@ en:
   label_memo_help_message: "Please set up a note explaining when applying this template."
   note_template_name: "Template name for note"
   note_description: "Comment body"
+  field_template_visibility: Templates visibility
+  note_templates:
+    visibility:
+      mine: to me only
+      roles: to these roles only
+      open: to any users
+  please_select_at_least_one_role: "Please select at least one role."

@@ -66,3 +66,10 @@ ja:
   label_memo_help_message: "このテンプレートは、どのような場合に利用すればいいか説明を入力してください。"
   note_template_name: "コメント用テンプレート名"
   note_description: "コメント本文"
+  field_template_visibility: 表示できるユーザ
+  note_templates:
+    visibility:
+      mine: 自分のみ
+      roles: 次のロールのみ
+      open: すべてのユーザー
+  please_select_at_least_one_role: 1つ以上のロールを指定してください。

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Concerns
   module IssueTemplate
     module Common
@@ -79,7 +81,7 @@ module Concerns
       end
 
       def log_destroy_action(template)
-        logger.info "[Destroy] #{self.class}: #{template.inspect}" if logger && logger.info
+        logger.info "[Destroy] #{self.class}: #{template.inspect}" if logger&.info
       end
 
       def confirm_disabled

@@ -1,19 +1,15 @@
 <div class="contextual">
   <%= link_to(l(:label_list_templates),
-              { controller: 'global_issue_templates', action: 'index' }, class: 'template') %>
+              { controller: 'global_issue_templates', action: 'index' }, class: 'icon icon-template') %>
 </div>
-<h2 class="template"><%=h "#{l(:issue_templates)} / #{l(:button_add)}" %></h2>
+<h2 class="global_issue_template"><%=h "#{l(:issue_templates)} / #{l(:button_add)}" %></h2>
 
-<div class="box">
-  <%= labelled_form_for :global_issue_template,  issue_template,
-                        url: { controller: 'global_issue_templates', action: 'create' },
-                        html: { id: 'global_issue_template-form',
-                                   class: nil, multipart: false } do |f| %>
+<%= labelled_form_for :global_issue_template,  issue_template,
+                      url: { controller: 'global_issue_templates', action: 'create' },
+                      html: { id: 'global_issue_template-form',
+                                  class: nil, multipart: false } do |f| %>
 
-      <%= render 'form', { f: f, checklist_enabled: checklist_enabled,
-                           trackers: trackers, projects: projects,
-                           issue_template: issue_template, apply_all_projects: apply_all_projects } %>
-  <% end %>
-</div>
-
-
+  <%= render 'form', { f: f, checklist_enabled: checklist_enabled,
+                        trackers: trackers, projects: projects,
+                        issue_template: issue_template, apply_all_projects: apply_all_projects } %>
+<% end %>

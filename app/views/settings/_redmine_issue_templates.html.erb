@@ -1,31 +1,30 @@
 <div class="form-inline issue_templates">
   <p>
+    <label for="settings_apply_global_template_to_all_projects"><%= l(:label_apply_global_template_to_all_projects) %></label>
     <%= hidden_field_tag("settings[apply_global_template_to_all_projects]", 0, :id => nil).html_safe %>
     <%= check_box_tag 'settings[apply_global_template_to_all_projects]', true, @settings['apply_global_template_to_all_projects'] == "true" %>
-    <%= content_tag(:b, l(:label_apply_global_template_to_all_projects))%>
     <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
        data-tooltip-area="#enabled__help_area"
        data-tooltip-content="#enabled_help_content">
       <%= l(:help_for_this_field) %>
+      <span class="tooltip-area" id="enabled__help_area"></span>
     </a>
   </p>
-  <div id="enabled_help_content" class="wiki" style="display: none;">
-    <%= l(:help_project_local_template_override_global_template) %>
-    <div>
-      <span class="icon icon-warning"></span>
-      <span class="issue_template help_content">
-        <%= l(:warning_project_local_template_override_global_template) %>
-      </span>
-    </div>
-  </div>
   <p>
+    <label for="settings_apply_template_when_edit_issue"><%= l(:label_use_template_when_edit) %></label>
     <%= hidden_field_tag("settings[apply_template_when_edit_issue]", 0, :id => nil).html_safe %>
     <%= check_box_tag 'settings[apply_template_when_edit_issue]', true, @settings['apply_template_when_edit_issue'] == "true" %>
-    <%= content_tag(:b, l(:label_use_template_when_edit))%>
   </p>
   <p>
     <%= link_to(l(:link_to_index_edit_template),
               { controller: 'global_issue_templates', action: 'index' },
-              class: 'template pull-right') %>
+              class: 'icon icon-template pull-right') %>
   </p>
+</div>
+
+<div id="enabled_help_content" class="wiki" style="display: none;">
+  <%= l(:help_project_local_template_override_global_template) %>
+  <br>
+  <span class="icon icon-warning"></span>
+  <%= l(:warning_project_local_template_override_global_template) %>
 </div>

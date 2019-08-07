@@ -50,3 +50,10 @@ EndOfLine:
 
 Metrics/ModuleLength:
   Max: 120
+
+# NOTE: Follow Redmine's model definition
+Rails/ApplicationRecord:
+  Enabled: false
+
+Rails/InverseOf:
+  Enabled: false

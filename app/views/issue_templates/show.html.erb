@@ -18,31 +18,31 @@
   <%= link_to(l(:label_list_templates),
               { controller: 'issue_templates',
                 action: 'index',
-                project_id: project }, class: 'template') %>
+                project_id: project }, class: 'icon icon-template') %>
 </div>
 
-<h2 class="template">
+<h2 class="issue_template">
   <%= l(:issue_templates) %>: #<%= issue_template.id %> <%= issue_template.title %>
   <%= avatar(issue_template.author, size: '24') %>
 </h2>
 
 <%= render partial: "common/nodata", locals: { trackers: project.trackers } %>
 <% if authorize_for('issue_templates', 'update') %>
-    <div id="edit-issue_template" style="<%= 'display:none;' if issue_template.valid? %>">
-      <%= labelled_form_for :issue_template, issue_template,
-                            url: { controller: 'issue_templates', action: 'update',
-                                   project_id: project, id: issue_template },
-                            html: { id: 'issue_template-form', class: nil, multipart: false } do |f| %>
-          <%= render 'form', { f: f, checklist_enabled: checklist_enabled,
-                               issue_template: issue_template, project: project } %>
+  <div id="edit-issue_template" style="<%= 'display:none;' if issue_template.valid? %>">
+    <%= labelled_form_for :issue_template, issue_template,
+                          url: { controller: 'issue_templates', action: 'update',
+                                  project_id: project, id: issue_template },
+                          html: { id: 'issue_template-form', class: nil, multipart: false } do |f| %>
 
-          <%= submit_tag l(:button_save) %>
-      <% end %>
-      <%= link_to l(:button_cancel), { action: 'index' },
-                  onclick: 'Element.hide("edit-issue_template"); return false;' %>
-      <div id="preview" class="wiki"></div>
-      <hr/>
-    </div>
+        <%= render 'form', { f: f, checklist_enabled: checklist_enabled,
+                              issue_template: issue_template, project: project } %>
+        <div id="preview" class="wiki"></div>
+        <%= submit_tag l(:button_save) %>
+        <%= link_to l(:button_cancel), { action: 'index' },
+                      onclick: 'Element.hide("edit-issue_template"); return false;' %>
+    <% end %>
+    <hr/>
+  </div>
 <% end %>
 
 
