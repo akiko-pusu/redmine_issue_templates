@@ -2,6 +2,7 @@
 
 class NoteTemplate < ActiveRecord::Base
   include Redmine::SafeAttributes
+  include ActiveModel::Validations
 
   class NoteTemplateError < StandardError; end
 
@@ -10,6 +11,7 @@ class NoteTemplate < ActiveRecord::Base
                   'project_id', 'position', 'visibility'
 
   attr_accessor :role_ids
+  validates :role_ids, presence: true, if: :roles?
 
   belongs_to :project
   belongs_to :author, class_name: 'User', foreign_key: 'author_id'
