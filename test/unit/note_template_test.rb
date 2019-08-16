@@ -56,10 +56,26 @@ class NoteTemplateTest < ActiveSupport::TestCase
   def test_visibility_without_role_ids
     NoteTemplate.delete_all
 
-    # Raise: NoteTemplate::NoteTemplateError: Please select at least one role.
+    # When enable validation: Raise ActiveRecord::RecordInvalid
+    e = assert_raises ActiveRecord::RecordInvalid do
+      NoteTemplate.create!(name: 'Template1', position: 2, project_id: 1, tracker_id: 1,
+                           visibility: 'roles')
+    end
+
+    # Check error message.
+    assert_equal 'Validation failed: Role ids cannot be blank', e.message
+  end
+
+  def test_visibility_from_mine_to_roles
+    NoteTemplate.delete_all
+    NoteTemplate.create(name: 'Template1', position: 2, project_id: 1, tracker_id: 1,
+                        visibility: 'mine')
+    a = NoteTemplate.first
+    a.visibility = 'roles'
+
+    # When skip validation: Raise: NoteTemplate::NoteTemplateError: Please select at least one role.
     e = assert_raises NoteTemplate::NoteTemplateError do
-      NoteTemplate.create(name: 'Template1', position: 2, project_id: 1, tracker_id: 1,
-                          visibility: 'roles')
+      a.save(validate: false)
     end
 
     # Check error message.
