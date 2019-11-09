@@ -226,7 +226,7 @@ Not sure if that typo is worth a pull request? Do it! I will appreciate it.
 
 * Brazilian: Adriano Ceccarelli / Pedro Moritz de Carvalho Neto
 * Korean: Jaebok Oh
-* Chinese: Steven Wong
+* Chinese: Steven Wong, vongola12324 (zh-TW)
 * Bulgarian: Ivan Cenov
 * Russian: Denny Brain, danaivehr
 * German: Terence Miller and anonymous contributor
