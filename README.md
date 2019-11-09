@@ -33,6 +33,51 @@ Try this:
 See also:
 <http://www.r-labs.org/projects/issue-template/wiki/About_en#Uninstall-plugin>
 
+### When migration error
+
+If the migration is cancelled with the error like following message for the first time you try to install this plugin:
+
+> Caused by: Mysql2::Error: Table 'DATABASE_FOR_REDMINE.issue_templates' doesn't exist
+
+You can fix this error to remove migration records related to this plugin from shema_migrations table.
+
+If you can access and select database for Redmine, try this command:
+
+```sql
+select * from schema_migrations where version like '%redmine_issue_templates%';
+```
+
+If there are any records shown like this and there is no table named 'issue_templates', your installation has been incomplete state.
+
+```sql
+1-redmine_issue_templates
+2-redmine_issue_templates
+```
+
+So, you should better to uninstall task first, and retry the migration.
+
+If you have not created any template records yet, and hope to uninstall and re-install this plugin, please see README.
+
+**Uninstall:**
+
+```ruby
+rails db:migrate_plugins NAME=redmine_issue_templates VERSION=0 RAILS_ENV=production
+```
+
+After that, records of migration are removed from schema_migrations table.
+
+**Re-install:**
+
+```ruby
+rails db:migrate_plugins NAME=redmine_issue_templates RAILS_ENV=production (for Redmine4.x)
+```
+
+**Related issue:**
+
+* <https://github.com/akiko-pusu/redmine_issue_templates/issues/285>
+* <https://github.com/akiko-pusu/redmine_issue_templates/issues/169>
+* <https://github.com/akiko-pusu/redmine_issue_templates/issues/82#issuecomment-302000185>
+
 ## Required Settings
 
 1. Login to your Redmine install as an Administrator
@@ -55,7 +100,7 @@ project has some format for issues.
 This plugin repository includes some test code and gem settiing. If you have
 some trouble related "bundle intall", please try --without option.
 
-    Exp. bundle install --without test
+> Exp. bundle install --without test
 
 ## WebPage
 
