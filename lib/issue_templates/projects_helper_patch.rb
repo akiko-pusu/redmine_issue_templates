@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'projects_helper'
 
 module IssueTemplates
@@ -15,4 +17,4 @@ module IssueTemplates
   end
 end
 
-ProjectsController.helper(IssueTemplates::ProjectsHelperPatch)
+ProjectsHelper.prepend(IssueTemplates::ProjectsHelperPatch) unless ProjectsHelper.included_modules.include?(IssueTemplates::ProjectsHelperPatch)
