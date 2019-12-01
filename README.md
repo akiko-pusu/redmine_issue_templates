@@ -33,6 +33,51 @@ Try this:
 See also:
 <http://www.r-labs.org/projects/issue-template/wiki/About_en#Uninstall-plugin>
 
+### When migration error
+
+If the migration is cancelled with the error like following message for the first time you try to install this plugin:
+
+> Caused by: Mysql2::Error: Table 'DATABASE_FOR_REDMINE.issue_templates' doesn't exist
+
+You can fix this error to remove migration records related to this plugin from shema_migrations table.
+
+If you can access and select database for Redmine, try this command:
+
+```sql
+select * from schema_migrations where version like '%redmine_issue_templates%';
+```
+
+If there are any records shown like this and there is no table named 'issue_templates', your installation has been incomplete state.
+
+```sql
+1-redmine_issue_templates
+2-redmine_issue_templates
+```
+
+So, you should better to uninstall task first, and retry the migration.
+
+If you have not created any template records yet, and hope to uninstall and re-install this plugin, please see README.
+
+**Uninstall:**
+
+```ruby
+rails db:migrate_plugins NAME=redmine_issue_templates VERSION=0 RAILS_ENV=production
+```
+
+After that, records of migration are removed from schema_migrations table.
+
+**Re-install:**
+
+```ruby
+rails db:migrate_plugins NAME=redmine_issue_templates RAILS_ENV=production (for Redmine4.x)
+```
+
+**Related issue:**
+
+* <https://github.com/akiko-pusu/redmine_issue_templates/issues/285>
+* <https://github.com/akiko-pusu/redmine_issue_templates/issues/169>
+* <https://github.com/akiko-pusu/redmine_issue_templates/issues/82#issuecomment-302000185>
+
 ## Required Settings
 
 1. Login to your Redmine install as an Administrator
@@ -55,7 +100,7 @@ project has some format for issues.
 This plugin repository includes some test code and gem settiing. If you have
 some trouble related "bundle intall", please try --without option.
 
-    Exp. bundle install --without test
+> Exp. bundle install --without test
 
 ## WebPage
 
@@ -70,6 +115,19 @@ If you have any requests, bug reports, please use GitHub issues. <https://github
 * <http://www.r-labs.org/projects/issue-template/wiki/About_en>
 
 ## Changelog
+
+### 0.3.6
+
+This is bugfix release against v0.3.5.
+Updating to 0.3.6 is highly recommended!
+
+* Update zh-TW locale. #281 (by Vongola)
+* Refactor: Update test code / Change Validation check.
+* Add troubleshooting for migration error and uninstall.
+* Add workaround to prevent other plugin's conflict. (#282)
+* Add workaround to load right templates if the project has subproject and subproject selected. (#289)
+* Apply the patch by @dmakurin to prevent the error when the user can't edit tracker id. (#288)
+* Only wipe issue subject and description if replace flag. (#284,  Applied Pull Request by @mattgill)
 
 ### 0.3.5
 
@@ -181,7 +239,7 @@ Not sure if that typo is worth a pull request? Do it! I will appreciate it.
 
 * Brazilian: Adriano Ceccarelli / Pedro Moritz de Carvalho Neto
 * Korean: Jaebok Oh
-* Chinese: Steven Wong
+* Chinese: Steven Wong, vongola12324 (zh-TW)
 * Bulgarian: Ivan Cenov
 * Russian: Denny Brain, danaivehr
 * German: Terence Miller and anonymous contributor
@@ -231,7 +289,7 @@ rake redmine_issue_templates:apply_inhelit_template_to_child_projects[1]
 
 ### Run test
 
-Please see wercker.yml for more details.
+Please see .circleci/config.yml for more details.
 
 ```bash
 % cd REDMINE_ROOT_DIR
@@ -249,7 +307,7 @@ or
 
 #### Run spec
 
-Please see wercker.yml for more details.
+Please see .circleci/config.yml for more details.
 
 ```bash
 % cd REDMINE_ROOT_DIR

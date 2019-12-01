@@ -3,7 +3,7 @@
     if (length < 1) {
         $('#template_area').hide();
         <% if is_triggered_by.blank? || (is_triggered_by.present? && is_triggered_by == 'issue_tracker_id') %>
-        if ($('#issue-form.new_issue').length > 0) {
+        if ($('#issue-form.new_issue').length > 0 && <%= should_replaced %> === true) {
           // Uncaught ReferenceError: templateNS is not defined
           if (typeof templateNS !== 'undefined') {
             templateNS.eraseSubjectAndDescription();

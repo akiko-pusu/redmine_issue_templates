@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../spec_helper'
 require_relative '../rails_helper'
 require_relative '../support/login_helper'
@@ -105,7 +107,7 @@ feature 'IssueTemplate', js: true do
 
     given!(:named_template) do
       FactoryBot.create(:issue_template, project_id: 1, tracker_id: 1,
-                                          title: 'Sample Title for rspec', description: 'Sample description for rspec')
+                                         title: 'Sample Title for rspec', description: 'Sample description for rspec')
     end
     given!(:enabled_module) { FactoryBot.create(:enabled_module) }
 
@@ -158,6 +160,29 @@ feature 'IssueTemplate', js: true do
         end
       end
     end
+
+    context 'have subproject' do
+      background do
+        sub_project = Project.find(3)
+        sub_project.inherit_members = true
+        sub_project.enabled_modules << EnabledModule.new(name: 'issue_templates')
+        sub_project.save
+
+        FactoryBot.create(:issue_template, project_id: 3, tracker_id: 1, title: 'template for subproject')
+      end
+
+      scenario 'Select sub project then template for subproject is shown' do
+        sub_project = page.find('#issue_project_id > option[value="3"]')
+        template_option = page.find('#issue_template > optgroup > option:nth-child(1)')
+        expect(template_option.text).to eq issue_templates.first.title
+
+        sub_project.select_option
+
+        wait_for_ajax
+        template_option = page.find('#issue_template > optgroup > option:nth-child(1)')
+        expect(template_option.text).to eq 'template for subproject'
+      end
+    end
   end
 
   feature 'Prevent to append the same template' do
@@ -166,8 +191,8 @@ feature 'IssueTemplate', js: true do
 
     given!(:named_template) do
       FactoryBot.create(:issue_template, project_id: 1, tracker_id: 1,
-                                          title: 'bug template',
-                                          issue_title: expected_title, description: expected_description)
+                                         title: 'bug template',
+                                         issue_title: expected_title, description: expected_description)
     end
 
     given!(:issue_template_setting) do
@@ -229,8 +254,8 @@ feature 'IssueTemplate', js: true do
 
     given!(:named_template) do
       FactoryBot.create(:issue_template, project_id: 1, tracker_id: 1,
-                                          title: 'Sample Title for rspec',
-                                          issue_title: 'Sample Title for rspec', description: 'Sample description for rspec')
+                                         title: 'Sample Title for rspec',
+                                         issue_title: 'Sample Title for rspec', description: 'Sample description for rspec')
     end
     given!(:enabled_module) { FactoryBot.create(:enabled_module) }
 
