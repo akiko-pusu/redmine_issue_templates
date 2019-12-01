@@ -356,16 +356,6 @@ $(function () {
             };
         })(this)
     });
-
-    // Hide overwrite confirmation dialog using cookie.
-    $('#issue_template_confirm_to_replace_hide_dialog').click(function () {
-        if ($(this).is(':checked')) {
-            // NOTE: Use document.cookie because Redmine itself does not use jquery.cookie.js.
-            document.cookie = 'issue_template_confirm_to_replace_hide_dialog=1';
-        } else {
-            document.cookie = 'issue_template_confirm_to_replace_hide_dialog=0';
-        }
-    });
 });
 
 // for IE11 compatibility (IE11 does not support native Element.closest)
