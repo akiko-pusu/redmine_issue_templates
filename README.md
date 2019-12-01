@@ -116,6 +116,19 @@ If you have any requests, bug reports, please use GitHub issues. <https://github
 
 ## Changelog
 
+### 0.3.6
+
+This is bugfix release against v0.3.5.
+Updating to 0.3.6 is highly recommended!
+
+* Update zh-TW locale. #281 (by Vongola)
+* Refactor: Update test code / Change Validation check.
+* Add troubleshooting for migration error and uninstall.
+* Add workaround to prevent other plugin's conflict. (#282)
+* Add workaround to load right templates if the project has subproject and subproject selected. (#289)
+* Apply the patch by @dmakurin to prevent the error when the user can't edit tracker id. (#288)
+* Only wipe issue subject and description if replace flag. (#284,  Applied Pull Request by @mattgill)
+
 ### 0.3.5
 
 NOTE: This version requires migration command to enhance note template's feature.
@@ -276,7 +289,7 @@ rake redmine_issue_templates:apply_inhelit_template_to_child_projects[1]
 
 ### Run test
 
-Please see wercker.yml for more details.
+Please see .circleci/config.yml for more details.
 
 ```bash
 % cd REDMINE_ROOT_DIR
@@ -294,7 +307,7 @@ or
 
 #### Run spec
 
-Please see wercker.yml for more details.
+Please see .circleci/config.yml for more details.
 
 ```bash
 % cd REDMINE_ROOT_DIR
