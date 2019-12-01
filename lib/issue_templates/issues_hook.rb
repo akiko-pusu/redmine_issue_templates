@@ -24,7 +24,7 @@ module IssueTemplates
       return if copied_issue?(parameters)
 
       project = context[:project]
-      project_id = project.present? ? project.id : issue.project_id
+      project_id = issue.project_id.present? ? issue.project_id : project.id
       return unless create_action?(parameters[:action]) && project_id.present?
 
       context[:controller].send(
