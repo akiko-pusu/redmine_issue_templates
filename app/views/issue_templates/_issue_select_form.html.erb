@@ -101,6 +101,16 @@
             templateNS.eraseSubjectAndDescription();
         });
 
+        // Hide overwrite confirmation dialog using cookie.
+        $('#issue_template_confirm_to_replace_hide_dialog').click(function () {
+          if ($(this).is(':checked')) {
+            // NOTE: Use document.cookie because Redmine itself does not use jquery.cookie.js.
+            document.cookie = 'issue_template_confirm_to_replace_hide_dialog=1';
+          } else {
+            document.cookie = 'issue_template_confirm_to_replace_hide_dialog=0';
+          }
+        });
+
         $("input[name='template_search_filter']").on("keydown keyup",function(){
             let cols = $('.template_data');
             let searchWord = $(this).val();
