@@ -158,6 +158,8 @@ a.template_tooltip {
 table.list.template_list {
     width: 480px;
     margin: 8px 0;
+    border: 2px solid #e4e4e4;
+    overflow: overlay;
 }
 
 td.template_title {
