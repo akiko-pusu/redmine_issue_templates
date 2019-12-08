@@ -119,6 +119,10 @@ class IssueTemplatesController < ApplicationController
     end
   end
 
+  def menu_items
+    { issue_templates: { default: :issue_templates, actions: {} } }
+  end
+
   # preview
   def preview
     issue_template = params[:issue_template]

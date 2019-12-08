@@ -16,6 +16,10 @@ class IssueTemplatesSettingsController < ApplicationController
     render partial: 'common/preview'
   end
 
+  def menu_items
+    { issue_templates_settings: { default: :issue_templates, actions: {} } }
+  end
+
   private
 
   def find_user

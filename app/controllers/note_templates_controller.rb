@@ -90,6 +90,10 @@ class NoteTemplatesController < ApplicationController
     redirect_to action: 'index', project_id: @project
   end
 
+  def menu_items
+    { note_templates: { default: :issue_templates, actions: {} } }
+  end
+
   private
 
   def find_object
