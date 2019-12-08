@@ -1,14 +1,18 @@
 # noinspection RubocopInspection
 class IssueTemplatesSettingsController < ApplicationController
   before_action :find_project, :find_user
-  before_action :authorize, except: %i[show_help preview]
+
+  def index
+    @issue_templates_setting = IssueTemplateSetting.find_or_create(@project.id)
+  end
 
   def edit
+    @issue_templates_setting = IssueTemplateSetting.find(@project.id)
     return if params[:settings].blank?
 
     update_template_setting
     flash[:notice] = l(:notice_successful_update)
-    redirect_to controller: 'projects', action: 'settings', id: @project, tab: 'issue_templates'
+    redirect_to action: 'index', project_id: @project
   end
 
   def preview
