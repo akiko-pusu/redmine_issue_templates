@@ -72,3 +72,5 @@ en:
       roles: to these roles only
       open: to any users
   please_select_at_least_one_role: "Please select at least one role."
+  issue_templates_settings: Issue Templates Setting
+  issue_templates_optional_settings: Templates Optional Settings
