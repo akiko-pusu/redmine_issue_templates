@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 # noinspection RubocopInspection
 class IssueTemplatesSettingsController < ApplicationController
   before_action :find_project, :find_user
+  before_action :authorize, except: %i[preview]
 
   def index
     @issue_templates_setting = IssueTemplateSetting.find_or_create(@project.id)
@@ -39,9 +42,9 @@ class IssueTemplatesSettingsController < ApplicationController
   def update_template_setting
     issue_templates_setting = IssueTemplateSetting.find_or_create(@project.id)
     attribute = params[:settings]
-    issue_templates_setting.update_attributes(enabled: attribute[:enabled],
-                                              help_message: attribute[:help_message],
-                                              inherit_templates: attribute[:inherit_templates],
-                                              should_replaced: attribute[:should_replaced])
+    issue_templates_setting.update(enabled: attribute[:enabled],
+                                   help_message: attribute[:help_message],
+                                   inherit_templates: attribute[:inherit_templates],
+                                   should_replaced: attribute[:should_replaced])
   end
 end
