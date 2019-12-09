@@ -1,36 +1,14 @@
 <div id="issue_templates_settings">
   <%= render partial: "common/nodata", locals: { trackers: @project.trackers } %>
 
-  <h2 class="issue_template_setting"><%= l(:link_to_index_edit_template) %></h2>
-  <div style="display: flex;">
-    <div class="template_link_area">
-      <label><%= l(:issue_template) %>: </label>
-      <%= link_to(l(:label_list_templates),
-                { controller: 'issue_templates',
-                  action: 'index',
-                  project_id: @project}, class: 'icon icon-template') %>   |
-      <%= link_to_if_authorized(l(:label_new_templates),
-                              { controller: 'issue_templates', action: 'new', project_id: @project },
-                              class: 'icon icon-add') %>
-    </div>
-    <div class="template_link_area">
-      <label><%= l(:note_template) %>: </label>
-      <%= link_to(l(:label_list_templates),
-                { controller: 'note_templates',
-                  action: 'index',
-                  project_id: @project}, class: 'icon icon-template') %>   |
-      <%= link_to_if_authorized(l(:label_new_templates),
-                              { controller: 'note_templates', action: 'new', project_id: @project },
-                              class: 'icon icon-add') %>
-    </div> 
-  </div> 
+  <h2 class="issue_template_setting"><%= l(:issue_templates_settings, default: 'Issue Templates Setting') %></h2>
   <p></p>
   <div class="template_box">
-    <h2>Optional settings</h2>
+    <h2><%= l(:issue_templates_optional_settings, default: 'Templates Optional Settings') %></h2>
     <p><%= l(:about_help_message) %></p>
     <%= labelled_form_for :settings, @issue_templates_setting,
                           url: { controller: 'issue_templates_settings',
-                                 action: 'edit', project_id: @project, tab: 'issue_templates',
+                                 action: 'edit', project_id: @project,
                                  setting_id: @issue_templates_setting.id },
                           html: { id: 'issue_templates_settings' } do |f| %>
         <%= error_messages_for 'issue_templates_setting' %>
@@ -82,3 +60,4 @@
   <!--- help content -->
 </div>
 
+<div style="float: right;"><%= render partial: "common/template_links" %></div>

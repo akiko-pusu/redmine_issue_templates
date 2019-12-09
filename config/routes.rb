@@ -19,9 +19,11 @@ Rails.application.routes.draw do
       get 'list_templates', on: :collection
     end
 
-    resources :issue_templates_settings, only: [], concerns: [:previewable] do
+    resources :issue_templates_settings, only: [:edit], concerns: [:previewable] do
       patch 'edit', on: :collection
     end
+
+    get 'issue_templates_settings', to: 'issue_templates_settings#index'
 
     resources :note_templates, except: [:edit]
   end

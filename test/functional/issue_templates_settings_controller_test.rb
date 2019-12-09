@@ -43,8 +43,8 @@ class IssueTemplatesSettingsControllerTest < Redmine::ControllerTest
                           settings: { enabled: '1', help_message: 'Hoo', project_id: 2, inherit_templates: true },
                           setting_id: 1, tab: 'issue_templates' }
     assert_response :redirect
-    assert_redirected_to controller: 'projects',
-                         action: 'settings', id: @project, tab: 'issue_templates'
+    assert_redirected_to controller: 'issue_templates_settings',
+                         action: 'index', project_id: @project
   end
 
   def test_preview_template_setting

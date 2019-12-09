@@ -116,6 +116,16 @@ If you have any requests, bug reports, please use GitHub issues. <https://github
 
 ## Changelog
 
+### 0.3.7
+
+This is bugfix release to prevent the conflict with other plugins.
+
+* Bugfix: Tooltip for template body preview is hidden. (GitHub PR #300)
+* Refactor: Change to use project menu to prevent the project setting tab's conflict. (GitHub PR #299)
+
+Thank you for the valuable information and feedback, @ChrisUHZ!
+
+
 ### 0.3.6
 
 This is bugfix release against v0.3.5.

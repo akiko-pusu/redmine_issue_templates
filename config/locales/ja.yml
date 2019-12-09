@@ -73,3 +73,5 @@ ja:
       roles: 次のロールのみ
       open: すべてのユーザー
   please_select_at_least_one_role: 1つ以上のロールを指定してください。
+  issue_templates_settings: チケットテンプレート設定
+  issue_templates_optional_settings: テンプレートオプション設定
