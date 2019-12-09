@@ -7,7 +7,7 @@ class ProjectsControllerTest < Redmine::ControllerTest
   def setup
     # as project admin
     @request.session[:user_id] = 2
-    Role.find(1).add_permission! :manage_issue_templates
+    Role.find(1).add_permission! :show_issue_templates
     # Enabled Template module
     @project = Project.find(1)
     @project.enabled_modules << EnabledModule.new(name: 'issue_templates')
@@ -15,8 +15,8 @@ class ProjectsControllerTest < Redmine::ControllerTest
   end
 
   def test_settings
-    get :settings, params: { id: 1 }
+    get :show, params: { id: 1 }
     assert_response :success
-    assert_select 'a#tab-issue_templates'
+    assert_select '#main-menu > ul > li > a.issue-templates'
   end
 end

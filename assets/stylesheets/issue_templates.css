@@ -155,6 +155,11 @@ a.template_tooltip {
     font-style: italic;
 }
 
+table.list {
+    overflow: overlay;
+    border: 2px solid #e4e4e4;
+}
+
 table.list.template_list {
     width: 480px;
     margin: 8px 0;

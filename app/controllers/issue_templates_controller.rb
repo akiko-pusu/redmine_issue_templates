@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # noinspection ALL
 class IssueTemplatesController < ApplicationController
   layout 'base'
@@ -64,7 +65,7 @@ class IssueTemplatesController < ApplicationController
   def load
     issue_template_id = params[:template_id]
     template_type = params[:template_type]
-    issue_template = if !template_type.blank? && template_type == 'global'
+    issue_template = if template_type.present? && template_type == 'global'
                        GlobalIssueTemplate.find(issue_template_id)
                      else
                        IssueTemplate.find(issue_template_id)
@@ -97,8 +98,8 @@ class IssueTemplatesController < ApplicationController
   def list_templates
     (default_global, default_inherit, default_project) = default_templates
 
-    default_template = default_inherit.present? ? default_inherit : default_global
-    default_template = default_project.present? ? default_project : default_template
+    default_template = default_inherit.presence || default_global
+    default_template = default_project.presence || default_template
 
     respond_to do |format|
       format.html do
@@ -117,6 +118,10 @@ class IssueTemplatesController < ApplicationController
                          global_issue_templates: @global_templates }
       end
     end
+  end
+
+  def menu_items
+    { issue_templates: { default: :issue_templates, actions: {} } }
   end
 
   # preview
