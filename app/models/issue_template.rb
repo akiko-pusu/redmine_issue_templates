@@ -7,8 +7,18 @@ class IssueTemplate < ActiveRecord::Base
   acts_as_positioned scope: %i[project_id tracker_id]
 
   # author and project should be stable.
-  safe_attributes 'title', 'description', 'tracker_id', 'note', 'enabled', 'issue_title', 'is_default',
-                  'enabled_sharing', 'visible_children', 'position', 'checklist_json'
+  safe_attributes 'title',
+                  'description',
+                  'tracker_id',
+                  'note',
+                  'enabled',
+                  'issue_title',
+                  'is_default',
+                  'enabled_sharing',
+                  'visible_children',
+                  'position',
+                  'checklist_json',
+                  'related_link'
 
   scope :enabled_sharing, -> { where(enabled_sharing: true) }
   scope :search_by_project, lambda { |prolect_id|

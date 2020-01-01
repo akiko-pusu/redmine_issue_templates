@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddRelatedLinkToGlobalIssueTemplates < ActiveRecord::Migration[5.2]
   def self.up
     add_column :global_issue_templates, :related_link, :text

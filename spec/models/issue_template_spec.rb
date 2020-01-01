@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../spec_helper'
 
 describe IssueTemplate do
@@ -12,7 +14,8 @@ describe IssueTemplate do
   describe 'scope .orphaned' do
     subject { IssueTemplate.orphaned.count }
     before do
-      issue_template.update_attribute(:tracker_id, 0)
+      # Remove related tracker
+      issue_template.tracker.delete
     end
     it { is_expected.to eq 1 }
   end
@@ -49,6 +52,22 @@ describe IssueTemplate do
         subject
         expect(issue_template.errors.present?).to be_falsey
       end
+    end
+  end
+
+  describe '#valid?' do
+    let(:instance) { described_class.new(tracker_id: tracker.id, project_id: project.id, title: 'sample') }
+    subject { instance.valid? }
+
+    it 'related_link in invalid format' do
+      instance.related_link = 'non url format string'
+      is_expected.to be_falsey
+      expect(instance.errors.messages.key?(:related_link)).to be_truthy
+    end
+
+    it 'related_link in valid format' do
+      instance.related_link = 'https://valid.example.com/links.html'
+      is_expected.to be_truthy
     end
   end
 end
