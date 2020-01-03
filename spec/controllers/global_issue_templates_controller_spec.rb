@@ -74,12 +74,39 @@ describe GlobalIssueTemplatesController, type: :controller do
 
     context 'POST with invalid url' do
       let(:project_ids) { [] }
-      include_examples 'Right response', 302
-      before do
-        create_params.merge!(related_link: 'bad format url')
+      let(:create_params) do
+        { global_issue_template:
+          { title: 'Global Template newtitle for creation test',
+            note: 'Global note for creation test',
+            description: 'Global Template description for creation test',
+            tracker_id: tracker.id,
+            enabled: 1,
+            author_id: user.id,
+            project_ids: project_ids }.merge(related_link: 'bad format url') }
       end
+
+      include_examples 'Right response', 200
       it do
-        expect(global_issue_template.present?).to be_truthy
+        expect(global_issue_template.present?).to be_falsy
+      end
+
+      context 'POST with valid url' do
+        let(:project_ids) { [] }
+        let(:create_params) do
+          { global_issue_template:
+            { title: 'Global Template newtitle for creation test',
+              note: 'Global note for creation test',
+              description: 'Global Template description for creation test',
+              tracker_id: tracker.id,
+              enabled: 1,
+              author_id: user.id,
+              project_ids: project_ids }.merge(related_link: 'http://example.com/sample/index.html') }
+        end
+
+        include_examples 'Right response', 302
+        it do
+          expect(global_issue_template.present?).to be_truthy
+        end
       end
     end
   end
