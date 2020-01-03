@@ -61,6 +61,11 @@
                   <div class="wiki template_tooltip_body">
                     <span class="title"><%= issue_template.title %></span>
                     <%= textilizable(issue_template.description) %>
+                    <% if issue_template.related_link.present? %>
+                      <hr/>
+                      <%= link_to issue_template.link_title.present? ? issue_template.link_title : l(:issue_template_related_link, default: 'Related link'),
+                          issue_template.related_link, target: '_blank', rel: 'nofollow noopener', class: 'external' %>
+                    <% end %>
                   </div>
                 </div>
               </td>
@@ -129,6 +134,11 @@
                     <div class="wiki template_tooltip_body">
                       <span class="title"><%=h issue_template.title %></span>
                       <%=h textilizable(issue_template.description) %>
+                      <% if issue_template.related_link.present? %>
+                        <hr/>
+                        <%= link_to issue_template.link_title.present? ? issue_template.link_title : l(:issue_template_related_link, default: 'Related link'),
+                            issue_template.related_link, target: '_blank', rel: 'nofollow noopener', class: 'external' %>
+                      <% end %>
                     </div>
                   </div>
                 </td>
@@ -140,7 +150,13 @@
               </tr>
               <tr class="<%= current_cycle %>" style="display: none;" id="template_description-<%= issue_template.id %>">
                 <td class="description" colspan="8">
-                  <div class="wiki"><%=h textilizable(issue_template.description) %></div></td>
+                  <div class="wiki"><%=h textilizable(issue_template.description) %>
+                  <hr/>
+                  <%= link_to_if issue_template.related_link.present?,
+                    issue_template.link_title.present? ? issue_template.link_title : l(:issue_template_related_link, default: 'Related link'),
+                    issue_template.related_link, target: '_blank', rel: 'nofollow noopener', class: 'external' %>
+                  </div>
+                </td>
               </tr>
           <% end %>
           </tbody>
@@ -201,6 +217,11 @@
                   <div class="wiki template_tooltip_body">
                     <span class="title"><%=h issue_template.title %></span>
                     <%=h textilizable(issue_template.description) %>
+                    <% if issue_template.related_link.present? %>
+                      <hr/>
+                      <%= link_to issue_template.link_title.present? ? issue_template.link_title : l(:issue_template_related_link, default: 'Related link'),
+                          issue_template.related_link, target: '_blank', rel: 'nofollow noopener', class: 'external' %>
+                    <% end %>
                   </div>
                 </div>
               </td>
@@ -219,7 +240,14 @@
             </tr>
             <tr class="<%= current_cycle %>" style="display: none;" id="global_template_description-<%= issue_template.id %>">
               <td class="description" colspan="8">
-                <div class="wiki"><%=h textilizable(issue_template.description) %></div></td>
+                <div class="wiki"><%=h textilizable(issue_template.description) %>
+                <% if issue_template.related_link.present? %>
+                  <hr/>
+                  <%= link_to issue_template.link_title.present? ? issue_template.link_title : l(:issue_template_related_link, default: 'Related link'),
+                      issue_template.related_link, target: '_blank', rel: 'nofollow noopener', class: 'external' %>
+                <% end %>
+                </div>
+              </td>
             </tr>
         <% end %>
         </tbody>

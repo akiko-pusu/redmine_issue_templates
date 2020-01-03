@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../spec_helper'
 require_relative '../rails_helper'
 require_relative '../support/login_helper'
@@ -26,8 +28,11 @@ feature 'Confirm dialog before overwrite description', js: true do
   given(:first_template) { IssueTemplate.first }
   given(:second_template) { IssueTemplate.second }
 
+  given(:related_link) { page.find('#issue_template_related_link') }
+
   background do
-    FactoryBot.create_list(:issue_template, 2, project_id: project.id, tracker_id: tracker.id)
+    FactoryBot.create_list(:issue_template, 2, project_id: project.id, tracker_id: tracker.id,
+                                               related_link: 'http://example.com/template/wiki#usage')
 
     project.trackers << tracker
     assign_template_priv(role, add_permission: :show_issue_templates)
@@ -50,6 +55,9 @@ feature 'Confirm dialog before overwrite description', js: true do
     expect(issue_description.value).not_to eq ''
     expect(issue_description.value).to eq first_template.description
     expect(issue_subject.value).to eq first_template.issue_title
+
+    expect(related_link.text).to eq 'Related Link'
+    expect(related_link['href']).to eq 'http://example.com/template/wiki#usage'
   end
 
   context 'Has default template' do

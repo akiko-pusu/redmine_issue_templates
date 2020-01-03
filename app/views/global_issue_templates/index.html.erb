@@ -50,6 +50,11 @@
                   <div class="wiki template_tooltip_body">
                     <span class="title"><%= issue_template.title %></span>
                     <%= textilizable(issue_template.description) %>
+                    <% if issue_template.related_link.present? %>
+                      <hr/>
+                      <%= link_to issue_template.link_title.present? ? issue_template.link_title : l(:issue_template_related_link, default: 'Related link'),
+                          issue_template.related_link, target: '_blank', rel: 'nofollow noopener', class: 'external' %>
+                    <% end %>
                   </div>
                 </div>
                 </a>

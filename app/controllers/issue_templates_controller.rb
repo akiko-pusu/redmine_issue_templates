@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # noinspection ALL
 class IssueTemplatesController < ApplicationController
   layout 'base'
@@ -194,7 +195,9 @@ class IssueTemplatesController < ApplicationController
 
   def template_params
     params.require(:issue_template).permit(:tracker_id, :title, :note, :issue_title, :description, :is_default,
-                                           :enabled, :author_id, :position, :enabled_sharing, checklists: [])
+                                           :enabled, :author_id, :position, :enabled_sharing,
+                                           :related_link, :link_title,
+                                           checklists: [])
   end
 
   def templates_exist?

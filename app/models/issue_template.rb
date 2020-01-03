@@ -1,14 +1,27 @@
+# frozen_string_literal: true
+
 class IssueTemplate < ActiveRecord::Base
   include Redmine::SafeAttributes
   include Concerns::IssueTemplate::Common
   belongs_to :project
   validates :project_id, presence: true
-  validates_uniqueness_of :title, scope: :project_id
+  validates :title, uniqueness: { scope: :project_id }
   acts_as_positioned scope: %i[project_id tracker_id]
 
   # author and project should be stable.
-  safe_attributes 'title', 'description', 'tracker_id', 'note', 'enabled', 'issue_title', 'is_default',
-                  'enabled_sharing', 'visible_children', 'position', 'checklist_json'
+  safe_attributes 'title',
+                  'description',
+                  'tracker_id',
+                  'note',
+                  'enabled',
+                  'issue_title',
+                  'is_default',
+                  'enabled_sharing',
+                  'visible_children',
+                  'position',
+                  'checklist_json',
+                  'related_link',
+                  'link_title'
 
   scope :enabled_sharing, -> { where(enabled_sharing: true) }
   scope :search_by_project, lambda { |prolect_id|
@@ -16,7 +29,7 @@ class IssueTemplate < ActiveRecord::Base
   }
 
   module Config
-    JSON_OBJECT_NAME = 'issue_template'.freeze
+    JSON_OBJECT_NAME = 'issue_template'
   end
   Config.freeze
 

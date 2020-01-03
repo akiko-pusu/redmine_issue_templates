@@ -137,10 +137,10 @@ describe IssueTemplatesController do
     include_examples 'Right response', 200
     #
     # TODO: This example should be request spec.
-    #it 'Render new form filled with copied template values' do
+    # it 'Render new form filled with copied template values' do
     #  issue_template = assigns(:issue_template)
     #  expect(issue_template.id).to be_nil
     #  expect(issue_template.title).to eq "copy_of_#{original_template.title}"
-    #end
+    # end
   end
 end

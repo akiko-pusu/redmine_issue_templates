@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # noinspection RubocopInspection
 class GlobalIssueTemplatesController < ApplicationController
   layout 'base'
@@ -106,7 +108,7 @@ class GlobalIssueTemplatesController < ApplicationController
   def template_params
     params.require(:global_issue_template)
           .permit(:title, :tracker_id, :issue_title, :description, :note, :is_default, :enabled,
-                  :author_id, :position, project_ids: [], checklists: [])
+                  :author_id, :position, :related_link, :link_title, project_ids: [], checklists: [])
   end
 
   def render_form_params

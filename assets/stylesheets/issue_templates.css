@@ -94,6 +94,10 @@ option.global {
     background: url("../images/issue_templates.png") no-repeat 3px center;
 }
 
+.icon-hint {
+    background: url("../images/ticket.png") no-repeat 3px center;
+}
+
 a.template_tooltip {
     background-image: url("../images/preview.png");
     background-repeat: no-repeat;
