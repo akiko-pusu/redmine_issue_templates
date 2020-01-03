@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class GlobalIssueTemplate < ActiveRecord::Base
   include Redmine::SafeAttributes
   include Concerns::IssueTemplate::Common
-  validates_uniqueness_of :title, scope: :tracker_id
+  validates :title, uniqueness: { scope: :tracker_id }
   has_and_belongs_to_many :projects
 
-  acts_as_positioned :scope => [:tracker_id]
+  acts_as_positioned scope: [:tracker_id]
 
   safe_attributes 'title',
                   'description',
@@ -17,7 +19,8 @@ class GlobalIssueTemplate < ActiveRecord::Base
                   'position',
                   'author_id',
                   'checklist_json',
-                  'related_link'
+                  'related_link',
+                  'link_title'
 
   # for intermediate table assosciations
   scope :search_by_project, lambda { |project_id|
@@ -25,7 +28,7 @@ class GlobalIssueTemplate < ActiveRecord::Base
   }
 
   module Config
-    JSON_OBJECT_NAME = 'global_issue_template'.freeze
+    JSON_OBJECT_NAME = 'global_issue_template'
   end
   Config.freeze
 

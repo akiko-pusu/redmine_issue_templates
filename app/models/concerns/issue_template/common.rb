@@ -73,6 +73,7 @@ module Concerns
 
       def generate_json
         result = attributes
+        result[:link_title] = link_title.presence || I18n.t(:issue_template_related_link, default: 'Related Link')
         result[:checklist] = checklist
         result.except('checklist_json')
       end
