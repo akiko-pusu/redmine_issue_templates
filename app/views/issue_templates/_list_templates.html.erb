@@ -22,6 +22,11 @@
             <div class="wiki template_tooltip_body">
               <span class="title"><%= template.title %></span>
               <%= textilizable(template.description) %>
+              <% if template.related_link.present? %>
+                <hr/>
+                <%= link_to template.link_title.present? ? template.link_title : l(:issue_template_related_link, default: 'Related link'),
+                    template.related_link, target: '_blank', rel: 'nofollow noopener', class: 'external' %>
+              <% end %>
             </div>
           </div>
         </td>
@@ -46,6 +51,11 @@
             <div class="wiki template_tooltip_body">
               <span class="title"><%= template.title %></span>
               <%= textilizable(template.description) %>
+              <% if template.related_link.present? %>
+                <hr/>
+                <%= link_to template.link_title.present? ? template.link_title : l(:issue_template_related_link, default: 'Related link'),
+                    template.related_link, target: '_blank', rel: 'nofollow noopener', class: 'external' %>
+              <% end %>
             </div>
           </div>
         </td>
@@ -70,6 +80,11 @@
             <div class="wiki template_tooltip_body">
               <span class="title"><%= template.issue_title %></span>
               <%= textilizable(template.description) %>
+              <% if template.related_link.present? %>
+                <hr/>
+                <%= link_to template.link_title.present? ? template.link_title : l(:issue_template_related_link, default: 'Related link'),
+                    template.related_link, target: '_blank', rel: 'nofollow noopener', class: 'external' %>
+              <% end %>
             </div>
           </div>
         </td>

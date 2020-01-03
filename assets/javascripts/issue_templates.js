@@ -136,6 +136,16 @@ ISSUE_TEMPLATE.prototype = {
                         if ($('#original_subject').text().length > 0 || $('#original_description').text().length > 0) {
                             $('#revert_template').removeClass('disabled');
                         }
+
+                        if (obj.related_link !== '') {
+                            let related_link = $('#issue_template_related_link');
+                            related_link.attr('href', obj.related_link);
+                            related_link.css('display', 'inline');
+                            related_link.text(obj.link_title);
+                        } else {
+                            let related_link = $('#issue_template_related_link');
+                            related_link.css('display', 'none');
+                        }
                     }
                 }
             });
