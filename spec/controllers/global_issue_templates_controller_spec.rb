@@ -71,6 +71,17 @@ describe GlobalIssueTemplatesController, type: :controller do
         expect(global_issue_template.projects.count).to eq projects.count
       end
     end
+
+    context 'POST with invalid url' do
+      let(:project_ids) { [] }
+      include_examples 'Right response', 302
+      before do
+        create_params.merge!(related_link: 'bad format url')
+      end
+      it do
+        expect(global_issue_template.present?).to be_truthy
+      end
+    end
   end
 
   # PATCH GlobalIssueTemplatesController#edit

@@ -75,3 +75,7 @@ ja:
   please_select_at_least_one_role: 1つ以上のロールを指定してください。
   issue_templates_settings: チケットテンプレート設定
   issue_templates_optional_settings: テンプレートオプション設定
+  issue_template_related_link: 関連リンク
+  issue_template_link_title: 関連リンクのタイトル
+  label_related_link_help_message: "テンプレートの利用例や、説明のページがあれば、関連リンクを設定できます。"
+  label_link_title_help_message: "関連リンクのタイトルは任意で設定できます（デフォルト: 関連リンク）"

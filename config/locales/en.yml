@@ -74,3 +74,7 @@ en:
   please_select_at_least_one_role: "Please select at least one role."
   issue_templates_settings: Issue Templates Setting
   issue_templates_optional_settings: Templates Optional Settings
+  issue_template_related_link: Related Link
+  issue_template_link_title: Related Link Title
+  label_related_link_help_message: "If there are some example pages or sample issues which using issue template, please specify the link. So operator can see them as an usage or example for template."
+  label_link_title_help_message: "You can customize the title of the related link. (Default: Related Link)"
