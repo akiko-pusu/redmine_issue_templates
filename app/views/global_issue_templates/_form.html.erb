@@ -57,6 +57,27 @@
                     label: l(:issue_template_note), style: 'overflow:auto;' %>
   </p>
 
+  <p><%= f.text_field :related_link, type: 'url',
+          size: 70, label: l(:issue_template_related_link, default: 'Related link') %>
+    <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
+       data-template-help-target="#related_link_help_content"
+       data-tooltip-area="#related_link_help_area"
+       data-tooltip-content="#related_link_help_content">
+      <%= l(:help_for_this_field) %>
+      <span class="tooltip-area" id="related_link_help_area"></span>
+    </a>
+  </p>
+
+  <p id='link_title_paragraph'><%= f.text_field :link_title, size: 70, label: l(:issue_template_link_title, default: 'Link title') %>
+    <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
+       data-template-help-target="#link_title_help_content"
+       data-tooltip-area="#link_title_help_area"
+       data-tooltip-content="#link_title_help_content">
+      <%= l(:help_for_this_field) %>
+      <span class="tooltip-area" id="link_title_help_area"></span>
+    </a>
+  </p>
+
   <p><%= f.check_box :is_default, label: l(:field_is_default) %>
     <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
        data-template-help-target="#isdefault_help_content"
@@ -90,13 +111,15 @@
 <div id="isdefault_help_content" class="wiki" style="display: none;">
   <%= l(:label_isdefault_help_message) %>
 </div>
-<div id="isdefault_help_content" class="wiki" style="display: none;">
-  <%= l(:label_isdefault_help_message) %>
+<div id="related_link_help_content" class="wiki" style="display: none;">
+  <%= l(:label_related_link_help_message, default: 'If there are some example pages or sample issues which using issue template, please specify the link. So operator can see them as an usage or example for template.') %>
+</div>
+<div id="link_title_help_content" class="wiki" style="display: none;">
+  <%= l(:label_link_title_help_message, default: 'If there are some example pages or sample issues which using issue template, please specify the link. So operator can see them as an usage or example for template.') %>
 </div>
 <div id="enabled_help_content" class="wiki" style="display: none;">
   <%= l(:label_enabled_help_message) %>
 </div>
-
 <!-- tooltip content -->
 
 <div class="box">

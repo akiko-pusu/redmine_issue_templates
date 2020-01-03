@@ -92,6 +92,10 @@
     <%= issue_template.note.blank? ? l(:label_none) : issue_template.note %>
   </p>
 
+  <p><label><%= l(:issue_template_related_link, default: 'Related Link') %></label>
+    <%= issue_template.related_link.blank? ? l(:label_none) : issue_template.related_link %>
+  </p>
+
   <p><label><%= l(:field_is_default) %></label>
     <%= checked_image issue_template.is_default? %>
   </p>
