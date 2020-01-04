@@ -42,6 +42,8 @@ module Concerns
         after_destroy do |template|
           logger.info("[Destroy] #{self.class}: #{template.inspect}")
         end
+
+        serialize :builtin_fields_json, Hash
       end
 
       #
