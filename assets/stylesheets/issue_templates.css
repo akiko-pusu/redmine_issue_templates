@@ -358,3 +358,7 @@ div.template_link_area {
 div.template_link_area label {
   font-weight: bold;
 }
+
+.template-update-link {
+  cursor: pointer;
+}

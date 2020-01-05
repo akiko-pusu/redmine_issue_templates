@@ -1,50 +1,50 @@
 <%= error_messages_for 'global_issue_template' %>
-<div class="box tabular box-white">
+<div class='box tabular box-white'>
   <p><%= f.text_field :title, required: true, size: 80, label: l(:issue_template_name) %></p>
 
-  <fieldset class="issue">
-    <legend class="issue"><%= l(:label_applied_for_issue) %></legend>
+  <fieldset class='issue'>
+    <legend class='issue'><%= l(:label_applied_for_issue) %></legend>
     <p>
       <% if issue_template.tracker.blank? %>
-          <%= f.select :tracker_id, trackers.collect { |t| [t.name, t.id] }, {required: true},
+          <%= f.select :tracker_id, trackers.collect { |t| [t.name, t.id] }, { required: true },
                        required: true, label: l(:label_tracker) %>
 
           <%= h issue_template.tracker.present? ? issue_template.tracker.name :
                     l(:orphaned_template, default: 'Orphaned template from tracker') %>
 
       <% else %>
-          <%= f.select :tracker_id, trackers.collect { |t| [t.name, t.id] }, {required: true},
+          <%= f.select :tracker_id, trackers.collect { |t| [t.name, t.id] }, { required: true },
                        required: true, label: l(:label_tracker), selected: issue_template.tracker.id %>
       <% end %>
     </p>
     <p><%= f.text_field :issue_title, required: false, size: 80, label: l(:issue_title) %>
-      <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
-         data-tooltip-area="#issue_title_help_area"
-         data-tooltip-content="#issue_title_help_content">
+      <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
+         data-tooltip-area='#issue_title_help_area'
+         data-tooltip-content='#issue_title_help_content'>
         <%= l(:help_for_this_field) %>
-        <span class="tooltip-area" id="issue_title_help_area"></span>
+        <span class='tooltip-area' id='issue_title_help_area'></span>
       </a>
     </p>
     <p>
       <%= f.text_area :description, cols: 78, rows: 12,
                       required: true,
-                      label: l(:issue_description), class: 'wiki-edit', style: 'overflow:auto;' %>
+                      label: l(:issue_description), class: 'wiki-edit', style: 'overflow: auto;' %>
     </p>
     <!-- for Checklist -->
     <% if checklist_enabled %>
-        <p id="checklist_form">
+        <p id='checklist_form'>
           <label>Checklist</label>
-          <input type="text" id="checklist_text" class="edit-box">
-          <span class="icon icon-add checklist-new-only save-new-by-button" onclick="addCheckList();"></span>
+          <input type='text' id='checklist_text' class='edit-box'>
+          <span class='icon icon-add checklist-new-only save-new-by-button' onclick='addCheckList()'></span>
           <ul class='checklist' style='padding-left: 180px;'>
             <% issue_template.checklist.each_with_index do |content, i| %>
-                <li id="checklist_<%= i %>">
-                <span class="text">
+                <li id='checklist_<%= i %>'>
+                <span class='text'>
                   <%= content %>
-                  <a class="icon icon-del" href="javascript:void(0)" onclick="removeCheckList(this);"></a>
+                  <i class='icon icon-del' onclick='removeCheckList(this)'></i>
                 </span>
-                  <input type="hidden" name="global_issue_template[checklists][]"
-                         id="global_issue_template_checklist" value="<%= content %>">
+                  <input type='hidden' name='global_issue_template[checklists][]'
+                         id='global_issue_template_checklist' value='<%= content %>'>
                 </li>
             <% end %>
           </ul>
@@ -59,74 +59,74 @@
 
   <p><%= f.text_field :related_link, type: 'url',
           size: 70, label: l(:issue_template_related_link, default: 'Related link') %>
-    <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
-       data-template-help-target="#related_link_help_content"
-       data-tooltip-area="#related_link_help_area"
-       data-tooltip-content="#related_link_help_content">
+    <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
+       data-template-help-target='#related_link_help_content'
+       data-tooltip-area='#related_link_help_area'
+       data-tooltip-content='#related_link_help_content'>
       <%= l(:help_for_this_field) %>
-      <span class="tooltip-area" id="related_link_help_area"></span>
+      <span class='tooltip-area' id='related_link_help_area'></span>
     </a>
   </p>
 
   <p id='link_title_paragraph'><%= f.text_field :link_title, size: 70, label: l(:issue_template_link_title, default: 'Link title') %>
-    <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
-       data-template-help-target="#link_title_help_content"
-       data-tooltip-area="#link_title_help_area"
-       data-tooltip-content="#link_title_help_content">
+    <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
+       data-template-help-target='#link_title_help_content'
+       data-tooltip-area='#link_title_help_area'
+       data-tooltip-content='#link_title_help_content'>
       <%= l(:help_for_this_field) %>
-      <span class="tooltip-area" id="link_title_help_area"></span>
+      <span class='tooltip-area' id='link_title_help_area'></span>
     </a>
   </p>
 
   <p><%= f.check_box :is_default, label: l(:field_is_default) %>
-    <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
-       data-template-help-target="#isdefault_help_content"
-       data-tooltip-area="#isdefault_help_area"
-       data-tooltip-content="#isdefault_help_content">
+    <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
+       data-template-help-target='#isdefault_help_content'
+       data-tooltip-area='#isdefault_help_area'
+       data-tooltip-content='#isdefault_help_content'>
       <%= l(:help_for_this_field) %>
-      <span class="tooltip-area" id="isdefault_help_area"></span>
+      <span class='tooltip-area' id='isdefault_help_area'></span>
     </a>
   </p>
 
   <p><%= f.check_box :enabled, label: l(:label_enabled) %>
-    <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
-       data-template-help-target="#enabled_help_content"
-       data-tooltip-area="#enabled_help_area"
-       data-tooltip-content="#enabled_help_content">
+    <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
+       data-template-help-target='#enabled_help_content'
+       data-tooltip-area='#enabled_help_area'
+       data-tooltip-content='#enabled_help_content'>
       <%= l(:help_for_this_field) %>
-      <span class="tooltip-area" id="enabled_help_area"></span>
+      <span class='tooltip-area' id='enabled_help_area'></span>
     </a>
   </p>
 </div>
 
 <%= wikitoolbar_for 'global_issue_template_description' %>
 
-<div id="preview" class="wiki"></div>
+<div id='preview' class='wiki'></div>
 
 
 <!-- tooltip content -->
-<div id="issue_title_help_content" class="wiki" style="display: none;">
+<div id='issue_title_help_content' class='wiki' style='display: none;'>
   <%= l(:help_for_issue_title) %>
 </div>
-<div id="isdefault_help_content" class="wiki" style="display: none;">
+<div id='isdefault_help_content' class='wiki' style='display: none;'>
   <%= l(:label_isdefault_help_message) %>
 </div>
-<div id="related_link_help_content" class="wiki" style="display: none;">
+<div id='related_link_help_content' class='wiki' style='display: none;'>
   <%= l(:label_related_link_help_message, default: 'If there are some example pages or sample issues which using issue template, please specify the link. So operator can see them as an usage or example for template.') %>
 </div>
-<div id="link_title_help_content" class="wiki" style="display: none;">
+<div id='link_title_help_content' class='wiki' style='display: none;'>
   <%= l(:label_link_title_help_message, default: 'If there are some example pages or sample issues which using issue template, please specify the link. So operator can see them as an usage or example for template.') %>
 </div>
-<div id="enabled_help_content" class="wiki" style="display: none;">
+<div id='enabled_help_content' class='wiki' style='display: none;'>
   <%= l(:label_enabled_help_message) %>
 </div>
 <!-- tooltip content -->
 
-<div class="box">
+<div class='box'>
   <% if apply_all_projects %>
       <p>
-        <i class="issue_template icon settings"></i>
-        <span class="issue_template help_content">
+        <i class='issue_template icon settings'></i>
+        <span class='issue_template help_content'>
           <%= l(:note_apply_global_template_to_all_projects_setting_enabled) %>
         </span>
         (
@@ -136,12 +136,12 @@
       </p>
   <% end %>
   <% if projects.any? %>
-      <fieldset class="box box-white" id="global_issue_template_project_ids"
-                style="<%= apply_all_projects ? 'opacity: 0.6' : '' %>">
-        <a class="collapsible collapsed template-help" data-template-help-target="#all_projects">
+      <fieldset class='box box-white' id='global_issue_template_project_ids'
+                style='<%= apply_all_projects ? 'opacity: 0.6' : '' %>'>
+        <a class='collapsible collapsed template-help' data-template-help-target='#all_projects'>
           <%= l(:project_list_associated_this_template, {applied: issue_template.projects.length, all: projects.length}) %>
         </a>
-        <div id="all_projects" style="display: none; ">
+        <div id='all_projects' style='display: none;'>
         <p><%= check_all_links 'global_issue_template_project_ids' %></p>
         <legend><%= l(:label_project_plural) %></legend>
         <%= render_project_nested_lists(projects) do |p|
@@ -158,51 +158,60 @@
 
 
 <%= submit_tag l(issue_template.new_record? ? :button_create : :button_save) %>
-<%= link_to l(:button_cancel), {action: 'index'}, data: {confirm: l(:text_are_you_sure)} %>
+<%= link_to l(:button_cancel), { action: 'index' }, data: { confirm: l(:text_are_you_sure) } %>
 
-<script type="text/javascript">
-    let checklist = $('.checklist');
+<script type='text/javascript'>
+  const removeCheckList = (obj) => {
+    let target = obj.closest('li')
+    target.remove()
+  }
 
-    function removeCheckList(obj) {
-        let target = obj.closest('li')
-        target.remove();
+  const addCheckList = () => {
+    let checkListInputText = document.getElementById('checklist_text')
+    let text = checkListInputText.value
+    if (text === '') return false
+
+    let checkListItems = document.getElementsByClassName('checklist-item')
+    // NOTE: some, find, every and forEach method scan all the element and not exit this function via return.
+    for (let i = 0; i < checkListItems.length; i++) {
+      let elem = checkListItems[i]
+      if (text === elem.value) {
+        return
+      }
     }
 
-    function addCheckList() {
-        let text = $('#checklist_text').val();
-        if (text == '') return false;
+    addCheckListItem(text)
+    checkListInputText.value = ''
+  }
 
-        $('.checklist-item').each(function (i, elem) {
-            e = $(elem)
-            if ((text == e.val())) {
-                return;
-            }
-        })
-        addCheckListItem(text);
-        $('#checklist_text').val('');
-    }
+  const addCheckListItem = (value) => {
+    let li = document.createElement('li')
+    let span = document.createElement('span')
+    span.classList.add('text')
 
-    function addCheckListItem(value) {
-        let li = $('<li>');
-        let text = $('<span class="text">').text(value);
-        let hidden = $("<input>", {
-            type: 'hidden',
-            id: 'global_issue_template_checklist',
-            name: 'global_issue_template[checklists][]',
-            class: 'checklist-item',
-            value: value
-        }).appendTo(li);
+    let checkListText = document.createTextNode(value)
+    span.appendChild(checkListText);
 
-        let remove_link = $("<a>", {
-            class: 'icon icon-del',
-        });
+    let hidden = document.createElement('input')
+    hidden.classList.add('checklist-item')
+    hidden.value = value
+    hidden.setAttribute('type', 'hidden')
+    hidden.setAttribute('id', 'global_issue_template_checklist')
+    hidden.setAttribute('name', 'global_issue_template[checklists][]')
 
-        text.append(remove_link);
-        li.append(text);
-        checklist.append(li);
+    li.appendChild(hidden)
 
-        $('body').on('click', '.icon.icon-del', function () {
-            removeCheckList(this);
-        });
-    }
+    let removeLink = document.createElement('i')
+    removeLink.classList.add('icon', 'icon-del')
+    span.appendChild(removeLink)
+
+    li.appendChild(span)
+
+    let checklist = document.querySelector('ul.checklist')
+    checklist.appendChild(li)
+
+    removeLink.addEventListener('click', (event) => {
+      removeCheckList(event.target)
+    }, false)
+  }
 </script>

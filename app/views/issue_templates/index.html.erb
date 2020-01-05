@@ -1,29 +1,29 @@
-<h2 class="issue_template"><%=h "#{l(:issue_template)}" %></h2>
-<%= render partial: "common/nodata", locals: { trackers: tracker_ids } %>
-<div class="contextual issue_templates">
+<h2 class='issue_template'><%=h "#{l(:issue_template)}" %></h2>
+<%= render partial: 'common/nodata', locals: { trackers: tracker_ids } %>
+<div class='contextual issue_templates'>
   <%= link_to_if_authorized(l(:label_new_templates),
                             { controller: 'issue_templates', action: 'new', project_id: @project },
                               class: 'icon icon-add') %>
 </div>
-<div style="clear:both;"></div>
+<div style='clear: both;'></div>
 
 <% if @notice -%>
-  <div class="flash notice"><%= @notice -%></div>
+  <div class='flash notice'><%= @notice -%></div>
 <% end -%>
 
 
 <% if @template_map.empty? %>
-    <div class="template_box">
+    <div class='template_box'>
       <%= l(:no_issue_templates_for_this_project) %>
     </div>
 <% end %>
 
 <% @template_map.each_key do |tracker| %>
-    <div class="template_box">
-      <h3 class="template_tracker"><%= tracker.name %></h3>
+    <div class='template_box'>
+      <h3 class='template_tracker'><%= tracker.name %></h3>
       <%= non_project_tracker_msg(project_tracker?(tracker, @project)) %>
 
-      <table class="list issues table-sortable">
+      <table class='list issues table-sortable'>
         <thead>
         <tr>
           <th>#</th>
@@ -41,7 +41,7 @@
         </thead>
         <tbody>
         <% @template_map[tracker].each do |issue_template| %>
-            <tr class="<%= cycle('odd', 'even') %> issue_template issue">
+            <tr class='<%= cycle('odd', 'even') %> issue_template issue'>
               <td>
                 <%= link_to h(issue_template.id),
                             { controller: :issue_templates, action: 'show',
@@ -49,16 +49,16 @@
                             },
                             { title: issue_template.note } %>
               </td>
-              <td class="hideable template_title">
+              <td class='hideable template_title'>
                 <%= link_to h(issue_template.title),
                             { controller: 'issue_templates',
                               id: issue_template.id, action: 'show' },
                             { title: "#{html_escape(issue_template.note) }"} %>
               </td>
               <td>
-                <div class="template_tooltip_wrapper">
-                  <a class="icon template_tooltip" title="<%= l(:label_preview) %>"></a>
-                  <div class="wiki template_tooltip_body">
+                <div class='template_tooltip_wrapper'>
+                  <a class='icon template_tooltip' title='<%= l(:label_preview) %>'></a>
+                  <div class='wiki template_tooltip_body'>
                     <span class="title"><%= issue_template.title %></span>
                     <%= textilizable(issue_template.description) %>
                     <% if issue_template.related_link.present? %>
@@ -72,11 +72,11 @@
               <td class='hideable'><%=h issue_template.tracker.name %></td>
               <td class='hideable'><%=h issue_template.author %></td>
               <td class='hideable'><%= format_time(issue_template.updated_on)%> </td>
-              <td class="center"><%= checked_image issue_template.is_default? %></td>
-              <td class="center"><%= checked_image issue_template.enabled? %></td>
+              <td class='center'><%= checked_image issue_template.is_default? %></td>
+              <td class='center'><%= checked_image issue_template.enabled? %></td>
 
               <% if authorize_for('issue_templates', 'edit') %>
-                <td class="buttons">
+                <td class='buttons'>
                   <%= reorder_handle(issue_template,
                                       url: url_for(:controller => 'issue_templates',
                                                   :action => 'update', :id => issue_template.id,
@@ -89,16 +89,16 @@
       </table>
     </div>
     <%= javascript_tag do %>
-        $(function() { $("table.table-sortable tbody").positionedItems(); });
+      $(function() { $('table.table-sortable tbody').positionedItems() })
     <% end %>
 <% end %>
 
 
 <% unless @inherit_templates.blank? %>
-<h2 class="issue_template"><%=h "#{l(:label_inherited_templates)}" %></h2>
-  <div class="template_box">
+<h2 class='issue_template'><%=h "#{l(:label_inherited_templates)}" %></h2>
+  <div class='template_box'>
 
-        <table class="list issues">
+        <table class='list issues'>
           <thead>
           <tr>
             <th>#</th>
@@ -113,7 +113,7 @@
           </thead>
           <tbody>
           <% @inherit_templates.each do |issue_template| %>
-              <tr class="<%= cycle('odd', 'even') %> issue_template issue">
+              <tr class='<%= cycle('odd', 'even') %> issue_template issue'>
                 <td>
                   <%= link_to h(issue_template.id),
                               { controller: 'issue_templates',
@@ -121,7 +121,7 @@
                                 project_id: issue_template.project_id },
                               { title: issue_template.note } %>
                 </td>
-                <td class="hideable template_title">
+                <td class='hideable template_title'>
                   <%= link_to h(issue_template.title),
                               { controller: 'issue_templates',
                                 project_id: issue_template.project_id,
@@ -129,10 +129,10 @@
                               { title: "#{html_escape(issue_template.note)}" } %>
                 </td>
                 <td>
-                  <div class="template_tooltip_wrapper">
-                    <a class="icon template_tooltip" title="<%= l(:label_preview) %>"></a>
-                    <div class="wiki template_tooltip_body">
-                      <span class="title"><%=h issue_template.title %></span>
+                  <div class='template_tooltip_wrapper'>
+                    <a class='icon template_tooltip' title='<%= l(:label_preview) %>'></a>
+                    <div class='wiki template_tooltip_body'>
+                      <span class='title'><%=h issue_template.title %></span>
                       <%=h textilizable(issue_template.description) %>
                       <% if issue_template.related_link.present? %>
                         <hr/>
@@ -145,10 +145,10 @@
                 <td class='hideable'><%=h issue_template.tracker.name %></td>
                 <td class='hideable'><%=h issue_template.author %></td>
                 <td class='hideable'><%=h format_time(issue_template.updated_on)%> </td>
-                <td class="center"><%= checked_image issue_template.is_default? %></td>
-                <td class="center"><%= checked_image issue_template.enabled? %></td>
+                <td class='center'><%= checked_image issue_template.is_default? %></td>
+                <td class='center'><%= checked_image issue_template.enabled? %></td>
               </tr>
-              <tr class="<%= current_cycle %>" style="display: none;" id="template_description-<%= issue_template.id %>">
+              <tr class='<%= current_cycle %>' style='display: none;' id='template_description-<%= issue_template.id %>'>
                 <td class="description" colspan="8">
                   <div class="wiki"><%=h textilizable(issue_template.description) %>
                   <hr/>
@@ -165,12 +165,12 @@
  <% end %>
 
 <% unless  @global_issue_templates.blank? %>
-    <h2 class="issue_template"><%=h "#{l(:global_issue_templates)}" %></h2>
-    <div class="template_box">
+    <h2 class='issue_template'><%=h "#{l(:global_issue_templates)}" %></h2>
+    <div class='template_box'>
 
       <% if apply_all_projects %>
           <p>
-            <i class="issue_template icon settings"></i>
+            <i class='issue_template icon settings'></i>
             <span class="issue_template help_content">
               <%= l(:note_apply_global_template_to_all_projects_setting_enabled) %><br/>
               <%= l(:note_project_local_template_override_global_template) %>
@@ -179,7 +179,7 @@
       <% end %>
 
       <%= l(:only_admin_can_associate_global_template) %>
-      <table class="list issues">
+      <table class='list issues'>
         <thead>
         <tr>
           <th>#</th>
@@ -193,7 +193,7 @@
         </thead>
         <tbody>
         <% @global_issue_templates.each do |issue_template| %>
-            <tr class="<%= cycle('odd', 'even') %> issue_template issue">
+            <tr class='<%= cycle('odd', 'even') %> issue_template issue'>
               <td>
                 <% if User.current.admin? %>
                     <%= link_to h(issue_template.id),
@@ -205,17 +205,17 @@
                 <% end %>
                </td>
 
-              <td class="hideable template_title">
+              <td class='hideable template_title'>
                 <%= link_to h(issue_template.title),
                             { controller: 'global_issue_templates',
                               id: issue_template.id, action: 'show' },
                             { title: "#{html_escape(issue_template.note)}" } %>
               </td>
               <td>
-                <div class="template_tooltip_wrapper">
-                  <a class="icon template_tooltip" title="<%= l(:label_preview) %>"></a>
-                  <div class="wiki template_tooltip_body">
-                    <span class="title"><%=h issue_template.title %></span>
+                <div class='template_tooltip_wrapper'>
+                  <a class='icon template_tooltip' title='<%= l(:label_preview) %>'></a>
+                  <div class='wiki template_tooltip_body'>
+                    <span class='title'><%=h issue_template.title %></span>
                     <%=h textilizable(issue_template.description) %>
                     <% if issue_template.related_link.present? %>
                       <hr/>
@@ -236,10 +236,10 @@
               </td>
               <td class='hideable'><%=h issue_template.author %></td>
               <td class='hideable'><%=h format_time(issue_template.updated_on)%> </td>
-              <td class="center"><%= checked_image issue_template.is_default? %></td>
+              <td class='center'><%= checked_image issue_template.is_default? %></td>
             </tr>
-            <tr class="<%= current_cycle %>" style="display: none;" id="global_template_description-<%= issue_template.id %>">
-              <td class="description" colspan="8">
+            <tr class='<%= current_cycle %>' style='display: none;' id='global_template_description-<%= issue_template.id %>'>
+              <td class='description' colspan='8'>
                 <div class="wiki"><%=h textilizable(issue_template.description) %>
                 <% if issue_template.related_link.present? %>
                   <hr/>
@@ -261,6 +261,6 @@
             id: 'orphaned_template_link', class: 'collapsible collapsed template_tooltip'
 %>
 
-<div id="orphaned_templates" style="display: none"></div>
+<div id='orphaned_templates' style='display: none'></div>
 
-<%= render partial: "common/template_links" %>
+<%= render partial: 'common/template_links' %>

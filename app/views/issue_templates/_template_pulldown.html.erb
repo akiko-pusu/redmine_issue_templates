@@ -1,33 +1,33 @@
-<script type="text/javascript">
-    var length = $('#issue_template > optgroup > option').length;
-    if (length < 1) {
-        $('#template_area').hide();
-        <% if is_triggered_by.blank? || (is_triggered_by.present? && is_triggered_by == 'issue_tracker_id') %>
-        if ($('#issue-form.new_issue').length > 0 && <%= should_replaced %> === true) {
-          // Uncaught ReferenceError: templateNS is not defined
-          if (typeof templateNS !== 'undefined') {
-            templateNS.eraseSubjectAndDescription();
-          }
-        }
-        <% end %>
-    } else {
-        $('#template_area').show();
+<script type='text/javascript'>
+  let length = $('#issue_template > optgroup > option').length
+  if (length < 1) {
+    $('#template_area').hide()
+    <% if is_triggered_by.blank? || (is_triggered_by.present? && is_triggered_by == 'issue_tracker_id') %>
+    if ($('#issue-form.new_issue').length > 0 && <%= should_replaced %> === true) {
+      // Uncaught ReferenceError: templateNS is not defined
+      if (typeof templateNS !== 'undefined') {
+        templateNS.eraseSubjectAndDescription()
+      }
     }
+    <% end %>
+  } else {
+    $('#template_area').show()
+  }
 </script>
-<option value="">---</option>
-<optgroup label="<%=h @tracker.name %>">
+<option value=''>---</option>
+<optgroup label='<%=h @tracker.name %>'>
   <%= options_for_template_pulldown(grouped_options) %>
 </optgroup>
 <% if is_triggered_by.blank? || (is_triggered_by.present? && is_triggered_by == 'issue_tracker_id') %>
-    <script type="text/javascript">
-        let load_url = '<%= url_for(controller: 'issue_templates', action: 'load', project_id: @project) %>';
-        let should_replaced = '<%= should_replaced %>';
-        let confirm_msg = "<%=h escape_javascript((l(:defaulf_template_loaded, tracker: @tracker))) %>";
-        let confirmation = '<%=h l(:label_confirmation) %>';
-        let general_text_Yes = '<%=h l(:general_text_Yes) %>';
-        let general_text_No = '<%=h l(:general_text_No) %>';
+  <script type="text/javascript">
+    let load_url = '<%= url_for(controller: 'issue_templates', action: 'load', project_id: @project) %>'
+    let should_replaced = '<%= should_replaced %>'
+    let confirm_msg = '<%=h escape_javascript((l(:defaulf_template_loaded, tracker: @tracker))) %>'
+    let confirmation = '<%=h l(:label_confirmation) %>'
+    let general_text_Yes = '<%=h l(:general_text_Yes) %>'
+    let general_text_No = '<%=h l(:general_text_No) %>'
 
-        var templateNS = templateNS || new ISSUE_TEMPLATE();
-        templateNS.load_template(load_url, confirm_msg, should_replaced, false, confirmation, general_text_Yes, general_text_No);
-    </script>
+    var templateNS = templateNS || new ISSUE_TEMPLATE()
+    templateNS.load_template(load_url, confirm_msg, should_replaced, false, confirmation, general_text_Yes, general_text_No)
+  </script>
 <% end %>

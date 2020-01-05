@@ -1,9 +1,9 @@
-<div id="issue_templates_settings">
-  <%= render partial: "common/nodata", locals: { trackers: @project.trackers } %>
+<div id='issue_templates_settings'>
+  <%= render partial: 'common/nodata', locals: { trackers: @project.trackers } %>
 
-  <h2 class="issue_template_setting"><%= l(:issue_templates_settings, default: 'Issue Templates Setting') %></h2>
+  <h2 class='issue_template_setting'><%= l(:issue_templates_settings, default: 'Issue Templates Setting') %></h2>
   <p></p>
-  <div class="template_box">
+  <div class='template_box'>
     <h2><%= l(:issue_templates_optional_settings, default: 'Templates Optional Settings') %></h2>
     <p><%= l(:about_help_message) %></p>
     <%= labelled_form_for :settings, @issue_templates_setting,
@@ -12,25 +12,25 @@
                                  setting_id: @issue_templates_setting.id },
                           html: { id: 'issue_templates_settings' } do |f| %>
         <%= error_messages_for 'issue_templates_setting' %>
-        <div class="box tabular">
+        <div class='box tabular'>
 
           <p><%= f.check_box :inherit_templates, label: l(:label_inherit_templates) %>
-            <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
-               data-tooltip-area="#inherit_templates_help_area"
-               data-tooltip-content="#inherit_templates_help_content">
+            <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
+               data-tooltip-area='#inherit_templates_help_area'
+               data-tooltip-content='#inherit_templates_help_content'>
               <%= l(:help_for_this_field) %>
-              <span class="tooltip-area" id="inherit_templates_help_area"></span>
+              <span class='tooltip-area' id='inherit_templates_help_area'></span>
             </a>
           </p>
 
           <p>
             <%= f.check_box :should_replaced, label: l(:label_should_replaced) %>
-            <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
-               data-template-help-target="#should_replaced_help_content"
-               data-tooltip-area="#should_replaced_help_area"
-               data-tooltip-content="#should_replaced_help_content">
+            <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
+               data-template-help-target='#should_replaced_help_content'
+               data-tooltip-area='#should_replaced_help_area'
+               data-tooltip-content='#should_replaced_help_content'>
               <%= l(:help_for_this_field) %>
-              <span class="tooltip-area" id="should_replaced_help_area"></span>
+              <span class='tooltip-area' id='should_replaced_help_area'></span>
             </a>
           </p>
 
@@ -51,13 +51,13 @@
   </div>
 
   <!--- help content -->
-  <div id="inherit_templates_help_content" class="wiki" style="display: none;">
+  <div id='inherit_templates_help_content' class='wiki' style='display: none;'>
     <%= l(:label_inherit_templates_help_message) %>
   </div>
-  <div id="should_replaced_help_content" class="wiki" style="display: none;">
+  <div id='should_replaced_help_content' class='wiki' style='display: none;'>
     <%= l(:label_should_replaced_help_message) %>
   </div>
   <!--- help content -->
 </div>
 
-<div style="float: right;"><%= render partial: "common/template_links" %></div>
+<div style='float: right;'><%= render partial: 'common/template_links' %></div>

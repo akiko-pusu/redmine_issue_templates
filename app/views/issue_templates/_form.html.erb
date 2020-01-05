@@ -1,9 +1,9 @@
 <%= error_messages_for 'issue_template' %>
-<div class="box tabular box-white">
+<div class='box tabular box-white'>
   <p><%= f.text_field :title, required: true, size: 80, label: l(:issue_template_name) %></p>
 
-  <fieldset class="issue">
-    <legend class="issue"><%= l(:label_applied_for_issue) %></legend>
+  <fieldset class='issue'>
+    <legend class='issue'><%= l(:label_applied_for_issue) %></legend>
     <p>
       <% if issue_template.tracker.blank? %>
           <%= f.select :tracker_id, template_target_trackers(project, issue_template),
@@ -20,11 +20,11 @@
       <% end %>
     </p>
     <p><%= f.text_field :issue_title, required: false, size: 80, label: l(:issue_title) %>
-      <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
-         data-tooltip-area="#issue_title_help_area"
-         data-tooltip-content="#issue_title_help_content">
+      <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
+         data-tooltip-area='#issue_title_help_area'
+         data-tooltip-content='#issue_title_help_content'>
         <%= l(:help_for_this_field) %>
-        <span class="tooltip-area" id="issue_title_help_area"></span>
+        <span class='tooltip-area' id='issue_title_help_area'></span>
       </a>
     </p>
     <p>
@@ -35,21 +35,21 @@
 
     <!-- for Checklist -->
     <% if checklist_enabled %>
-        <p id="checklist_form">
+        <p id='checklist_form'>
           <label>Checklist</label>
-          <input type="text" id="checklist_text" class="edit-box">
-          <span class="icon icon-add checklist-new-only save-new-by-button"
-                onclick="addCheckList();">
+          <input type='text' id='checklist_text' class='edit-box'>
+          <span class='icon icon-add checklist-new-only save-new-by-button'
+                onclick='addCheckList()'>
           </span>
           <ul class='checklist' style='padding-left: 180px;'>
             <% issue_template.checklist.each_with_index do |content, i| %>
-              <li id="checklist_<%= i %>">
-                <span class="text">
+              <li id='checklist_<%= i %>'>
+                <span class='text'>
                   <%= content %>
-                  <a class="icon icon-del" href="javascript:void(0)" onclick="removeCheckList(this);"></a>
+                  <i class='icon icon-del' onclick='removeCheckList(this)'></a>
                 </span>
-                <input type="hidden" name="issue_template[checklists][]"
-                       id="issue_template_checklist" value="<%= content %>">
+                <input type='hidden' name='issue_template[checklists][]'
+                       id='issue_template_checklist' value='<%= content %>'>
               </li>
             <% end %>
           </ul>
@@ -64,50 +64,50 @@
 
   <p><%= f.text_field :related_link, type: 'url',
           size: 70, label: l(:issue_template_related_link, default: 'Related link') %>
-    <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
-       data-template-help-target="#related_link_help_content"
-       data-tooltip-area="#related_link_help_area"
-       data-tooltip-content="#related_link_help_content">
+    <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
+       data-template-help-target='#related_link_help_content'
+       data-tooltip-area='#related_link_help_area'
+       data-tooltip-content='#related_link_help_content'>
       <%= l(:help_for_this_field) %>
-      <span class="tooltip-area" id="related_link_help_area"></span>
+      <span class='tooltip-area' id='related_link_help_area'></span>
     </a>
   </p>
 
   <p id='link_title_paragraph'><%= f.text_field :link_title, size: 70, label: l(:issue_template_link_title, default: 'Link title') %>
-    <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
-       data-template-help-target="#link_title_help_content"
-       data-tooltip-area="#link_title_help_area"
-       data-tooltip-content="#link_title_help_content">
+    <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
+       data-template-help-target='#link_title_help_content'
+       data-tooltip-area='#link_title_help_area'
+       data-tooltip-content='#link_title_help_content'>
       <%= l(:help_for_this_field) %>
-      <span class="tooltip-area" id="link_title_help_area"></span>
+      <span class='tooltip-area' id='link_title_help_area'></span>
     </a>
   </p>
 
   <p><%= f.check_box :is_default, label: l(:field_is_default) %>
-    <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
-       data-tooltip-area="#isdefault_help_area"
-       data-tooltip-content="#isdefault_help_content">
+    <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
+       data-tooltip-area='#isdefault_help_area'
+       data-tooltip-content='#isdefault_help_content'>
       <%= l(:help_for_this_field) %>
-      <span class="tooltip-area" id="isdefault_help_area"></span>
+      <span class='tooltip-area' id='isdefault_help_area'></span>
     </a>
   </p>
   <p>
     <%= f.check_box :enabled, label: l(:label_enabled) %>
-    <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
-       data-tooltip-area="#enabled_help_area"
-       data-tooltip-content="#enabled_help_content">
+    <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
+       data-tooltip-area='#enabled_help_area'
+       data-tooltip-content='#enabled_help_content'>
       <%= l(:help_for_this_field) %>
-      <span class="tooltip-area" id="enabled_help_area"></span>
+      <span class='tooltip-area' id='enabled_help_area'></span>
     </a>
   </p>
 
   <p>
     <%= f.check_box :enabled_sharing, label: l(:label_enabled_sharing) %>
-    <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
-       data-tooltip-area="#enabledsharing_help_area"
-       data-tooltip-content="#enabledsharing_help_content">
+    <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
+       data-tooltip-area='#enabledsharing_help_area'
+       data-tooltip-content='#enabledsharing_help_content'>
       <%= l(:help_for_this_field) %>
-      <span class="tooltip-area" id="enabledsharing_help_area"></span>
+      <span class='tooltip-area' id='enabledsharing_help_area'></span>
     </a>
   </p>
 
@@ -116,74 +116,134 @@
 <%= wikitoolbar_for 'issue_template_description' %>
 
 <!-- help content -->
-<div id="issue_title_help_content" class="wiki" style="display: none;">
+<div id='issue_title_help_content' class='wiki' style='display: none;'>
   <%= l(:help_for_issue_title) %>
 </div>
 
-<div id="related_link_help_content" class="wiki" style="display: none;">
+<div id='related_link_help_content' class='wiki' style='display: none;'>
   <%= l(:label_related_link_help_message, default: 'If there are some example pages or sample issues which using issue template, please specify the link. So operator can see them as an usage or example for template.') %>
 </div>
 
-<div id="link_title_help_content" class="wiki" style="display: none;">
+<div id='link_title_help_content' class='wiki' style='display: none;'>
   <%= l(:label_link_title_help_message, default: 'If there are some example pages or sample issues which using issue template, please specify the link. So operator can see them as an usage or example for template.') %>
 </div>
 
-<div id="isdefault_help_content" class="wiki" style="display: none;">
+<div id='isdefault_help_content' class='wiki' style='display: none;'>
   <%= l(:label_isdefault_help_message) %>
 </div>
 
-<div id="enabled_help_content" class="wiki" style="display: none;">
+<div id='enabled_help_content' class='wiki' style='display: none;'>
   <%= l(:label_enabled_help_message) %>
 </div>
 
-<div id="enabledsharing_help_content" class="wiki" style="display: none;">
+<div id='enabledsharing_help_content' class='wiki' style='display: none;'>
   <%= l(:label_enabledshaing_help_message) %>
 </div>
 <!-- help content -->
 
-<script type="text/javascript">
-  let checklist = $('.checklist');
+<script type='text/javascript'>
+  let checklist = $('.checklist')
 
-  function removeCheckList(obj) {
+  const removeCheckList = (obj) => {
     let target = obj.closest('li')
-    target.remove();
+    target.remove()
   }
 
+/*
+  function removeCheckList(obj) {
+    let target = obj.closest('li')
+    target.remove()
+  }
+*/
+
+/*
   function addCheckList() {
-    let text = $('#checklist_text').val();
-    if (text == '') return false;
+    let text = $('#checklist_text').val()
+    if (text === '') return false
 
     $('.checklist-item').each(function(i, elem) {
       e = $(elem)
-      if ((text == e.val())) {
-        return;
+      if (text === e.val()) {
+        return
       }
     })
-    addCheckListItem(text);
-    $('#checklist_text').val('');
+    addCheckListItem(text)
+    $('#checklist_text').val('')
+  }
+*/
+
+  const addCheckList = () => {
+    let checkListInputText = document.getElementById('checklist_text')
+    let text = checkListInputText.value
+    if (text === '') return false
+
+    let checkListItems = document.getElementsByClassName('checklist-item')
+    // NOTE: some, find, every and forEach method scan all the element and not exit this function via return.
+    for (let i = 0; i < checkListItems.length; i++) {
+      let elem = checkListItems[i]
+      if (text === elem.value) {
+        return
+      }
+    }
+
+    addCheckListItem(text)
+    checkListInputText.value = ''
   }
 
+  /*
   function addCheckListItem(value) {
-    let li = $('<li>');
-    let text = $('<span class="text">').text(value);
-    let hidden = $("<input>", {
+    let li = $('<li>')
+    let text = $('<span class="text">').text(value)
+    let hidden = $('<input>', {
       type: 'hidden',
       id: 'issue_template_checklist',
       name: 'issue_template[checklists][]',
       class: 'checklist-item',
       value: value
-    }).appendTo(li);
+    }).appendTo(li)
 
     let remove_link = $("<a>", {
       class: 'icon icon-del',
-    });
+    })
 
-    text.append(remove_link);
-    li.append(text);
-    checklist.append(li);
+    text.append(remove_link)
+    li.append(text)
+    checklist.append(li)
 
     $('body').on('click','.icon.icon-del', function() {
-      removeCheckList(this);
-    });
+      removeCheckList(this)
+    })
+  }
+  */
+
+  const addCheckListItem = (value) => {
+    let li = document.createElement('li')
+    let span = document.createElement('span')
+    span.classList.add('text')
+
+    let checkListText = document.createTextNode(value)
+    span.appendChild(checkListText);
+
+    let hidden = document.createElement('input')
+    hidden.classList.add('checklist-item')
+    hidden.value = value
+    hidden.setAttribute('type', 'hidden')
+    hidden.setAttribute('id', 'global_issue_template_checklist')
+    hidden.setAttribute('name', 'global_issue_template[checklists][]')
+
+    li.appendChild(hidden)
+
+    let removeLink = document.createElement('i')
+    removeLink.classList.add('icon', 'icon-del')
+    span.appendChild(removeLink)
+
+    li.appendChild(span)
+
+    let checklist = document.querySelector('ul.checklist')
+    checklist.appendChild(li)
+
+    removeLink.addEventListener('click', (event) => {
+      removeCheckList(event.target)
+    }, false)
   }
 </script>
