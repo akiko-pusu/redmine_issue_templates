@@ -4,7 +4,19 @@
  */
 
 // For namespace setting.
-var ISSUE_TEMPLATE = ISSUE_TEMPLATE || function () {}
+// var ISSUE_TEMPLATE = ISSUE_TEMPLATE || function () {}
+function ISSUE_TEMPLATE(pulldownUrl, loadUrl, confirmMsg, shouldReplaced, confirmToReplace,
+  confirmation, generalTextYes, generalTextNo, isTriggeredBy) {
+  this.pulldownUrl = pulldownUrl
+  this.loadUrl = loadUrl
+  this.confirmMsg = confirmMsg
+  this.shouldReplaced = shouldReplaced
+  this.confirmToReplace = confirmToReplace
+  this.confirmation = confirmation
+  this.generalTextYes = generalTextYes
+  this.generalTextNo = generalTextNo
+  this.isTriggeredBy = isTriggeredBy
+}
 
 ISSUE_TEMPLATE.prototype = {
   clearValue: (id) => {
@@ -28,21 +40,22 @@ ISSUE_TEMPLATE.prototype = {
   },
   openDialog: function (url, title) {
     // Open dialog (modal window) to display selectable templates list.
-    $.ajax({
-      url: url,
-      success: function (data) {
+    fetch(url)
+      .then((response) => {
+        return response.text()
+      })
+      .then((data) => {
         document.getElementById('filtered_templates_list').innerHTML = data
-        $('#issue_template_dialog').dialog({
-          modal: true,
-          dialogClass: 'modal overflow_dialog',
-          draggable: true,
-          title: title,
-          minWidth: 400,
-          width: 'auto',
-          maxWidth: 'auto'
+        let titleElement = document.getElementById('issue_template_dialog_title')
+        titleElement.textContent = title
+
+        const templateElements = document.querySelectorAll('i.template-update-link')
+        Array.from(templateElements).forEach(el => {
+          el.addEventListener('click', (event) => {
+            this.updateTemplateSelect(event)
+          })
         })
-      }
-    })
+      })
   },
   revertAppliedTemplate: function () {
     let issueSubject = document.getElementById('issue_subject')
@@ -52,15 +65,15 @@ ISSUE_TEMPLATE.prototype = {
     let oldDescription = document.getElementById('original_description')
     let templateNS = this
 
-    issueSubject.value = templateNS.unescapeHTML(oldSubject.textContent)
+    issueSubject.value = templateNS.escapeHTML(oldSubject.textContent)
 
     if (issueDescription !== null) {
-      issueDescription.value = templateNS.unescapeHTML(oldDescription.textContent)
+      issueDescription.value = templateNS.escapeHTML(oldDescription.textContent)
     }
 
     try {
       if (CKEDITOR.instances.issue_description) {
-        CKEDITOR.instances.issue_description.setData(templateNS.unescapeHTML(oldDescription.text()))
+        CKEDITOR.instances.issue_description.setData(templateNS.escapeHTML(oldDescription.text()))
       }
     } catch (e) {
       // do nothing.
@@ -69,27 +82,40 @@ ISSUE_TEMPLATE.prototype = {
     oldDescription.textContent = ''
     document.getElementById('revert_template').classList.add('disabled')
   },
-  load_template: function (targetUrl, confirmMsg, shouldReplaced,
-    confirmToReplace, confirmation, generalTextYes, generalTextNo) {
-    // let selectedTemplate = $('#issue_template')
-    let selectedTemplate = document.getElementById('issue_template')
-    let ns = this
+  load_template: (confirm_flg) => {
+    let confirmFlg = true
+    if (confirm_flg != null) {
+      confirmFlg = confirm_flg
+    }
 
-    if (selectedTemplate.value !== '') {
-      let templateType = ''
-      let selectedOption = selectedTemplate.options[selectedTemplate.selectedIndex]
-      if (selectedOption.classList.contains('global')) {
-        templateType = 'global'
-      }
-      $.ajax({
-        url: targetUrl,
-        async: true,
-        type: 'post',
-        data: $.param({
+    let ns = templateNS
+    let selectedTemplate = document.getElementById('issue_template')
+
+    if (selectedTemplate.value === '') return
+
+    let templateType = ''
+    let selectedOption = selectedTemplate.options[selectedTemplate.selectedIndex]
+    if (selectedOption.classList.contains('global')) {
+      templateType = 'global'
+    }
+
+    fetch(ns.loadUrl,
+      {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': ns.getCsrfToken()
+        },
+        body: JSON.stringify({
           template_id: selectedTemplate.value,
           template_type: templateType
         })
-      }).done(function (data) {
+      })
+      .then((response) => {
+        return response.text()
+      })
+      .then((data) => {
         // NOTE: Workaround for GiHub Issue, to prevent overwrite with default template
         // when operator submits new issue form without required field and returns
         // with error message. If flash message #errorExplanation exists, not overwrited.
@@ -109,37 +135,37 @@ ISSUE_TEMPLATE.prototype = {
         let issueSubject = document.getElementById('issue_subject')
         let issueDescription = document.getElementById('issue_description')
 
+        if (confirmFlg === true && ns.confirmToReplace === true && ns.shouldReplaced === 'true' && (issueSubject.value !== '')) {
+          if (oldSubj !== obj.issue_title) {
+            let hideConfirmFlag = ns.hideOverwiteConfirm()
+            if (hideConfirmFlag === false) {
+              return ns.confirmToReplaceMsg()
+            }
+          }
+        }
+
         // for description
         if (issueDescription !== null) {
           let originalDescription = document.getElementById('original_description')
-          if (issueDescription.value !== '' && shouldReplaced === 'false') {
+          if (issueDescription.value !== '' && ns.shouldReplaced === 'false') {
             oldVal = issueDescription.value + '\n\n'
           }
-          originalDescription.textContent = ns.escapeHTML(issueDescription.value)
 
-          issueDescription.getAttribute('original_description', $('<div />').text(issueDescription.value).html())
+          originalDescription.textContent = issueDescription.value
+
+          issueDescription.getAttribute('original_description', issueDescription.value)
           if (oldVal.replace(/(?:\r\n|\r|\n)/g, '').trim() !== obj.description.replace(/(?:\r\n|\r|\n)/g, '').trim()) {
             issueDescription.value = oldVal + obj.description
           }
         }
 
         let originalSubject = document.getElementById('original_subject')
-        if (issueSubject.value !== '' && shouldReplaced === 'false') {
+        if (issueSubject.value !== '' && ns.shouldReplaced === 'false') {
           oldSubj = issueSubject.value + ' '
         }
-        originalSubject.textContent = ns.escapeHTML(issueSubject.value)
+        originalSubject.textContent = issueSubject.value
 
-        if (confirmToReplace !== true && shouldReplaced === 'true' && (issueSubject.value !== '')) {
-          if (oldSubj !== obj.issue_title) {
-            let hideConfirmFlag = ns.hideOverwiteConfirm()
-            if (hideConfirmFlag === false) {
-              ns.confirmToReplace(targetUrl, confirmMsg, shouldReplaced, confirmation, generalTextYes, generalTextNo)
-              return
-            }
-          }
-        }
-
-        issueSubject.setAttribute('original_title', $('<div />').text(issueSubject.value).html())
+        issueSubject.setAttribute('original_title', issueSubject.value)
         if (oldSubj.trim() !== obj.issue_title.trim()) {
           issueSubject.value = oldSubj + obj.issue_title
         }
@@ -152,10 +178,9 @@ ISSUE_TEMPLATE.prototype = {
           // do nothing.
         }
         // show message just after default template loaded.
-        if (confirmMsg) {
-          ns.show_loaded_message(confirmMsg, issueSubject)
+        if (ns.confirmMsg) {
+          ns.show_loaded_message(ns.confirmMsg, issueSubject)
         }
-        ns.addCheckList(obj)
 
         if (originalSubject.textContent.length > 0) {
           document.getElementById('revert_template').classList.remove('disabled')
@@ -172,84 +197,133 @@ ISSUE_TEMPLATE.prototype = {
           relatedLink.style.display = 'none'
         }
 
+        ns.addCheckList(obj)
         ns.builtin_fields(obj)
       })
-    }
   },
-  confirmToReplace: function (targetUrl, confirmMsg, shouldReplaced,
-    confirmation, generalTextYes, generalTextNo) {
-    let ns = this
-    $('#issue_template_confirm_to_replace_dialog').dialog({
-      modal: true,
-      dialogClass: 'modal overflow_dialog',
-      draggable: true,
-      title: confirmation,
-      width: 400,
-      buttons: [
-        {
-          text: generalTextYes,
-          click: function () {
-            $(this).dialog('close')
-            ns.load_template(targetUrl, confirmMsg, shouldReplaced, true, confirmation, generalTextYes, generalTextNo)
-          }
-        },
-        {
-          text: generalTextNo,
-          click: function () {
-            $(this).dialog('close')
-          }
-        }
-      ]
+  confirmToReplaceMsg: () => {
+    let ns = templateNS
+    let dialog = document.getElementById('issue_template_confirm_to_replace_dialog')
+    dialog.style.visibility = 'visible'
+    dialog.classList.add('active')
+
+    document.getElementById('overwrite_yes').addEventListener('click', () => {
+      if (document.getElementById('issue_template_confirm_to_replace_hide_dialog').checked) {
+        // NOTE: Use document.cookie because Redmine itself does not use jquery.cookie.js.
+        document.cookie = 'issue_template_confirm_to_replace_hide_dialog=1'
+      } else {
+        document.cookie = 'issue_template_confirm_to_replace_hide_dialog=0'
+      }
+      dialog.classList.remove('active')
+      ns.load_template(false)
     })
-  },
-  show_loaded_message: function (confirmMsg, target) {
-    let templateStatusArea = $('#template_status-area')
-    templateStatusArea.insertBefore(target)
-    templateStatusArea.issueTemplate('flash_message', {
-      text: confirmMsg,
-      how: 'append'
+
+    document.getElementById('overwrite_no').addEventListener('click', () => {
+      if (document.getElementById('issue_template_confirm_to_replace_hide_dialog').checked) {
+        // NOTE: Use document.cookie because Redmine itself does not use jquery.cookie.js.
+        document.cookie = 'issue_template_confirm_to_replace_hide_dialog=1'
+      } else {
+        document.cookie = 'issue_template_confirm_to_replace_hide_dialog=0'
+      }
+      dialog.classList.remove('active')
     })
-  },
-  set_pulldown: function (tracker, targetUrl) {
-    let allow_overwrite = $('#allow_overwrite_description').prop('checked')
-    $.ajax({
-      url: targetUrl,
-      async: true,
-      type: 'post',
-      data: $.param({
-        issue_tracker_id: tracker
+
+    document.getElementById('issue_template_confirm_to_replace_dialog_cancel')
+      .addEventListener('click', () => {
+        dialog.classList.remove('active')
       })
-    }).done(function (data) {
-      $('#issue_template').html(data)
-      $('#allow_overwrite_description').attr('checked', allow_overwrite)
-    })
+  },
+  show_loaded_message: (confirmMsg, target) => {
+    // in app/views/issue_templates/_issue_select_form.html.erb
+    let templateStatusArea = document.getElementById('template_status-area')
+    if (templateStatusArea === null) return false
+    if (document.querySelector('div.flash_message')) return false
+
+    let messageElement = document.createElement('div')
+    messageElement.innerHTML = confirmMsg
+    messageElement.classList.add('flash_message')
+    messageElement.classList.add('fadeout')
+
+    templateStatusArea.appendChild(messageElement)
+  },
+  getCsrfToken: () => {
+    const metas = document.getElementsByTagName('meta')
+    for (let meta of metas) {
+      if (meta.getAttribute('name') === 'csrf-token') {
+        return meta.getAttribute('content')
+      }
+    }
+    return ''
+  },
+  set_pulldown: function (tracker) {
+    let ns = this
+    fetch(ns.pulldownUrl,
+      {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': ns.getCsrfToken()
+        },
+        body: JSON.stringify({
+          issue_tracker_id: tracker
+        })
+      })
+      .then((response) => {
+        return response.text()
+      })
+      .then((data) => {
+        document.getElementById('issue_template').innerHTML = data
+        let length = document.querySelectorAll('#issue_template > optgroup > option').length
+        if (length < 1) {
+          document.getElementById('template_area').style.display = 'none'
+          if (ns.isTriggeredBy !== undefined && this.isTriggeredBy === 'issue_tracker_id') {
+            if (document.querySelectorAll('#issue-form.new_issue').length > 0 && ns.should_replaced === true) {
+              if (typeof templateNS !== 'undefined') {
+                ns.eraseSubjectAndDescription()
+              }
+            }
+          }
+        } else {
+          document.getElementById('template_area').style.display = 'inline'
+        }
+        let changeEvent = new Event('change')
+        document.getElementById('issue_template').dispatchEvent(changeEvent)
+      })
   },
   addCheckList: function (obj) {
     let list = obj.checklist
     if (list === undefined) return false
-    if ($('#checklist_form').length === 0) return
+    let checklistForm = document.getElementById('checklist_form')
+    if (checklistForm === null || checklistForm.value.length === 0) return
 
-    // remove exists checklist items
-    let oldList = $('span.checklist-item.show:visible span.checklist-show-only.checklist-remove > a.icon.icon-del')
-    oldList.each(function () {
-      oldList.click()
-    })
+    // remove exists checklist items by clicking delete icon
+    let oldList = document.querySelectorAll('span.checklist-item.show:visible span.checklist-show-only.checklist-remove > a.icon.icon-del')
+    for (let i = 0; i < oldList.length; i++) {
+      let element = oldList[i]
+      element.click()
+    }
 
     for (let i = 0; i < list.length; i++) {
-      $('span.checklist-new.checklist-edit-box > input.edit-box').val(list[i])
-      $('span.checklist-item.new > span.icon.icon-add.save-new-by-button').click()
+      document.querySelector('span.checklist-new.checklist-edit-box > input.edit-box').value = list[i]
+      document.querySelector('span.checklist-item.new > span.icon.icon-add.save-new-by-button').click()
     }
   },
-  escapeHTML: function (val) {
-    return $('<div>').text(val).html()
+  escapeHTML: (val) => {
+    const div = document.createElement('div')
+    div.textContent = val
+    return div.textContent
   },
-  unescapeHTML: function (val) {
-    return $('<div>').html(val).text()
+  unescapeHTML: (val) => {
+    const div = document.createElement('div')
+    div.innerHTML = val
+    return div.innerHTML
   },
-  replaceCkeContent: function () {
-    return CKEDITOR.instances.issue_description.setData($('#issue_description').val())
+  replaceCkeContent: () => {
+    let element = document.getElementById('issue_description')
+    return CKEDITOR.instances.issue_description.setData(element.value)
   },
-  hideOverwiteConfirm: function () {
+  hideOverwiteConfirm: () => {
     let cookieArray = []
     if (document.cookie !== '') {
       let tmp = document.cookie.split('; ')
@@ -265,7 +339,7 @@ ISSUE_TEMPLATE.prototype = {
     return true
   },
   // support built-in field update
-  builtin_fields: function (template) {
+  builtin_fields: (template) => {
     let builtinFieldsJson = template.builtin_fields_json
     if (builtinFieldsJson === undefined) return false
     Object.keys(builtinFieldsJson).forEach(function (key) {
@@ -289,116 +363,25 @@ ISSUE_TEMPLATE.prototype = {
 
     let changeEvent = new Event('change')
     document.getElementById('issue_template').dispatchEvent(changeEvent)
-  }
-};
-
-// jQuery plugin for issue template
-(function ($) {
-  let methods = {
-    init: function (options) {},
-    displayTooltip: function (options) {
-      options = $.extend({
-        tooltip_body_id: 'data-tooltip-content',
-        tooltip_target_id: 'data-tooltip-area'
-      }, options)
-      return $(this).each(function () {
-        $(this).hover(function () {
-          let content = $(this).attr(options.tooltip_body_id)
-          let target = $(this).attr(options.tooltip_target_id)
-          let obj = $(content)
-          if (obj.length) {
-            $(target).html(obj)
-          }
-          obj.toggle()
-        })
-      })
-    },
-    expandHelp: function (options) {
-      options = $.extend({
-        attr_name: 'data-template-help-target'
-      }, options)
-      return $(this).each(function () {
-        $(this).click(function () {
-          let target = $(this).attr(options.attr_name)
-          let obj = $(target)
-          if (obj.length) {
-            obj.toggle()
-          }
-        })
-      })
-    },
-    flash_message: function (options) {
-      // default
-      options = $.extend({
-        text: 'Done',
-        time: 3000,
-        how: 'before',
-        class_name: ''
-      }, options)
-
-      return $(this).each(function () {
-        if ($(this).parent().find('.flash_message').get(0)) return
-
-        let message = $('<div></div>', {
-          'class': 'flash_message ' + options.class_name,
-          html: options.text
-          // display with fade in
-        }).hide().fadeIn('fast')
-
-        $(this)[options.how](message)
-        // delay and fadeout
-        message.delay(options.time).fadeOut('normal', function () {
-          $(this).remove()
-        })
-      })
-    },
-    disabled_link: function (options) {
-      options = $.extend({}, options)
-      return $(this).each(function () {
-        $(this).click(function (event) {
-          let title = event.target.title
-          if (title.length && event.target.hasAttribute('disabled')) {
-            event.stopPropagation()
-            window.alert(title)
-            return false
-          }
-        })
-      })
-    }
-  }
-
-  $.fn.issueTemplate = function (method) {
-    // Method dispatch logic
-    if (methods[method]) {
-      return methods[method].apply(this, Array.prototype.slice.call(arguments, 1))
-    } else if (typeof method === 'object' || !method) {
-      return methods.init.apply(this, arguments)
-    } else {
-      $.error('Method ' + method + ' does not exist on jQuery.issueTemplate')
-    }
-  }
-})(jQuery)
-
-$(function () {
-  // set plugin
-  $('a.template-help').issueTemplate('displayTooltip')
-  $('a.template-help.collapsible').issueTemplate('expandHelp')
-  $('a.template-help.collapsible').click(function () {
-    $(this).toggleClass('collapsed')
-  })
-
-  $('a.template-disabled-link').issueTemplate('disabled_link')
-
-  // display orphaned template list
-  $('#orphaned_template_link').on({
-    'ajax:success': (function (_this) {
-      return function (e, data) {
-        $('#orphaned_templates').toggle()
-        return $('#orphaned_templates').html(data)
+  },
+  filterTemplate: (event) => {
+    let cols = document.getElementsByClassName('template_data')
+    let searchWord = event.target.value
+    let reg = new RegExp(searchWord, 'gi')
+    for (let i = 0; i < cols.length; i++) {
+      let val = cols[i]
+      if (val.textContent.match(reg)) {
+        val.style.display = 'table-row'
+      } else {
+        val.style.display = 'none'
       }
-    })(this)
-  })
-})
+    }
+  },
+  changeTemplatePlace: () => {
+    const subjectParentNode = document.getElementById('issue_subject').parentNode
+    subjectParentNode.parentNode.insertBefore(document.getElementById('template_area'), subjectParentNode)
+  }
+}
 
 // for IE11 compatibility (IE11 does not support native Element.closest)
 // Ref. https://developer.mozilla.org/en-US/docs/Web/API/Element/closest#Polyfill
@@ -417,5 +400,71 @@ if (!Element.prototype.closest) {
       el = el.parentElement || el.parentNode
     } while (el !== null && el.nodeType === 1)
     return null
+  }
+}
+
+// --------- Add event listeners -------------- //
+document.onreadystatechange = () => {
+  if (document.readyState === 'complete') {
+    let templateDisabledLink = document.querySelector('a.template-disabled-link')
+    if (templateDisabledLink) {
+      templateDisabledLink.addEventListener('click', (event) => {
+        let title = event.target.title
+        if (title.length && event.target.hasAttribute('disabled')) {
+          event.preventDefault()
+          window.alert(title)
+          event.stopPropagation()
+          return false
+        }
+      })
+    }
+
+    let templateHelps = document.querySelectorAll('a.template-help')
+    for (let i = 0; i < templateHelps.length; i++) {
+      let element = templateHelps[i]
+      element.addEventListener('mouseenter', (event) => {
+        let contentId = event.target.getAttribute('data-tooltip-content')
+        if (contentId === null) return
+
+        let target = event.target.getAttribute('data-tooltip-area')
+        let obj = document.getElementById(target)
+        if (obj) {
+          obj.innerHTML = document.getElementById(contentId).innerHTML
+          obj.style.display = 'inline'
+        }
+      })
+    }
+
+    let orphanedTemplateLink = document.getElementById('orphaned_template_link')
+    if (orphanedTemplateLink) {
+      orphanedTemplateLink.addEventListener('click', (event) => {
+        const url = orphanedTemplateLink.getAttribute('data-url')
+        fetch(url)
+          .then((response) => {
+            return response.text()
+          })
+          .then((data) => {
+            let orphanedTemplate = document.getElementById('orphaned_templates')
+            if (orphanedTemplate) {
+              orphanedTemplate.innerHTML = data
+            }
+          })
+      })
+    }
+
+    let collapsibleHelps = document.querySelectorAll('a.template-help.collapsible')
+    if (collapsibleHelps) {
+      for (let i = 0; i < collapsibleHelps.length; i++) {
+        let element = collapsibleHelps[i]
+        element.addEventListener('click', (event) => {
+          let targetName = event.target.getAttribute('data-template-help-target')
+          let target = document.getElementById(targetName)
+          if (target) {
+            let style = target.style.display
+            target.style.display = (style === 'none' ? 'inline' : 'none')
+          }
+        })
+      }
+    }
   }
 }

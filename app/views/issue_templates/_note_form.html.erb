@@ -16,8 +16,11 @@
   <!-- dialog box -->
   <div id='<%= element_id %>_dialog' class='overlay'>
     <div class='popup'>
-      <h2><%=h l(:label_template_for_note, default: 'Select template for note') %></h2>
-      <a class='close' href='#'>&times;</a>
+     <div class='header_wrapper'>
+       <div class='popup_header'>
+         <h2><%=h l(:label_template_for_note, default: 'Select template for note') %>  <a class="close" href="#">&times;</a></h2>
+       </div>
+     </div>
       <div class='filtered_templates_list'>
         <!-- Replaced contemts -->
       </div>

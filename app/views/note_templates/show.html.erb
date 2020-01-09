@@ -3,7 +3,7 @@
                             { controller: 'note_templates', action: 'update', id: note_template,
                               project_id: project },
                             class: 'icon icon-edit', accesskey: accesskey(:edit),
-                            onclick: "$('#edit-note_template').show(); return false;" %>
+                            onclick: "document.getElementById('edit-note_template').style.display = 'inline'; return false;" %>
   <%= link_to_if_authorized l(:button_delete),
                             { controller: 'note_templates', action: 'destroy',
                               id: note_template, project_id: project },
@@ -87,3 +87,4 @@
 </div>
 
 <%= render partial: 'common/template_links' %>
+

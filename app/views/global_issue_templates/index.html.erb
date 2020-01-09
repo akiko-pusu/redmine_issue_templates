@@ -76,12 +76,17 @@
     </div>
 
     <%= javascript_tag do %>
+      // NOTE: Sortable feature depends on Redmine's sorting jQuery plugin.
       $(function() { $('table.table-sortable tbody').positionedItems() })
     <% end %>
 <% end %>
 
-<%= link_to l(:orphaned_templates, default: 'Orphaned Templates'), orphaned_templates_global_issue_templates_path, remote: true,
-            id: 'orphaned_template_link', class: 'orphaned_template_link collapsible collapsed template-help'
-%>
+<a id='orphaned_template_link' class='icon template_tooltip orphaned_template_link template-help collapsible collapsed'
+  title='<%= l(:orphaned_templates) %>'
+  data-template-help-target='orphaned_templates'
+  data-url='<%= orphaned_templates_global_issue_templates_path %>'>
+  <%= l(:orphaned_templates, default: 'Orphaned Templates') %>
+</a>
+
 <div id='orphaned_templates' style='display: none'></div>
 

@@ -205,8 +205,9 @@ class IssueTemplatesController < ApplicationController
   end
 
   def render_form_params
+    child_project_used_count = template.used_projects.count
     { layout: !request.xhr?,
-      locals: { issue_template: template, project: @project,
+      locals: { issue_template: template, project: @project, child_project_used_count: child_project_used_count,
                 checklist_enabled: checklist_enabled? } }
   end
 end

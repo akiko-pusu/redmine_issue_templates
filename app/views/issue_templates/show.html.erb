@@ -2,19 +2,22 @@
   <%= link_to_if_authorized l(:button_edit),
                             { controller: 'issue_templates', action: 'update', id: issue_template,
                               project_id: project },
+                            title: l(:button_edit),
                             class: 'icon icon-edit', accesskey: accesskey(:edit),
-                            onclick: "$('#edit-issue_template').show(); return false;" %>
+                            onclick: "document.getElementById('edit-issue_template').style.display = 'block'; return false;" %>
   <%= link_to l(:button_copy),
               { controller: 'issue_templates',
                 action: 'new', project_id: project, copy_from: issue_template.id },
-                class: 'icon icon-copy' %>
+                class: 'icon icon-copy', title: 'copy!' %>
   <%= link_to_if_authorized l(:button_delete),
                             { controller: 'issue_templates', action: 'destroy',
                               id: issue_template, project_id: project },
-                              data: {confirm: l(:template_remove_confirm,
-                              default: 'Are you sure to remove this template? %{count} subprojects use this template.') },
                               title: l(:enabled_template_cannot_destroy, default: 'Only disabled template can be destroyed.'),
-                            method: 'delete', class: 'icon icon-del template-disabled-link', disabled: issue_template.enabled? %>
+                              data: { confirm: l(:template_remove_confirm,
+                              { count: child_project_used_count, default: 'Are you sure to remove this template? %{count} subprojects use this template.' }) },
+                            method: 'delete', class: 'icon icon-del template-disabled-link',
+                            disabled: issue_template.enabled?
+                            %>
   <%= link_to(l(:label_list_templates),
               { controller: 'issue_templates',
                 action: 'index',
@@ -106,8 +109,8 @@
 
   <p><label><%= l(:label_enabled_sharing) %></label>
     <%= checked_image issue_template.enabled_sharing? %>
-    <%= l(:label_number_of_projects_use_this_template, count: issue_template.used_projects.count,
-            default: "%{count} subprojects use this template.") unless issue_template.used_projects.count.zero? || !issue_template.enabled? %>
+    <%= l(:label_number_of_subprojects_use_this_template, {
+      count: child_project_used_count, default:  '%{count} subprojects use this template.....' }) %>
   </p>
 
   <p><label><%= l(:field_author) %></label>

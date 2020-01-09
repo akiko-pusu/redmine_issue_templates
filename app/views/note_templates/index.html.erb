@@ -81,6 +81,7 @@
       </table>
     </div>
     <%= javascript_tag do %>
+      // NOTE: Sortable feature depends on Redmine's sorting jQuery plugin.
       $(function() { $('table.table-sortable tbody').positionedItems() })
     <% end %>
 <% end %>

@@ -127,7 +127,7 @@ feature 'IssueTemplate', js: true do
 
     context 'Click Template filter popup' do
       given(:table) { page.find('div#filtered_templates_list table') }
-      given(:titlebar) { page.find('div.ui-dialog-titlebar') }
+      given(:titlebar) { page.find('#issue_template_dialog_title') }
       background do
         page.find('#link_template_dialog').click
         sleep(0.2)
@@ -203,7 +203,9 @@ feature 'IssueTemplate', js: true do
     given(:issue_description) { page.find('#issue_description') }
     given(:issue_subject) { page.find('#issue_subject') }
     given(:table) { page.find('div#filtered_templates_list table') }
-    given(:modal_close) { page.find('span.ui-icon-closethick') }
+
+    # visible template dialog
+    given(:template_dialog) { page.find('#issue_template_dialog', visible: false) }
 
     background do
       assign_template_priv(role, add_permission: :show_issue_templates)
@@ -219,12 +221,14 @@ feature 'IssueTemplate', js: true do
         sleep(0.2)
         table.find('tbody > tr > td:nth-child(5) > i').click
         sleep(0.2)
-        modal_close.click
       end
 
       scenario 'Title and Description should not be modified' do
         expect(issue_description.value).to eq expected_description
         expect(issue_subject.value).to eq expected_title
+
+        # dialog should be closed
+        expect(template_dialog).not_to be_visible
       end
     end
 
@@ -236,12 +240,14 @@ feature 'IssueTemplate', js: true do
         sleep(0.2)
         table.find('tbody > tr > td:nth-child(5) > i').click
         sleep(0.2)
-        modal_close.click
       end
 
       scenario 'Title and Description should be appended text' do
         expect(issue_description.value).to eq "different description\n\n#{expected_description}"
         expect(issue_subject.value).to eq "different subject #{expected_title}"
+
+        # dialog should be closed
+        expect(template_dialog).not_to be_visible
       end
     end
   end

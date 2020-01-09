@@ -33,8 +33,7 @@
         <td class='center'><%= checked_image template.is_default? %></td>
         <td>
           <i data-issue-template-id='<%= template.id %>'
-             class='icon icon-test template-update-link'
-             onclick='templateNS.updateTemplateSelect(event)'></i>
+             class='icon icon-test template-update-link'></i>
         </td>
       </tr>
 <% end %>
@@ -63,8 +62,7 @@
         <td class='center'><%= checked_image template == default_template %></td>
         <td>
           <i data-issue-template-id='<%= template.id %>'
-             class='icon icon-test template-update-link'
-             onclick='templateNS.updateTemplateSelect(event)'></i>
+             class='icon icon-test template-update-link'></i>
         </td>
       </tr>
 <% end %>
@@ -93,10 +91,18 @@
         <td class='center'><%= checked_image template == default_template %></td>
         <td>
           <i data-issue-template-id='<%= template.id %>'
-             class='icon icon-test template-update-link template-global cursor: pointer;'
-             onclick='templateNS.updateTemplateSelect(event)'></i>
+             class='icon icon-test template-update-link template-global cursor: pointer;'></i>
         </td>
       </tr>
 <% end %>
 </table>
 
+<script type="text/javascript">
+const templateElements = document.querySelectorAll('i.template-update-link')
+const templateNS = new ISSUE_TEMPLATE()
+Array.from(templateElements).forEach(el => {
+  el.addEventListener('click',  (event) => {
+    templateNS.updateTemplateSelect(event)
+  })
+})
+</script>
