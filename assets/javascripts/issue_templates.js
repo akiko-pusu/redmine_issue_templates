@@ -340,6 +340,7 @@ ISSUE_TEMPLATE.prototype = {
   },
   // support built-in field update
   builtin_fields: (template) => {
+    let ns = templateNS
     let builtinFieldsJson = template.builtin_fields_json
     if (builtinFieldsJson === undefined) return false
     Object.keys(builtinFieldsJson).forEach(function (key) {
@@ -348,8 +349,20 @@ ISSUE_TEMPLATE.prototype = {
       if (element === null) {
         return
       }
-      element.value = value
+      ns.updateFieldValue(element, value)
     })
+  },
+  updateFieldValue: (element, value) => {
+    // In case field is a select element, scans its option values and marked 'selected'.
+    if (element.tagName.toLowerCase() === 'select') {
+      let options = document.querySelectorAll('#' + element.id + ' option')
+      let filteredOptions = Array.from(options).filter(option => option.text === value)
+      if (filteredOptions.length > 0) {
+        filteredOptions[0].selected = true
+      }
+    } else {
+      element.value = value
+    }
   },
   updateTemplateSelect: (event) => {
     let link = event.target
