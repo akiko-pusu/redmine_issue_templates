@@ -43,6 +43,7 @@ module Concerns
           logger.info("[Destroy] #{self.class}: #{template.inspect}")
         end
 
+        # ActiveRecord::SerializationTypeMismatch may be thrown if non hash object is assigned.
         serialize :builtin_fields_json, Hash
       end
 
