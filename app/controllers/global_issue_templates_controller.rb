@@ -32,8 +32,16 @@ class GlobalIssueTemplatesController < ApplicationController
   end
 
   def create
-    @global_issue_template = GlobalIssueTemplate.new(valid_params)
+    @global_issue_template = GlobalIssueTemplate.new
     @global_issue_template.author = User.current
+
+    begin
+      @global_issue_template.safe_attributes = valid_params
+    rescue ActiveRecord::SerializationTypeMismatch
+      flash[:error] = I18n.t(:builtin_fields_should_be_valid_json, default: 'Please enter a valid JSON fotmat string.')
+      render render_form_params.merge(action: :new)
+      return
+    end
     save_and_flash(:notice_successful_create, :new) && return
   end
 
@@ -42,7 +50,14 @@ class GlobalIssueTemplatesController < ApplicationController
   end
 
   def update
-    @global_issue_template.safe_attributes = valid_params
+    begin
+      @global_issue_template.safe_attributes = valid_params
+    rescue ActiveRecord::SerializationTypeMismatch
+      flash[:error] = I18n.t(:builtin_fields_should_be_valid_json, default: 'Please enter a valid JSON fotmat string.')
+      render render_form_params.merge(action: :show)
+      return
+    end
+
     save_and_flash(:notice_successful_update, :show)
   end
 
@@ -50,7 +65,14 @@ class GlobalIssueTemplatesController < ApplicationController
     # Change from request.post to request.patch for Rails4.
     return unless request.patch? || request.put?
 
-    @global_issue_template.safe_attributes = valid_params
+    begin
+      @global_issue_template.safe_attributes = valid_params
+    rescue ActiveRecord::SerializationTypeMismatch
+      flash[:error] = I18n.t(:builtin_fields_should_be_valid_json, default: 'Please enter a valid JSON fotmat string.')
+      render render_form_params.merge(action: :show)
+      return
+    end
+
     save_and_flash(:notice_successful_update, :show)
   end
 
@@ -108,7 +130,8 @@ class GlobalIssueTemplatesController < ApplicationController
   def template_params
     params.require(:global_issue_template)
           .permit(:title, :tracker_id, :issue_title, :description, :note, :is_default, :enabled,
-                  :author_id, :position, :related_link, :link_title, project_ids: [], checklists: [])
+                  :author_id, :position, :related_link, :link_title, :builtin_fields_json,
+                  project_ids: [], checklists: [])
   end
 
   def render_form_params

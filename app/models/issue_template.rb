@@ -21,7 +21,8 @@ class IssueTemplate < ActiveRecord::Base
                   'position',
                   'checklist_json',
                   'related_link',
-                  'link_title'
+                  'link_title',
+                  'builtin_fields_json'
 
   scope :enabled_sharing, -> { where(enabled_sharing: true) }
   scope :search_by_project, lambda { |prolect_id|

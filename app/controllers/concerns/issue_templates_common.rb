@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Concerns
   module IssueTemplatesCommon
     extend ActiveSupport::Concern
@@ -6,7 +8,7 @@ module Concerns
 
       # logging action
       def log_action
-        logger.info "[#{self.class}] #{action_name} called by #{User.current.name}" if logger
+        logger&.info "[#{self.class}] #{action_name} called by #{User.current.name}"
       end
     end
 
@@ -23,7 +25,11 @@ module Concerns
     end
 
     def checklists
-      template_params[:checklists].blank? ? [] : template_params[:checklists]
+      template_params[:checklists].presence || []
+    end
+
+    def builtin_fields
+      template_params[:builtin_fields_json].blank? ? {} : JSON.parse(template_params[:builtin_fields_json])
     end
 
     def checklist_enabled?
@@ -34,7 +40,8 @@ module Concerns
 
     def valid_params
       # convert attribute name and data for checklist plugin supporting
-      attributes = template_params.except(:checklists)
+      attributes = template_params.except(:checklists, :builtin_fields_json)
+      attributes[:builtin_fields_json] = builtin_fields
       attributes[:checklist_json] = checklists.to_json if checklist_enabled?
       attributes
     end
