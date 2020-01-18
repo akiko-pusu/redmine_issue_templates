@@ -55,5 +55,34 @@ module Concerns
     def destroy
       raise NotImplementedError, "You must implement #{self.class}##{__method__}"
     end
+
+    def core_fields_map_by_tracker_id(tracker_id = nil)
+      fields = [ 'status_id', 'priority_id' ]
+
+      # exclude "description"
+      fields += Tracker.find(tracker_id).core_fields.select { |field| field != "description" }
+
+      map = {}
+      fields.each do | field |
+        id = "issue_#{field}"
+        name = I18n.t('field_' + field.gsub(/_id$/, ''))
+        map[id] = name
+      end
+      map
+    end
+
+    def custom_fields_map_by_tracker_id(tracker_id = nil)
+      return [] if tracker_id.blank?
+
+      ids = Tracker.find(tracker_id)&.custom_field_ids || []
+      fields = IssueCustomField.where(id: ids)
+      map = {}
+      fields.each do | field |
+        id = "issue_custom_field_values_#{field.id}"
+        name = field.name
+        map[id] = name
+      end
+      map
+    end
   end
 end

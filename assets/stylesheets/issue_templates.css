@@ -18,6 +18,10 @@ div.issue_template {
     padding: 6px;
 }
 
+#issue_template_builtin_fields, #issue_template_json_setting_field {
+    width: 60%;
+}
+
 #template_status-area .flash_message {
     position: fixed;
     bottom: 0;
@@ -227,6 +231,14 @@ a.icon.icon-del[disabled=disabled] {
     opacity: .5;
 }
 
+#fields_setting_display_area {
+    margin-left: 180px;
+}
+
+#template-help-message-area > p {
+    padding-left: 4px;
+}
+
 /*------------ for responsive -----------------*/
 
 @media (max-width: 899px) {
@@ -241,6 +253,9 @@ a.icon.icon-del[disabled=disabled] {
     }
     #content>div.template_box>table>tbody>tr>td.hideable {
         display: none;
+    }
+    #fields_setting_display_area {
+        margin-left: 0;
     }
 }
 
@@ -458,4 +473,16 @@ div.template_link_area label {
 
 #filtered_templates_list > table div.wiki.template_tooltip_body p {
     padding-left: 0;
+}
+
+ul.json-list {
+    width: 70%;
+    padding: 10px;
+    background-color: white;
+}
+
+ul.json-list li {
+    list-style: none;
+    line-height: 1.6em;
+    padding: 0.5em 0;
 }

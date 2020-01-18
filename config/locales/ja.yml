@@ -79,3 +79,7 @@ ja:
   issue_template_link_title: 関連リンクのタイトル
   label_related_link_help_message: "テンプレートの利用例や、説明のページがあれば、関連リンクを設定できます。"
   label_link_title_help_message: "関連リンクのタイトルは任意で設定できます（デフォルト: 関連リンク）"
+  enter_value: 値を入力してください
+  label_select_field: フィールドの選択
+  label_builtin_fields_help_message: フィールドの設定はJSONフォーマットで登録します。フィールドを指定し、値を設定してください。「適用」を押すとJSONフォーマットのデータが作成されます。
+  label_builtin_fields_json: フィールド設定用JSON
