@@ -3,6 +3,9 @@
 module Concerns
   module IssueTemplatesCommon
     extend ActiveSupport::Concern
+
+    class InvalidTemplateFormatError < StandardError; end
+
     included do
       before_action :log_action, only: [:destroy]
 
@@ -28,8 +31,11 @@ module Concerns
       template_params[:checklists].presence || []
     end
 
-    def builtin_fields
-      template_params[:builtin_fields_json].blank? ? {} : JSON.parse(template_params[:builtin_fields_json])
+    def builtin_fields_json
+      value = template_params[:builtin_fields].blank? ? {} : JSON.parse(template_params[:builtin_fields])
+      return value if value.is_a?(Hash)
+
+      raise InvalidTemplateFormatError
     end
 
     def checklist_enabled?
@@ -40,10 +46,14 @@ module Concerns
 
     def valid_params
       # convert attribute name and data for checklist plugin supporting
-      attributes = template_params.except(:checklists, :builtin_fields_json)
-      attributes[:builtin_fields_json] = builtin_fields
+      attributes = template_params.except(:checklists, :builtin_fields)
+      attributes[:builtin_fields_json] = builtin_fields_json
       attributes[:checklist_json] = checklists.to_json if checklist_enabled?
       attributes
+    end
+
+    def destroy
+      raise NotImplementedError, "You must implement #{self.class}##{__method__}"
     end
   end
 end

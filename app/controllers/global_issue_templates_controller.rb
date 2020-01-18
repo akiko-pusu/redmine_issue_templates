@@ -37,7 +37,7 @@ class GlobalIssueTemplatesController < ApplicationController
 
     begin
       @global_issue_template.safe_attributes = valid_params
-    rescue ActiveRecord::SerializationTypeMismatch
+    rescue ActiveRecord::SerializationTypeMismatch, Concerns::IssueTemplatesCommon::InvalidTemplateFormatError
       flash[:error] = I18n.t(:builtin_fields_should_be_valid_json, default: 'Please enter a valid JSON fotmat string.')
       render render_form_params.merge(action: :new)
       return
@@ -52,7 +52,7 @@ class GlobalIssueTemplatesController < ApplicationController
   def update
     begin
       @global_issue_template.safe_attributes = valid_params
-    rescue ActiveRecord::SerializationTypeMismatch
+    rescue ActiveRecord::SerializationTypeMismatch, Concerns::IssueTemplatesCommon::InvalidTemplateFormatError
       flash[:error] = I18n.t(:builtin_fields_should_be_valid_json, default: 'Please enter a valid JSON fotmat string.')
       render render_form_params.merge(action: :show)
       return
@@ -130,7 +130,7 @@ class GlobalIssueTemplatesController < ApplicationController
   def template_params
     params.require(:global_issue_template)
           .permit(:title, :tracker_id, :issue_title, :description, :note, :is_default, :enabled,
-                  :author_id, :position, :related_link, :link_title, :builtin_fields_json,
+                  :author_id, :position, :related_link, :link_title, :builtin_fields,
                   project_ids: [], checklists: [])
   end
 

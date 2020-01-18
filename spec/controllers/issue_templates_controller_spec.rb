@@ -170,10 +170,10 @@ describe IssueTemplatesController do
       end
     end
 
-    context 'POST with valid builtin_fields_json param' do
-      let(:builtin_fields_json) { '{ "foo": "bar" }' }
+    context 'POST with valid builtin_fields param' do
+      let(:builtin_fields) { '{ "foo": "bar" }' }
       let(:create_params) do
-        { issue_template: template_params.merge(builtin_fields_json: builtin_fields_json) }
+        { issue_template: template_params.merge(builtin_fields: builtin_fields) }
       end
 
       before do
@@ -181,14 +181,14 @@ describe IssueTemplatesController do
       end
       include_examples 'Right response', 302
       it do
-        expect(issue_template.builtin_fields_json).to eq JSON.parse(builtin_fields_json)
+        expect(issue_template.builtin_fields_json).to eq JSON.parse(builtin_fields)
       end
     end
 
-    context 'POST with invalid builtin_fields_json param' do
-      let(:builtin_fields_json) { '12345' }
+    context 'POST with invalid builtin_fields param' do
+      let(:builtin_fields) { '12345' }
       let(:create_params) do
-        { issue_template: template_params.merge(builtin_fields_json: builtin_fields_json) }
+        { issue_template: template_params.merge(builtin_fields: builtin_fields) }
       end
 
       before do
@@ -214,10 +214,10 @@ describe IssueTemplatesController do
 
     let(:issue_template) { IssueTemplate.last }
 
-    context 'PUT with invalid builtin_fields_json param' do
-      let(:builtin_fields_json) { '12345' }
+    context 'PUT with invalid builtin_fields param' do
+      let(:builtin_fields) { '12345' }
       let(:update_params) do
-        { issue_template: template_params.merge(builtin_fields_json: builtin_fields_json) }
+        { issue_template: template_params.merge(builtin_fields: builtin_fields) }
       end
 
       before do
@@ -232,10 +232,10 @@ describe IssueTemplatesController do
       end
     end
 
-    context 'PUT with valid builtin_fields_json param' do
-      let(:builtin_fields_json) { '{ "foo": "bar" }' }
+    context 'PUT with valid builtin_fields param' do
+      let(:builtin_fields) { '{ "foo": "bar" }' }
       let(:update_params) do
-        { issue_template: template_params.merge(builtin_fields_json: builtin_fields_json) }
+        { issue_template: template_params.merge(builtin_fields: builtin_fields) }
       end
 
       before do

@@ -74,6 +74,10 @@ module Concerns
         template.to_json(root: true)
       end
 
+      def builtin_fields
+        builtin_fields_json.to_json
+      end
+
       def generate_json
         result = attributes
         result[:link_title] = link_title.presence || I18n.t(:issue_template_related_link, default: 'Related Link')

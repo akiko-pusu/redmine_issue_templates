@@ -128,5 +128,37 @@ describe GlobalIssueTemplatesController, type: :controller do
       put :update, params: { id: global_issue_template.id, global_issue_template: edit_params }
       expect(global_issue_template.projects.count).to eq 0
     end
+
+    context 'PUT with builtin_fields param' do
+      let(:update_params) do
+        edit_params.merge(builtin_fields: builtin_fields)
+      end
+
+      before do
+        put :update, params: { id: global_issue_template.id, global_issue_template: update_params }
+      end
+
+      context 'invalid format' do
+        let(:builtin_fields) { '12345' }
+
+        include_examples 'Right response', 200
+
+        it do
+          msg = flash[:error]
+          expect(msg.present?).to be_truthy
+          expect(msg).to eq 'Please enter a valid JSON fotmat string.'
+        end
+      end
+
+      context 'PUT with valid builtin_fields param' do
+        let(:builtin_fields) { '{ "foo": "bar" }' }
+        include_examples 'Right response', 302
+
+        it do
+          expect(flash[:error].present?).to be_falsy
+          expect(global_issue_template.reload.builtin_fields_json).to eq JSON.parse(builtin_fields)
+        end
+      end
+    end
   end
 end
