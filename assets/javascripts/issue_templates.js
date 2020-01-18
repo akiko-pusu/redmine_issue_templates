@@ -346,6 +346,16 @@ ISSUE_TEMPLATE.prototype = {
     Object.keys(builtinFieldsJson).forEach(function (key) {
       let value = builtinFieldsJson[key]
       let element = document.getElementById(key)
+
+      if (/issue_custom_field_values/.test(key)) {
+        let name = key.replace(/(issue)_(\w+)_(\d+)/, '$1[$2][$3]')
+        let elements = document.querySelectorAll('[name^="' + name + '"]')
+        if (elements.length === 1) {
+          element = elements[0]
+        } else {
+          return ns.updateFieldValues(elements, value)
+        }
+      }
       if (element === null) {
         return
       }
@@ -362,6 +372,21 @@ ISSUE_TEMPLATE.prototype = {
       }
     } else {
       element.value = value
+    }
+  },
+  updateFieldValues: (elements, value) => {
+    for (let i = 0; i < elements.length; i++) {
+      let element = elements[i]
+      if (element.tagName.toLowerCase() === 'select') {
+        return templateNS.updateFieldValue(element, value)
+      }
+      if (element.value === value) {
+        if (element.tagName.toLowerCase() === 'input') {
+          element.checked = true
+        } else {
+          element.selected = true
+        }
+      }
     }
   },
   updateTemplateSelect: (event) => {
@@ -444,6 +469,16 @@ document.onreadystatechange = () => {
         if (obj) {
           obj.innerHTML = document.getElementById(contentId).innerHTML
           obj.style.display = 'inline'
+        }
+      })
+      element.addEventListener('mouseleave', (event) => {
+        let contentId = event.target.getAttribute('data-tooltip-content')
+        if (contentId === null) return
+
+        let target = event.target.getAttribute('data-tooltip-area')
+        let obj = document.getElementById(target)
+        if (obj) {
+          obj.style.display = 'none'
         }
       })
     }

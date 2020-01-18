@@ -199,6 +199,11 @@ select.issue_template {
     margin-bottom: 5px;
 }
 
+.popup p {
+    margin-left: 0;
+    padding-left: 0;
+}
+
 #revert_template {
     -webkit-transition: .3s ease-in-out;
     transition: .3s ease-in-out;
@@ -350,11 +355,6 @@ a.icon-help:hover .tooltip-area {
 .popup.small {
     width: 500px;
     text-align: center;
-}
-
-.popup p {
-    margin-left: 0;
-    padding-left: 0;
 }
 
 #note_template_memo {

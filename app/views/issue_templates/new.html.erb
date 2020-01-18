@@ -11,7 +11,7 @@
                         html: { id: 'issue_template-form', class: nil, multipart: false } do |f| %>
 
       <%= render 'form', { f: f, checklist_enabled: checklist_enabled,
-                            issue_template: issue_template, project: project } %>
+                            issue_template: issue_template, project: project, custom_fields: custom_fields } %>
       <div id='preview' class='wiki'></div>
       <%= submit_tag l(:button_create) %>
       <%= link_to l(:button_cancel), { action: 'index'}, data: { confirm: l(:text_are_you_sure) } %>

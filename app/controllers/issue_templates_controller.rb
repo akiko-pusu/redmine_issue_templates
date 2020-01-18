@@ -222,7 +222,7 @@ class IssueTemplatesController < ApplicationController
   def render_form_params
     child_project_used_count = template&.used_projects&.count
     custom_fields = core_fields_map_by_tracker_id(template&.tracker_id)
-            .merge(custom_fields_map_by_tracker_id(template&.tracker_id)).to_json
+                    .merge(custom_fields_map_by_tracker_id(template&.tracker_id)).to_json
 
     { layout: !request.xhr?,
       locals: { issue_template: template, project: @project, child_project_used_count: child_project_used_count,

@@ -57,13 +57,14 @@ module Concerns
     end
 
     def core_fields_map_by_tracker_id(tracker_id = nil)
-      fields = [ 'status_id', 'priority_id' ]
+      fields = %w[status_id priority_id]
 
       # exclude "description"
-      fields += Tracker.find(tracker_id).core_fields.select { |field| field != "description" }
+      tracker = Tracker.find_by(id: tracker_id)
+      fields += tracker.core_fields.reject { |field| field == 'description' } if tracker.present?
 
       map = {}
-      fields.each do | field |
+      fields.each do |field|
         id = "issue_#{field}"
         name = I18n.t('field_' + field.gsub(/_id$/, ''))
         map[id] = name
@@ -72,12 +73,13 @@ module Concerns
     end
 
     def custom_fields_map_by_tracker_id(tracker_id = nil)
-      return [] if tracker_id.blank?
+      return {} if tracker_id.blank?
 
-      ids = Tracker.find(tracker_id)&.custom_field_ids || []
+      tracker = Tracker.find_by(id: tracker_id)
+      ids = tracker&.custom_field_ids || []
       fields = IssueCustomField.where(id: ids)
       map = {}
-      fields.each do | field |
+      fields.each do |field|
         id = "issue_custom_field_values_#{field.id}"
         name = field.name
         map[id] = name
