@@ -83,3 +83,7 @@ ja:
   label_select_field: フィールドの選択
   label_builtin_fields_help_message: フィールドの設定はJSONフォーマットで登録します。フィールドを指定し、値を設定してください。「適用」を押すとJSONフォーマットのデータが作成されます。
   label_builtin_fields_json: フィールド設定用JSON
+  label_enable_builtin_fields: 標準/カスタムフィールドの利用を可能にする
+  help_enable_builtin_fields: 設定を有効にすると、標準/カスタムフィールドのテンプレートを設定するためのフォームが表示されます。設定は「フィールドのID ＆ 値」のJSON形式で登録してください。
+  warning_enable_builtin_fields: 設定の有効化には十分注意してください。この機能は実験的なものです。入力のUIや値の適用のための十分な機能が提供できていません。また、ブラウザの互換性は保証されていません。本番環境への適用には十分注意してください。
+  label_field_information: このフィールドの情報

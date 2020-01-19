@@ -82,3 +82,7 @@ en:
   label_select_field: Selet a field
   label_builtin_fields_help_message: Enter builtin filds or custom fields default values with JSON format. Please select fields and set values. Then click "Apply" and you can generate JSON format data.
   label_builtin_fields_json: JSON for fields
+  label_enable_builtin_fields: Enable Builtin Field support
+  help_enable_builtin_fields: If this flag is enabled, a form will be displayed that allows you to set templates for built-in or custom fields. Please register the settings in JSON format.
+  warning_enable_builtin_fields: Please be careful to activate this flag. Now this feature is an experimental one. Since I have not provided enough UI and functions yet to support all the field types. It may not work depending on the browser. Use caution when applying in a production environment.
+  label_field_information: Field information
