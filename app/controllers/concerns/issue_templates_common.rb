@@ -30,6 +30,13 @@ module Concerns
         plugin_setting['enable_builtin_fields'].to_s == 'true'
       end
     end
+
+    def load_selectable_fields
+      tracker_id = params[:tracker_id]
+      render plain: {} && return if tracker_id.blank?
+
+      custom_fields = core_fields_map_by_tracker_id(tracker_id).merge(custom_fields_map_by_tracker_id(tracker_id))
+      render plain: { custom_fields: custom_fields }.to_json
     end
 
     def orphaned_templates

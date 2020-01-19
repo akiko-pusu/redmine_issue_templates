@@ -28,8 +28,9 @@ Rails.application.routes.draw do
     resources :note_templates, except: [:edit]
   end
 
-  resources :issue_templates, only: %i[load preview], concerns: [:previewable] do
+  resources :issue_templates, only: %i[load preview load_selectable_fields], concerns: [:previewable] do
     post 'load', on: :collection
+    get 'load_selectable_fields', on: :collection
   end
 
   # for note temlate
