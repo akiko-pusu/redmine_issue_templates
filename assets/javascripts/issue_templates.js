@@ -237,7 +237,9 @@ ISSUE_TEMPLATE.prototype = {
     // in app/views/issue_templates/_issue_select_form.html.erb
     let templateStatusArea = document.getElementById('template_status-area')
     if (templateStatusArea === null) return false
-    if (document.querySelector('div.flash_message')) return false
+    if (document.querySelector('div.flash_message')) {
+      document.querySelector('div.flash_message').remove()
+    }
 
     let messageElement = document.createElement('div')
     messageElement.innerHTML = confirmMsg
@@ -416,6 +418,9 @@ ISSUE_TEMPLATE.prototype = {
     }
   },
   changeTemplatePlace: () => {
+    if (document.querySelector('div.flash_message')) {
+      document.querySelector('div.flash_message').remove()
+    }
     const subjectParentNode = document.getElementById('issue_subject').parentNode
     subjectParentNode.parentNode.insertBefore(document.getElementById('template_area'), subjectParentNode)
   }
