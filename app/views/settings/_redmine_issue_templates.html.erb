@@ -1,30 +1,51 @@
-<div class="form-inline issue_templates">
+<div class='form-inline issue_templates'>
   <p>
-    <label for="settings_apply_global_template_to_all_projects"><%= l(:label_apply_global_template_to_all_projects) %></label>
+    <label for='settings_apply_global_template_to_all_projects'><%= l(:label_apply_global_template_to_all_projects) %></label>
     <%= hidden_field_tag("settings[apply_global_template_to_all_projects]", 0, :id => nil).html_safe %>
     <%= check_box_tag 'settings[apply_global_template_to_all_projects]', true, @settings['apply_global_template_to_all_projects'] == "true" %>
-    <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
-       data-tooltip-area="#enabled__help_area"
-       data-tooltip-content="#enabled_help_content">
+    <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
+       data-tooltip-area='enabled_help_area'
+       data-tooltip-content='enabled_help_content'>
       <%= l(:help_for_this_field) %>
-      <span class="tooltip-area" id="enabled__help_area"></span>
+      <span class='tooltip-area' id='enabled_help_area'></span>
     </a>
   </p>
   <p>
-    <label for="settings_apply_template_when_edit_issue"><%= l(:label_use_template_when_edit) %></label>
-    <%= hidden_field_tag("settings[apply_template_when_edit_issue]", 0, :id => nil).html_safe %>
-    <%= check_box_tag 'settings[apply_template_when_edit_issue]', true, @settings['apply_template_when_edit_issue'] == "true" %>
+    <label for='settings_apply_template_when_edit_issue'><%= l(:label_use_template_when_edit) %></label>
+    <%= hidden_field_tag('settings[apply_template_when_edit_issue]', 0, :id => nil).html_safe %>
+    <%= check_box_tag 'settings[apply_template_when_edit_issue]', true, @settings['apply_template_when_edit_issue'] == 'true' %>
   </p>
   <p>
     <%= link_to(l(:link_to_index_edit_template),
               { controller: 'global_issue_templates', action: 'index' },
               class: 'icon icon-template pull-right') %>
   </p>
+
+  <p>
+    <label for='settings_enable_builtin_fields'>
+      <%= l(:label_enable_builtin_fields, default: 'Enable Builtin Field support') %>
+    </label>
+    <%= hidden_field_tag('settings[enable_builtin_fields]', 0, :id => nil).html_safe %>
+    <%= check_box_tag 'settings[enable_builtin_fields]', true, @settings['enable_builtin_fields'] == 'true' %>
+    <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
+       data-tooltip-area='enable_builtin_fields_help_area'
+       data-tooltip-content='enable_builtin_fields_help_content'>
+      <%= l(:help_for_this_field) %>
+      <span class='tooltip-area' id='enable_builtin_fields_help_area'></span>
+    </a>
+  </p>
 </div>
 
-<div id="enabled_help_content" class="wiki" style="display: none;">
+<div id='enabled_help_content' class='wiki' style='display: none;'>
   <%= l(:help_project_local_template_override_global_template) %>
   <br>
-  <span class="icon icon-warning"></span>
+  <span class='icon icon-warning'></span>
   <%= l(:warning_project_local_template_override_global_template) %>
+</div>
+
+<div id='enable_builtin_fields_help_content' class='wiki' style='display: none;'>
+  <%= l(:help_enable_builtin_fields) %>
+  <br>
+  <span class='icon icon-warning'></span>
+  <%= l(:warning_enable_builtin_fields) %>
 </div>

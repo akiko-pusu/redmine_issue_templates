@@ -32,8 +32,16 @@ class GlobalIssueTemplatesController < ApplicationController
   end
 
   def create
-    @global_issue_template = GlobalIssueTemplate.new(valid_params)
+    @global_issue_template = GlobalIssueTemplate.new
     @global_issue_template.author = User.current
+
+    begin
+      @global_issue_template.safe_attributes = valid_params
+    rescue ActiveRecord::SerializationTypeMismatch, Concerns::IssueTemplatesCommon::InvalidTemplateFormatError
+      flash[:error] = I18n.t(:builtin_fields_should_be_valid_json, default: 'Please enter a valid JSON fotmat string.')
+      render render_form_params.merge(action: :new)
+      return
+    end
     save_and_flash(:notice_successful_create, :new) && return
   end
 
@@ -42,7 +50,14 @@ class GlobalIssueTemplatesController < ApplicationController
   end
 
   def update
-    @global_issue_template.safe_attributes = valid_params
+    begin
+      @global_issue_template.safe_attributes = valid_params
+    rescue ActiveRecord::SerializationTypeMismatch, Concerns::IssueTemplatesCommon::InvalidTemplateFormatError
+      flash[:error] = I18n.t(:builtin_fields_should_be_valid_json, default: 'Please enter a valid JSON fotmat string.')
+      render render_form_params.merge(action: :show)
+      return
+    end
+
     save_and_flash(:notice_successful_update, :show)
   end
 
@@ -50,7 +65,14 @@ class GlobalIssueTemplatesController < ApplicationController
     # Change from request.post to request.patch for Rails4.
     return unless request.patch? || request.put?
 
-    @global_issue_template.safe_attributes = valid_params
+    begin
+      @global_issue_template.safe_attributes = valid_params
+    rescue ActiveRecord::SerializationTypeMismatch
+      flash[:error] = I18n.t(:builtin_fields_should_be_valid_json, default: 'Please enter a valid JSON fotmat string.')
+      render render_form_params.merge(action: :show)
+      return
+    end
+
     save_and_flash(:notice_successful_update, :show)
   end
 
@@ -108,14 +130,20 @@ class GlobalIssueTemplatesController < ApplicationController
   def template_params
     params.require(:global_issue_template)
           .permit(:title, :tracker_id, :issue_title, :description, :note, :is_default, :enabled,
-                  :author_id, :position, :related_link, :link_title, project_ids: [], checklists: [])
+                  :author_id, :position, :related_link, :link_title, :builtin_fields,
+                  project_ids: [], checklists: [])
   end
 
   def render_form_params
     trackers = Tracker.all
     projects = Project.all
+    tracker_id = @global_issue_template.tracker_id
+    custom_fields = core_fields_map_by_tracker_id(tracker_id)
+                    .merge(custom_fields_map_by_tracker_id(tracker_id)).to_json
+
     { layout: !request.xhr?,
       locals: { checklist_enabled: checklist_enabled?, trackers: trackers, apply_all_projects: apply_all_projects?,
-                issue_template: @global_issue_template, projects: projects } }
+                issue_template: @global_issue_template, projects: projects, custom_fields: custom_fields.to_s,
+                builtin_fields_enable: builtin_fields_enabled? } }
   end
 end

@@ -1,6 +1,6 @@
-<div style="display: flex; float: right; padding-top: 40px;
-                    position: relative; bottom: 6px; right: 0;">
-    <div class="template_link_area">
+<div style='display: flex; float: right; padding-top: 40px;
+                    position: relative; bottom: 6px; right: 0;'>
+    <div class='template_link_area'>
       <label><%= l(:issue_template) %>: </label>
       <%= link_to(l(:label_list_templates),
                 { controller: 'issue_templates',
@@ -10,7 +10,7 @@
                               { controller: 'issue_templates', action: 'new', project_id: @project },
                               class: 'icon icon-add') %>
     </div>
-    <div class="template_link_area">
+    <div class='template_link_area'>
       <label><%= l(:note_template) %>: </label>
       <%= link_to(l(:label_list_templates),
                 { controller: 'note_templates',
@@ -21,7 +21,7 @@
                               class: 'icon icon-add') %>
     </div>
 
-    <div class="template_link_area">
+    <div class='template_link_area'>
       <label><%= l(:issue_templates_optional_settings, default: 'Templates Optional Settings') %>: </label>
       <%= link_to_if_authorized(l(:label_settings, default: 'Settings'),
                               { controller: 'issue_templates_settings', action: 'index', project_id: @project },

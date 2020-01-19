@@ -1,21 +1,22 @@
-<div class="contextual">
+<div class='contextual'>
   <%= link_to(l(:label_list_templates),
               { controller: 'issue_templates',
                 action: 'index', project_id: project }, class: 'icon icon-template') %>
 </div>
-<h2 class="issue_template"><%=h "#{l(:issue_templates)} / #{l(:button_add)}" %></h2>
-<%= render partial: "common/nodata", locals: { trackers: project.trackers } %>
+<h2 class='issue_template'><%=h "#{l(:issue_templates)} / #{l(:button_add)}" %></h2>
+<%= render partial: 'common/nodata', locals: { trackers: project.trackers } %>
 <% if project.trackers.any? %>
   <%= labelled_form_for :issue_template,  @issue_template,
                         url: { controller: 'issue_templates', action: 'create', project_id: project },
                         html: { id: 'issue_template-form', class: nil, multipart: false } do |f| %>
 
       <%= render 'form', { f: f, checklist_enabled: checklist_enabled,
-                            issue_template: issue_template, project: project } %>
-      <div id="preview" class="wiki"></div>
+                            issue_template: issue_template, project: project, custom_fields: custom_fields,
+                            builtin_fields_enable: builtin_fields_enable } %>
+      <div id='preview' class='wiki'></div>
       <%= submit_tag l(:button_create) %>
       <%= link_to l(:button_cancel), { action: 'index'}, data: { confirm: l(:text_are_you_sure) } %>
   <% end %>
 <% end %>
 
-<div style="float: right;"><%= render partial: "common/template_links" %></div>
+<div style='float: right;'><%= render partial: 'common/template_links' %></div>

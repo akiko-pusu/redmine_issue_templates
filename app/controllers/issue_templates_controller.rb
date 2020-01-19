@@ -50,15 +50,30 @@ class IssueTemplatesController < ApplicationController
   end
 
   def create
-    @issue_template = IssueTemplate.new(valid_params)
+    @issue_template = IssueTemplate.new
     @issue_template.author = User.current
     @issue_template.project = @project
+
+    begin
+      @issue_template.safe_attributes = valid_params
+    rescue ActiveRecord::SerializationTypeMismatch, Concerns::IssueTemplatesCommon::InvalidTemplateFormatError
+      flash[:error] = I18n.t(:builtin_fields_should_be_valid_json, default: 'Please enter a valid JSON fotmat string.')
+      render render_form_params.merge(action: :new)
+      return
+    end
+
     # TODO: Should return validation error in case mandatory fields are blank.
     save_and_flash(:notice_successful_create, :new) && return
   end
 
   def update
-    @issue_template.safe_attributes = valid_params
+    begin
+      @issue_template.safe_attributes = valid_params
+    rescue ActiveRecord::SerializationTypeMismatch, Concerns::IssueTemplatesCommon::InvalidTemplateFormatError
+      flash[:error] = I18n.t(:builtin_fields_should_be_valid_json, default: 'Please enter a valid JSON fotmat string.')
+      render render_form_params.merge(action: :show)
+      return
+    end
     save_and_flash(:notice_successful_update, :show)
   end
 
@@ -71,7 +86,9 @@ class IssueTemplatesController < ApplicationController
                      else
                        IssueTemplate.find(issue_template_id)
                      end
-    render plain: issue_template.template_json
+    rendered_json = builtin_fields_enabled? ? issue_template.template_json : issue_template.template_json(except: 'builtin_fields_json')
+
+    render plain: rendered_json
   end
 
   # update pulldown
@@ -196,7 +213,7 @@ class IssueTemplatesController < ApplicationController
   def template_params
     params.require(:issue_template).permit(:tracker_id, :title, :note, :issue_title, :description, :is_default,
                                            :enabled, :author_id, :position, :enabled_sharing,
-                                           :related_link, :link_title,
+                                           :related_link, :link_title, :builtin_fields,
                                            checklists: [])
   end
 
@@ -205,8 +222,12 @@ class IssueTemplatesController < ApplicationController
   end
 
   def render_form_params
+    child_project_used_count = template&.used_projects&.count
+    custom_fields = core_fields_map_by_tracker_id(template&.tracker_id)
+                    .merge(custom_fields_map_by_tracker_id(template&.tracker_id)).to_json
+
     { layout: !request.xhr?,
-      locals: { issue_template: template, project: @project,
-                checklist_enabled: checklist_enabled? } }
+      locals: { issue_template: template, project: @project, child_project_used_count: child_project_used_count,
+                checklist_enabled: checklist_enabled?, custom_fields: custom_fields.to_s, builtin_fields_enable: builtin_fields_enabled? } }
   end
 end

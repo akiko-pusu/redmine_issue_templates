@@ -1,163 +1,162 @@
 <% return '' unless @issue.project.module_enabled? :issue_templates %>
 <% return '' unless User.current.allowed_to?(:show_issue_templates, @issue.project)  %>
-<div id="template_area" style="display: none;">
+<div id='template_area' style='display: none;'>
   <p>
-    <label for="issue_template"><%=h l(:issue_template)%></label>
-    <select id="issue_template" name="issue_template">
+    <label for='issue_template'><%=h l(:issue_template)%></label>
+    <select id='issue_template' name='issue_template'>
       <option value="">---</option>
     </select>
 
-    <a class="icon icon-hint" id="issue_template_related_link" style="display: none;" target="_blank" rel="noopener"></a>
-    <a class="icon template_tooltip" id="link_template_dialog">
+    <a class='icon icon-hint' id='issue_template_related_link' style='display: none;' target='_blank' rel='noopener'></a>
+    <a class='icon template_tooltip' id='link_template_dialog' href='#issue_template_dialog'>
       <%=h l(:display_and_filter_issue_templates_in_dialog, default: 'Filter Templates') %>
     </a>
     <% if setting.enable_help? %>
-        <a class="icon icon-help template-help" title="<%= l(:about_template_help_message) %>"
-           data-tooltip-area="#template-help-message-area"
-           data-tooltip-content="#template_help_content">
+        <a class='icon icon-help template-help' title='<%= l(:about_template_help_message) %>'
+           data-tooltip-area='template-help-message-area'
+           data-tooltip-content='template_help_content'>
           <%= l(:label_help_message) %>
-          <span class="tooltip-area" id="template-help-message-area"></span>
+          <span class='tooltip-area' id='template-help-message-area'></span>
         </a>
     <% end %>
-    <a class="icon icon-erase" title="<%= l(:erase_issue_subject_and_description, default: 'Erase') %>" id="erase_template">
+    <a class='icon icon-erase' title='<%= l(:erase_issue_subject_and_description, default: 'Erase') %>' id='erase_template'>
       <%= l(:erase_issue_subject_and_description, default: 'Erase') %>
     </a>
-    <a class="icon icon-reload disabled" title="<%= l(:revert_before_applying_template, default: 'Revert') %>"
-       id="revert_template" disabled="disabled">
+    <a class='icon icon-reload disabled' title='<%= l(:revert_before_applying_template, default: 'Revert') %>'
+       id='revert_template' disabled='disabled'>
       <%= l(:revert_before_applying_template, default: 'Revert') %>
     </a>
-    <span id="original_subject" style="display: none;"></span>
-    <span id="original_description" style="display: none;"></span>
-    <span id="template_status-area"></span>
+    <span id='original_subject' style='display: none;'></span>
+    <span id='original_description' style='display: none;'></span>
+    <span id='template_status-area'></span>
   </p>
 
   <!-- dialog box -->
-  <div id="issue_template_dialog" style="overflow:visible; display: none;">
-    <label for="template_search_filter">
-      <%=h l(:label_filter_template, default: 'Filter template:') %>
-    </label>
-    <input type="text" name="template_search_filter"
-           id="template_search_filter" class="autocomplete">
-    <div id="filtered_templates_list"></div>
+  <div id='issue_template_dialog' class='overlay'>
+    <div class='popup'>
+      <div class='header_wrapper'>
+        <div class='popup_header'>
+          <h2><span id='issue_template_dialog_title'></span><a class="close" href="#">&times;</a></h2>
+        </div>
+      </div>
+      <label for='template_search_filter'>
+        <%=h l(:label_filter_template, default: 'Filter template:') %>
+      </label>
+       <input type='text' name='template_search_filter'
+           id='template_search_filter' class='autocomplete'>
+      <div id='filtered_templates_list'></div>
+    </div>
   </div>
 
-  <div id="issue_template_confirm_to_replace_dialog" style="overflow:visible; display: none;">
-    <label>
-      <%=h l(:label_msg_confirm_to_replace) %>
-    </label>
-    <p/>
-    <label><input type="checkbox" id="issue_template_confirm_to_replace_hide_dialog">
-      <%= h l(:label_hide_confirm_dialog_in_the_future,
-              default: "Hide this confirmation in the future, just overwrite.") %>
-    </label>
-    </span>
+  <div id='issue_template_confirm_to_replace_dialog' class='overlay'>
+    <a id='issue_template_confirm_to_replace_dialog_cancel' class='cancel' target='#'></a>
+    <div class='popup small'>
+      <p><b><%=h l(:label_msg_confirm_to_replace) %></b></p>
+      <p><input type='checkbox' id='issue_template_confirm_to_replace_hide_dialog'>
+        <%= h l(:label_hide_confirm_dialog_in_the_future,
+              default: 'Hide this confirmation in the future, just overwrite.') %>
+      </p>
+      <div class='footer_wrapper'>
+        <div class='popup_footer' style='text-align: center;'>
+          <i id='overwrite_yes' class='overwrite_confirm_btn'><%=h l(:general_text_Yes) %></i>
+          <i id='overwrite_no' class='overwrite_confirm_btn'><%=h l(:general_text_No) %></i>
+        </div>
+      </div>
+    </div>
   </div>
   <!-- dialog box -->
 
-  <div class="wiki" id="template_help_content" style="display: none;">
+  <div class='wiki' id='template_help_content' style='display: none;'>
     <%= textilizable(setting.help_message) %>
   </div>
 </div>
-<script type="text/javascript">
-    //<![CDATA[
-    $(function() {
-        var templateNS = templateNS || new ISSUE_TEMPLATE();
-        let pulldown_url = '<%= pulldown_url %>';
-        let tracker = '<%= @issue.tracker.id %>';
-        templateNS.set_pulldown(tracker, pulldown_url);
+<script type='text/javascript'>
+  //<![CDATA[
+    let pulldown_url = '<%= pulldown_url %>'
+    let tracker = '<%= @issue.tracker.id %>'
+    let is_triggered_by = '<%= is_triggered_by %>'
+    let load_url = '<%= url_for(controller: 'issue_templates', action: 'load',
+        project_id: project_id, is_triggered_by: is_triggered_by) %>'
+    let should_replaced = '<%= setting.should_replaced %>'
+    let confirmToReplace = true
+    let confirmation = '<%=h l(:label_confirmation) %>'
+    let general_text_Yes = '<%=h l(:general_text_Yes) %>'
+    let general_text_No = '<%=h l(:general_text_No) %>'
+    let confirm_message = undefined
+    if (should_replaced) {
+      confirm_message = '<%=h l(:label_template_applied, default: "Issue template is applied. You can revert with click 'Revert' link.") %>'
+    }
 
-        $('#template_area').insertBefore($('#issue_subject').parent());
+    let templateNS = new ISSUE_TEMPLATE(
+      pulldown_url, load_url, confirm_message, should_replaced, confirmToReplace,
+      confirmation, general_text_Yes, general_text_No, is_triggered_by
+    )
 
-        $("#issue_template").change(function(){
-            let is_triggered_by = '<%= is_triggered_by %>';
-            let load_url = '<%= url_for(controller: 'issue_templates', action: 'load',
-                project_id: project_id, is_triggered_by: is_triggered_by) %>';
-            let should_replaced = '<%= setting.should_replaced %>';
-            let confirmation = '<%=h l(:label_confirmation) %>';
-            let general_text_Yes = '<%=h l(:general_text_Yes) %>';
-            let general_text_No = '<%=h l(:general_text_No) %>';
-            let confirm_message = undefined;
-            if (should_replaced) {
-                confirm_message = '<%=h l(:label_template_applied, default: "Issue template is applied. You can revert with click 'Revert' link.") %>';
+    templateNS.set_pulldown(tracker)
+
+    document.getElementById('issue_template').addEventListener('change', (event) => {
+      templateNS.changeTemplatePlace()
+      templateNS.load_template()
+    })
+
+    // Show dialog
+    document.getElementById('link_template_dialog').addEventListener('click', (event) => {
+      let template_list_url = '<%= url_for(controller: 'issue_templates',
+        action:'list_templates', project_id: project_id, issue_tracker_id: @issue.tracker.id) %>'
+      let template_list_title = '<%= "#{l(:issue_template)}: #{@issue.tracker.name}".html_safe %>'
+
+      templateNS.openDialog(template_list_url, template_list_title)
+    })
+
+    // revert template
+    document.getElementById('revert_template').addEventListener('click', (event) => {
+      templateNS.revertAppliedTemplate()
+    })
+
+    document.getElementById('erase_template').addEventListener('click', (event) => {
+      templateNS.eraseSubjectAndDescription()
+    })
+
+   // keydown keyup
+    document.querySelector("input[name='template_search_filter']").addEventListener('keydown', (event) => {
+      templateNS.filterTemplate(event)
+    })
+
+    document.querySelector("input[name='template_search_filter']").addEventListener('keyup', (event) => {
+      templateNS.filterTemplate(event)
+    })
+
+    // NOTE: Workaround for GitHub issue: 193
+    // Start observing the target node for configured mutations
+    try {
+      if (CKEDITOR.instances) {
+        // Create an observer instance linked to the callback function
+        let observer = new MutationObserver(callback)
+
+        // Select the node that will be observed for mutations
+        let targetNode = document.querySelector('#issue_description_and_toolbar')
+
+        // Options for the observer (which mutations to observe)
+        let config = { attributes: true, childList: true, characterData: true, subtree: true }
+
+        // Callback function to execute when mutations are observed
+        let callback = function (mutationsList) {
+          for (let i = 0, len = mutationsList.length; i < len; ++i) {
+            let mutation = mutationsList[i]
+            if (mutation.type === 'attributes') {
+              console.log('The ' + mutation.attributeName + ' attribute was modified.')
+              if (mutation.target.className == 'cke_contents cke_reset') {
+                // Wait for a while til CKE Editor's textarea is rendered, and after that
+                // apply template text.
+                setTimeout('templateNS.replaceCkeContent()', 200)
+                observer.disconnect()
+              }
             }
-
-            templateNS.load_template(load_url, confirm_message, should_replaced, false, confirmation, general_text_Yes, general_text_No);
-        });
-
-        // Show dialog
-        $('#link_template_dialog').click(function() {
-            let template_list_url = '<%= url_for(controller: 'issue_templates',
-                action:'list_templates', project_id: project_id, issue_tracker_id: @issue.tracker.id) %>';
-            let template_list_title = '<%= "#{l(:issue_template)}: #{@issue.tracker.name}".html_safe %>';
-
-            templateNS.openDialog(template_list_url, template_list_title);
-        });
-
-        // revert template
-        $('#revert_template').click(function() {
-            templateNS.revertAppliedTemplate();
-        });
-
-        $('#erase_template').click(function() {
-            templateNS.eraseSubjectAndDescription();
-        });
-
-        // Hide overwrite confirmation dialog using cookie.
-        $('#issue_template_confirm_to_replace_hide_dialog').click(function () {
-          if ($(this).is(':checked')) {
-            // NOTE: Use document.cookie because Redmine itself does not use jquery.cookie.js.
-            document.cookie = 'issue_template_confirm_to_replace_hide_dialog=1';
-          } else {
-            document.cookie = 'issue_template_confirm_to_replace_hide_dialog=0';
           }
-        });
-
-        $("input[name='template_search_filter']").on("keydown keyup",function(){
-            let cols = $('.template_data');
-            let searchWord = $(this).val();
-            reg = new RegExp(searchWord,'gi');
-            cols.each(function(i,val){
-                let col_name = $(val).children('td').text();
-                if (col_name.match(reg)) {
-                    $(val).show();
-                } else {
-                    $(val).hide();
-                }
-            })
-        });
-
-        // NOTE: Workaround for GitHub issue: 193
-        // Start observing the target node for configured mutations
-        try {
-            if (CKEDITOR.instances) {
-                // Create an observer instance linked to the callback function
-                let observer = new MutationObserver(callback);
-
-                // Select the node that will be observed for mutations
-                let targetNode = document.querySelector('#issue_description_and_toolbar');
-
-                // Options for the observer (which mutations to observe)
-                let config = {attributes: true, childList: true, characterData: true, subtree: true};
-
-                // Callback function to execute when mutations are observed
-                let callback = function (mutationsList) {
-                    for (let i = 0, len = mutationsList.length; i < len; ++i) {
-                        let mutation = mutationsList[i];
-                        if (mutation.type === 'attributes') {
-                            console.log('The ' + mutation.attributeName + ' attribute was modified.');
-                            if (mutation.target.className == 'cke_contents cke_reset') {
-                                // Wait for a while til CKE Editor's textarea is rendered, and after that
-                                // apply template text.
-                                setTimeout('templateNS.replaceCkeContent()', 200);
-                                observer.disconnect();
-                            }
-                        }
-                    }
-                };
-                observer.observe(targetNode, config);
-            }
-        } catch (e) {
-            // do nothing.
         }
-    });
+        observer.observe(targetNode, config)
+      }
+    } catch (e) {
+      // do nothing.
+    }
 </script>

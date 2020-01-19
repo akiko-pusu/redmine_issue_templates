@@ -1,8 +1,8 @@
-<div class="contextual">
+<div class='contextual'>
   <%= link_to(l(:label_list_templates),
               { controller: 'global_issue_templates', action: 'index' }, class: 'icon icon-template') %>
 </div>
-<h2 class="global_issue_template"><%=h "#{l(:issue_templates)} / #{l(:button_add)}" %></h2>
+<h2 class='global_issue_template'><%=h "#{l(:issue_templates)} / #{l(:button_add)}" %></h2>
 
 <%= labelled_form_for :global_issue_template,  issue_template,
                       url: { controller: 'global_issue_templates', action: 'create' },
@@ -11,5 +11,6 @@
 
   <%= render 'form', { f: f, checklist_enabled: checklist_enabled,
                         trackers: trackers, projects: projects,
-                        issue_template: issue_template, apply_all_projects: apply_all_projects } %>
+                        issue_template: issue_template, apply_all_projects: apply_all_projects,
+                        custom_fields: custom_fields, builtin_fields_enable: builtin_fields_enable } %>
 <% end %>

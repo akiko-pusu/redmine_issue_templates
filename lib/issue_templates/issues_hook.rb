@@ -5,7 +5,7 @@ module IssueTemplates
     include IssuesHelper
 
     CONTROLLERS = %(
-      'IssuesController' 'IssueTemplatesController' 'ProjectsController'
+      'IssuesController' 'IssueTemplatesController' 'ProjectsController' 'IssueTemplatesSettingsController'
       'GlobalIssueTemplatesController' 'SettingsController' 'NoteTemplatesController'
     ).freeze
 

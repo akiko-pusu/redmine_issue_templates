@@ -1,55 +1,112 @@
 <%= error_messages_for 'global_issue_template' %>
-<div class="box tabular box-white">
+<div class='box tabular box-white'>
   <p><%= f.text_field :title, required: true, size: 80, label: l(:issue_template_name) %></p>
 
-  <fieldset class="issue">
-    <legend class="issue"><%= l(:label_applied_for_issue) %></legend>
+  <fieldset class='issue'>
+    <legend class='issue'><%= l(:label_applied_for_issue) %></legend>
     <p>
       <% if issue_template.tracker.blank? %>
-          <%= f.select :tracker_id, trackers.collect { |t| [t.name, t.id] }, {required: true},
+          <%= f.select :tracker_id, trackers.collect { |t| [t.name, t.id] }, { required: true },
                        required: true, label: l(:label_tracker) %>
 
           <%= h issue_template.tracker.present? ? issue_template.tracker.name :
                     l(:orphaned_template, default: 'Orphaned template from tracker') %>
 
       <% else %>
-          <%= f.select :tracker_id, trackers.collect { |t| [t.name, t.id] }, {required: true},
+          <%= f.select :tracker_id, trackers.collect { |t| [t.name, t.id] }, { required: true },
                        required: true, label: l(:label_tracker), selected: issue_template.tracker.id %>
       <% end %>
     </p>
     <p><%= f.text_field :issue_title, required: false, size: 80, label: l(:issue_title) %>
-      <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
-         data-tooltip-area="#issue_title_help_area"
-         data-tooltip-content="#issue_title_help_content">
+      <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
+         data-tooltip-area='issue_title_help_area'
+         data-tooltip-content='issue_title_help_content'>
         <%= l(:help_for_this_field) %>
-        <span class="tooltip-area" id="issue_title_help_area"></span>
+        <span class='tooltip-area' id='issue_title_help_area'></span>
       </a>
     </p>
     <p>
       <%= f.text_area :description, cols: 78, rows: 12,
                       required: true,
-                      label: l(:issue_description), class: 'wiki-edit', style: 'overflow:auto;' %>
+                      label: l(:issue_description), class: 'wiki-edit', style: 'overflow: auto;' %>
     </p>
     <!-- for Checklist -->
     <% if checklist_enabled %>
-        <p id="checklist_form">
+        <p id='checklist_form'>
           <label>Checklist</label>
-          <input type="text" id="checklist_text" class="edit-box">
-          <span class="icon icon-add checklist-new-only save-new-by-button" onclick="addCheckList();"></span>
+          <input type='text' id='checklist_text' class='edit-box'>
+          <span class='icon icon-add checklist-new-only save-new-by-button' onclick='addCheckList()'></span>
           <ul class='checklist' style='padding-left: 180px;'>
             <% issue_template.checklist.each_with_index do |content, i| %>
-                <li id="checklist_<%= i %>">
-                <span class="text">
+                <li id='checklist_<%= i %>'>
+                <span class='text'>
                   <%= content %>
-                  <a class="icon icon-del" href="javascript:void(0)" onclick="removeCheckList(this);"></a>
+                  <i class='icon icon-del' onclick='removeCheckList(this)'></i>
                 </span>
-                  <input type="hidden" name="global_issue_template[checklists][]"
-                         id="global_issue_template_checklist" value="<%= content %>">
+                  <input type='hidden' name='global_issue_template[checklists][]'
+                         id='global_issue_template_checklist' value='<%= content %>'>
                 </li>
             <% end %>
           </ul>
         </p>
     <% end %>
+
+    <!-- for Builtin Fields -->
+    <!-- buildin field Generator -->
+    <% if builtin_fields_enable %>
+      <div id="json_generator">
+      <p>
+        <label><%= l(:label_select_field, default: 'Select a field') %></label>
+        <select v-model='newItemTitle'>
+          <option v-for='(value, key) in customFields' v-bind:value='key'>
+           {{ value.name }}
+          </option>
+        </select>
+        <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
+         data-tooltip-area='builtin_fields_help_area'
+         data-tooltip-content='builtin_fields_help_content'>
+           <%= l(:help_for_this_field) %>
+          <span class='tooltip-area' id='builtin_fields_help_area'></span>
+        </a>
+　　　　　</p>
+        <p>
+          <label><%= l(:field_value) %></label>
+          <textarea id='issue_template_json_setting_field'
+              rows='1' placeholder='<%= l(:enter_value, default: 'Please enter a value') %>' v-model='newItemValue'>
+          </textarea>
+          <span style='margin-left: 4px;' class='icon icon-add' v-on:click='addField(newItemTitle, newItemValue)'>
+            <%= l(:button_add) %>
+          </span>
+        </p>
+        <div id='field_information' class='wiki' v-if='newItemTitle != ""'>
+          <b><%= l(:label_field_information, default: 'Field information') %></b>
+          <pre>{{ customFields[newItemTitle] }}</pre>
+        </div>
+        <div id='fields_setting_display_area'>
+          <ul class='json-list' v-if='items.length > 0'>
+            <li v-for='item in items'>
+              <b>{{ customFields[item.title] }}</b>: {{ item.value }}
+              <i class='icon icon-del' v-on:click='deleteField(item)'></i>
+            </li>
+          </ul>
+          <pre id='builtin_fields_data_via_vue' style='display: none;'>{{ items }}</pre>
+          <span class='icon icon-reload' id='reset-json' v-on:click='loadField()'><%= l(:button_reset) %></span>
+          <span class='icon icon-checked' id='paste-json'><%= l(:button_apply) %></span>
+        </div>
+      </p>
+      </div>
+      <!-- buildin field Generator -->
+      <p style='opacity: 0.6;'>
+        <%= f.text_area :builtin_fields,
+            required: false, cols: 60, rows: 4,
+            label: l(:label_builtin_fields_json, default: 'JSON for fields') %>
+      </p>
+      <div id='builtin_fields_help_content' class='wiki' style='display: none;'>
+        <%= l(:label_builtin_fields_help_message, default: 'Enter builtin filds or custom fields default values with JSON format. ') %>
+      </div>
+    <% end %>
+    <!-- for Builtin Fields -->
+
   </fieldset>
   <p>
     <%= f.text_area :note, cols: 70, rows: 3,
@@ -59,74 +116,74 @@
 
   <p><%= f.text_field :related_link, type: 'url',
           size: 70, label: l(:issue_template_related_link, default: 'Related link') %>
-    <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
-       data-template-help-target="#related_link_help_content"
-       data-tooltip-area="#related_link_help_area"
-       data-tooltip-content="#related_link_help_content">
+    <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
+       data-template-help-target='related_link_help_content'
+       data-tooltip-area='related_link_help_area'
+       data-tooltip-content='related_link_help_content'>
       <%= l(:help_for_this_field) %>
-      <span class="tooltip-area" id="related_link_help_area"></span>
+      <span class='tooltip-area' id='related_link_help_area'></span>
     </a>
   </p>
 
   <p id='link_title_paragraph'><%= f.text_field :link_title, size: 70, label: l(:issue_template_link_title, default: 'Link title') %>
-    <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
-       data-template-help-target="#link_title_help_content"
-       data-tooltip-area="#link_title_help_area"
-       data-tooltip-content="#link_title_help_content">
+    <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
+       data-template-help-target='link_title_help_content'
+       data-tooltip-area='link_title_help_area'
+       data-tooltip-content='link_title_help_content'>
       <%= l(:help_for_this_field) %>
-      <span class="tooltip-area" id="link_title_help_area"></span>
+      <span class='tooltip-area' id='link_title_help_area'></span>
     </a>
   </p>
 
   <p><%= f.check_box :is_default, label: l(:field_is_default) %>
-    <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
-       data-template-help-target="#isdefault_help_content"
-       data-tooltip-area="#isdefault_help_area"
-       data-tooltip-content="#isdefault_help_content">
+    <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
+       data-template-help-target='isdefault_help_content'
+       data-tooltip-area='isdefault_help_area'
+       data-tooltip-content='isdefault_help_content'>
       <%= l(:help_for_this_field) %>
-      <span class="tooltip-area" id="isdefault_help_area"></span>
+      <span class='tooltip-area' id='isdefault_help_area'></span>
     </a>
   </p>
 
   <p><%= f.check_box :enabled, label: l(:label_enabled) %>
-    <a class="icon icon-help template-help" title="<%= l(:help_for_this_field) %>"
-       data-template-help-target="#enabled_help_content"
-       data-tooltip-area="#enabled_help_area"
-       data-tooltip-content="#enabled_help_content">
+    <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
+       data-template-help-target='enabled_help_content'
+       data-tooltip-area='enabled_help_area'
+       data-tooltip-content='enabled_help_content'>
       <%= l(:help_for_this_field) %>
-      <span class="tooltip-area" id="enabled_help_area"></span>
+      <span class='tooltip-area' id='enabled_help_area'></span>
     </a>
   </p>
 </div>
 
 <%= wikitoolbar_for 'global_issue_template_description' %>
 
-<div id="preview" class="wiki"></div>
+<div id='preview' class='wiki'></div>
 
 
 <!-- tooltip content -->
-<div id="issue_title_help_content" class="wiki" style="display: none;">
+<div id='issue_title_help_content' class='wiki' style='display: none;'>
   <%= l(:help_for_issue_title) %>
 </div>
-<div id="isdefault_help_content" class="wiki" style="display: none;">
+<div id='isdefault_help_content' class='wiki' style='display: none;'>
   <%= l(:label_isdefault_help_message) %>
 </div>
-<div id="related_link_help_content" class="wiki" style="display: none;">
+<div id='related_link_help_content' class='wiki' style='display: none;'>
   <%= l(:label_related_link_help_message, default: 'If there are some example pages or sample issues which using issue template, please specify the link. So operator can see them as an usage or example for template.') %>
 </div>
-<div id="link_title_help_content" class="wiki" style="display: none;">
+<div id='link_title_help_content' class='wiki' style='display: none;'>
   <%= l(:label_link_title_help_message, default: 'If there are some example pages or sample issues which using issue template, please specify the link. So operator can see them as an usage or example for template.') %>
 </div>
-<div id="enabled_help_content" class="wiki" style="display: none;">
+<div id='enabled_help_content' class='wiki' style='display: none;'>
   <%= l(:label_enabled_help_message) %>
 </div>
 <!-- tooltip content -->
 
-<div class="box">
+<div class='box'>
   <% if apply_all_projects %>
       <p>
-        <i class="issue_template icon settings"></i>
-        <span class="issue_template help_content">
+        <i class='issue_template icon settings'></i>
+        <span class='issue_template help_content'>
           <%= l(:note_apply_global_template_to_all_projects_setting_enabled) %>
         </span>
         (
@@ -136,12 +193,12 @@
       </p>
   <% end %>
   <% if projects.any? %>
-      <fieldset class="box box-white" id="global_issue_template_project_ids"
-                style="<%= apply_all_projects ? 'opacity: 0.6' : '' %>">
-        <a class="collapsible collapsed template-help" data-template-help-target="#all_projects">
-          <%= l(:project_list_associated_this_template, {applied: issue_template.projects.length, all: projects.length}) %>
+      <fieldset class='box box-white' id='global_issue_template_project_ids'
+                style='<%= apply_all_projects ? 'opacity: 0.6' : '' %>'>
+        <a class='collapsible collapsed template-help' data-template-help-target='all_projects'>
+          <%= l(:project_list_associated_this_template, { applied: issue_template.projects.length, all: projects.length }) %>
         </a>
-        <div id="all_projects" style="display: none; ">
+        <div id='all_projects' style='display: none;'>
         <p><%= check_all_links 'global_issue_template_project_ids' %></p>
         <legend><%= l(:label_project_plural) %></legend>
         <%= render_project_nested_lists(projects) do |p|
@@ -158,51 +215,162 @@
 
 
 <%= submit_tag l(issue_template.new_record? ? :button_create : :button_save) %>
-<%= link_to l(:button_cancel), {action: 'index'}, data: {confirm: l(:text_are_you_sure)} %>
+<%= link_to l(:button_cancel), { action: 'index' }, data: { confirm: l(:text_are_you_sure) } %>
 
-<script type="text/javascript">
-    let checklist = $('.checklist');
+<% if builtin_fields_enable %>
+<%= javascript_include_tag('vue.min', plugin: 'redmine_issue_templates') %>
+<script>
+  const baseUrl = "<%= url_for(controller: 'issue_templates', action: 'load_selectable_fields') %>"
+  const template_id = "<%= issue_template&.id || '' %>"
+  const vm = new Vue({
+    el: '#json_generator',
+    data: {
+      items: [],
+      customFields: {},
+      newItemTitle: '',
+      newItemValue: '',
+      api_builtin_fields: {},
+      api_custom_fields: {}
+    },
+    methods: {
+      addField: function(newFieldName, newFieldValue) {
+        if (newFieldName === '' || newFieldValue === '') {
+          return
+        }
+        this.items.push({
+          title: newFieldName,
+          value: newFieldValue
+        });
+        this.newFieldName = ''
+        this.newFieldValue = ''
+      },
+      deleteField: function(target) {
+        this.items = this.items.filter(function (item) {
+          return item !== target
+        });
+      },
+      loadField: function() {
+        this.api_builtin_fields = <%= issue_template.builtin_fields.html_safe %>
+        this.api_custom_fields = <%= custom_fields.html_safe %>
+        this.items = []
+        if (this.api_builtin_fields) {
+          for (const [key, value] of Object.entries(this.api_builtin_fields)) {
+            this.items.push({
+              title: key,
+              value: value
+            })
+          }
+        }
+        // { "issue_priority_id":"Priority", "issue_start_date":"Start date" }
+        if (this.api_custom_fields) {
+          for (const [key, value] of Object.entries(this.api_custom_fields)) {
 
-    function removeCheckList(obj) {
-        let target = obj.closest('li')
-        target.remove();
-    }
-
-    function addCheckList() {
-        let text = $('#checklist_text').val();
-        if (text == '') return false;
-
-        $('.checklist-item').each(function (i, elem) {
-            e = $(elem)
-            if ((text == e.val())) {
-                return;
-            }
+            this.customFields[key] = value
+          }
+        }
+      },
+      updateSelectableField: function() {
+        let tmpFields = {}
+        if (this.api_custom_fields) {
+          for (const [key, value] of Object.entries(this.api_custom_fields)) {
+            tmpFields[key] = value
+          }
+        }
+        tmpFields
+        this.customFields = tmpFields
+        this.customFields
+      },
+    },
+    mounted: function(){
+      const tracker_pulldown = document.getElementById('global_issue_template_tracker_id')
+      if (tracker_pulldown) {
+        tracker_pulldown.addEventListener('change', event => {
+          if (event.target.value === '') return
+          const tracker_id = event.target.value
+          let url = baseUrl + '?tracker_id=' + tracker_id + '&template_id=' + template_id
+          fetch(url)
+            .then((response) => {
+              return response.text()
+            })
+            .then((data) => {
+              let obj = JSON.parse(data)
+              this.api_custom_fields = obj.custom_fields
+              this.updateSelectableField()
+            })
         })
-        addCheckListItem(text);
-        $('#checklist_text').val('');
+      }
+      this.loadField()
+    },
+  })
+</script>
+<% end %>
+
+<script type='text/javascript'>
+  const removeCheckList = (obj) => {
+    let target = obj.closest('li')
+    target.remove()
+  }
+
+  const addCheckList = () => {
+    let checkListInputText = document.getElementById('checklist_text')
+    let text = checkListInputText.value
+    if (text === '') return false
+
+    let checkListItems = document.getElementsByClassName('checklist-item')
+    // NOTE: some, find, every and forEach method scan all the element and not exit this function via return.
+    for (let i = 0; i < checkListItems.length; i++) {
+      let elem = checkListItems[i]
+      if (text === elem.value) {
+        return
+      }
     }
 
-    function addCheckListItem(value) {
-        let li = $('<li>');
-        let text = $('<span class="text">').text(value);
-        let hidden = $("<input>", {
-            type: 'hidden',
-            id: 'global_issue_template_checklist',
-            name: 'global_issue_template[checklists][]',
-            class: 'checklist-item',
-            value: value
-        }).appendTo(li);
+    addCheckListItem(text)
+    checkListInputText.value = ''
+  }
 
-        let remove_link = $("<a>", {
-            class: 'icon icon-del',
-        });
+  const addCheckListItem = (value) => {
+    let li = document.createElement('li')
+    let span = document.createElement('span')
+    span.classList.add('text')
 
-        text.append(remove_link);
-        li.append(text);
-        checklist.append(li);
+    let checkListText = document.createTextNode(value)
+    span.appendChild(checkListText);
 
-        $('body').on('click', '.icon.icon-del', function () {
-            removeCheckList(this);
-        });
-    }
+    let hidden = document.createElement('input')
+    hidden.classList.add('checklist-item')
+    hidden.value = value
+    hidden.setAttribute('type', 'hidden')
+    hidden.setAttribute('id', 'global_issue_template_checklist')
+    hidden.setAttribute('name', 'global_issue_template[checklists][]')
+
+    li.appendChild(hidden)
+
+    let removeLink = document.createElement('i')
+    removeLink.classList.add('icon', 'icon-del')
+    span.appendChild(removeLink)
+
+    li.appendChild(span)
+
+    let checklist = document.querySelector('ul.checklist')
+    checklist.appendChild(li)
+
+    removeLink.addEventListener('click', (event) => {
+      removeCheckList(event.target)
+    }, false)
+  }
+
+  const copyJson = document.getElementById('paste-json')
+  if (copyJson) {
+    copyJson.addEventListener('click', (event) => {
+      const data = document.getElementById('builtin_fields_data_via_vue')
+      if (data) {
+        const text = data.innerText
+        let jsonObj = JSON.parse(text)
+        let convertObj = {}
+        jsonObj.forEach(item => { convertObj[item.title] = item.value })
+        document.getElementById('global_issue_template_builtin_fields').value = JSON.stringify(convertObj)
+      }
+    })
+  }
 </script>

@@ -331,7 +331,7 @@ By default, use chrome as a webdriver. If you set environment variable
 'DRIVER' to 'headless', headless_chrome is used.
 
 ```bash
-% bundle exec rspec -I plugins/redmine_issue_templates/spec --format documentation plugins/redmine_issue_templates/spec/ DRIVER='headless'
+% DRIVER='headless' bundle exec rspec -I plugins/redmine_issue_templates/spec --format documentation plugins/redmine_issue_templates/spec/
 ```
 
 ### License

@@ -78,3 +78,11 @@ en:
   issue_template_link_title: Related Link Title
   label_related_link_help_message: "If there are some example pages or sample issues which using issue template, please specify the link. So operator can see them as an usage or example for template."
   label_link_title_help_message: "You can customize the title of the related link. (Default: Related Link)"
+  enter_value: Please enter a value.
+  label_select_field: Selet a field
+  label_builtin_fields_help_message: Enter builtin filds or custom fields default values with JSON format. Please select fields and set values. Then click "Apply" and you can generate JSON format data.
+  label_builtin_fields_json: JSON for fields
+  label_enable_builtin_fields: Enable Builtin Field support
+  help_enable_builtin_fields: If this flag is enabled, a form will be displayed that allows you to set templates for built-in or custom fields. Please register the settings in JSON format.
+  warning_enable_builtin_fields: Please be careful to activate this flag. Now this feature is an experimental one. Since I have not provided enough UI and functions yet to support all the field types. It may not work depending on the browser. Use caution when applying in a production environment.
+  label_field_information: Field information

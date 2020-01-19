@@ -20,7 +20,8 @@ class GlobalIssueTemplate < ActiveRecord::Base
                   'author_id',
                   'checklist_json',
                   'related_link',
-                  'link_title'
+                  'link_title',
+                  'builtin_fields_json'
 
   # for intermediate table assosciations
   scope :search_by_project, lambda { |project_id|
