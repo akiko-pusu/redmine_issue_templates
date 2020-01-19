@@ -37,6 +37,12 @@ div.issue_template {
     border: solid #a7e4fd 1px;
 }
 
+#field_information {
+    margin-left: 240px;
+    margin-right: 300px;
+    color: grey;
+}
+
 option.inherited {
     background-color: #FCFD8D;
     font-style: oblique;
@@ -261,6 +267,10 @@ a.icon.icon-del[disabled=disabled] {
     }
     #fields_setting_display_area {
         margin-left: 0;
+    }
+    #field_information {
+        margin-left: 0;
+        margin-right: 0;
     }
 }
 

@@ -39,7 +39,7 @@
 
         <%= render 'form', { f: f, checklist_enabled: checklist_enabled,
                               issue_template: issue_template, project: project,
-                              custom_fields: custom_fields } %>
+                              custom_fields: custom_fields, builtin_fields_enable: builtin_fields_enable } %>
         <div id='preview' class='wiki'></div>
         <%= submit_tag l(:button_save) %>
         <%= link_to l(:button_cancel), { action: 'index' },

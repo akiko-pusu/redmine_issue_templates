@@ -20,5 +20,5 @@
                               multipart: false } do |f| %>
   <%= render 'form', { f: f, checklist_enabled: checklist_enabled, trackers: trackers,
                         issue_template: issue_template, projects: projects, apply_all_projects: apply_all_projects,
-                        custom_fields: custom_fields } %>
+                        custom_fields: custom_fields, builtin_fields_enable: builtin_fields_enable } %>
 <% end %>

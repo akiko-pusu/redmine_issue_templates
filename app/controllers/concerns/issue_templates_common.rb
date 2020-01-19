@@ -43,10 +43,6 @@ module Concerns
       render partial: 'common/orphaned', locals: { orphaned_templates: orphaned }
     end
 
-    def plugin_setting
-      @plugin_setting ||= Setting.plugin_redmine_issue_templates
-    end
-
     def apply_all_projects?
       plugin_setting['apply_global_template_to_all_projects'].to_s == 'true'
     end
@@ -93,7 +89,7 @@ module Concerns
       fields.each do |field|
         id = "issue_#{field}"
         name = I18n.t('field_' + field.gsub(/_id$/, ''))
-        map[id] = name
+        map[id] = { name: name }
       end
       map
     end
@@ -108,8 +104,7 @@ module Concerns
       map = {}
       fields.each do |field|
         id = "issue_custom_field_values_#{field.id}"
-        name = field.name
-        map[id] = name
+        map[id] = field.attributes
       end
       map
     end

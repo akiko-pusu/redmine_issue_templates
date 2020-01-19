@@ -52,15 +52,16 @@
     <% end %>
 
     <!-- for Builtin Fields -->
-      <!-- buildin field Generator -->
+    <!-- buildin field Generator -->
+    <% if builtin_fields_enable %>
       <div id="json_generator">
-        <p>
+      <p>
         <label><%= l(:label_select_field, default: 'Select a field') %></label>
         <select v-model='newItemTitle'>
-         <option v-for='(value, key) in customFields' v-bind:value='key'>
-           {{ value }}
-         </option>
-         </select>
+          <option v-for='(value, key) in customFields' v-bind:value='key'>
+           {{ value.name }}
+          </option>
+        </select>
         <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
          data-tooltip-area='builtin_fields_help_area'
          data-tooltip-content='builtin_fields_help_content'>
@@ -77,25 +78,33 @@
             <%= l(:button_add) %>
           </span>
         </p>
-           <div id='fields_setting_display_area'>
-            <ul class='json-list' v-if='items.length > 0'>
-              <li v-for='item in items'>
-                <b>{{ customFields[item.title] }}</b>: {{ item.value }}
-                <i class='icon icon-del' v-on:click='deleteField(item)'></i>
-              </li>
-            </ul>
-            <pre id='builtin_fields_data_via_vue' style='display: none;'>{{ items }}</pre>
-            <span class='icon icon-reload' id='reset-json' v-on:click='loadField()'><%= l(:button_reset) %></span>
-            <span class='icon icon-checked' id='paste-json'><%= l(:button_apply) %></span>
-          </div>
+        <div id='field_information' class='wiki' v-if='newItemTitle != ""'>
+          <b><%= l(:label_field_information, default: 'Field information') %></b>
+          <pre>{{ customFields[newItemTitle] }}</pre>
+        </div>
+        <div id='fields_setting_display_area'>
+          <ul class='json-list' v-if='items.length > 0'>
+            <li v-for='item in items'>
+              <b>{{ customFields[item.title] }}</b>: {{ item.value }}
+              <i class='icon icon-del' v-on:click='deleteField(item)'></i>
+            </li>
+          </ul>
+          <pre id='builtin_fields_data_via_vue' style='display: none;'>{{ items }}</pre>
+          <span class='icon icon-reload' id='reset-json' v-on:click='loadField()'><%= l(:button_reset) %></span>
+          <span class='icon icon-checked' id='paste-json'><%= l(:button_apply) %></span>
+        </div>
       </p>
       </div>
       <!-- buildin field Generator -->
-      <p style='opacity: 0.4;'>
+      <p style='opacity: 0.6;'>
         <%= f.text_area :builtin_fields,
-            required: false, readonly: true, cols: 60, rows: 4,
+            required: false, cols: 60, rows: 4,
             label: l(:label_builtin_fields_json, default: 'JSON for fields') %>
       </p>
+      <div id='builtin_fields_help_content' class='wiki' style='display: none;'>
+        <%= l(:label_builtin_fields_help_message, default: 'Enter builtin filds or custom fields default values with JSON format. ') %>
+      </div>
+    <% end %>
     <!-- for Builtin Fields -->
 
   </fieldset>
@@ -159,9 +168,6 @@
 <div id='isdefault_help_content' class='wiki' style='display: none;'>
   <%= l(:label_isdefault_help_message) %>
 </div>
-<div id='builtin_fields_help_content' class='wiki' style='display: none;'>
-  <%= l(:label_builtin_fields_help_message, default: 'Enter builtin filds or custom fields default values with JSON format. ') %>
-</div>
 <div id='related_link_help_content' class='wiki' style='display: none;'>
   <%= l(:label_related_link_help_message, default: 'If there are some example pages or sample issues which using issue template, please specify the link. So operator can see them as an usage or example for template.') %>
 </div>
@@ -211,15 +217,20 @@
 <%= submit_tag l(issue_template.new_record? ? :button_create : :button_save) %>
 <%= link_to l(:button_cancel), { action: 'index' }, data: { confirm: l(:text_are_you_sure) } %>
 
+<% if builtin_fields_enable %>
 <%= javascript_include_tag('vue.min', plugin: 'redmine_issue_templates') %>
 <script>
+  const baseUrl = "<%= url_for(controller: 'issue_templates', action: 'load_selectable_fields') %>"
+  const template_id = "<%= issue_template&.id || '' %>"
   const vm = new Vue({
     el: '#json_generator',
     data: {
       items: [],
       customFields: {},
       newItemTitle: '',
-      newItemValue: ''
+      newItemValue: '',
+      api_builtin_fields: {},
+      api_custom_fields: {}
     },
     methods: {
       addField: function(newFieldName, newFieldValue) {
@@ -239,11 +250,11 @@
         });
       },
       loadField: function() {
-        const builtin_fields = <%= issue_template.builtin_fields.html_safe %>
-        const custom_fields = <%= custom_fields.html_safe %>
+        this.api_builtin_fields = <%= issue_template.builtin_fields.html_safe %>
+        this.api_custom_fields = <%= custom_fields.html_safe %>
         this.items = []
-        if (builtin_fields) {
-          for (const [key, value] of Object.entries(builtin_fields)) {
+        if (this.api_builtin_fields) {
+          for (const [key, value] of Object.entries(this.api_builtin_fields)) {
             this.items.push({
               title: key,
               value: value
@@ -251,19 +262,48 @@
           }
         }
         // { "issue_priority_id":"Priority", "issue_start_date":"Start date" }
-        if (builtin_fields) {
-          for (const [key, value] of Object.entries(custom_fields)) {
+        if (this.api_custom_fields) {
+          for (const [key, value] of Object.entries(this.api_custom_fields)) {
 
             this.customFields[key] = value
           }
         }
       },
+      updateSelectableField: function() {
+        let tmpFields = {}
+        if (this.api_custom_fields) {
+          for (const [key, value] of Object.entries(this.api_custom_fields)) {
+            tmpFields[key] = value
+          }
+        }
+        tmpFields
+        this.customFields = tmpFields
+        this.customFields
+      },
     },
     mounted: function(){
+      const tracker_pulldown = document.getElementById('global_issue_template_tracker_id')
+      if (tracker_pulldown) {
+        tracker_pulldown.addEventListener('change', event => {
+          if (event.target.value === '') return
+          const tracker_id = event.target.value
+          let url = baseUrl + '?tracker_id=' + tracker_id + '&template_id=' + template_id
+          fetch(url)
+            .then((response) => {
+              return response.text()
+            })
+            .then((data) => {
+              let obj = JSON.parse(data)
+              this.api_custom_fields = obj.custom_fields
+              this.updateSelectableField()
+            })
+        })
+      }
       this.loadField()
     },
   })
 </script>
+<% end %>
 
 <script type='text/javascript'>
   const removeCheckList = (obj) => {
