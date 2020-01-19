@@ -143,6 +143,7 @@ class GlobalIssueTemplatesController < ApplicationController
 
     { layout: !request.xhr?,
       locals: { checklist_enabled: checklist_enabled?, trackers: trackers, apply_all_projects: apply_all_projects?,
-                issue_template: @global_issue_template, projects: projects, custom_fields: custom_fields.to_s } }
+                issue_template: @global_issue_template, projects: projects, custom_fields: custom_fields.to_s,
+                builtin_fields_enable: builtin_fields_enabled? } }
   end
 end

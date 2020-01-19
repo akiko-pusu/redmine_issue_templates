@@ -86,7 +86,9 @@ class IssueTemplatesController < ApplicationController
                      else
                        IssueTemplate.find(issue_template_id)
                      end
-    render plain: issue_template.template_json
+    rendered_json = builtin_fields_enabled? ? issue_template.template_json : issue_template.template_json(except: 'builtin_fields_json')
+
+    render plain: rendered_json
   end
 
   # update pulldown
@@ -226,6 +228,6 @@ class IssueTemplatesController < ApplicationController
 
     { layout: !request.xhr?,
       locals: { issue_template: template, project: @project, child_project_used_count: child_project_used_count,
-                checklist_enabled: checklist_enabled?, custom_fields: custom_fields.to_s } }
+                checklist_enabled: checklist_enabled?, custom_fields: custom_fields.to_s, builtin_fields_enable: builtin_fields_enabled? } }
   end
 end

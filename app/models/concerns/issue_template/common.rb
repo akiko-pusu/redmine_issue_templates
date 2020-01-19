@@ -68,10 +68,12 @@ module Concerns
         end
       end
 
-      def template_json
+      def template_json(except: nil)
         template = {}
         template[self.class::Config::JSON_OBJECT_NAME] = generate_json
-        template.to_json(root: true)
+        return template.to_json(root: true) if except.blank?
+
+        template.to_json(root: true, except: [except])
       end
 
       def builtin_fields

@@ -170,13 +170,14 @@ describe IssueTemplatesController do
       end
     end
 
-    context 'POST with valid builtin_fields param' do
+    context 'POST with valid builtin_fields param when enable_builtin_fields = true' do
       let(:builtin_fields) { '{ "foo": "bar" }' }
       let(:create_params) do
         { issue_template: template_params.merge(builtin_fields: builtin_fields) }
       end
 
       before do
+        Setting.send 'plugin_redmine_issue_templates=', 'enable_builtin_fields' => 'true'
         post :create, params: create_params.merge(project_id: project.id)
       end
       include_examples 'Right response', 302
@@ -185,21 +186,21 @@ describe IssueTemplatesController do
       end
     end
 
-    context 'POST with invalid builtin_fields param' do
+    context 'POST with invalid builtin_fields param when enable_builtin_fields = falsewhen enable_builtin_fields = false' do
       let(:builtin_fields) { '12345' }
       let(:create_params) do
         { issue_template: template_params.merge(builtin_fields: builtin_fields) }
       end
 
       before do
+        Setting.send 'plugin_redmine_issue_templates=', 'enable_builtin_fields' => 'false'
         post :create, params: create_params.merge(project_id: project.id)
       end
-      include_examples 'Right response', 200
+      include_examples 'Right response', 302
 
       it do
         msg = flash[:error]
-        expect(msg.present?).to be_truthy
-        expect(msg).to eq 'Please enter a valid JSON fotmat string.'
+        expect(msg.present?).to be_falsy
       end
     end
   end
@@ -214,15 +215,17 @@ describe IssueTemplatesController do
 
     let(:issue_template) { IssueTemplate.last }
 
+    before do
+      Setting.send 'plugin_redmine_issue_templates=', 'enable_builtin_fields' => 'true'
+      put :update, params: update_params.merge(id: issue_template.id, project_id: project.id)
+    end
+
     context 'PUT with invalid builtin_fields param' do
       let(:builtin_fields) { '12345' }
       let(:update_params) do
         { issue_template: template_params.merge(builtin_fields: builtin_fields) }
       end
 
-      before do
-        put :update, params: update_params.merge(id: issue_template.id, project_id: project.id)
-      end
       include_examples 'Right response', 200
 
       it do
@@ -238,9 +241,6 @@ describe IssueTemplatesController do
         { issue_template: template_params.merge(builtin_fields: builtin_fields) }
       end
 
-      before do
-        put :update, params: update_params.merge(id: issue_template.id, project_id: project.id)
-      end
       include_examples 'Right response', 302
 
       it do

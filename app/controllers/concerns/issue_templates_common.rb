@@ -13,6 +13,23 @@ module Concerns
       def log_action
         logger&.info "[#{self.class}] #{action_name} called by #{User.current.name}"
       end
+
+      def plugin_setting
+        Setting.plugin_redmine_issue_templates
+      end
+
+      def apply_all_projects?
+        plugin_setting['apply_global_template_to_all_projects'].to_s == 'true'
+      end
+
+      def apply_template_when_edit_issue?
+        plugin_setting['apply_template_when_edit_issue'].to_s == 'true'
+      end
+
+      def builtin_fields_enabled?
+        plugin_setting['enable_builtin_fields'].to_s == 'true'
+      end
+    end
     end
 
     def orphaned_templates
@@ -47,7 +64,7 @@ module Concerns
     def valid_params
       # convert attribute name and data for checklist plugin supporting
       attributes = template_params.except(:checklists, :builtin_fields)
-      attributes[:builtin_fields_json] = builtin_fields_json
+      attributes[:builtin_fields_json] = builtin_fields_json if builtin_fields_enabled?
       attributes[:checklist_json] = checklists.to_json if checklist_enabled?
       attributes
     end
@@ -57,6 +74,8 @@ module Concerns
     end
 
     def core_fields_map_by_tracker_id(tracker_id = nil)
+      return {} unless builtin_fields_enabled?
+
       fields = %w[status_id priority_id]
 
       # exclude "description"
@@ -73,6 +92,7 @@ module Concerns
     end
 
     def custom_fields_map_by_tracker_id(tracker_id = nil)
+      return {} unless builtin_fields_enabled?
       return {} if tracker_id.blank?
 
       tracker = Tracker.find_by(id: tracker_id)

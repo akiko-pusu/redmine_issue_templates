@@ -135,6 +135,7 @@ describe GlobalIssueTemplatesController, type: :controller do
       end
 
       before do
+        Setting.send 'plugin_redmine_issue_templates=', 'enable_builtin_fields' => 'true'
         put :update, params: { id: global_issue_template.id, global_issue_template: update_params }
       end
 
