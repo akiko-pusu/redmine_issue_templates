@@ -86,3 +86,4 @@ en:
   help_enable_builtin_fields: If this flag is enabled, a form will be displayed that allows you to set templates for built-in or custom fields. Please register the settings in JSON format.
   warning_enable_builtin_fields: Please be careful to activate this flag. Now this feature is an experimental one. Since I have not provided enough UI and functions yet to support all the field types. It may not work depending on the browser. Use caution when applying in a production environment.
   label_field_information: Field information
+  unavailable_fields_for_this_tracker: Unavailable field for this tarcker

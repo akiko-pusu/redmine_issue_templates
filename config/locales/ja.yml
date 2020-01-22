@@ -87,3 +87,4 @@ ja:
   help_enable_builtin_fields: 設定を有効にすると、標準/カスタムフィールドのテンプレートを設定するためのフォームが表示されます。設定は「フィールドのID ＆ 値」のJSON形式で登録してください。
   warning_enable_builtin_fields: 設定の有効化には十分注意してください。この機能は実験的なものです。入力のUIや値の適用のための十分な機能が提供できていません。また、ブラウザの互換性は保証されていません。本番環境への適用には十分注意してください。
   label_field_information: このフィールドの情報
+  unusable_fields_for_this_tracker: このトラッカーでは利用できません
