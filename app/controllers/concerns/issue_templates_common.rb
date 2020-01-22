@@ -33,9 +33,10 @@ module Concerns
 
     def load_selectable_fields
       tracker_id = params[:tracker_id]
+      project_id = params[:project_id]
       render plain: {} && return if tracker_id.blank?
 
-      custom_fields = core_fields_map_by_tracker_id(tracker_id).merge(custom_fields_map_by_tracker_id(tracker_id))
+      custom_fields = core_fields_map_by_tracker_id(tracker_id: tracker_id, project_id: project_id).merge(custom_fields_map_by_tracker_id(tracker_id))
       render plain: { custom_fields: custom_fields }.to_json
     end
 
@@ -76,7 +77,10 @@ module Concerns
       raise NotImplementedError, "You must implement #{self.class}##{__method__}"
     end
 
-    def core_fields_map_by_tracker_id(tracker_id = nil)
+    #
+    # TODO: Code should be refactored
+    #
+    def core_fields_map_by_tracker_id(tracker_id: nil, project_id: nil)
       return {} unless builtin_fields_enabled?
 
       fields = %w[status_id priority_id]
@@ -84,12 +88,28 @@ module Concerns
       # exclude "description"
       tracker = Tracker.find_by(id: tracker_id)
       fields += tracker.core_fields.reject { |field| field == 'description' } if tracker.present?
+      fields.reject! { |field| %w[category_id fixed_version_id].include?(field) } if project_id.blank?
 
       map = {}
       fields.each do |field|
         id = "issue_#{field}"
         name = I18n.t('field_' + field.gsub(/_id$/, ''))
-        map[id] = { name: name }
+        value = { name: name, core_field_id: id }
+        if field == 'priority_id'
+          value[:possible_values] = IssuePriority.active.pluck(:name)
+          value[:field_format] = 'list'
+        end
+
+        if field == 'status_id'
+          value[:possible_values] = tracker.issue_statuses.pluck(:name)
+          value[:field_format] = 'list'
+        end
+
+        value[:field_format] = 'date' if %(start_date due_date).include?(field)
+
+        value[:field_format] = 'ratio' if field == 'done_ratio'
+
+        map[id] = value
       end
       map
     end

@@ -138,7 +138,7 @@ class GlobalIssueTemplatesController < ApplicationController
     trackers = Tracker.all
     projects = Project.all
     tracker_id = @global_issue_template.tracker_id
-    custom_fields = core_fields_map_by_tracker_id(tracker_id)
+    custom_fields = core_fields_map_by_tracker_id(tracker_id: tracker_id)
                     .merge(custom_fields_map_by_tracker_id(tracker_id)).to_json
 
     { layout: !request.xhr?,
