@@ -91,6 +91,7 @@ module Concerns
       fields.reject! { |field| %w[category_id fixed_version_id].include?(field) } if project_id.blank?
 
       map = {}
+
       fields.each do |field|
         id = "issue_#{field}"
         name = I18n.t('field_' + field.gsub(/_id$/, ''))
@@ -100,7 +101,7 @@ module Concerns
           value[:field_format] = 'list'
         end
 
-        if field == 'status_id'
+        if field == 'status_id' && tracker.present?
           value[:possible_values] = tracker.issue_statuses.pluck(:name)
           value[:field_format] = 'list'
         end
@@ -124,7 +125,10 @@ module Concerns
       map = {}
       fields.each do |field|
         id = "issue_custom_field_values_#{field.id}"
-        map[id] = field.attributes
+        attributes = field.attributes
+
+        attributes = attributes.merge(possible_values: field.possible_values_options.map { |value| value[0] }) if field.format.name == 'bool'
+        map[id] = attributes
       end
       map
     end

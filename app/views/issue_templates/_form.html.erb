@@ -32,24 +32,21 @@
                       required: true,
                       label: l(:issue_description), class: 'wiki-edit' %>
     </p>
-
     <!-- for Checklist -->
     <% if checklist_enabled %>
         <p id='checklist_form'>
           <label>Checklist</label>
           <input type='text' id='checklist_text' class='edit-box'>
-          <span class='icon icon-add checklist-new-only save-new-by-button'
-                onclick='addCheckList()'>
-          </span>
+          <span class='icon icon-add checklist-new-only save-new-by-button' onclick='addCheckList()'></span>
           <ul class='checklist' style='padding-left: 180px;'>
             <% issue_template.checklist.each_with_index do |content, i| %>
               <li id='checklist_<%= i %>'>
                 <span class='text'>
                   <%= content %>
-                  <i class='icon icon-del' onclick='removeCheckList(this)'></a>
+                  <i class='icon icon-del' onclick='removeCheckList(this)'></i>
                 </span>
                 <input type='hidden' name='issue_template[checklists][]'
-                       id='issue_template_checklist' value='<%= content %>'>
+                        id='issue_template_checklist' value='<%= content %>'>
               </li>
             <% end %>
           </ul>
@@ -86,7 +83,7 @@
             <option v-for="ratio in [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]">{{ ratio }} %</option>
           </select>
 
-          <select v-model='newItemValue' v-if='fieldFormat() == "list"'>
+          <select v-model='newItemValue' v-if='fieldFormat() == "list" || fieldFormat() == "bool"'>
             <option v-for="value in possibleValues()">{{ value }}</option>
           </select>
 
@@ -285,7 +282,7 @@
         const title = this.newItemTitle
         if (fields[title] && fields[title].field_format) {
           const format = fields[title].field_format
-          if (format == 'date' || format == 'ratio' || format == 'list') {
+          if (format == 'date' || format == 'ratio' || format == 'list' || format == 'bool') {
             return fields[title].field_format
           }
         }
@@ -357,8 +354,8 @@
     hidden.classList.add('checklist-item')
     hidden.value = value
     hidden.setAttribute('type', 'hidden')
-    hidden.setAttribute('id', 'global_issue_template_checklist')
-    hidden.setAttribute('name', 'global_issue_template[checklists][]')
+    hidden.setAttribute('id', 'issue_template_checklist')
+    hidden.setAttribute('name', 'issue_template[checklists][]')
 
     li.appendChild(hidden)
 

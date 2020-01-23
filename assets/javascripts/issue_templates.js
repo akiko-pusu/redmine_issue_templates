@@ -297,18 +297,21 @@ ISSUE_TEMPLATE.prototype = {
     let list = obj.checklist
     if (list === undefined) return false
     let checklistForm = document.getElementById('checklist_form')
-    if (checklistForm === null || checklistForm.value.length === 0) return
+    if (!checklistForm) return
 
-    // remove exists checklist items by clicking delete icon
-    let oldList = document.querySelectorAll('span.checklist-item.show:visible span.checklist-show-only.checklist-remove > a.icon.icon-del')
-    for (let i = 0; i < oldList.length; i++) {
-      let element = oldList[i]
-      element.click()
-    }
-
-    for (let i = 0; i < list.length; i++) {
-      document.querySelector('span.checklist-new.checklist-edit-box > input.edit-box').value = list[i]
-      document.querySelector('span.checklist-item.new > span.icon.icon-add.save-new-by-button').click()
+    // NOTE: If Checklist does not work fine, please confirm its version and the DOM element of
+    // checklist input field exists.
+    // If some difference, please report the issue or feedback to IssueTemplate's repository.
+    try {
+      for (let i = 0; i < list.length; i++) {
+        let node = document.querySelector('span.checklist-item.new > span.checklist-edit-box > input.edit-box')
+        if (node) {
+          node.value = list[i]
+          document.querySelector('span.checklist-item.new > span.icon.icon-add.checklist-new-only.save-new-by-button').click()
+        }
+      }
+    } catch (e) {
+      console.log(`NOTE: Checklist could not applied caused of this error. ${e.message} : ${e.message}`)
     }
   },
   escapeHTML: (val) => {
