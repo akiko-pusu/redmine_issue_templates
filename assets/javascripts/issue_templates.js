@@ -299,6 +299,9 @@ ISSUE_TEMPLATE.prototype = {
     let checklistForm = document.getElementById('checklist_form')
     if (!checklistForm) return
 
+    // NOTE: If Checklist does not work fine, please confirm its version and the DOM element of
+    // checklist input field exists.
+    // If some difference, please report the issue or feedback to IssueTemplate's repository.
     try {
       for (let i = 0; i < list.length; i++) {
         let node = document.querySelector('span.checklist-item.new > span.checklist-edit-box > input.edit-box')
@@ -308,7 +311,7 @@ ISSUE_TEMPLATE.prototype = {
         }
       }
     } catch (e) {
-      // do nothing.
+      console.log(`NOTE: Checklist could not applied caused of this error. ${e.message} : ${e.message}`)
     }
   },
   escapeHTML: (val) => {
