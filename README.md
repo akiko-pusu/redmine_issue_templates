@@ -116,6 +116,18 @@ If you have any requests, bug reports, please use GitHub issues. <https://github
 
 ## Changelog
 
+### 1.0.0
+
+NOTE: **Migration is required**.
+Since ``Support Built-In / Custom Fields`` is an experimental feature, please **be careful** if you hope to try it.
+
+* Feature: Add feature to show template usage / example (#303)
+* Feature: Support Built-In / Custom Fields (#304)
+* Rewrite JavaSctipt code from jQuery into plain JavaScript.
+
+And some browsers may not work fine because Support Built-In / Custom Fields feature uses Vue.js for frontend.
+So feedback, issue report, suggestion highly appreciate!
+
 ### 0.3.7
 
 This is bugfix release to prevent the conflict with other plugins.
