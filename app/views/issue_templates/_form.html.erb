@@ -32,25 +32,22 @@
                       required: true,
                       label: l(:issue_description), class: 'wiki-edit' %>
     </p>
-
     <!-- for Checklist -->
     <% if checklist_enabled %>
         <p id='checklist_form'>
           <label>Checklist</label>
           <input type='text' id='checklist_text' class='edit-box'>
-          <span class='icon icon-add checklist-new-only save-new-by-button'
-                onclick='addCheckList()'>
-          </span>
+          <span class='icon icon-add checklist-new-only save-new-by-button' onclick='addCheckList()'></span>
           <ul class='checklist' style='padding-left: 180px;'>
             <% issue_template.checklist.each_with_index do |content, i| %>
-              <li id='checklist_<%= i %>'>
+                <li id='checklist_<%= i %>'>
                 <span class='text'>
                   <%= content %>
-                  <i class='icon icon-del' onclick='removeCheckList(this)'></a>
+                  <i class='icon icon-del' onclick='removeCheckList(this)'></i>
                 </span>
-                <input type='hidden' name='issue_template[checklists][]'
-                       id='issue_template_checklist' value='<%= content %>'>
-              </li>
+                  <input type='hidden' name='issue_template[checklists][]'
+                         id='issue_template_checklist' value='<%= content %>'>
+                </li>
             <% end %>
           </ul>
         </p>
@@ -362,6 +359,7 @@
 
     li.appendChild(hidden)
 
+    console.log('jjjj')
     let removeLink = document.createElement('i')
     removeLink.classList.add('icon', 'icon-del')
     span.appendChild(removeLink)
