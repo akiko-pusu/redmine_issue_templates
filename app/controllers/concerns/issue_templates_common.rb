@@ -113,6 +113,9 @@ module Concerns
         map[id] = value
       end
       map
+    rescue StandardError => e
+      logger&.info "core_fields_map_by_tracker_id failed due to this error: #{e.message}"
+      {}
     end
 
     def custom_fields_map_by_tracker_id(tracker_id = nil)
@@ -131,6 +134,9 @@ module Concerns
         map[id] = attributes
       end
       map
+    rescue StandardError => e
+      logger&.info "core_fields_map_by_tracker_id failed due to this error: #{e.message}"
+      {}
     end
   end
 end

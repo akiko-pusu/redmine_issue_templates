@@ -311,7 +311,7 @@ ISSUE_TEMPLATE.prototype = {
         }
       }
     } catch (e) {
-      console.log(`NOTE: Checklist could not applied caused of this error. ${e.message} : ${e.message}`)
+      console.log(`NOTE: Checklist could not be applied due to this error. ${e.message} : ${e.message}`)
     }
   },
   escapeHTML: (val) => {
@@ -348,24 +348,29 @@ ISSUE_TEMPLATE.prototype = {
     let ns = templateNS
     let builtinFieldsJson = template.builtin_fields_json
     if (builtinFieldsJson === undefined) return false
-    Object.keys(builtinFieldsJson).forEach(function (key) {
-      let value = builtinFieldsJson[key]
-      let element = document.getElementById(key)
 
-      if (/issue_custom_field_values/.test(key)) {
-        let name = key.replace(/(issue)_(\w+)_(\d+)/, '$1[$2][$3]')
-        let elements = document.querySelectorAll('[name^="' + name + '"]')
-        if (elements.length === 1) {
-          element = elements[0]
-        } else {
-          return ns.updateFieldValues(elements, value)
+    try {
+      Object.keys(builtinFieldsJson).forEach(function (key) {
+        let value = builtinFieldsJson[key]
+        let element = document.getElementById(key)
+
+        if (/issue_custom_field_values/.test(key)) {
+          let name = key.replace(/(issue)_(\w+)_(\d+)/, '$1[$2][$3]')
+          let elements = document.querySelectorAll('[name^="' + name + '"]')
+          if (elements.length === 1) {
+            element = elements[0]
+          } else {
+            return ns.updateFieldValues(elements, value)
+          }
         }
-      }
-      if (element === null) {
-        return
-      }
-      ns.updateFieldValue(element, value)
-    })
+        if (element === null) {
+          return
+        }
+        ns.updateFieldValue(element, value)
+      })
+    } catch (e) {
+      console.log(`NOTE: Builtin / custom fields could not be applied due to this error. ${e.message} : ${e.message}`)
+    }
   },
   updateFieldValue: (element, value) => {
     // In case field is a select element, scans its option values and marked 'selected'.
