@@ -1,4 +1,4 @@
-<table class="list template_list">
+<table class='list template_list'>
   <thead>
   <tr>
     <th><%=h l(:issue_template_name) %></th>
@@ -9,7 +9,7 @@
   </tr>
   </thead>
 <% issue_templates.each do |template| %>
-      <tr class="<%= cycle('odd', 'even') %> template_data">
+      <tr class='<%= cycle('odd', 'even') %> template_data'>
         <td>
           <%= template.title %>
         </td>
@@ -17,18 +17,23 @@
           <%= template.issue_title %>
         </td>
         <td>
-          <div class="template_tooltip_wrapper">
-            <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"></a>
-            <div class="wiki template_tooltip_body">
-              <span class="title"><%= template.title %></span>
+          <div class='template_tooltip_wrapper'>
+            <a class='icon template_tooltip' href='#' title='<%= l(:label_preview) %>'></a>
+            <div class='wiki template_tooltip_body'>
+              <span class='title'><%= template.title %></span>
               <%= textilizable(template.description) %>
+              <% if template.related_link.present? %>
+                <hr/>
+                <%= link_to template.link_title.present? ? template.link_title : l(:issue_template_related_link, default: 'Related link'),
+                    template.related_link, target: '_blank', rel: 'nofollow noopener', class: 'external' %>
+              <% end %>
             </div>
           </div>
         </td>
-        <td class="center"><%= checked_image template.is_default? %></td>
+        <td class='center'><%= checked_image template.is_default? %></td>
         <td>
-          <a data-issue-template-id="<%= template.id %>"
-             class="icon icon-test template-update-link"></a>
+          <i data-issue-template-id='<%= template.id %>'
+             class='icon icon-test template-update-link'></i>
         </td>
       </tr>
 <% end %>
@@ -41,23 +46,28 @@
           <%= template.issue_title %>
         </td>
         <td>
-          <div class="template_tooltip_wrapper">
-            <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"></a>
-            <div class="wiki template_tooltip_body">
+          <div class='template_tooltip_wrapper'>
+            <a class='icon template_tooltip' href='#' title='<%= l(:label_preview) %>'></a>
+            <div class='wiki template_tooltip_body'>
               <span class="title"><%= template.title %></span>
               <%= textilizable(template.description) %>
+              <% if template.related_link.present? %>
+                <hr/>
+                <%= link_to template.link_title.present? ? template.link_title : l(:issue_template_related_link, default: 'Related link'),
+                    template.related_link, target: '_blank', rel: 'nofollow noopener', class: 'external' %>
+              <% end %>
             </div>
           </div>
         </td>
-        <td class="center"><%= checked_image template == default_template %></td>
+        <td class='center'><%= checked_image template == default_template %></td>
         <td>
-          <a data-issue-template-id="<%= template.id %>"
-             class="icon icon-test template-update-link"></a>
+          <i data-issue-template-id='<%= template.id %>'
+             class='icon icon-test template-update-link'></i>
         </td>
       </tr>
 <% end %>
 <% global_issue_templates.each do |template| %>
-      <tr class="<%= cycle('odd', 'even') %> template_data">
+      <tr class='<%= cycle('odd', 'even') %> template_data'>
         <td>
           <%= template.title %>
         </td>
@@ -65,25 +75,34 @@
           <%= template.issue_title %>
         </td>
         <td>
-          <div class="template_tooltip_wrapper">
-            <a class="icon template_tooltip" href="#" title="<%= l(:label_preview) %>"></a>
-            <div class="wiki template_tooltip_body">
-              <span class="title"><%= template.issue_title %></span>
+          <div class='template_tooltip_wrapper'>
+            <a class='icon template_tooltip' href='#' title='<%= l(:label_preview) %>'></a>
+            <div class='wiki template_tooltip_body'>
+              <span class='title'><%= template.issue_title %></span>
               <%= textilizable(template.description) %>
+              <% if template.related_link.present? %>
+                <hr/>
+                <%= link_to template.link_title.present? ? template.link_title : l(:issue_template_related_link, default: 'Related link'),
+                    template.related_link, target: '_blank', rel: 'nofollow noopener', class: 'external' %>
+              <% end %>
             </div>
           </div>
         </td>
-        <td class="center"><%= checked_image template == default_template %></td>
+        <td class='center'><%= checked_image template == default_template %></td>
         <td>
-          <a data-issue-template-id="<%= template.id %>"
-             class="icon icon-test template-update-link template-global"></a>
+          <i data-issue-template-id='<%= template.id %>'
+             class='icon icon-test template-update-link template-global cursor: pointer;'></i>
         </td>
       </tr>
 <% end %>
 </table>
+
 <script type="text/javascript">
-$(document).ready(function () {
-  // set plugin
-  $('a.template-update-link').issueTemplate('updateTemplateSelect');
-});
+const templateElements = document.querySelectorAll('i.template-update-link')
+const templateNS = new ISSUE_TEMPLATE()
+Array.from(templateElements).forEach(el => {
+  el.addEventListener('click',  (event) => {
+    templateNS.updateTemplateSelect(event)
+  })
+})
 </script>

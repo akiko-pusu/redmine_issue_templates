@@ -1,58 +1,62 @@
-<div class="contextual">
+<div class='contextual'>
   <%= link_to_if_authorized l(:button_edit),
                             { controller: 'issue_templates', action: 'update', id: issue_template,
                               project_id: project },
+                            title: l(:button_edit),
                             class: 'icon icon-edit', accesskey: accesskey(:edit),
-                            onclick: "$('#edit-issue_template').show(); return false;" %>
+                            onclick: "document.getElementById('edit-issue_template').style.display = 'block'; return false;" %>
   <%= link_to l(:button_copy),
               { controller: 'issue_templates',
                 action: 'new', project_id: project, copy_from: issue_template.id },
-                class: 'icon icon-copy' %>
+                class: 'icon icon-copy', title: 'copy!' %>
   <%= link_to_if_authorized l(:button_delete),
                             { controller: 'issue_templates', action: 'destroy',
                               id: issue_template, project_id: project },
-                              data: {confirm: l(:template_remove_confirm,
-                              default: "Are you sure to remove this template? %{count} subprojects use this template.")},
                               title: l(:enabled_template_cannot_destroy, default: 'Only disabled template can be destroyed.'),
-                            method: 'delete', class: 'icon icon-del template-disabled-link', disabled: issue_template.enabled? %>
+                              data: { confirm: l(:template_remove_confirm,
+                              { count: child_project_used_count, default: 'Are you sure to remove this template? %{count} subprojects use this template.' }) },
+                            method: 'delete', class: 'icon icon-del template-disabled-link',
+                            disabled: issue_template.enabled?
+                            %>
   <%= link_to(l(:label_list_templates),
               { controller: 'issue_templates',
                 action: 'index',
                 project_id: project }, class: 'icon icon-template') %>
 </div>
 
-<h2 class="issue_template">
+<h2 class='issue_template'>
   <%= l(:issue_templates) %>: #<%= issue_template.id %> <%= issue_template.title %>
   <%= avatar(issue_template.author, size: '24') %>
 </h2>
 
-<%= render partial: "common/nodata", locals: { trackers: project.trackers } %>
+<%= render partial: 'common/nodata', locals: { trackers: project.trackers } %>
 <% if authorize_for('issue_templates', 'update') %>
-  <div id="edit-issue_template" style="<%= 'display:none;' if issue_template.valid? %>">
+  <div id='edit-issue_template'>
     <%= labelled_form_for :issue_template, issue_template,
                           url: { controller: 'issue_templates', action: 'update',
                                   project_id: project, id: issue_template },
                           html: { id: 'issue_template-form', class: nil, multipart: false } do |f| %>
 
         <%= render 'form', { f: f, checklist_enabled: checklist_enabled,
-                              issue_template: issue_template, project: project } %>
-        <div id="preview" class="wiki"></div>
+                              issue_template: issue_template, project: project,
+                              custom_fields: custom_fields, builtin_fields_enable: builtin_fields_enable } %>
+        <div id='preview' class='wiki'></div>
         <%= submit_tag l(:button_save) %>
         <%= link_to l(:button_cancel), { action: 'index' },
                       onclick: 'Element.hide("edit-issue_template"); return false;' %>
     <% end %>
     <hr/>
   </div>
-<% end %>
+<% else %>
 
 
-<div class="box tabular box-white">
+<div class='box tabular box-white'>
   <p>
     <label><%= l(:issue_template_name) %></label>
     <%= h issue_template.title %>
   </p>
-  <fieldset class="issue">
-    <legend class="issue"><%= l(:label_applied_for_issue) %></legend>
+  <fieldset class='issue'>
+    <legend class='issue'><%= l(:label_applied_for_issue) %></legend>
     <p><label><%= l(:label_tracker) %></label>
       <%= h issue_template.tracker.present? ? issue_template.tracker.name :
                 l(:orphaned_template, default: 'Orphaned template from tracker') %>
@@ -66,20 +70,20 @@
     </p>
 
     <p>
-      <strong style="margin-left: -100px;"><%= l(:issue_description) %></strong>
+      <strong style='margin-left: -100px;'><%= l(:issue_description) %></strong>
     </p>
 
-    <div class="wiki issue_template"><%= textilizable(issue_template.description) %></div>
+    <div class='wiki issue_template'><%= textilizable(issue_template.description) %></div>
     <!-- for Checklist -->
     <% if checklist_enabled %>
-        <p id="checklist_form">
+        <p id='checklist_form'>
           <label>Checklist</label>
           <ul class='checklist' style='padding-left: 180px;'>
           <% issue_template.checklist.each do |content| %>
               <li>
-                <span class="text"><%= content %></span>
-                <input type="hidden" name="issue_template[checklists][]"
-                       id="issue_template_checklist" value="<%= content %>">
+                <span class='text'><%= content %></span>
+                <input type='hidden' name='issue_template[checklists][]'
+                       id='issue_template_checklist' value='<%= content %>'>
               </li>
           <% end %>
           </ul>
@@ -92,6 +96,10 @@
     <%= issue_template.note.blank? ? l(:label_none) : issue_template.note %>
   </p>
 
+  <p><label><%= l(:issue_template_related_link, default: 'Related Link') %></label>
+    <%= issue_template.related_link.blank? ? l(:label_none) : issue_template.related_link %>
+  </p>
+
   <p><label><%= l(:field_is_default) %></label>
     <%= checked_image issue_template.is_default? %>
   </p>
@@ -102,8 +110,8 @@
 
   <p><label><%= l(:label_enabled_sharing) %></label>
     <%= checked_image issue_template.enabled_sharing? %>
-    <%= l(:label_number_of_projects_use_this_template, count: issue_template.used_projects.count,
-            default: "%{count} subprojects use this template.") unless issue_template.used_projects.count.zero? || !issue_template.enabled? %>
+    <%= l(:label_number_of_subprojects_use_this_template, {
+      count: child_project_used_count, default:  '%{count} subprojects use this template.....' }) %>
   </p>
 
   <p><label><%= l(:field_author) %></label>
@@ -114,5 +122,5 @@
   </p>
 
 </div>
-
-<%= render partial: "common/template_links" %>
+<% end %>
+<%= render partial: 'common/template_links' %>

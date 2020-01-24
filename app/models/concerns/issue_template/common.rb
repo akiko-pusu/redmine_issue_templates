@@ -17,6 +17,7 @@ module Concerns
 
         validates :title, presence: true
         validates :tracker, presence: true
+        validates :related_link, format: { with: URI::DEFAULT_PARSER.make_regexp }, allow_blank: true
 
         scope :enabled, -> { where(enabled: true) }
         scope :sorted, -> { order(:position) }
@@ -41,6 +42,9 @@ module Concerns
         after_destroy do |template|
           logger.info("[Destroy] #{self.class}: #{template.inspect}")
         end
+
+        # ActiveRecord::SerializationTypeMismatch may be thrown if non hash object is assigned.
+        serialize :builtin_fields_json, Hash
       end
 
       #
@@ -64,14 +68,21 @@ module Concerns
         end
       end
 
-      def template_json
+      def template_json(except: nil)
         template = {}
         template[self.class::Config::JSON_OBJECT_NAME] = generate_json
-        template.to_json(root: true)
+        return template.to_json(root: true) if except.blank?
+
+        template.to_json(root: true, except: [except])
+      end
+
+      def builtin_fields
+        builtin_fields_json.to_json
       end
 
       def generate_json
         result = attributes
+        result[:link_title] = link_title.presence || I18n.t(:issue_template_related_link, default: 'Related Link')
         result[:checklist] = checklist
         result.except('checklist_json')
       end

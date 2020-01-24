@@ -1,19 +1,19 @@
-<div class="contextual">
+<div class='contextual'>
   <%= link_to(l(:label_list_templates),
               { controller: 'note_templates',
                 action: 'index', project_id: project }, class: 'icon icon-template') %>
 </div>
-<h2 class="note_template"><%=h "#{l(:note_template)} / #{l(:button_add)}" %></h2>
+<h2 class='note_template'><%=h "#{l(:note_template)} / #{l(:button_add)}" %></h2>
 <% if project.trackers.any? %>
   <%= labelled_form_for :note_template,  @note_template,
                         url: { controller: 'note_templates', action: 'create', project_id: project },
                         html: { id: 'issue_template-form', class: nil, multipart: false } do |f| %>
 
       <%= render 'form', { f: f, note_template: note_template, project: project } %>
-      <div id="preview" class="wiki"></div>
+      <div id='preview' class='wiki'></div>
       <%= submit_tag l(:button_create) %>
       <%= link_to l(:button_cancel), { action: 'index'}, data: { confirm: l(:text_are_you_sure) } %>
   <% end %>
 <% end %>
 
-<%= render partial: "common/template_links" %>
+<%= render partial: 'common/template_links' %>

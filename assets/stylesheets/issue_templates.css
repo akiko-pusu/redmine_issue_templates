@@ -1,18 +1,3 @@
-#template_area a {
-    display: inline-block;
-    margin-right: .85em;
-}
-
-#template_help_content {
-    position: relative;
-    text-align: left;
-    margin-left: .5em;
-}
-
-#template_help_content p {
-    padding-left: 5px;
-}
-
 fieldset.issue {
     padding-top: 5px;
     padding-bottom: 5px;
@@ -33,19 +18,29 @@ div.issue_template {
     padding: 6px;
 }
 
+#issue_template_builtin_fields, #issue_template_json_setting_field {
+    width: 60%;
+}
+
 #template_status-area .flash_message {
     position: fixed;
     bottom: 0;
     right: 10px;
     margin-left: 10px;
     margin-top: 5pt;
-    margin-bottom: 12pt;
+    margin-bottom: 20pt;
     display: block;
     font-style: italic;
     padding: 8px 10px 8px 20px;
     color: #31708f;
     background: #eaf5fb url("../images/lamp.png") no-repeat 3px center;
     border: solid #a7e4fd 1px;
+}
+
+#field_information {
+    margin-left: 240px;
+    margin-right: 300px;
+    color: grey;
 }
 
 option.inherited {
@@ -92,6 +87,10 @@ option.global {
 
 .icon-template {
     background: url("../images/issue_templates.png") no-repeat 3px center;
+}
+
+.icon-hint {
+    background: url("../images/ticket.png") no-repeat 3px center;
 }
 
 a.template_tooltip {
@@ -156,15 +155,14 @@ a.template_tooltip {
 }
 
 table.list {
-    overflow: overlay;
-    border: 2px solid #e4e4e4;
+  overflow: overlay;
+  border: 2px solid #e4e4e4;
 }
 
 table.list.template_list {
-    width: 480px;
-    margin: 8px 0;
-    border: 2px solid #e4e4e4;
-    overflow: overlay;
+  margin: 8px 0;
+  border: 2px solid #e4e4e4;
+  overflow: overlay;
 }
 
 td.template_title {
@@ -207,6 +205,11 @@ select.issue_template {
     margin-bottom: 5px;
 }
 
+.popup p {
+    margin-left: 0;
+    padding-left: 0;
+}
+
 #revert_template {
     -webkit-transition: .3s ease-in-out;
     transition: .3s ease-in-out;
@@ -239,6 +242,14 @@ a.icon.icon-del[disabled=disabled] {
     opacity: .5;
 }
 
+#fields_setting_display_area {
+    margin-left: 180px;
+}
+
+#template-help-message-area > p {
+    padding-left: 4px;
+}
+
 /*------------ for responsive -----------------*/
 
 @media (max-width: 899px) {
@@ -253,6 +264,13 @@ a.icon.icon-del[disabled=disabled] {
     }
     #content>div.template_box>table>tbody>tr>td.hideable {
         display: none;
+    }
+    #fields_setting_display_area {
+        margin-left: 0;
+    }
+    #field_information {
+        margin-left: 0;
+        margin-right: 0;
     }
 }
 
@@ -278,79 +296,203 @@ a.icon-help:hover .tooltip-area {
     display: inline;
 }
 
-#template-help-wiki > p {
-    padding-left: 5px;
-}
-
-/*--------- Note for Template ------------*/
+/*--------- Note Template / Issue Template popup --------*/
 .overlay {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.7);
-  transition: opacity 500ms;
-  visibility: hidden;
-  opacity: 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(87, 87, 87, 0.311);
+    transition: opacity 500ms;
+    visibility: hidden;
+    opacity: 0;
+    overflow: visible;
+    width:100%;
+    height:100%;
+    z-index: -1;
 }
-.overlay:target {
-  visibility: visible;
-  opacity: 1;
-  z-index: 10;
+.overlay:target, .overlay.active {
+    visibility: visible;
+    opacity: 1;
+    z-index: 10;
 }
 
 .popup {
-  margin: 70px auto;
-  padding: 20px;
-  background: #fff;
-  border-radius: 5px;
-  width: 50%;
-  position: relative;
-  transition: all 5s ease-in-out;
+    margin: 100px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    width: 60%;
+    max-width: 860px;
+    min-width: 520px;
+    position: relative;
+    transition: all 5s ease-in-out;
 }
 
 .popup h2 {
-  margin-top: 0;
-  margin-bottom: 0;
-  padding: 10px;
-  color: #333;
-  background-color: #c6d9ec;
-  font-family: Tahoma, Arial, sans-serif;
+    margin-top: 0;
+    margin-bottom: 0;
+    color: #333;
+    background-color: #c6d9ec;
+    font-family: Tahoma, Arial, sans-serif;
 }
+
 .popup .close {
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  transition: all 200ms;
-  /* font-size: 30px; */
-  font-weight: bold;
-  text-decoration: none;
-  color: #333;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 20px;
+    right: 20px;
+    opacity: 0.8;
+    transition: all 200ms;
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #666;
+    line-height: initial;
 }
+
 .popup .close:hover {
-  color: #06D85F;
+    color: #06D85F;
+    opacity: 1;
 }
+
 .popup .content {
   max-height:50%;
   overflow: auto;
 }
 
-#note_template_memo {
-  width: 50%;
+.popup.small {
+    width: 500px;
+    text-align: center;
 }
 
+#note_template_memo {
+    width: 50%;
+}
+
+.light .popup {
+    border-color: #aaa;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+}
+
+.popup label {
+    margin-left: 0;
+    text-align: left;
+}
+
+.popup_header a.close {
+    margin-right: 8px;
+}
+
+.popup_header h2 {
+    font-size: 12pt;
+}
+
+.overlay .header_wrapper {
+    width: auto;
+    background-color: #c6d9ec;
+    padding: 6px;
+    margin-bottom: 20px;
+}
+
+.overlay .cancel {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    cursor: default;
+}
+
+/*--------- for Flash message --------*/
+.fadeout {
+    animation : fadeOut 5s;
+    animation-fill-mode: both;
+}
+
+@keyframes fadeOut {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+}
+/*--------- for Flash message --------*/
+
+/*--------- for Template related Link --------*/
 div.template_link_area {
-  margin-right: 10px;
-  border: rgb(202, 200, 197);
-  border-width: 1px;
-  border-style: solid;
-  padding-left: 10px;
-  padding-right: 40px;
-  padding-top: 4px;
-  padding-bottom: 4px;
+    margin-right: 10px;
+    border: rgb(202, 200, 197);
+    border-width: 1px;
+    border-style: solid;
+    padding-left: 10px;
+    padding-right: 40px;
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
 
 div.template_link_area label {
-  font-weight: bold;
+    font-weight: bold;
+}
+
+.template-update-link {
+    cursor: pointer;
+}
+/*--------- for Template related Link --------*/
+
+.overwrite_confirm_btn {
+    margin-top: 10px;
+    display: inline-block;
+    position: relative;
+    width: 100px;
+    padding: 0.8em;
+    text-align: center;
+    text-decoration: none;
+    color: #1B1B1B;
+    background: #fff;
+    border:1px solid rgb(165, 164, 164);
+    border-radius: 6px;
+}
+
+/*--------- for Overwrite Confirmation --------*/
+.overwrite_confirm_btn:hover {
+     background: rgb(190, 187, 187);
+     color: #fff;
+     cursor: pointer;
+     text-decoration: none;
+}
+
+#template_area > p a {
+    display: inline-block;
+    margin-right: .85em;
+}
+
+#template_help_content {
+    position: relative;
+    text-align: left;
+    margin-left: .5em;
+}
+
+#template_help_content p {
+    padding-left: 5px;
+}
+
+#template-help-wiki > p {
+    padding-left: 5px;
+}
+
+#filtered_templates_list > table div.wiki.template_tooltip_body p {
+    padding-left: 0;
+}
+
+ul.json-list {
+    width: 70%;
+    padding: 10px;
+    background-color: white;
+}
+
+ul.json-list li {
+    list-style: none;
+    line-height: 1.6em;
+    padding: 0.5em 0;
 }

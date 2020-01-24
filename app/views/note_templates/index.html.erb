@@ -1,28 +1,28 @@
-<h2 class="note_template"><%=h "#{l(:note_template)}" %></h2>
-<%= render partial: "common/nodata", locals: { trackers: tracker_ids } %>
-<div class="contextual note_templates">
+<h2 class='note_template'><%=h "#{l(:note_template)}" %></h2>
+<%= render partial: 'common/nodata', locals: { trackers: tracker_ids } %>
+<div class='contextual note_templates'>
   <%= link_to_if_authorized(l(:label_new_templates),
                             { controller: 'note_templates', action: 'new', project_id: @project },
                               class: 'icon icon-add') %>
 </div>
-<div style="clear:both;"></div>
+<div style='clear: both;'></div>
 
 <% if @notice -%>
-  <div class="flash notice"><%= @notice -%></div>
+  <div class='flash notice'><%= @notice -%></div>
 <% end -%>
 
 
 <% if @template_map.empty? %>
-    <div class="template_box">
+    <div class='template_box'>
       <%= l(:no_note_templates_for_this_project) %>
     </div>
 <% end %>
 
 <% @template_map.each_key do |tracker| %>
-    <div class="template_box">
-      <h3 class="template_tracker"><%= tracker.name %></h3>
+    <div class='template_box'>
+      <h3 class='template_tracker'><%= tracker.name %></h3>
 
-      <table class="list issues table-sortable">
+      <table class='list issues table-sortable'>
         <thead>
         <tr>
           <th>#</th>
@@ -39,7 +39,7 @@
         </thead>
         <tbody>
         <% @template_map[tracker].each do |note_template| %>
-            <tr class="<%= cycle('odd', 'even') %> note_template issue">
+            <tr class='<%= cycle('odd', 'even') %> note_template issue'>
               <td>
                 <%= link_to h(note_template.id),
                             { controller: :note_templates, action: 'show',
@@ -47,17 +47,17 @@
                             },
                             { title: note_template.memo } %>
               </td>
-              <td class="hideable template_title">
+              <td class='hideable template_title'>
                 <%= link_to h(note_template.name),
                             { controller: 'note_templates',
                               id: note_template.id, action: 'show' },
-                            { title: "#{html_escape(note_template.memo) }"} %>
+                            { title: "#{html_escape(note_template.memo)}" } %>
               </td>
               <td>
-                <div class="template_tooltip_wrapper">
-                  <a class="icon template_tooltip" title="<%= l(:label_preview) %>"></a>
-                  <div class="wiki template_tooltip_body">
-                    <span class="title"><%= note_template.name %></span>
+                <div class='template_tooltip_wrapper'>
+                  <a class='icon template_tooltip' title='<%= l(:label_preview) %>'></a>
+                  <div class='wiki template_tooltip_body'>
+                    <span class='title'><%= note_template.name %></span>
                     <%= textilizable(note_template.description) %>
                   </div>
                 </div>
@@ -65,10 +65,10 @@
               <td class='hideable'><%=h note_template.tracker.name %></td>
               <td class='hideable'><%=h note_template.author %></td>
               <td class='hideable'><%= format_time(note_template.updated_at)%> </td>
-              <td class="center"><%= checked_image note_template.enabled? %></td>
+              <td class='center'><%= checked_image note_template.enabled? %></td>
 
               <% if authorize_for('note_templates', 'edit') %>
-                <td class="buttons">
+                <td class='buttons'>
                   <%= reorder_handle(note_template,
                                       url: url_for(:controller => 'note_templates',
                                                   :action => 'update', :id => note_template.id,
@@ -81,8 +81,9 @@
       </table>
     </div>
     <%= javascript_tag do %>
-        $(function() { $("table.table-sortable tbody").positionedItems(); });
+      // NOTE: Sortable feature depends on Redmine's sorting jQuery plugin.
+      $(function() { $('table.table-sortable tbody').positionedItems() })
     <% end %>
 <% end %>
-<%= render partial: "common/template_links" %>
+<%= render partial: 'common/template_links' %>
 

@@ -1,24 +1,24 @@
-<h2 class="global_issue_template"><%=h "#{l(:global_issue_templates)}" %></h2>
-<%= render partial: "common/nodata", locals: { trackers: trackers } %>
-<div class="contextual issue_templates">
+<h2 class='global_issue_template'><%=h "#{l(:global_issue_templates)}" %></h2>
+<%= render partial: 'common/nodata', locals: { trackers: trackers } %>
+<div class='contextual issue_templates'>
   <%= link_to(l(:label_new_templates),
               { controller: 'global_issue_templates', action: 'new' }, class: 'icon icon-add') %>
   <%= link_to(l(:label_settings),
               { controller: 'settings', action: 'plugin', id: 'redmine_issue_templates' },
               class: 'issue_template icon plugins') %>
 </div>
-<div style="clear:both;"></div>
+<div style='clear: both;'></div>
 
 <% if template_map.blank? %>
-    <div class="template_box">
+    <div class='template_box'>
       <%= l(:no_issue_templates_for_this_redmine) %>
     </div>
 <% end %>
 <% template_map.each_key do |tracker| %>
-    <div class="template_box">
-      <h3 class="template_tracker"><%= tracker.name %></h3>
+    <div class='template_box'>
+      <h3 class='template_tracker'><%= tracker.name %></h3>
 
-      <table class="list issues ui-sortable table-sortable">
+      <table class='list issues ui-sortable table-sortable'>
         <thead>
         <tr>
           <th>#</th>
@@ -34,10 +34,10 @@
         </thead>
         <tbody>
         <% template_map[tracker].sorted.each do |issue_template| %>
-            <tr class="<%= cycle('odd', 'even') %> issue_template issue">
+            <tr class='<%= cycle('odd', 'even') %> issue_template issue'>
               <td><%= link_to h(issue_template.id), { controller: 'global_issue_templates',
                                                       id: issue_template.id, action: 'show' },
-                              { title: issue_template.title}  %>
+                              { title: issue_template.title } %>
               </td>
               <td class='hideable template_title'>
                 <%= link_to h(issue_template.title), { controller: 'global_issue_templates',
@@ -45,11 +45,16 @@
                               { title: "#{html_escape(issue_template.note)}" } %>
               </td>
               <td>
-                <div class="template_tooltip_wrapper">
-                  <a class="icon template_tooltip" title="<%= l(:label_preview) %>"></a>
-                  <div class="wiki template_tooltip_body">
-                    <span class="title"><%= issue_template.title %></span>
+                <div class='template_tooltip_wrapper'>
+                  <a class='icon template_tooltip' title='<%= l(:label_preview) %>'></a>
+                  <div class='wiki template_tooltip_body'>
+                    <span class='title'><%= issue_template.title %></span>
                     <%= textilizable(issue_template.description) %>
+                    <% if issue_template.related_link.present? %>
+                      <hr/>
+                      <%= link_to issue_template.link_title.present? ? issue_template.link_title : l(:issue_template_related_link, default: 'Related link'),
+                          issue_template.related_link, target: '_blank', rel: 'nofollow noopener', class: 'external' %>
+                    <% end %>
                   </div>
                 </div>
                 </a>
@@ -57,10 +62,10 @@
               <td class='hideable'><%=h issue_template.tracker.name %></td>
               <td class='hideable'><%=h issue_template.author %></td>
               <td class='hideable'><%= format_time(issue_template.updated_on)%> </td>
-              <td class="center"><%= checked_image issue_template.is_default? %></td>
-              <td class="center"><%= checked_image issue_template.enabled? %></td>
+              <td class='center'><%= checked_image issue_template.is_default? %></td>
+              <td class='center'><%= checked_image issue_template.enabled? %></td>
 
-              <td class="buttons">
+              <td class='buttons'>
                 <%= reorder_handle(issue_template, :url => url_for({ controller: 'global_issue_templates',
                                                              id: issue_template.id, action: 'update' })) %>
               </td>
@@ -71,12 +76,17 @@
     </div>
 
     <%= javascript_tag do %>
-        $(function() { $("table.table-sortable tbody").positionedItems(); });
+      // NOTE: Sortable feature depends on Redmine's sorting jQuery plugin.
+      $(function() { $('table.table-sortable tbody').positionedItems() })
     <% end %>
 <% end %>
 
-<%= link_to l(:orphaned_templates, default: 'Orphaned Templates'), orphaned_templates_global_issue_templates_path, remote: true,
-            id: 'orphaned_template_link', class: 'orphaned_template_link collapsible collapsed template-help'
-%>
-<div id="orphaned_templates" style="display: none"></div>
+<a id='orphaned_template_link' class='icon template_tooltip orphaned_template_link template-help collapsible collapsed'
+  title='<%= l(:orphaned_templates) %>'
+  data-template-help-target='orphaned_templates'
+  data-url='<%= orphaned_templates_global_issue_templates_path %>'>
+  <%= l(:orphaned_templates, default: 'Orphaned Templates') %>
+</a>
+
+<div id='orphaned_templates' style='display: none'></div>
 

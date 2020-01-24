@@ -51,7 +51,7 @@ api.array :issue_templates do
       api.position template.position
       api.updated_on template.updated_on
       api.created_on template.created_on
-      api.updated_on template.updated_on 
+      api.updated_on template.updated_on
     end
   end
 end

@@ -14,6 +14,15 @@ RUN apt-get install -qq -y \
     sqlite3 default-libmysqlclient-dev
 RUN apt-get install -qq -y build-essential libc6-dev
 
+# for e2e test env
+RUN sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+RUN apt-get update && apt-get install -y google-chrome-stable
+RUN google-chrome --version | perl -pe 's/([^0-9]+)([0-9]+)(\.[0-9]+).+/$2/g' > chrome-version-major
+RUN curl https://chromedriver.storage.googleapis.com/LATEST_RELEASE_`cat chrome-version-major` > chrome-version
+RUN curl -O -L http://chromedriver.storage.googleapis.com/`cat chrome-version`/chromedriver_linux64.zip && rm chrome-version*
+RUN unzip chromedriver_linux64.zip && mv chromedriver /usr/local/bin
+
 RUN cd /tmp && svn co http://svn.redmine.org/redmine/trunk redmine
 WORKDIR /tmp/redmine
 
