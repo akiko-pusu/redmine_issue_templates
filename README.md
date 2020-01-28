@@ -5,7 +5,7 @@
 [![Sider](https://img.shields.io/badge/Special%20Thanks!-Sider-blue.svg?)](https://sider.review/features)
 
 Plugin to generate and use issue templates for each project to assist issue
-creation. The latest version 1.0.x **is not conpatible with IE11**. (Related: #310)
+creation. The latest version 1.0.x **is not compatible with IE11**. (Related: #310)
 Please use version 0.3.7 (uing jQuery version) as a stable release for Redmine4.x.
 
 ## Repository
@@ -118,7 +118,7 @@ If you have any requests, bug reports, please use GitHub issues. <https://github
 
 ### 1.0.0
 
-RESTRICTION: This version **is not conpatible with IE11**. (Related: #310)
+RESTRICTION: This version **is not compatible with IE11**. (Related: #310)
 Please use version 0.3.7 (uing jQuery version) if you need.
 
 NOTE: **Migration is required**.
