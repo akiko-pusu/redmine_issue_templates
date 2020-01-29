@@ -32,29 +32,29 @@
     </p>
     <!-- for Checklist -->
     <% if checklist_enabled %>
-        <p id='checklist_form'>
-          <label>Checklist</label>
-          <input type='text' id='checklist_text' class='edit-box'>
-          <span class='icon icon-add checklist-new-only save-new-by-button' onclick='addCheckList()'></span>
-          <ul class='checklist' style='padding-left: 180px;'>
-            <% issue_template.checklist.each_with_index do |content, i| %>
-                <li id='checklist_<%= i %>'>
-                <span class='text'>
-                  <%= content %>
-                  <i class='icon icon-del' onclick='removeCheckList(this)'></i>
-                </span>
-                  <input type='hidden' name='global_issue_template[checklists][]'
-                         id='global_issue_template_checklist' value='<%= content %>'>
-                </li>
-            <% end %>
-          </ul>
-        </p>
+      <p id='checklist_form'>
+        <label>Checklist</label>
+        <input type='text' id='checklist_text' class='edit-box'>
+        <span class='icon icon-add checklist-new-only save-new-by-button' onclick='addCheckList()'></span>
+        <ul class='checklist' style='padding-left: 180px;'>
+          <% issue_template.checklist.each_with_index do |content, i| %>
+            <li id='checklist_<%= i %>'>
+              <span class='text'>
+                <%= content %>
+                <i class='icon icon-del' onclick='removeCheckList(this)'></i>
+              </span>
+              <input type='hidden' name='global_issue_template[checklists][]'
+                     id='global_issue_template_checklist' value='<%= content %>'>
+            </li>
+          <% end %>
+        </ul>
+      </p>
     <% end %>
 
     <!-- for Builtin Fields -->
     <!-- buildin field Generator -->
     <% if builtin_fields_enable %>
-      <div id="json_generator">
+    <div id="json_generator">
       <p>
         <label><%= l(:label_select_field, default: 'Select a field') %></label>
         <select v-model='newItemTitle'>
@@ -68,8 +68,8 @@
            <%= l(:help_for_this_field) %>
           <span class='tooltip-area' id='builtin_fields_help_area'></span>
         </a>
-　　　　　</p>
-        <p>
+      </p>
+      <p>
           <label><%= l(:field_value) %></label>
           <textarea id='issue_template_json_setting_field' v-if='fieldFormat() == "text"'
               rows='1' placeholder='<%= l(:enter_value, default: 'Please enter a value') %>' v-model='newItemValue'>
@@ -87,31 +87,29 @@
           <span style='margin-left: 4px;' class='icon icon-add' v-on:click='addField(newItemTitle, newItemValue)'>
             <%= l(:button_add) %>
           </span>
-        </p>
-        <div id='field_information' class='wiki' v-if='newItemTitle != ""'>
-          <b><%= l(:label_field_information, default: 'Field information') %></b>
-          <pre>{{ customFields[newItemTitle] }}</pre>
-        </div>
-        <div id='fields_setting_display_area'>
-          <ul class='json-list' v-if='items.length > 0'>
-            <li v-for='item in items'>
-              <span v-if='customFields[item.title]'>
-                <b>{{ customFields[item.title].name }}</b>: {{ item.value }} / {{ item.title }}
-              </span>
-              <span v-if='!customFields[item.title]'>
-                <i class='issue_template help_content'>
-                  <%= l(:unavailable_fields_for_this_tracker, default: 'Unavailable field for this tarcker') %>
-                : {{ item.value }} / {{ item.title }}
-                </i>
-              </span>
-              <i class='icon icon-del' v-on:click='deleteField(item)'></i>
-            </li>
-          </ul>
-          <pre id='builtin_fields_data_via_vue' style='display: none;'>{{ items }}</pre>
-          <span class='icon icon-reload' id='reset-json' v-on:click='loadField()'><%= l(:button_reset) %></span>
-          <span class='icon icon-checked' id='paste-json'><%= l(:button_apply) %></span>
-        </div>
       </p>
+      <div id='field_information' class='wiki' v-if='newItemTitle != ""'>
+        <b><%= l(:label_field_information, default: 'Field information') %></b>
+        <pre>{{ customFields[newItemTitle] }}</pre>
+      </div>
+      <div id='fields_setting_display_area'>
+        <ul class='json-list' v-if='items.length > 0'>
+          <li v-for='item in items'>
+            <span v-if='customFields[item.title]'>
+              <b>{{ customFields[item.title].name }}</b>: {{ item.value }} / {{ item.title }}
+            </span>
+            <span v-if='!customFields[item.title]'>
+              <i class='issue_template help_content'>
+                <%= l(:unavailable_fields_for_this_tracker, default: 'Unavailable field for this tarcker') %>
+              : {{ item.value }} / {{ item.title }}
+              </i>
+            </span>
+            <i class='icon icon-del' v-on:click='deleteField(item)'></i>
+          </li>
+        </ul>
+        <pre id='builtin_fields_data_via_vue' style='display: none;'>{{ items }}</pre>
+        <span class='icon icon-reload' id='reset-json' v-on:click='loadField()'><%= l(:button_reset) %></span>
+        <span class='icon icon-checked' id='paste-json'><%= l(:button_apply) %></span>
       </div>
       <!-- buildin field Generator -->
       <p style='opacity: 0.6;'>
@@ -122,6 +120,7 @@
       <div id='builtin_fields_help_content' class='wiki' style='display: none;'>
         <%= l(:label_builtin_fields_help_message, default: 'Enter builtin filds or custom fields default values with JSON format. ') %>
       </div>
+    </div>
     <% end %>
     <!-- for Builtin Fields -->
 
@@ -315,11 +314,18 @@
         return fields[title].possible_values
       }
     },
-    mounted: function(){
+    mounted: function() {
       const tracker_pulldown = document.getElementById('global_issue_template_tracker_id')
       if (tracker_pulldown) {
+        if (tracker_pulldown.value === '') {
+          this.$el.style.display = 'none'
+        }
         tracker_pulldown.addEventListener('change', event => {
-          if (event.target.value === '') return
+          if (event.target.value === '') {
+            this.$el.style.display = 'none'
+            return
+          }
+          this.$el.style.display = 'block'
           const tracker_id = event.target.value
           let url = baseUrl + '?tracker_id=' + tracker_id + '&template_id=' + template_id
           fetch(url)
