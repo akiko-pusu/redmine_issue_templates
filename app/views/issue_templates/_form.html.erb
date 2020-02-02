@@ -11,6 +11,7 @@
 
           <%= h issue_template.tracker.present? ? issue_template.tracker.name :
                     l(:orphaned_template, default: 'Orphaned template from tracker') %>
+
       <% else %>
           <%= f.select :tracker_id, template_target_trackers(project, issue_template),
                        required: true, label: l(:label_tracker), selected: issue_template.tracker.id %>
@@ -30,33 +31,33 @@
     <p>
       <%= f.text_area :description, cols: 78, rows: 12,
                       required: true,
-                      label: l(:issue_description), class: 'wiki-edit' %>
+                      label: l(:issue_description), class: 'wiki-edit', style: 'overflow: auto;' %>
     </p>
     <!-- for Checklist -->
     <% if checklist_enabled %>
-        <p id='checklist_form'>
-          <label>Checklist</label>
-          <input type='text' id='checklist_text' class='edit-box'>
-          <span class='icon icon-add checklist-new-only save-new-by-button' onclick='addCheckList()'></span>
-          <ul class='checklist' style='padding-left: 180px;'>
-            <% issue_template.checklist.each_with_index do |content, i| %>
-              <li id='checklist_<%= i %>'>
-                <span class='text'>
-                  <%= content %>
-                  <i class='icon icon-del' onclick='removeCheckList(this)'></i>
-                </span>
-                <input type='hidden' name='issue_template[checklists][]'
-                       id='issue_template_checklist' value='<%= content %>'>
-              </li>
-            <% end %>
-          </ul>
-        </p>
+      <p id='checklist_form'>
+        <label>Checklist</label>
+        <input type='text' id='checklist_text' class='edit-box'>
+        <span class='icon icon-add checklist-new-only save-new-by-button' onclick='addCheckList()'></span>
+        <ul class='checklist' style='padding-left: 180px;'>
+          <% issue_template.checklist.each_with_index do |content, i| %>
+            <li id='checklist_<%= i %>'>
+              <span class='text'>
+                <%= content %>
+                <i class='icon icon-del' onclick='removeCheckList(this)'></i>
+              </span>
+              <input type='hidden' name='issue_template[checklists][]'
+                     id='issue_template_checklist' value='<%= content %>'>
+            </li>
+          <% end %>
+        </ul>
+      </p>
     <% end %>
 
     <!-- for Builtin Fields -->
     <!-- buildin field Generator -->
     <% if builtin_fields_enable %>
-      <div id="json_generator">
+    <div id="json_generator">
       <p>
         <label><%= l(:label_select_field, default: 'Select a field') %></label>
         <select v-model='newItemTitle'>
@@ -70,8 +71,8 @@
            <%= l(:help_for_this_field) %>
           <span class='tooltip-area' id='builtin_fields_help_area'></span>
         </a>
-　　　　　</p>
-        <p>
+      </p>
+      <p>
           <label><%= l(:field_value) %></label>
           <textarea id='issue_template_json_setting_field' v-if='fieldFormat() == "text"'
               rows='1' placeholder='<%= l(:enter_value, default: 'Please enter a value') %>' v-model='newItemValue'>
@@ -86,35 +87,32 @@
           <select v-model='newItemValue' v-if='fieldFormat() == "list" || fieldFormat() == "bool"'>
             <option v-for="value in possibleValues()">{{ value }}</option>
           </select>
-
           <span style='margin-left: 4px;' class='icon icon-add' v-on:click='addField(newItemTitle, newItemValue)'>
             <%= l(:button_add) %>
           </span>
-        </p>
-        <div id='field_information' class='wiki' v-if='newItemTitle != ""'>
-          <b><%= l(:label_field_information, default: 'Field information') %></b>
-          <pre>{{ customFields[newItemTitle] }}</pre>
-        </div>
-        <div id='fields_setting_display_area'>
-          <ul class='json-list' v-if='items.length > 0'>
-            <li v-for='item in items'>
-              <span v-if='customFields[item.title]'>
-                <b>{{ customFields[item.title].name }}</b>: {{ item.value }} / {{ item.title }}
-              </span>
-              <span v-if='!customFields[item.title]'>
-                <i class='issue_template help_content'>
-                  <%= l(:unavailable_fields_for_this_tracker, default: 'Unavailable field for this tarcker') %>
-                : {{ item.value }} / {{ item.title }}
-                </i>
-              </span>
-              <i class='icon icon-del' v-on:click='deleteField(item)'></i>
-            </li>
-          </ul>
-          <pre id='builtin_fields_data_via_vue' style='display: none;'>{{ items }}</pre>
-          <span class='icon icon-reload' id='reset-json' v-on:click='loadField()'><%= l(:button_reset) %></span>
-          <span class='icon icon-checked' id='paste-json'><%= l(:button_apply) %></span>
-        </div>
       </p>
+      <div id='field_information' class='wiki' v-if='newItemTitle != ""'>
+        <b><%= l(:label_field_information, default: 'Field information') %></b>
+        <pre>{{ customFields[newItemTitle] }}</pre>
+      </div>
+      <div id='fields_setting_display_area'>
+        <ul class='json-list' v-if='items.length > 0'>
+          <li v-for='item in items'>
+            <span v-if='customFields[item.title]'>
+              <b>{{ customFields[item.title].name }}</b>: {{ item.value }} / {{ item.title }}
+            </span>
+            <span v-if='!customFields[item.title]'>
+              <i class='issue_template help_content'>
+                <%= l(:unavailable_fields_for_this_tracker, default: 'Unavailable field for this tarcker') %>
+              : {{ item.value }} / {{ item.title }}
+              </i>
+            </span>
+            <i class='icon icon-del' v-on:click='deleteField(item)'></i>
+          </li>
+        </ul>
+        <pre id='builtin_fields_data_via_vue' style='display: none;'>{{ items }}</pre>
+        <span class='icon icon-reload' id='reset-json' v-on:click='loadField()'><%= l(:button_reset) %></span>
+        <span class='icon icon-checked' id='paste-json'><%= l(:button_apply) %></span>
       </div>
       <!-- buildin field Generator -->
       <p style='opacity: 0.6;'>
@@ -125,14 +123,15 @@
       <div id='builtin_fields_help_content' class='wiki' style='display: none;'>
         <%= l(:label_builtin_fields_help_message, default: 'Enter builtin filds or custom fields default values with JSON format. ') %>
       </div>
-      <% end %>
+    </div>
+    <% end %>
     <!-- for Builtin Fields -->
 
   </fieldset>
   <p>
     <%= f.text_area :note, cols: 70, rows: 3,
                     required: false,
-                    label: l(:issue_template_note) %>
+                    label: l(:issue_template_note), style: 'overflow:auto;' %>
   </p>
 
   <p><%= f.text_field :related_link, type: 'url',
@@ -158,22 +157,23 @@
 
   <p><%= f.check_box :is_default, label: l(:field_is_default) %>
     <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
+       data-template-help-target='isdefault_help_content'
        data-tooltip-area='isdefault_help_area'
        data-tooltip-content='isdefault_help_content'>
       <%= l(:help_for_this_field) %>
       <span class='tooltip-area' id='isdefault_help_area'></span>
     </a>
   </p>
-  <p>
-    <%= f.check_box :enabled, label: l(:label_enabled) %>
+
+  <p><%= f.check_box :enabled, label: l(:label_enabled) %>
     <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
+       data-template-help-target='enabled_help_content'
        data-tooltip-area='enabled_help_area'
        data-tooltip-content='enabled_help_content'>
       <%= l(:help_for_this_field) %>
       <span class='tooltip-area' id='enabled_help_area'></span>
     </a>
   </p>
-
   <p>
     <%= f.check_box :enabled_sharing, label: l(:label_enabled_sharing) %>
     <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
@@ -188,202 +188,41 @@
 
 <%= wikitoolbar_for 'issue_template_description' %>
 
-<!-- help content -->
+
+<!-- tooltip content -->
 <div id='issue_title_help_content' class='wiki' style='display: none;'>
   <%= l(:help_for_issue_title) %>
 </div>
-
-<div id='related_link_help_content' class='wiki' style='display: none;'>
-  <%= l(:label_related_link_help_message, default: 'If there are some example pages or sample issues which using issue template, please specify the link. So operator can see them as an usage or example for template.') %>
-</div>
-
-<div id='link_title_help_content' class='wiki' style='display: none;'>
-  <%= l(:label_link_title_help_message, default: 'If there are some example pages or sample issues which using issue template, please specify the link. So operator can see them as an usage or example for template.') %>
-</div>
-
 <div id='isdefault_help_content' class='wiki' style='display: none;'>
   <%= l(:label_isdefault_help_message) %>
 </div>
-
+<div id='related_link_help_content' class='wiki' style='display: none;'>
+  <%= l(:label_related_link_help_message, default: 'If there are some example pages or sample issues which using issue template, please specify the link. So operator can see them as an usage or example for template.') %>
+</div>
+<div id='link_title_help_content' class='wiki' style='display: none;'>
+  <%= l(:label_link_title_help_message, default: 'If there are some example pages or sample issues which using issue template, please specify the link. So operator can see them as an usage or example for template.') %>
+</div>
 <div id='enabled_help_content' class='wiki' style='display: none;'>
   <%= l(:label_enabled_help_message) %>
 </div>
-
 <div id='enabledsharing_help_content' class='wiki' style='display: none;'>
   <%= l(:label_enabledshaing_help_message) %>
 </div>
-<!-- help content -->
-
-<% if builtin_fields_enable %>
-<%= javascript_include_tag('vue.min', plugin: 'redmine_issue_templates') %>
+<!-- tooltip content -->
 <script>
   const baseUrl = "<%= url_for(controller: 'issue_templates', action: 'load_selectable_fields') %>"
   const template_id = "<%= issue_template&.id || '' %>"
-  const vm = new Vue({
-    el: '#json_generator',
-    data: {
-      items: [],
-      customFields: {},
-      newItemTitle: '',
-      newItemValue: '',
-      api_builtin_fields: {},
-      api_custom_fields: {}
-    },
-    methods: {
-      addField: function(newFieldName, newFieldValue) {
-        if (newFieldName === '' || newFieldValue === '') {
-          return
-        }
-        this.items.push({
-          title: newFieldName,
-          value: newFieldValue
-        });
-        this.newFieldName = ''
-        this.newFieldValue = ''
-      },
-      deleteField: function(target) {
-        this.items = this.items.filter(function (item) {
-          return item !== target
-        });
-      },
-      loadField: function() {
-        this.api_builtin_fields = <%= issue_template.builtin_fields.html_safe %>
-        this.api_custom_fields = <%= custom_fields.html_safe %>
-        this.items = []
-        if (this.api_builtin_fields) {
-          for (const [key, value] of Object.entries(this.api_builtin_fields)) {
-            this.items.push({
-              title: key,
-              value: value
-            })
-          }
-        }
-        // { "issue_priority_id":"Priority", "issue_start_date":"Start date" }
-        if (this.api_custom_fields) {
-          for (const [key, value] of Object.entries(this.api_custom_fields)) {
-
-            this.customFields[key] = value
-          }
-        }
-      },
-      updateSelectableField: function() {
-        let tmpFields = {}
-        if (this.api_custom_fields) {
-          for (const [key, value] of Object.entries(this.api_custom_fields)) {
-            tmpFields[key] = value
-          }
-        }
-        tmpFields
-        this.customFields = tmpFields
-        this.customFields
-      },
-      fieldFormat: function() {
-        const fields = this.customFields
-        const title = this.newItemTitle
-        if (fields[title] && fields[title].field_format) {
-          const format = fields[title].field_format
-          if (format == 'date' || format == 'ratio' || format == 'list' || format == 'bool') {
-            return fields[title].field_format
-          }
-        }
-        return 'text'
-      },
-      possibleValues: function() {
-        const fields = this.customFields
-        const title = this.newItemTitle
-        return fields[title].possible_values
-      }
-    },
-    mounted: function(){
-      const tracker_pulldown = document.getElementById('issue_template_tracker_id')
-      if (tracker_pulldown) {
-        document.getElementById('issue_template_tracker_id').addEventListener('change', event => {
-          if (event.target.value === '') return
-          const tracker_id = event.target.value
-          let url = baseUrl + '?tracker_id=' + tracker_id + '&template_id=' + template_id
-          fetch(url)
-            .then((response) => {
-              return response.text()
-            })
-            .then((data) => {
-              let obj = JSON.parse(data)
-              this.api_custom_fields = obj.custom_fields
-              this.updateSelectableField()
-          })
-        })
-      }
-      this.loadField()
-    },
-  })
+  const template_type = 'issue_template'
+  const tracker_pulldown_id = template_type + '_tracker_id'
+  const base_builtin_fields = <%= issue_template.builtin_fields.html_safe %>
+  const base_custom_fields = <%= custom_fields.html_safe %>
 </script>
+
+<% if builtin_fields_enable %>
+<%= javascript_include_tag('vue.min', plugin: 'redmine_issue_templates') %>
+<%= javascript_include_tag('template_fields', plugin: 'redmine_issue_templates') %>
 <% end %>
 
-<script type='text/javascript'>
-  const removeCheckList = (obj) => {
-    let target = obj.closest('li')
-    target.remove()
-  }
-
-  const addCheckList = () => {
-    let checkListInputText = document.getElementById('checklist_text')
-    let text = checkListInputText.value
-    if (text === '') return false
-
-    let checkListItems = document.getElementsByClassName('checklist-item')
-    // NOTE: some, find, every and forEach method scan all the element and not exit this function via return.
-    for (let i = 0; i < checkListItems.length; i++) {
-      let elem = checkListItems[i]
-      if (text === elem.value) {
-        return
-      }
-    }
-
-    addCheckListItem(text)
-    checkListInputText.value = ''
-  }
-
-  const addCheckListItem = (value) => {
-    let li = document.createElement('li')
-    let span = document.createElement('span')
-    span.classList.add('text')
-
-    let checkListText = document.createTextNode(value)
-    span.appendChild(checkListText);
-
-    let hidden = document.createElement('input')
-    hidden.classList.add('checklist-item')
-    hidden.value = value
-    hidden.setAttribute('type', 'hidden')
-    hidden.setAttribute('id', 'issue_template_checklist')
-    hidden.setAttribute('name', 'issue_template[checklists][]')
-
-    li.appendChild(hidden)
-
-    let removeLink = document.createElement('i')
-    removeLink.classList.add('icon', 'icon-del')
-    span.appendChild(removeLink)
-
-    li.appendChild(span)
-
-    let checklist = document.querySelector('ul.checklist')
-    checklist.appendChild(li)
-
-    removeLink.addEventListener('click', (event) => {
-      removeCheckList(event.target)
-    }, false)
-  }
-
-  const copyJson = document.getElementById('paste-json')
-  if (copyJson) {
-    copyJson.addEventListener('click', (event) => {
-      const data = document.getElementById('builtin_fields_data_via_vue')
-      if (data) {
-        const text = data.innerText
-        let jsonObj = JSON.parse(text)
-        let convertObj = {}
-        jsonObj.forEach(item => { convertObj[item.title] = item.value })
-        document.getElementById('issue_template_builtin_fields').value = JSON.stringify(convertObj)
-      }
-    })
-  }
-</script>
+<% if checklist_enabled %>
+<%= javascript_include_tag('template_checklists', plugin: 'redmine_issue_templates') %>
+<% end %>
