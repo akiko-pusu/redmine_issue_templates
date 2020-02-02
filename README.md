@@ -125,6 +125,7 @@ NOTE: **Migration is required**.
 Since ``Support Built-In / Custom Fields`` is an experimental feature, please **be careful** if you hope to try it.
 
 * Feature: Add feature to show template usage / example (#303)
+  * Using Vue.js v2.6.11
 * Feature: Support Built-In / Custom Fields (#304)
 * Rewrite JavaSctipt code from jQuery into plain JavaScript.
 
