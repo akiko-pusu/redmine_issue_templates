@@ -257,7 +257,7 @@ a.icon.icon-del[disabled=disabled] {
 }
 
 /*---- help tooltip --*/
-a.icon-help {
+a.icon-help.template-help {
     cursor: help;
 }
 
