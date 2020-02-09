@@ -1,25 +1,89 @@
 # Korean translation
 ko:
-  issue_templates: 탬플릿
-  issue_template: 일감 탬플릿
+  issue_templates: 템플릿
+  issue_template: 일감 템플릿
   issue_template_note: 메모
-  label_enabled: "활성화"
-  label_disabled: "비활성화"
-  label_help_message: "탬플릿에 대해서"
-  label_show_help_message: "도움말을 표시합니다."
-  about_help_message: "프로젝트마다 탬플릿에 관한 도움을 설정할 수 있습니다."
-  close_help: "도움말을 닫습니다."
-  about_template_help_message: "프로젝트마다 탬플릿에 대한 도움말을 표시합니다."
-  label_enabled_help_message: "활성화을 체크하면 탬플릿을 사용할 수 있습니다. 탬플릿이 미완성인 경우는 체크하지 마십시오."
-  label_list_templates: "목록"
-  label_new_templates: "신규작성"
-  issue_template_name: "탬플릿 이름"
+  label_enabled: 활성화
+  label_disabled: 비활성화
+  label_help_message: 템플릿에 대하여
+  label_show_help_message: 일감을 생성/수정할 때 도움말을 표시합니다.
+  about_help_message: 프로젝트마다 템플릿에 대한 사용자 정의 도움말을 설정할 수 있습니다.
+  close_help: 도움말을 닫습니다.
+  about_template_help_message: 이 프로젝트에서 일감 템플릿에 대한 지침을 볼 수 있습니다.
+  label_enabled_help_message: 이 템플릿을 활성화하기 위한 체크 상자. 아직 이 템플릿을 완성하지 않았다면 이 상자를 체크하지 마세요.
+  label_list_templates: "템플릿 목록"
+  label_new_templates: "템플릿 추가"
+  issue_template_name: "템플릿 이름"
   issue_description: "일감 본문"
   issue_title: "일감 제목"
-  label_applied_for_issue: "적용항목:"
-  help_for_issue_title: "일감 제목을 설정하면 탬플릿을 사용할 때 자동으로 일감 제목에 설정됩니다."
-  help_for_this_field: "도움말"
-  permission_manage_issue_templates: "탬플릿 관리"
-  permission_edit_issue_templates: "탬플릿 편집"
-  permission_show_issue_templates: "탬플릿 표시"
-  project_module_issue_templates: "일감 탬플릿"
+  label_applied_for_issue: "일감에 적용될 항목들: "
+  help_for_issue_title: "일감 제목이 정의되면 이 템플릿을 선택할 때 자동으로 일감 제목에 적용될 것입니다."
+  help_for_this_field: "이 항목에 대한 도움말"
+  permission_manage_issue_templates: "템플릿 관리"
+  permission_edit_issue_templates: "템플릿 편집"
+  permission_show_issue_templates: "템플릿 표시"
+  project_module_issue_templates: "일감 템플릿"
+  label_isdefault_help_message: "대상 유형에 대해 기본 템플릿으로 사용합니다."
+  defaulf_template_loaded: "본문 영역에 기본 템플릿을 불러왔습니다. (유형: %{tracker})"
+  text_no_tracker_enabled: "이 프로젝트에서 사용되는 유형이 없습니다.\n템플릿은 유형에 할당되기 때문에 이를 먼저 설정해주세요."
+  label_enabled_sharing: "프로젝트 트리에서 공유할 수 있습니다."
+  label_inherit_templates: "템플릿 상속"
+  label_inherit_templates_help_message: "상위 프로젝트로부터 템플릿들을 상속합니다. (상위 프로젝트에서 프로젝트 트리에서 상속하도록 설정한 템플릿들만 나열됩니다.)"
+  label_inherited_templates: "상속된 템플릿"
+  no_issue_templates_for_this_project: "이 프로젝트를 위해 정의된 일감 템플릿이 없습니다."
+  link_to_index_edit_template: "일감 템플릿 나열/편집"
+  erase_issue_subject_and_description: "제목과 설명을 비움"
+  unused_tracker_at_this_project: "참고: 이 프로젝트에서 사용하는 유형이 아닙니다. 필요한 경우 템플릿 설정을 다시 해주세요."
+  label_enabledshaing_help_message: "이 템플릿은 하위 프로젝트와 공유될 수 있게 됩니다. (하위 프로젝트에서 템플릿 상속을 활성화해야 합니다.)"
+  label_should_replaced: "제목과 설명을 대체"
+  label_should_replaced_help_message: "제목과 본문이 템플릿의 내용으로 대체됩니다. (기본값은 사용 안함)"
+  global_issue_templates: "전역 일감 템플릿"
+  no_issue_templates_for_this_redmine: "이 레드마인을 위해 정의된 전역 일감 템플릿이 없습니다."
+  only_admin_can_associate_global_template: "레드마인 관리자만 전역 템플릿과 이 프로젝트를 연결할 수 있습니다."
+  text_no_tracker_enabled_for_global: "유형이 정의되지 않았습니다.\n템플릿은 유형에 할당되기 때문에 이를 먼저 설정해주세요."
+  display_and_filter_issue_templates_in_dialog: "템플릿 내용 미리보기"
+  label_filter_template: "Filter templates"
+  label_msg_confirm_to_replace: "제목과 설명을 대체하시겠습니까?"
+  label_apply_global_template_to_all_projects: "전역 일감 텔플릿을 모든 프로젝트에 적용."
+  note_apply_global_template_to_all_projects_setting_enabled: "이 전역 일감 템플릿은 플러그인 설정에 따라 모든 프로젝트에 적용됩니다."
+  project_list_associated_this_template: "프로젝트 목록: (적용됨: %{all}개 중 %{applied}개)"
+  note_project_local_template_override_global_template: "프로젝트 한정 템플릿이 있다면 전역 템플릿보다 우선되고, 일감 생성 화면에서 어떤 전역 템플릿도 보여지지 않게 됩니다."
+  help_project_local_template_override_global_template: "이 옵션이 활성화되면 모든 전역 티켓 템플릿이 모든 프로젝트에 적용됩니다. 유형 별로 프로젝트 한정 템플릿이 있다면 전역 템플릿보다 우선되고, 일감 생성 화면에서 전역 템플릿이 보여지지 않게 됩니다."
+  warning_project_local_template_override_global_template: "전역 일감 템플릿을 등록할 때에는 기밀 내용이 포함되어 있는지 주의가 필요합니다. 이 옵션이 활성화되면 모든 전역 템플릿이 모든 프로젝트에 적용됩니다."
+  revert_before_applying_template: "되돌리기"
+  template_remove_confirm: "이 템플릿을 삭제하시겠습니까? %{count}개의 하위 프로젝트들이 이 템플릿을 사용하고 있습니다."
+  label_number_of_subprojects_use_this_template: "%{count}개의 하위 프로젝트들이 이 템플릿을 사용하고 있습니다."
+  enabled_template_cannot_destroy: "비활성화된 템플릿만 삭제될 수 있습니다. 다른 하위 프로젝트들이 이 템플릿을 사용하는지 확인하고 삭제하기 전에 비활성화하세요."
+  orphaned_templates: "유형에 독립적인 템플릿"
+  orphaned_template: "유형에 독립적인 템플릿"
+  label_template_applied: "일감 템플릿이 적용되었습니다. '되돌리기'를 통해 적용하기 전으로 되돌릴 수 있습니다."
+  label_hide_confirm_dialog_in_the_future: "앞으로 이 확인은 나타나지 않으며, 바로 덮어쓰여집니다."
+  label_template_for_note: "댓글 템플릿"
+  label_use_template_when_edit: "일감을 편집할 때 템플릿을 사용"
+  note_template: "댓글 템플릿"
+  no_note_templates_for_this_project: "이 프로젝트에는 댓글 템플릿이 없습니다."
+  label_memo_help_message: "이 템플릿을 적용할 때 설명을 하는 노트를 작성해주세요."
+  note_template_name: "댓글 템플릿 이름"
+  note_description: "댓글 본문"
+  field_template_visibility: 템플릿 공개 범위
+  note_templates:
+    visibility:
+      mine: 나에게만
+      roles: 특정 역할에게만
+      open: 모든 사용자에게
+  please_select_at_least_one_role: "하나 이상의 역할을 선택해주세요."
+  issue_templates_settings: 일감 템플릿 설정
+  issue_templates_optional_settings: 템플릿 옵션 설정
+  issue_template_related_link: 참고 링크
+  issue_template_link_title: 참고 링크 제목
+  label_related_link_help_message: "일감 템플릿을 사용하는 예시 페이지나 일감들이 있다면 링크를 지정함으로써 템플릿에 대한 사용법이나 예제를 확인할 수 있습니다."
+  label_link_title_help_message: "참고 링크의 제목을 변경할 수 있습니다. (기본값: 참고 링크)"
+  enter_value: 값을 입력해주세요.
+  label_select_field: 필드 선택
+  label_builtin_fields_help_message: 내장 필드 혹은 사용자 정의 필드의 기본값을 JSON 포맷으로 입력하세요. 필드들을 선택하고 값을 입력한 뒤에 "적용" 버튼을 누리면 JSON 포맷의 데이터를 만들 수 있습니다.
+  label_builtin_fields_json: 필드들에 대한 JSON 값
+  label_enable_builtin_fields: 내장된 필드 활성화
+  help_enable_builtin_fields: 이 항목이 활성화되면 내장 혹은 사용자 정의된 필드들에 대해 템플릿을 설정할 수 있는 폼이 보여질 것입니다. JSON 포맷으로 이 설정을 등록해주세요.
+  warning_enable_builtin_fields: 이 항목을 활성화하는 것을 주의해주세요. 아직 모든 필드 유형을 지원하기에 충분한 UI와 기능을 제공하지 않기 때문에 실험 중인 기능입니다. 사용 중인 웹 브라우저에 따라 동작하지 않을 수도 있습니다. 실 환경에 적용할 때에는 주의하세요.
+  label_field_information: 필드 정보
+  unavailable_fields_for_this_tracker: 이 유형에서 사용할 수 없는 필드
