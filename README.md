@@ -116,6 +116,18 @@ If you have any requests, bug reports, please use GitHub issues. <https://github
 
 ## Changelog
 
+### 1.0.1
+
+This is bugfix release against v1.0.0.
+Updating to 1.0.1 is highly recommended, if you're using 1.0.0.
+Migration is also required.
+
+* Bugfix: Can't create a new templates optional settings. (GitHub: #322)
+* Migration: Change the column type to text. (GitHub: #323)
+* Update JavaScript.
+
+Thank you for the valuable information and feedback, @AlUser71!
+
 ### 1.0.0
 
 RESTRICTION: This version **is not compatible with IE11**. (Related: #310)
@@ -202,8 +214,8 @@ Updating to 0.3.3 is highly recommended!
 
 NOTE: This version requires migration command to use note template feature.
 
-```
-$ rails redmine:plugins:migrate RAILS_ENV=production
+```bash
+rails redmine:plugins:migrate RAILS_ENV=production
 ```
 
 ### 0.3.0
