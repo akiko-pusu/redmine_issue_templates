@@ -100,3 +100,18 @@ const vm = new Vue({
     this.loadField()
   }
 })
+
+// Apply post data.
+const copyJson = document.getElementById('paste-json')
+if (copyJson) {
+  copyJson.addEventListener('click', (event) => {
+    const data = document.getElementById('builtin_fields_data_via_vue')
+    if (data) {
+      const text = data.innerText
+      let jsonObj = JSON.parse(text)
+      let convertObj = {}
+      jsonObj.forEach(item => { convertObj[item.title] = item.value })
+      document.getElementById(template_type + '_builtin_fields').value = JSON.stringify(convertObj)
+    }
+  })
+}
