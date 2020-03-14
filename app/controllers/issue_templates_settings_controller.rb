@@ -3,14 +3,11 @@
 # noinspection RubocopInspection
 class IssueTemplatesSettingsController < ApplicationController
   before_action :find_project, :find_user
-  before_action :authorize, except: %i[preview]
+  before_action :authorize, :find_issue_templates_setting, except: %i[preview]
 
-  def index
-    @issue_templates_setting = IssueTemplateSetting.find_or_create(@project.id)
-  end
+  def index; end
 
   def edit
-    @issue_templates_setting = IssueTemplateSetting.find(@project.id)
     return if params[:settings].blank?
 
     update_template_setting
@@ -37,6 +34,10 @@ class IssueTemplatesSettingsController < ApplicationController
     @project = Project.find(params[:project_id])
   rescue ActiveRecord::RecordNotFound
     render_404
+  end
+
+  def find_issue_templates_setting
+    @issue_templates_setting = IssueTemplateSetting.find_or_create(@project.id)
   end
 
   def update_template_setting
