@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path('../test_helper', __dir__)
 
 class IssueTemplatesSettingsControllerTest < Redmine::ControllerTest
@@ -33,15 +35,15 @@ class IssueTemplatesSettingsControllerTest < Redmine::ControllerTest
 
   def test_update_with_permission_and_non_project
     post :edit, params: { project_id: 'dummy',
-                          settings: { enabled: '1', help_message: 'Hoo', project_id: 2, inherit_templates: true },
-                          setting_id: 1, tab: 'issue_templates' }
+                          settings: { enabled: '1', help_message: 'Hoo', inherit_templates: true },
+                          setting_id: 1 }
     assert_response 404
   end
 
   def test_update_with_permission_and_redirect
     post :edit, params: { project_id: @project,
-                          settings: { enabled: '1', help_message: 'Hoo', project_id: 2, inherit_templates: true },
-                          setting_id: 1, tab: 'issue_templates' }
+                          settings: { enabled: '1', help_message: 'Hoo', inherit_templates: true },
+                          setting_id: 1 }
     assert_response :redirect
     assert_redirected_to controller: 'issue_templates_settings',
                          action: 'index', project_id: @project
@@ -52,5 +54,16 @@ class IssueTemplatesSettingsControllerTest < Redmine::ControllerTest
                                          enabled: '1' },
                              project_id: @project }
     assert_select 'h1', /Preview test\./, @response.body.to_s
+  end
+
+  def test_create_template_setting
+    IssueTemplateSetting.delete_all
+
+    post :edit, params: { project_id: @project,
+                          settings: { enabled: '1', help_message: 'Hoo', inherit_templates: true },
+                          setting_id: 1 }
+    assert_response :redirect
+    assert_redirected_to controller: 'issue_templates_settings',
+                         action: 'index', project_id: @project
   end
 end
