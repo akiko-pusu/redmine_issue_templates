@@ -154,11 +154,6 @@ a.template_tooltip {
     font-style: italic;
 }
 
-table.list {
-  overflow: visible;
-  border: 2px solid #e4e4e4;
-}
-
 table.list.template_list {
   margin: 8px 0;
   border: 2px solid #e4e4e4;
