@@ -47,7 +47,7 @@ development_mysql:\n\
 >> config/database.yml
 
 RUN gem update bundler
-RUN bundle install --without postgresql rmagick
+RUN bundle install
 RUN bundle exec rake db:migrate
 EXPOSE  3000
 CMD ["rails", "server", "-b", "0.0.0.0"]
