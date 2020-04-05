@@ -30,9 +30,6 @@ Try this:
 * rails redmine:plugins:migrate NAME=redmine_issue_templates VERSION=0
     RAILS_ENV=production
 
-See also:
-<http://www.r-labs.org/projects/issue-template/wiki/About_en#Uninstall-plugin>
-
 ### When migration error
 
 If the migration is cancelled with the error like following message for the first time you try to install this plugin:
@@ -105,14 +102,13 @@ some trouble related "bundle intall", please try --without option.
 ## WebPage
 
 * <https://www.redmine.org/plugins/redmine_issue_templates> (Redmine Plugin List)
-* <http://www.r-labs.org/projects/issue-template> (Project Page)
 * <https://github.com/akiko-pusu/redmine_issue_templates> (Repository & Issues)
 
 If you have any requests, bug reports, please use GitHub issues. <https://github.com/akiko-pusu/redmine_issue_templates>
 
 ## Description and usage info
 
-* <http://www.r-labs.org/projects/issue-template/wiki/About_en>
+* <https://github.com/akiko-pusu/redmine_issue_templates/wiki>
 
 ## Changelog
 
