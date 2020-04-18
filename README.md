@@ -276,7 +276,7 @@ Not sure if that typo is worth a pull request? Do it! I will appreciate it.
 * Chinese: Steven Wong, vongola12324 (zh-TW)
 * Bulgarian: Ivan Cenov
 * Russian: Denny Brain, danaivehr
-* German: Terence Miller and anonymous contributor
+* German: Terence Miller, Christian Friebel and anonymous contributor
 * French: Anonymous one
 * Serbian: Miodrag Milic
 * Polish: Paweł Budikom and Krzysztof Wosinski
