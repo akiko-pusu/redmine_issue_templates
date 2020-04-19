@@ -6,19 +6,19 @@ class GlobalNoteTemplate < ActiveRecord::Base
 
   # author and project should be stable.
   safe_attributes 'name', 'description', 'enabled', 'memo', 'tracker_id',
-                  'position', 'visibility'
+                  'position', 'visibility',
+                  'project_ids'
 
   attr_accessor :role_ids
   validates :role_ids, presence: true, if: :roles?
 
-  belongs_to :author, class_name: 'User', foreign_key: 'author_id'
+  belongs_to :author, class_name: 'User', inverse_of: false, foreign_key: 'author_id'
   belongs_to :tracker
-  has_and_belongs_to_many :projects
+  has_many :projects, through: :global_note_template_project
 
   has_many :global_note_visible_roles, dependent: :nullify
   has_many :roles, through: :note_visible_roles
 
-  validates :name, uniqueness: { scope: :project_id }
   validates :name, presence: true
   acts_as_positioned scope: %i[tracker_id]
 
@@ -90,7 +90,7 @@ class GlobalNoteTemplate < ActiveRecord::Base
   private
 
   def check_visible_roles
-    return if roles? || global_note_template_id.empty?
+    return if roles? || global_note_visible_roles.empty?
 
     # Remove roles in case template visible scope is not "roles".
     # This remove action is included the same transaction scope.

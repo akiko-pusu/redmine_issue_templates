@@ -10,6 +10,7 @@ class CreateGlobalNoteTemplates < ActiveRecord::Migration[5.1]
       t.integer :author_id
       t.boolean :enabled
       t.integer :position
+      t.integer :visibility, default: 2
       t.timestamps
     end
     add_index :global_note_templates, :author_id
