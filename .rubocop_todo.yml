@@ -50,3 +50,6 @@ EndOfLine:
 
 Metrics/ModuleLength:
   Max: 120
+
+Rails/ApplicationRecord:
+  Enabled: false
