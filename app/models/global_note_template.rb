@@ -18,20 +18,20 @@ class GlobalNoteTemplate < ActiveRecord::Base
   has_many :global_note_template_projects, dependent: :nullify
   has_many :projects, through: :global_note_template_projects
 
-  has_many :global_note_visible_roles, dependent: :nullify
-  has_many :roles, through: :global_note_visible_roles
+  has_many :note_visible_roles, class_name: "GlobalNoteVisibleRole", dependent: :nullify
+  has_many :roles, through: :note_visible_roles
 
   validates :name, presence: true
   acts_as_positioned scope: %i[tracker_id]
 
-  enum visibility: { mine: 0, roles: 1, open: 2 }
+  enum visibility: { roles: 1, open: 2 }
 
   scope :mine_condition, lambda { |user_id|
     where(author_id: user_id).mine if user_id.present?
   }
 
   scope :roles_condition, lambda { |role_ids|
-    joins(:global_note_visible_roles).where(global_note_visible_roles: { role_id: role_ids })
+    joins(:note_visible_roles).where(note_visible_roles: { role_id: role_ids })
   }
 
   scope :enabled, -> { where(enabled: true) }
@@ -46,7 +46,7 @@ class GlobalNoteTemplate < ActiveRecord::Base
   }
 
   before_save :check_visible_roles
-  after_save :global_note_visible_roles!
+  after_save :note_visible_roles!
 
   def <=>(other)
     position <=> other.position
@@ -62,7 +62,7 @@ class GlobalNoteTemplate < ActiveRecord::Base
     attributes
   end
 
-  def global_note_visible_roles!
+  def note_visible_roles!
     return unless roles?
 
     if role_ids.blank?
@@ -71,7 +71,7 @@ class GlobalNoteTemplate < ActiveRecord::Base
     end
 
     ActiveRecord::Base.transaction do
-      NoteVisibleRole.where(global_note_template_id: id).delete_all if global_note_visible_roles.present?
+      GlobalNoteVisibleRole.where(global_note_template_id: id).delete_all if note_visible_roles.present?
       role_ids.each do |role_id|
         GlobalNoteVisibleRole.create!(global_note_template_id: id, role_id: role_id)
       end
@@ -92,7 +92,7 @@ class GlobalNoteTemplate < ActiveRecord::Base
   private
 
   def check_visible_roles
-    return if roles? || global_note_visible_roles.empty?
+    return if roles? || note_visible_roles.empty?
 
     # Remove roles in case template visible scope is not "roles".
     # This remove action is included the same transaction scope.

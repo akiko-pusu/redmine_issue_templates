@@ -22,7 +22,7 @@ class GlobalNoteTemplatesController < ApplicationController
       templates = GlobalNoteTemplate.search_by_tracker(tracker_id).sorted
       template_map[Tracker.find(tracker_id)] = templates if templates.any?
     end
-    binding.pry
+
     render layout: !request.xhr?, locals: { template_map: template_map, trackers: trackers }
   end
 
@@ -43,6 +43,15 @@ class GlobalNoteTemplatesController < ApplicationController
     render render_form_params
   end
 
+  def update
+    # Workaround in case author id is null
+    binding.pry
+    @global_note_template.author = User.current if @global_note_template.author.blank?
+    @global_note_template.safe_attributes = template_params
+    @global_note_template.role_ids = template_params[:role_ids]
+
+    save_and_flash(:notice_successful_update, :show)
+  end
 
   def find_project
     @projects = Project.all
@@ -83,5 +92,13 @@ class GlobalNoteTemplatesController < ApplicationController
       locals: { trackers: trackers, apply_all_projects: apply_all_projects?,
                 note_template: @global_note_template, projects: projects }
               }
+  end
+
+  def apply_all_projects?
+    plugin_setting['apply_global_template_to_all_projects'].to_s == 'true'
+  end
+
+  def plugin_setting
+    Setting.plugin_redmine_issue_templates
   end
 end
