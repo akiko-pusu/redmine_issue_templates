@@ -8,6 +8,9 @@ Plugin to generate and use issue templates for each project to assist issue
 creation. For Redmine 2.1.x or higher, please use version 0.0.4 or higher. For
 Redmine 2.0, please use version 0.0.3 or higher.
 
+**NOTE:** This is a 0.3-stable branch. Experimental and latest release is now version 1.0.x or higher.
+(For more details, please see: https://github.com/akiko-pusu/redmine_issue_templates/issues/310)
+
 ## Repository
 
 * <https://github.com/akiko-pusu/redmine_issue_templates>
@@ -115,6 +118,17 @@ If you have any requests, bug reports, please use GitHub issues. <https://github
 * <http://www.r-labs.org/projects/issue-template/wiki/About_en>
 
 ## Changelog
+
+### 0.3.8
+
+This is bugfix release.
+
+* Bugfix: Fix that Issue Templates plugin changes the cursor icon for "Information" menu on Redmine's administration page (by vividtone, GitHub #316)
+* Bugfix: Orphaned template list is not displayed (GitHub #337)
+* Update Russian translation (GitHub #340)
+* Update Bulgarian translation (GitHub #329)
+* Update Korean translation (update Korean translation)
+* Bufgix: enabled to create a new issue template setting. (GitHub #322)
 
 ### 0.3.7
 
@@ -248,10 +262,10 @@ Not sure if that typo is worth a pull request? Do it! I will appreciate it.
 ### Language and I18n contributors
 
 * Brazilian: Adriano Ceccarelli / Pedro Moritz de Carvalho Neto
-* Korean: Jaebok Oh
+* Korean: Jaebok Oh, Ji-Hyeon Gim
 * Chinese: Steven Wong, vongola12324 (zh-TW)
-* Bulgarian: Ivan Cenov
-* Russian: Denny Brain, danaivehr
+* Bulgarian: Ivan Cenov, jwalkerbg
+* Russian: Denny Brain, danaivehr, einhander
 * German: Terence Miller and anonymous contributor
 * French: Anonymous one
 * Serbian: Miodrag Milic
