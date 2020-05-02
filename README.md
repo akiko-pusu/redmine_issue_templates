@@ -128,7 +128,7 @@ This is bugfix release.
 * Update Russian translation (GitHub #340)
 * Update Bulgarian translation (GitHub #329)
 * Update Korean translation (update Korean translation)
-* Bufgix: enabled to create a new issue template setting. (GitHub #322)
+* Bugfix: enabled to create a new issue template setting. (GitHub #322)
 
 ### 0.3.7
 
