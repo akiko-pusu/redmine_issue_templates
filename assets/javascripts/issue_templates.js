@@ -348,14 +348,13 @@ $(function () {
     $('a.template-disabled-link').issueTemplate('disabled_link');
 
     // display orphaned template list
-    $('#orphaned_template_link').on({
-        'ajax:success': (function (_this) {
-            return function (e, data) {
-                $('#orphaned_templates').toggle();
-                return $('#orphaned_templates').html(data);
-            };
-        })(this)
-    });
+    $('#orphaned_template_link').on(
+        'ajax:success', function (e) {
+            var xhr = e.detail[2];
+            $('#orphaned_templates').toggle();
+            $('#orphaned_templates').html(xhr.response);
+        }
+    );
 });
 
 // for IE11 compatibility (IE11 does not support native Element.closest)

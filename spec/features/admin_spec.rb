@@ -26,16 +26,30 @@ feature 'PluginSetting to apply Global issue templates to all the projects', js:
     visit '/settings/plugin/redmine_issue_templates'
   end
 
-  scenario 'Settings "apply_global_template_to_all_projects" is displayed.' do
-    expect(page).to have_content('Apply Global issue templates to all the projects.')
-    expect(page).to have_selector('#settings_apply_global_template_to_all_projects')
+  feature 'plugin settings ' do
+    scenario 'Settings "apply_global_template_to_all_projects" is displayed.' do
+      expect(page).to have_content('Apply Global issue templates to all the projects.')
+      expect(page).to have_selector('#settings_apply_global_template_to_all_projects')
+    end
+
+    scenario 'Activate "apply_global_template_to_all_projects".' do
+      expect(page).to have_unchecked_field('settings_apply_global_template_to_all_projects')
+      check 'settings_apply_global_template_to_all_projects'
+      click_on 'Apply'
+      expect(page).to have_selector('#settings_apply_global_template_to_all_projects')
+      expect(page).to have_checked_field('settings_apply_global_template_to_all_projects')
+    end
   end
 
-  scenario 'Activate "apply_global_template_to_all_projects".' do
-    expect(page).to have_unchecked_field('settings_apply_global_template_to_all_projects')
-    check 'settings_apply_global_template_to_all_projects'
-    click_on 'Apply'
-    expect(page).to have_selector('#settings_apply_global_template_to_all_projects')
-    expect(page).to have_checked_field('settings_apply_global_template_to_all_projects')
+  feature 'List global issue templates' do
+    before do
+      visit '/global_issue_templates'
+      page.find('#orphaned_template_link').click
+      wait_for_ajax
+    end
+
+    scenario 'orphaned template loaded' do
+      expect(page).to have_selector('div#orphaned_templates')
+    end
   end
 end

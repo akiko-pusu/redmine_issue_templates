@@ -100,6 +100,33 @@ feature 'IssueTemplate', js: true do
     end
   end
 
+  feature 'orphaned template' do
+    given!(:enabled_module) { FactoryBot.create(:enabled_module) }
+    given!(:issue_templates) do
+      FactoryBot.create_list(:issue_template, 2, project_id: 1, tracker_id: 1)
+    end
+
+    context 'When user has priv to issue template' do
+
+      background do
+        # Generate orphaned template
+        orphaned = IssueTemplate.last
+        orphaned.update_column(:tracker_id, Tracker.last.id + 1)
+
+        assign_template_priv(role, add_permission: :show_issue_templates)
+        log_user('jsmith', 'jsmith')
+        visit '/projects/ecookbook/issue_templates'
+
+        page.find('#orphaned_template_link').click
+        wait_for_ajax
+      end
+
+      scenario 'orphaned template loaded' do
+        expect(page).to have_selector('div#orphaned_templates')
+      end
+    end
+  end
+
   feature 'Template feature at new issue screen' do
     given!(:issue_templates) do
       FactoryBot.create_list(:issue_template, 2, project_id: 1, tracker_id: 1)
