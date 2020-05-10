@@ -18,8 +18,8 @@ class GlobalNoteTemplate < ActiveRecord::Base
   has_many :global_note_template_projects, dependent: :nullify
   has_many :projects, through: :global_note_template_projects
 
-  has_many :note_visible_roles, class_name: "GlobalNoteVisibleRole", dependent: :nullify
-  has_many :roles, through: :note_visible_roles
+  has_many :global_note_visible_roles, dependent: :nullify
+  has_many :roles, through: :global_note_visible_roles
 
   validates :name, presence: true
   acts_as_positioned scope: %i[tracker_id]
@@ -31,7 +31,7 @@ class GlobalNoteTemplate < ActiveRecord::Base
   }
 
   scope :roles_condition, lambda { |role_ids|
-    joins(:note_visible_roles).where(note_visible_roles: { role_id: role_ids })
+    joins(:global_note_visible_roles).where(global_note_visible_roles: { role_id: role_ids })
   }
 
   scope :enabled, -> { where(enabled: true) }
@@ -72,20 +72,21 @@ class GlobalNoteTemplate < ActiveRecord::Base
     end
 
     ActiveRecord::Base.transaction do
-      GlobalNoteVisibleRole.where(global_note_template_id: id).delete_all if note_visible_roles.present?
+      GlobalNoteVisibleRole.where(global_note_template_id: id).delete_all if global_note_visible_roles.present?
       role_ids.each do |role_id|
         GlobalNoteVisibleRole.create!(global_note_template_id: id, role_id: role_id)
       end
     end
   end
 
-  def loadable?(user_id:)
+  def loadable?(user_id:, project_id:)
     return true if open?
-    return true if mine? && user_id == author_id
 
+    project = Project.find(project_id)
     user_project_roles = User.find(user_id).roles_for_project(project).pluck(:id)
     match_roles = user_project_roles & roles.ids
-    return true if roles? && !match_roles.empty?
+
+    return true if roles? && match_roles.present?
 
     false
   end
@@ -93,7 +94,7 @@ class GlobalNoteTemplate < ActiveRecord::Base
   private
 
   def check_visible_roles
-    return if roles? || note_visible_roles.empty?
+    return if roles? || global_note_visible_roles.empty?
 
     # Remove roles in case template visible scope is not "roles".
     # This remove action is included the same transaction scope.
@@ -116,15 +117,30 @@ class GlobalNoteTemplate < ActiveRecord::Base
       project = Project.find(project_id)
       user_project_roles = user.roles_for_project(project).pluck(:id)
 
-      base_condition = GlobalNoteTemplate.search_by_project(project_id).search_by_tracker(tracker_id)
+      base_condition = GlobalNoteTemplate.search_by_tracker(tracker_id)
+      base_condition = base_condition.search_by_project(project_id) unless apply_all_projects?
 
       open_ids = base_condition.open.pluck(:id)
-      mine_ids = base_condition.mine_condition(user_id).pluck(:id)
       role_ids = base_condition.roles_condition(user_project_roles).pluck(:id)
 
       # return uniq ids
-      ids = open_ids | mine_ids | role_ids
-      GlobalNoteTemplate.where(id: ids).includes(:note_visible_roles)
+      ids = open_ids | role_ids
+      GlobalNoteTemplate.where(id: ids).includes(:global_note_visible_roles)
+    end
+
+    def get_templates_for_project_tracker(project_id, tracker_id = nil)
+      GlobalNoteTemplate.search_by_tracker(tracker_id)
+                        .search_by_project(project_id)
+                        .enabled
+                        .sorted
+    end
+
+    def plugin_setting
+      Setting.plugin_redmine_issue_templates
+    end
+
+    def apply_all_projects?
+      plugin_setting['apply_global_template_to_all_projects'].to_s == 'true'
     end
   end
 end

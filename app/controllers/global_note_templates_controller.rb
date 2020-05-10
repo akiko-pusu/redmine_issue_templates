@@ -7,8 +7,8 @@ class GlobalNoteTemplatesController < ApplicationController
   helper :issue_templates
   menu_item :issues
 
-  before_action :find_object, only: %i[show edit update destroy]
-  before_action :find_project, only: %i[edit update]
+  before_action :find_object, only: %i[show update destroy]
+  before_action :find_project, only: %i[update]
   before_action :require_admin, only: %i[index new show], excep: [:preview]
 
   #
@@ -28,7 +28,7 @@ class GlobalNoteTemplatesController < ApplicationController
 
   def new
     # create empty instance
-    @global_note_template =  GlobalNoteTemplate.new
+    @global_note_template = GlobalNoteTemplate.new
     render render_form_params
   end
 
@@ -45,7 +45,6 @@ class GlobalNoteTemplatesController < ApplicationController
 
   def update
     # Workaround in case author id is null
-    binding.pry
     @global_note_template.author = User.current if @global_note_template.author.blank?
     @global_note_template.safe_attributes = template_params
     @global_note_template.role_ids = template_params[:role_ids]
@@ -53,6 +52,16 @@ class GlobalNoteTemplatesController < ApplicationController
     save_and_flash(:notice_successful_update, :show)
   end
 
+  def destroy
+    unless @global_note_template.destroy
+      flash[:error] = l(:enabled_template_cannot_destroy)
+      redirect_to action: :show, id: @global_note_template
+      return
+    end
+
+    flash[:notice] = l(:notice_successful_delete)
+    redirect_to action: 'index'
+  end
 
   def find_project
     @projects = Project.all
@@ -91,8 +100,7 @@ class GlobalNoteTemplatesController < ApplicationController
 
     { layout: !request.xhr?,
       locals: { trackers: trackers, apply_all_projects: apply_all_projects?,
-                note_template: @global_note_template, projects: projects }
-              }
+                note_template: @global_note_template, projects: projects } }
   end
 
   def apply_all_projects?

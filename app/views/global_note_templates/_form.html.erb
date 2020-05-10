@@ -6,8 +6,8 @@
     <legend class='issue'><%= l(:label_applied_for_issue) %></legend>
     <p>
       <% if note_template.tracker.blank? %>
-          <%= f.select :tracker_id, template_target_trackers(project, note_template),
-                       required: true, label: l(:label_tracker), include_blank: true  %>
+          <%= f.select :tracker_id, trackers.collect { |t| [t.name, t.id] }, { required: true },
+                       required: true, label: l(:label_tracker) %>
 
           <%= h note_template.tracker.present? ? note_template.tracker.name :
                     l(:orphaned_template, default: 'Orphaned template from tracker') %>
@@ -29,11 +29,11 @@
     </p>
     <p id='visible_roles_checkbox'
       style='display: <%= note_template.visibility == 'roles' ? 'block;' : 'none;' %>'>
-      <label for='note_visible_roles[role_ids]'><%= l(:label_role) %></label>
+      <label for='global_note_visible_roles[role_ids]'><%= l(:label_role) %></label>
          <% Role.givable.each do |role| %>
           <%= check_box_tag('global_note_template[role_ids][]',
                         role.id,
-                        note_template.note_visible_roles.pluck(:role_id).to_a.include?(role.id)) %>
+                        note_template.global_note_visible_roles.pluck(:role_id).to_a.include?(role.id)) %>
           <%= role.name %>
         <% end %>
     </p>

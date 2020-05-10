@@ -53,10 +53,19 @@ class NoteTemplatesController < ApplicationController
   # load template description
   def load
     note_template_id = template_params[:note_template_id]
-    note_template = NoteTemplate.find(note_template_id)
+    template_type = template_params[:template_type]
 
-    # prevent to load if the template visibility does not match.
-    render_404 unless note_template.loadable?(user_id: User.current.id)
+    if template_type.present? && template_type == 'global'
+      project_id = template_params[:project_id]
+      note_template = GlobalNoteTemplate.find(note_template_id)
+
+      # prevent to load if the template visibility does not match.
+      raise ActiveRecord::RecordNotFound unless note_template.loadable?(user_id: User.current.id, project_id: project_id)
+    else
+      note_template = NoteTemplate.find(note_template_id)
+      # prevent to load if the template visibility does not match.
+      raise ActiveRecord::RecordNotFound unless note_template.loadable?(user_id: User.current.id)
+    end
 
     render plain: note_template.template_json
   rescue ActiveRecord::RecordNotFound
@@ -70,11 +79,16 @@ class NoteTemplatesController < ApplicationController
     note_templates = NoteTemplate.visible_note_templates_condition(
       user_id: User.current.id, project_id: project_id, tracker_id: tracker_id
     )
+
+    global_note_templates = GlobalNoteTemplate.visible_note_templates_condition(
+      user_id: User.current.id, project_id: project_id, tracker_id: tracker_id
+    )
+
     respond_to do |format|
       format.html do
         render action: '_list_note_templates',
                layout: false,
-               locals: { note_templates: note_templates }
+               locals: { note_templates: note_templates, global_note_templates: global_note_templates }
       end
     end
   end
@@ -105,7 +119,7 @@ class NoteTemplatesController < ApplicationController
 
   def template_params
     params.require(:note_template)
-          .permit(:note_template_id, :tracker_id, :name, :memo, :description,
+          .permit(:note_template_id, :project_id, :template_type, :tracker_id, :name, :memo, :description,
                   :enabled, :author_id, :position, :visibility, role_ids: [])
   end
 
@@ -116,5 +130,12 @@ class NoteTemplatesController < ApplicationController
   def render_form_params
     { layout: !request.xhr?,
       locals: { note_template: template, project: @project } }
+  end
+
+  def global_templates(tracker_id)
+    return [] if apply_all_projects? && templates_exist?
+
+    project_id = apply_all_projects? ? nil : @project.id
+    GlobalNoteTemplate.get_templates_for_project_tracker(project_id, tracker_id)
   end
 end

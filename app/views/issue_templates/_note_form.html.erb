@@ -90,9 +90,15 @@ dialog_link.addEventListener("click", function() {
 
 
 function applyNoteTemplate(event, template_id) {
+  let project_id = <%= project_id %>
   let JSONdata = {
     note_template: { note_template_id: template_id }
   }
+  if (event.classList.contains('template-global')) {
+    JSONdata.note_template.template_type = 'global'
+    JSONdata.note_template.project_id = project_id
+  }
+
   let token = document.querySelectorAll('#issue-form input[name="authenticity_token"]')[0]
   let req = new XMLHttpRequest()
   req.onreadystatechange = function() {
