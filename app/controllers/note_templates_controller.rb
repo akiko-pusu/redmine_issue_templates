@@ -19,9 +19,12 @@ class NoteTemplatesController < ApplicationController
       @template_map[Tracker.find(tracker_id)] = templates if templates.any?
     end
 
+    @global_note_templates = global_templates(tracker_ids)
+
     respond_to do |format|
       format.html do
-        render layout: !request.xhr?, locals: { tracker_ids: tracker_ids }
+        render layout: !request.xhr?,
+               locals: { apply_all_projects: apply_all_projects?, tracker_ids: tracker_ids }
       end
       format.api do
         render formats: :json, locals: { note_templates: note_templates }
@@ -130,6 +133,10 @@ class NoteTemplatesController < ApplicationController
   def render_form_params
     { layout: !request.xhr?,
       locals: { note_template: template, project: @project } }
+  end
+
+  def templates_exist?
+    @note_templates.present?
   end
 
   def global_templates(tracker_id)
