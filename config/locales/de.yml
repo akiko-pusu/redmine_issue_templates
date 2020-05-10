@@ -47,9 +47,43 @@ de:
   label_apply_global_template_to_all_projects: "Wende Globale Ticketvorlagen auf alle Projekte an."
   note_apply_global_template_to_all_projects_setting_enabled: "Diese Globale Ticketvorlage wird auf alle Projekte angewendet weil das Vorlagen-Plugin entsprechend konfiguriert ist."
   project_list_associated_this_template: "Projekte:  (angewendet auf: %{applied} von %{all})"
+  note_project_local_template_override_global_template: "Wenn eine lokale Projektvorlage vorhanden ist, überschreiben Sie globale Vorlagen, und globale Vorlagen werden auf dem Bildschirm zum Erstellen von Problemen nicht angezeigt."
+  help_project_local_template_override_global_template: "Wenn diese Option aktiviert ist, werden alle globalen Ticketvorlagen auf alle Projekte angewendet. Wenn eine projektspezifische Vorlage pro Tracker festgelegt ist, wird diese überschrieben und die globale Vorlage wird auf dem Bildschirm zur Erstellung neuer Tickets ausgeblendet."
+  warning_project_local_template_override_global_template: "Bitte seien Sie vorsichtig globale Problemvorlagen mit vertraulichen Inhalten zu hinterlegen. Wenn diese Option aktiviert ist, werden alle globalen Vorlagen auf alle Projekte angewendet."
   revert_before_applying_template: "Rückgängig"
   template_remove_confirm: "Möchten Sie dieses Template wirklich löschen? %{count} Unterprojekte nutzen diese Vorlage."
   label_number_of_subprojects_use_this_template: "%{count} Unterprojekte nutzen diese Vorlage."
   enabled_template_cannot_destroy: "Nur deaktivierte Vorlagen können gelöscht werden! Prüfe ob andere (Unter-)Projekte diese Vorlage verwenden und deaktiviere sie dort."
-  orphaned_templates: Verwaiste Vorlagen
-  orphaned_template: Verwaiste Vorlage
+  orphaned_templates: "Verwaiste Vorlage vom Tracker"
+  orphaned_template: "Verwaiste Vorlage vom Tracker"
+  label_template_for_note: "Notizvorlage"
+  label_use_template_when_edit: "Verwenden Sie Vorlagen, wenn Sie das Problem bearbeiten"
+  note_template: "Notizvorlage"
+  note_template_name: Name für Notizvorlage
+  label_template_applied: Die Ausgabevorlage wird angewendet. Sie können mit dem Link "Zurücksetzen" rückgängig gemacht werden.
+  label_hide_confirm_dialog_in_the_future: "Diese Bestätigung in Zukunft ausblenden, einfach überschreiben."
+  no_note_templates_for_this_project: "Für dieses Projekt sind keine Kommentarvorlagen definiert."
+  label_memo_help_message: "Bitte richten Sie einen Hinweis ein, der erklärt, wann Sie diese Vorlage anwenden."
+  note_description: "Comment body"
+  field_template_visibility: Sichtbarkeit von Vorlagen
+  note_templates:
+    visibility:
+      mine: nur für mich
+      roles: nur für diese Rolle
+      open: für alle
+  please_select_at_least_one_role: "Bitte zunächst eine Rolle auswählen"
+  issue_templates_settings: Template Einstellungen
+  issue_templates_optional_settings: Optionale Template Einstellungen
+  issue_template_related_link: Verwandter Link
+  issue_template_link_title: Zugehöriger Link-Titel
+  label_related_link_help_message: "Bitte bei Beispielseiten oder Beispieltickets die Vorlagen nutzen den Link angeben. So können Benutzer diese Beispiele ansehen."
+  label_link_title_help_message: "Sie können den Titel des zugehörigen Links anpassen. (Standard: Verwandter Link)"
+  enter_value: Bitte einen Wert eingeben.
+  label_select_field: Wählen Sie ein Feld aus
+  label_builtin_fields_help_message: Geben Sie eigene Felder oder benutzerdefinierte Felder als Standardwerte im JSON-Format ein. Bitte Felder auswählen und Werte einstellen. Klicken Sie dann auf "Übernehmen" und Sie können Daten im JSON-Format generieren.
+  label_builtin_fields_json: JSON für Felder
+  label_enable_builtin_fields: Aktivieren Sie die integrierte Feldunterstützung
+  help_enable_builtin_fields: Wenn dieses Flag aktiviert ist, wird ein Formular angezeigt in dem Sie Vorlagen für integrierte oder benutzerdefinierte Felder festlegen können. Bitte registrieren Sie die Einstellungen im JSON-Format.
+  warning_enable_builtin_fields: Bitte mit Vorsicht dieses Flag zu aktivieren. Diese Funktion ist nur experimentell. Da ich noch nicht genügend UI und Funktionen zur Verfügung gestellt habe, um alle Feldtypen zu unterstützen. Je nach Browser funktioniert dies möglicherweise nicht. Nutzen Sie diese Funktion in einer Produktionsumgebung mit Vorsicht.
+  label_field_information: Feld Information
+  unavailable_fields_for_this_tracker: Feld für diesen Tracker nicht verfügbar
