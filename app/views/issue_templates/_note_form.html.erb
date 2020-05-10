@@ -45,14 +45,14 @@ if (content.length === 1) {
   }
 }
 
-function setDescription(target, value) {
+function setDescription(target, value, container) {
   let element = document.getElementById(target)
   if (element.value.length === 0) {
     element.value = value
   } else {
     element.value += '\n\n' + value
   }
-  element.focus()
+  container.style.display = 'none'
 
   try {
     if (CKEDITOR.instances.issue_notes) {
@@ -66,7 +66,7 @@ function setDescription(target, value) {
 
 // Show dialog
 let dialog_link = document.getElementById('link_<%= element_id %>_dialog')
-dialog_link.addEventListener("click",function() {
+dialog_link.addEventListener("click", function() {
   let template_list_url = '<%= url_for(controller: 'note_templates',
         action:'list_templates', project_id: project_id, tracker_id: tracker_id) %>'
   let token = document.querySelectorAll('#issue-form input[name="authenticity_token"]')[0]
@@ -79,6 +79,7 @@ dialog_link.addEventListener("click",function() {
         // replace here!
         let target = document.querySelectorAll('#<%= element_id %>_dialog .popup .filtered_templates_list')[0]
         target.innerHTML = value
+        document.getElementById('template_issue_notes_dialog').style.display = 'block'
       }
     }
   }
@@ -101,7 +102,7 @@ function applyNoteTemplate(event, template_id) {
     if (req.readyState === 4) {
       if (req.status === 200) {
         let value = JSON.parse(req.responseText)
-        setDescription(target, value.note_template.description)
+        setDescription(target, value.note_template.description, container)
       }
     }
   }
