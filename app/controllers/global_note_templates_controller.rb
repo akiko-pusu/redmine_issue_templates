@@ -53,6 +53,7 @@ class GlobalNoteTemplatesController < ApplicationController
     save_and_flash(:notice_successful_update, :show)
   end
 
+
   def find_project
     @projects = Project.all
   end

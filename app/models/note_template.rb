@@ -45,6 +45,7 @@ class NoteTemplate < ActiveRecord::Base
 
   before_save :check_visible_roles
   after_save :note_visible_roles!
+  before_destroy :confirm_disabled
 
   def <=>(other)
     position <=> other.position
@@ -95,6 +96,13 @@ class NoteTemplate < ActiveRecord::Base
     # Remove roles in case template visible scope is not "roles".
     # This remove action is included the same transaction scope.
     NoteVisibleRole.where(note_template_id: id).delete_all
+  end
+
+  def confirm_disabled
+    return unless enabled?
+
+    errors.add :base, 'enabled_template_cannot_destroy'
+    throw :abort
   end
 
   #
