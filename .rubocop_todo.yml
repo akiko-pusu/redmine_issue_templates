@@ -62,3 +62,6 @@ Rails/InverseOf:
 
 Rails/LexicallyScopedActionFilter:
   Enabled: false
+
+Rails/SkipsModelValidations:
+  Enabled: false
