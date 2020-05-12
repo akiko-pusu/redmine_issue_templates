@@ -88,3 +88,4 @@ en:
   label_field_information: Field information
   unavailable_fields_for_this_tracker: Unavailable field for this tarcker
   global_note_templates: Global Template for note
+  link_to_index_edit_note_template: Note templates list / edit templates

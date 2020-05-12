@@ -3,6 +3,9 @@
 <div class='contextual issue_templates'>
   <%= link_to(l(:label_new_templates),
               { controller: 'global_note_templates', action: 'new' }, class: 'icon icon-add') %>
+  <%= link_to(l(:global_issue_templates),
+              { controller: 'global_issue_templates', action: 'index' },
+              class: 'icon icon-template') %>
   <%= link_to(l(:label_settings),
               { controller: 'settings', action: 'plugin', id: 'redmine_issue_templates' },
               class: 'issue_template icon plugins') %>
