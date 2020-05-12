@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../spec_helper'
 require_relative '../rails_helper'
 require_relative '../support/login_helper'
@@ -77,6 +79,46 @@ feature 'Update issue', js: true do
       page.find('#content > div:nth-child(1) > a.icon.icon-edit').click
       sleep(0.2)
       expect(page).to have_selector('a#link_template_issue_notes_dialog')
+    end
+  end
+
+  context 'Have global note template' do
+    before do
+      Setting.send 'plugin_redmine_issue_templates=', 'apply_global_template_to_all_projects' => 'false'
+      GlobalNoteTemplate.create(tracker_id: tracker.id, name: 'Global Note Template name', visibility: 2,
+                                description: 'Global Note Template desctiption', enabled: true)
+    end
+
+    scenario 'No template for note' do
+      visit_update_issue(user)
+      issue = Issue.last
+      visit "/issues/#{issue.id}"
+      page.find('#content > div:nth-child(1) > a.icon.icon-edit').click
+      sleep(0.2)
+      expect(page).not_to have_selector('a#link_template_issue_notes_dialog')
+    end
+
+    context 'apply_global_template_to_all_projects is true' do
+      before do
+        Setting.send 'plugin_redmine_issue_templates=', 'apply_global_template_to_all_projects' => 'true'
+      end
+
+      given(:template_rows) { page.find('div#template_issue_notes_dialog table > tbody') }
+
+      scenario 'One Global template for note' do
+        visit_update_issue(user)
+        issue = Issue.last
+        visit "/issues/#{issue.id}"
+        page.find('#content > div:nth-child(1) > a.icon.icon-edit').click
+        sleep(0.2)
+        expect(page).to have_selector('a#link_template_issue_notes_dialog')
+
+        page.find('a#link_template_issue_notes_dialog').click
+
+        wait_for_ajax
+        expect(page).to have_selector('div#template_issue_notes_dialog')
+        expect(template_rows).to have_selector('tr:first-child > td:nth-child(3) > a.template-global')
+      end
     end
   end
 
