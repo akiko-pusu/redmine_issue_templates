@@ -5,11 +5,16 @@ class GlobalNoteTemplate < ActiveRecord::Base
   include ActiveModel::Validations
 
   # author and project should be stable.
-  safe_attributes 'name', 'description', 'enabled', 'memo', 'tracker_id',
-                  'position', 'visibility',
+  safe_attributes 'name',
+                  'description',
+                  'enabled',
+                  'memo',
+                  'tracker_id',
+                  'position',
+                  'visibility',
+                  'role_ids',
                   'project_ids'
 
-  attr_accessor :role_ids
   validates :role_ids, presence: true, if: :roles?
 
   belongs_to :author, class_name: 'User', inverse_of: false, foreign_key: 'author_id'
