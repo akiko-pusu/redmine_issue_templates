@@ -1,0 +1,27 @@
+<div class='contextual'>
+<%= link_to l(:button_delete),
+  { controller: 'global_note_templates', action: 'destroy', id: note_template },
+    data: { confirm: l(:text_are_you_sure) },
+    name: l(:enabled_template_cannot_destroy, default: 'Only disabled template can be destroyed.'),
+    disabled: note_template.enabled?, method: 'delete', class: 'icon icon-del template-disabled-link' %>
+<%= link_to(l(:label_list_templates),
+              { controller: 'global_note_templates', action: 'index' }, class: 'icon icon-template') %>
+</div>
+
+<h2 class='global_note_template'>
+  <%= l(:global_note_templates) %>: #<%= note_template.id %> <%= note_template.name %>
+  <%= avatar(note_template.author, size: '24') %>
+</h2>
+
+<%= labelled_form_for :global_note_template,
+                      note_template,
+                      url: { controller: 'global_note_templates', action: 'update', id: note_template },
+                      html: { id: 'global_note_template-form', class: nil,
+                              multipart: false } do |f| %>
+  <%= render 'form', { f: f, trackers: trackers,
+                        note_template: note_template, projects: projects, apply_all_projects: apply_all_projects } %>
+  <div id='preview' class='wiki'></div>
+  <%= submit_tag l(:button_save) %>
+  <%= link_to l(:button_cancel), { action: 'index' },
+      onclick: 'Element.hide("edit-note_template"); return false' %>
+<% end %>

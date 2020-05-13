@@ -20,6 +20,7 @@ services:
       RAILS_ENV: development
     volumes:
       - .:/tmp/redmine/plugins/redmine_issue_templates
+      - ./.data:/tmp/data
     ports:
       - "3000:3000"
   mysql:

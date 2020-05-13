@@ -85,5 +85,74 @@
       $(function() { $('table.table-sortable tbody').positionedItems() })
     <% end %>
 <% end %>
+
+<% if @global_note_templates.present? %>
+    <h2 class='issue_template'><%=h "#{l(:global_note_templates)}" %></h2>
+    <div class='template_box'>
+
+      <% if apply_all_projects %>
+          <p>
+            <i class='issue_template icon settings'></i>
+            <span class="issue_template help_content">
+              <%= l(:note_apply_global_template_to_all_projects_setting_enabled) %><br/>
+              <%= l(:note_project_local_template_override_global_template) %>
+            </span>
+          </p>
+      <% end %>
+
+      <%= l(:only_admin_can_associate_global_template) %>
+      <table class='list template_list issues'>
+        <thead>
+        <tr>
+          <th>#</th>
+          <th class='hideable'><%= l(:issue_template_name) %></th>
+          <th><%= l(:label_preview) %></th>
+          <th class='hideable'><%= l(:field_tracker) %></th>
+          <th class='hideable'><%= l(:field_author) %></th>
+          <th class='hideable'><%= l(:field_updated_on) %></th>
+          <th><%= l(:label_enabled) %></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @global_note_templates.each do |note_template| %>
+            <tr class='<%= cycle('odd', 'even') %> issue_template issue'>
+              <td>
+                <% if User.current.admin? %>
+                    <%= link_to h(note_template.id),
+                                { controller: 'global_note_templates',
+                                  action: 'show', id: note_template.id, },
+                                { title: note_template.memo } %>
+                <% else %>
+                    <%=h note_template.id %>
+                <% end %>
+               </td>
+
+              <td class='hideable template_title'>
+                <%= link_to h(note_template.name),
+                            { controller: 'global_note_templates',
+                              id: note_template.id, action: 'show' },
+                            { title: "#{html_escape(note_template.memo)}" } %>
+              </td>
+              <td>
+                <div class='template_tooltip_wrapper'>
+                  <a class='icon template_tooltip' title='<%= l(:label_preview) %>'></a>
+                  <div class='wiki template_tooltip_body'>
+                    <span class='title'><%= note_template.name %></span>
+                    <%= textilizable(note_template.description) %>
+                  </div>
+                </div>
+              </td>
+              <td class='hideable'><%=h note_template.tracker.name %></td>
+              <td class='hideable'><%=h note_template.author %></td>
+              <td class='hideable'><%= format_time(note_template.updated_at)%> </td>
+              <td class='center'><%= checked_image note_template.enabled? %></td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+
+    </div>
+<% end %>
+
 <%= render partial: 'common/template_links' %>
 

@@ -67,14 +67,19 @@ function setDescription(target, value, container) {
 // Show dialog
 let dialog_link = document.getElementById('link_<%= element_id %>_dialog')
 dialog_link.addEventListener("click", function() {
-  let template_list_url = '<%= url_for(controller: 'note_templates',
-        action:'list_templates', project_id: project_id, tracker_id: tracker_id) %>'
+  let template_list_url = '<%= url_for(controller: "note_templates",
+        action: "list_templates", project_id: project_id, tracker_id: tracker_id) %>'
   let token = document.querySelectorAll('#issue-form input[name="authenticity_token"]')[0]
 
   let req = new XMLHttpRequest()
+  req.open('GET', template_list_url, true)
+  if (token) {
+    req.setRequestHeader('X-CSRF-Token', token.value)
+  }
+
   req.onreadystatechange = function() {
-    if (req.readyState === 4) {
-      if (req.status === 200) {
+    if (req.readyState === XMLHttpRequest.DONE) {
+      if (req.status === 0 || (req.status >= 200 && req.status < 400)) {
         let value = req.responseText
         // replace here!
         let target = document.querySelectorAll('#<%= element_id %>_dialog .popup .filtered_templates_list')[0]
@@ -83,16 +88,20 @@ dialog_link.addEventListener("click", function() {
       }
     }
   }
-  req.open('GET', template_list_url, true)
-  req.setRequestHeader('X-CSRF-Token', token.value)
   req.send()
 }, false)
 
 
 function applyNoteTemplate(event, template_id) {
+  let project_id = <%= project_id %>
   let JSONdata = {
     note_template: { note_template_id: template_id }
   }
+  if (event.classList.contains('template-global')) {
+    JSONdata.note_template.template_type = 'global'
+    JSONdata.note_template.project_id = project_id
+  }
+
   let token = document.querySelectorAll('#issue-form input[name="authenticity_token"]')[0]
   let req = new XMLHttpRequest()
   req.onreadystatechange = function() {
@@ -107,7 +116,9 @@ function applyNoteTemplate(event, template_id) {
     }
   }
   req.open('POST', '<%= load_note_templates_path %>', true)
-  req.setRequestHeader('X-CSRF-Token', token.value)
+  if (token) {
+    req.setRequestHeader('X-CSRF-Token', token.value)
+  }
   req.setRequestHeader('Content-Type', 'application/json')
   req.send(JSON.stringify(JSONdata))
 }

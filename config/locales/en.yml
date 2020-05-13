@@ -87,3 +87,5 @@ en:
   warning_enable_builtin_fields: Please be careful to activate this flag. Now this feature is an experimental one. Since I have not provided enough UI and functions yet to support all the field types. It may not work depending on the browser. Use caution when applying in a production environment.
   label_field_information: Field information
   unavailable_fields_for_this_tracker: Unavailable field for this tarcker
+  global_note_templates: Global Template for note
+  link_to_index_edit_note_template: Note templates list / edit templates

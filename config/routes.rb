@@ -38,4 +38,7 @@ Rails.application.routes.draw do
     post 'load', on: :collection
     get 'list_templates', on: :collection
   end
+
+  # for global note temlate
+  resources :global_note_templates, except: [:edit], concerns: %i[previewable]
 end

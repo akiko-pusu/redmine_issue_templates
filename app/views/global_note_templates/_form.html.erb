@@ -1,0 +1,126 @@
+<%= error_messages_for 'global_note_template' %>
+<div class='box tabular box-white'>
+  <p><%= f.text_field :name, required: true, size: 80, label: l(:issue_template_name) %></p>
+
+  <fieldset class='issue'>
+    <legend class='issue'><%= l(:label_applied_for_issue) %></legend>
+    <p>
+      <% if note_template.tracker.blank? %>
+          <%= f.select :tracker_id, trackers.collect { |t| [t.name, t.id] }, { required: true },
+                       required: true, label: l(:label_tracker) %>
+
+          <%= h note_template.tracker.present? ? note_template.tracker.name :
+                    l(:orphaned_template, default: 'Orphaned template from tracker') %>
+      <% else %>
+          <%= f.select :tracker_id, trackers.collect { |t| [t.name, t.id] }, { required: true },
+                       required: true, label: l(:label_tracker), selected: note_template.tracker.id %>
+      <% end %>
+    </p>
+    <p>
+      <%= f.text_area :description, cols: 78, rows: 12,
+                      required: true,
+                      label: l(:label_comment), class: 'wiki-edit' %>
+    </p>
+
+    <p>
+      <%= f.select :visibility, GlobalNoteTemplate.visibilities.map { |k, v| [t("note_templates.visibility.#{k}"), k] },
+            selected: note_template.visibility,
+            required: true, label: l(:field_template_visibility) %>
+    </p>
+    <p id='visible_roles_checkbox'
+      style='display: <%= note_template.visibility == 'roles' ? 'block;' : 'none;' %>'>
+      <label for='global_note_visible_roles[role_ids]'><%= l(:label_role) %></label>
+         <% Role.givable.each do |role| %>
+          <%= check_box_tag('global_note_template[role_ids][]',
+                        role.id,
+                        note_template.global_note_visible_roles.pluck(:role_id).to_a.include?(role.id)) %>
+          <%= role.name %>
+        <% end %>
+    </p>
+  </fieldset>
+  <p>
+    <%= f.text_area :memo, cols: 70, rows: 3,
+                    required: false,
+                    label: l(:issue_template_note) %>
+    <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
+       data-tooltip-area='memo_help_area'
+       data-tooltip-content='memo_help_content'>
+      <%= l(:help_for_this_field) %>
+      <span class='tooltip-area' id='memo_help_area'></span>
+    </a>
+  </p>
+
+  <p>
+    <%= f.check_box :enabled, label: l(:label_enabled) %>
+    <a class='icon icon-help template-help' title='<%= l(:help_for_this_field) %>'
+       data-tooltip-area='enabled_help_area'
+       data-tooltip-content='enabled_help_content'>
+      <%= l(:help_for_this_field) %>
+      <span class='tooltip-area' id='enabled_help_area'></span>
+    </a>
+  </p>
+</div>
+
+<%= wikitoolbar_for 'global_note_template_description' %>
+
+<!-- help content -->
+<div id='issue_title_help_content' class='wiki' style='display: none;'>
+  <%= l(:help_for_issue_title) %>
+</div>
+
+<div id='enabled_help_content' class='wiki' style='display: none;'>
+  <%= l(:label_enabled_help_message) %>
+</div>
+
+<div id='memo_help_content' class='wiki' style='display: none;'>
+  <%= l(:label_memo_help_message, default: 'Please set up a note explaining when applying this template.') %>
+</div>
+<!-- help content -->
+
+<div class='box'>
+  <% if apply_all_projects %>
+      <p>
+        <i class='issue_template icon settings'></i>
+        <span class='issue_template help_content'>
+          <%= l(:note_apply_global_template_to_all_projects_setting_enabled) %>
+        </span>
+        (
+        <%= link_to(l(:label_settings),
+                    { controller: 'settings', action: 'plugin', id: 'redmine_issue_templates' },
+                    class: 'issue_template icon plugins') %> )
+      </p>
+  <% end %>
+  <% if projects.any? %>
+      <fieldset class='box box-white' id='global_note_template_project_ids'
+                style='<%= apply_all_projects ? 'opacity: 0.6' : '' %>'>
+        <a class='collapsible collapsed template-help' data-template-help-target='all_projects'>
+          <%= l(:project_list_associated_this_template, { applied: note_template.projects.length, all: projects.length }) %>
+        </a>
+        <div id='all_projects' style='display: none;'>
+        <p><%= check_all_links 'global_note_template_project_ids' %></p>
+        <legend><%= l(:label_project_plural) %></legend>
+        <%= render_project_nested_lists(projects) do |p|
+          content_tag('label', check_box_tag('global_note_template[project_ids][]',
+                                             p.id, note_template.projects.to_a.include?(p),
+                                             id: nil, disabled: apply_all_projects,
+                                             checked: note_template.projects.to_a.include?(p) ) + ' ' + h(p))
+        end %>
+        </div>
+      </fieldset>
+  <% end %>
+  <%= hidden_field_tag 'global_note_template[project_ids][]', '' %>
+</div>
+
+
+<script type='text/javascript'>
+  const visibility_select = document.getElementById('global_note_template_visibility')
+  const roles_checkbox = document.getElementById('visible_roles_checkbox')
+
+  visibility_select.addEventListener('change', (e) => {
+    if (e.target.value == 'roles') {
+      roles_checkbox.style.display = 'block'
+    } else {
+      roles_checkbox.style.display = 'none'
+    }
+  })
+</script>

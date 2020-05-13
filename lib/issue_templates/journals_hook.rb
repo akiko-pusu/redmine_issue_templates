@@ -9,7 +9,8 @@ module IssueTemplates
       issue = journal.issue
       tracker_id = issue.try(:tracker_id)
       templates = target_templates(context, tracker_id)
-      return if templates.empty?
+      global_templates = global_note_templates(context, tracker_id)
+      return if templates.empty? && global_templates.empty?
 
       context[:controller].send(
         :render_to_string,
@@ -22,7 +23,8 @@ module IssueTemplates
       issue = context[:issue]
       tracker_id = issue.try(:tracker_id)
       templates = target_templates(context, tracker_id)
-      return if templates.empty?
+      global_templates = global_note_templates(context, tracker_id)
+      return if templates.empty? && global_templates.empty?
 
       context[:controller].send(
         :render_to_string,
@@ -33,6 +35,13 @@ module IssueTemplates
     def target_templates(context, tracker_id)
       (tracker_id, project_id) = tracker_project_ids(context, tracker_id)
       NoteTemplate.visible_note_templates_condition(
+        user_id: User.current.id, project_id: project_id, tracker_id: tracker_id
+      )
+    end
+
+    def global_note_templates(context, tracker_id)
+      (tracker_id, project_id) = tracker_project_ids(context, tracker_id)
+      GlobalNoteTemplate.visible_note_templates_condition(
         user_id: User.current.id, project_id: project_id, tracker_id: tracker_id
       )
     end

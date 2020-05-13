@@ -88,3 +88,5 @@ ja:
   warning_enable_builtin_fields: 設定の有効化には十分注意してください。この機能は実験的なものです。入力のUIや値の適用のための十分な機能が提供できていません。また、ブラウザの互換性は保証されていません。本番環境への適用には十分注意してください。
   label_field_information: このフィールドの情報
   unusable_fields_for_this_tracker: このトラッカーでは利用できません
+  global_note_templates: "グローバル コメント用テンプレート"
+  link_to_index_edit_note_template: "コメント用テンプレート一覧 / 編集"
