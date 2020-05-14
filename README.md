@@ -112,6 +112,22 @@ If you have any requests, bug reports, please use GitHub issues. <https://github
 
 ## Changelog
 
+### 1.0.2
+
+Release to implememted Global note templates feature.
+
+NOTE: **Migration is required** to use global note template.
+
+* Feature: Implement Global Note Template. (GitHub: #268, #336)
+* Feature: Improve the input form for built-In / custom fields setting. (GitHub: #345)
+* Bugfix: Selecting note template browser "jumps" to top of page. (GitHub: #338)
+* Bugfix: Change to make the selector more specific. Thanks, @sandratatarevicova (GitHub: #332, #333)
+* Apply Bulgarian translation. Thanks, @jwalkerbg (GitHub: #330)
+* Update README: `--without` argument for `bundle` is no longer necessary. (GitHub: #335 / by @vividtone)
+* Update German Translation (by Christian Friebel).
+
+RESTRICTION: This version **is still not compatible with IE11**. (Related: #310)
+
 ### 1.0.1
 
 This is bugfix release against v1.0.0.
