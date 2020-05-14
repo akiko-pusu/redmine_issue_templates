@@ -9,7 +9,7 @@
 </div>
 
 <h2 class='global_issue_template'>
-  <%= l(:global_issue_templates) %>: #<%= issue_template.id %> <%= issue_template.title %>
+  <%= l(:global_issue_templates, default: 'Global Template for note') %>: #<%= issue_template.id %> <%= issue_template.title %>
   <%= avatar(issue_template.author, size: '24') %>
 </h2>
 

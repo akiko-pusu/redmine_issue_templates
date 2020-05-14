@@ -1,0 +1,79 @@
+<h2 class='global_note_template'><%=h "#{l(:global_note_templates, default: 'Global Note Templates')}" %></h2>
+<%= render partial: 'common/nodata', locals: { trackers: trackers } %>
+<div class='contextual issue_templates'>
+  <%= link_to(l(:label_new_templates),
+              { controller: 'global_note_templates', action: 'new' }, class: 'icon icon-add') %>
+  <%= link_to(l(:global_issue_templates),
+              { controller: 'global_issue_templates', action: 'index' },
+              class: 'icon icon-template') %>
+  <%= link_to(l(:label_settings),
+              { controller: 'settings', action: 'plugin', id: 'redmine_issue_templates' },
+              class: 'issue_template icon plugins') %>
+</div>
+<div style='clear: both;'></div>
+
+<% if template_map.blank? %>
+    <div class='template_box'>
+      <%= l(:no_note_templates_for_this_redmine, default: 'No global note templates are defined for this Redmine site.') %>
+    </div>
+<% end %>
+
+<% template_map.each_key do |tracker| %>
+    <div class='template_box'>
+      <h3 class='template_tracker'><%= tracker.name %></h3>
+
+      <table class='list template_list issues ui-sortable table-sortable'>
+        <thead>
+        <tr>
+          <th>#</th>
+          <th class='hideable'><%= l(:issue_template_name) %></th>
+          <th><%= l(:label_preview) %></th>
+          <th class='hideable'><%= l(:field_tracker) %></th>
+          <th class='hideable'><%= l(:field_author) %></th>
+          <th class='hideable'><%= l(:field_updated_at) %></th>
+          <th><%= l(:label_enabled) %></th>
+          <th><%=l(:button_sort)%></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% template_map[tracker].sorted.each do |note_template| %>
+            <tr class='<%= cycle('odd', 'even') %> issue_template issue'>
+              <td><%= link_to h(note_template.id), { controller: 'global_note_templates',
+                                                      id: note_template.id, action: 'show' },
+                              { title: note_template.name } %>
+              </td>
+              <td class='hideable template_title'>
+                <%= link_to h(note_template.name), { controller: 'global_note_templates',
+                                                         id: note_template.id, action: 'show' },
+                              { title: "#{html_escape(note_template.memo)}" } %>
+              </td>
+              <td>
+                <div class='template_tooltip_wrapper'>
+                  <a class='icon template_tooltip' title='<%= l(:label_preview) %>'></a>
+                  <div class='wiki template_tooltip_body'>
+                    <span class='title'><%= note_template.name %></span>
+                    <%= textilizable(note_template.description) %>
+                  </div>
+                </div>
+                </a>
+              </td>
+              <td class='hideable'><%=h note_template.tracker.name %></td>
+              <td class='hideable'><%=h note_template.author %></td>
+              <td class='hideable'><%= format_time(note_template.updated_at)%> </td>
+              <td class='center'><%= checked_image note_template.enabled? %></td>
+
+              <td class='buttons'>
+                <%= reorder_handle(note_template, :url => url_for({ controller: 'global_note_templates',
+                                                             id: note_template.id, action: 'update' })) %>
+              </td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <%= javascript_tag do %>
+      // NOTE: Sortable feature depends on Redmine's sorting jQuery plugin.
+      $(function() { $('table.table-sortable tbody').positionedItems() })
+    <% end %>
+<% end %>

@@ -50,3 +50,18 @@ EndOfLine:
 
 Metrics/ModuleLength:
   Max: 120
+
+Rails/ApplicationRecord:
+  Enabled: false
+
+Rails/UniqueValidationWithoutIndex:
+  Enabled: false
+
+Rails/InverseOf:
+  Enabled: false
+
+Rails/LexicallyScopedActionFilter:
+  Enabled: false
+
+Rails/SkipsModelValidations:
+  Enabled: false

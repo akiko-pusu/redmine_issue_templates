@@ -375,10 +375,19 @@ ISSUE_TEMPLATE.prototype = {
   updateFieldValue: (element, value) => {
     // In case field is a select element, scans its option values and marked 'selected'.
     if (element.tagName.toLowerCase() === 'select') {
-      let options = document.querySelectorAll('#' + element.id + ' option')
-      let filteredOptions = Array.from(options).filter(option => option.text === value)
-      if (filteredOptions.length > 0) {
-        filteredOptions[0].selected = true
+      let values = []
+      if (Array.isArray(value) === false) {
+        values[0] = value
+      } else {
+        values = value
+      }
+
+      for (let i = 0; i < values.length; i++) {
+        let options = document.querySelectorAll('#' + element.id + ' option')
+        let filteredOptions = Array.from(options).filter(option => option.text === values[i])
+        if (filteredOptions.length > 0) {
+          filteredOptions[0].selected = true
+        }
       }
     } else {
       element.value = value
@@ -395,6 +404,12 @@ ISSUE_TEMPLATE.prototype = {
           element.checked = true
         } else {
           element.selected = true
+        }
+      }
+      // in case multiple value
+      if (Array.isArray(value)) {
+        if (element.tagName.toLowerCase() === 'input' && value.includes(element.value)) {
+          element.checked = true
         }
       }
     }

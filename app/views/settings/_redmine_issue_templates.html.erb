@@ -20,6 +20,11 @@
               { controller: 'global_issue_templates', action: 'index' },
               class: 'icon icon-template pull-right') %>
   </p>
+  <p>
+    <%= link_to(l(:link_to_index_edit_note_template, default: 'Note templates list / edit templates'),
+              { controller: 'global_note_templates', action: 'index' },
+              class: 'icon icon-template pull-right') %>
+  </p>
 
   <p>
     <label for='settings_enable_builtin_fields'>
