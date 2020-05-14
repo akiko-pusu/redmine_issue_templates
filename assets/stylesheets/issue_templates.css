@@ -491,3 +491,11 @@ ul.json-list li {
     line-height: 1.6em;
     padding: 0.5em 0;
 }
+
+form#global_issue_template-form select[multiple=multiple] {
+    min-width: 120px;
+}
+
+form#issue_template-form select[multiple=multiple] {
+    min-width: 120px;
+}

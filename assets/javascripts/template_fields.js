@@ -60,7 +60,8 @@ const vm = new Vue({
       const title = this.newItemTitle
       if (fields[title] && fields[title].field_format) {
         const format = fields[title].field_format
-        if (format == 'date' || format == 'ratio' || format == 'list' || format == 'bool') {
+        if (format === 'int' || format === 'date' || format === 'ratio' ||
+            format === 'list' || format === 'bool' || format === 'string') {
           return fields[title].field_format
         }
       }

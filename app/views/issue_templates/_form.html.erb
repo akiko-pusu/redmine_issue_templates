@@ -74,9 +74,17 @@
       </p>
       <p>
           <label><%= l(:field_value) %></label>
-          <textarea id='issue_template_json_setting_field' v-if='fieldFormat() == "text"'
-              rows='1' placeholder='<%= l(:enter_value, default: 'Please enter a value') %>' v-model='newItemValue'>
+          <textarea id='issue_template_json_setting_field' v-if='fieldFormat() == "text"' rows=6
+              placeholder='<%= l(:enter_value, default: 'Please enter a value') %>' v-model='newItemValue'>
           </textarea>
+
+          <input id='issue_template_json_setting_field' v-if='fieldFormat() == "string"'
+              type='text'
+              placeholder='<%= l(:enter_value, default: 'Please enter a value') %>' v-model='newItemValue'>
+
+          <input id='issue_template_json_setting_field' v-if='fieldFormat() == "int"'
+              :max='customFields[newItemTitle].max_length' :min='customFields[newItemTitle].min_length'
+              type="number" placeholder='<%= l(:enter_value, default: 'Please enter a value') %>' v-model='newItemValue'>
 
           <input type='date' id='issue_template_json_setting_field' v-if='fieldFormat() == "date"' v-model='newItemValue'>
 
@@ -84,7 +92,8 @@
             <option v-for="ratio in [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]">{{ ratio }} %</option>
           </select>
 
-          <select v-model='newItemValue' v-if='fieldFormat() == "list" || fieldFormat() == "bool"'>
+          <select v-model='newItemValue' :multiple='customFields[newItemTitle].multiple == true'
+            v-if='fieldFormat() == "list" || fieldFormat() == "bool"'>
             <option v-for="value in possibleValues()">{{ value }}</option>
           </select>
           <span style='margin-left: 4px;' class='icon icon-add' v-on:click='addField(newItemTitle, newItemValue)'>
