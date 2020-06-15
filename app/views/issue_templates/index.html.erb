@@ -23,7 +23,7 @@
       <h3 class="template_tracker"><%= tracker.name %></h3>
       <%= non_project_tracker_msg(project_tracker?(tracker, @project)) %>
 
-      <table class="list issues table-sortable">
+      <table class="list issues table-sortable template_list">
         <thead>
         <tr>
           <th>#</th>
@@ -93,7 +93,7 @@
 <h2 class="issue_template"><%=h "#{l(:label_inherited_templates)}" %></h2>
   <div class="template_box">
 
-        <table class="list issues">
+        <table class="list issues template_list">
           <thead>
           <tr>
             <th>#</th>
@@ -163,7 +163,7 @@
       <% end %>
 
       <%= l(:only_admin_can_associate_global_template) %>
-      <table class="list issues">
+      <table class="list issues template_list">
         <thead>
         <tr>
           <th>#</th>

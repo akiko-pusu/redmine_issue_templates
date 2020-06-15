@@ -1,4 +1,4 @@
-FROM ruby:2.5
+FROM ruby:2.6
 LABEL maintainer="AKIKO TAKANO / (Twitter: @akiko_pusu)" \
   description="Image to run Redmine simply with sqlite to try/review plugin."
 
