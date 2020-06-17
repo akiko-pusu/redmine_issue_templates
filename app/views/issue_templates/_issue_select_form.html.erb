@@ -58,105 +58,110 @@
   </div>
 </div>
 <script type="text/javascript">
-    //<![CDATA[
-    $(function() {
-        var templateNS = templateNS || new ISSUE_TEMPLATE();
-        let pulldown_url = '<%= pulldown_url %>';
-        let tracker = '<%= @issue.tracker.id %>';
-        templateNS.set_pulldown(tracker, pulldown_url);
+  //<![CDATA[
+  $(function() {
 
-        $('#template_area').insertBefore($('#issue_subject').parent());
+    function confirmMessage(shouldReplaced) {
+      let confirmMessage = undefined
+      if (shouldReplaced) {
+        confirmMessage = '<%=h l(:label_template_applied, default: "Issue template is applied. You can revert with click 'Revert' link.") %>'
+      }
+      return confirmMessage
+    }
 
-        $("#issue_template").change(function(){
-            let is_triggered_by = '<%= is_triggered_by %>';
-            let load_url = '<%= url_for(controller: 'issue_templates', action: 'load',
-                project_id: project_id, is_triggered_by: is_triggered_by) %>';
-            let should_replaced = '<%= setting.should_replaced %>';
-            let confirmation = '<%=h l(:label_confirmation) %>';
-            let general_text_Yes = '<%=h l(:general_text_Yes) %>';
-            let general_text_No = '<%=h l(:general_text_No) %>';
-            let confirm_message = undefined;
-            if (should_replaced) {
-                confirm_message = '<%=h l(:label_template_applied, default: "Issue template is applied. You can revert with click 'Revert' link.") %>';
-            }
+    var templateConfig = {
+      pulldownUrl: '<%= pulldown_url %>',
+      isTriggeredBy: '<%= is_triggered_by %>',
+      loadUrl: '<%= url_for(controller: 'issue_templates', action: 'load', project_id: project_id, is_triggered_by: is_triggered_by) %>',
+      shouldReplaced: '<%= setting.should_replaced %>',
+      confirmation: '<%=h l(:label_confirmation) %>',
+      generalTextYes: '<%=h l(:general_text_Yes) %>',
+      generalTextNo : '<%=h l(:general_text_No) %>',
+      confirmMessage: confirmMessage('<%= setting.should_replaced %>')
+    }
 
-            templateNS.load_template(load_url, confirm_message, should_replaced, false, confirmation, general_text_Yes, general_text_No);
-        });
+    var templateNS = templateNS || new ISSUE_TEMPLATE(templateConfig);
+    templateNS.setPulldown('<%= @issue.tracker.id %>');
 
-        // Show dialog
-        $('#link_template_dialog').click(function() {
-            let template_list_url = '<%= url_for(controller: 'issue_templates',
-                action:'list_templates', project_id: project_id, issue_tracker_id: @issue.tracker.id) %>';
-            let template_list_title = '<%= "#{l(:issue_template)}: #{@issue.tracker.name}".html_safe %>';
+    $('#issue_template').on('change', function() {
+      templateNS.changeTemplatePlace();
+      templateNS.loadTemplate();
+    })
 
-            templateNS.openDialog(template_list_url, template_list_title);
-        });
+    // Show dialog
+    $('#link_template_dialog').click(function() {
+      let templateListUrl = '<%= url_for(controller: 'issue_templates',
+          action:'list_templates', project_id: project_id, issue_tracker_id: @issue.tracker.id) %>';
+      let templateListTitle = '<%= "#{l(:issue_template)}: #{@issue.tracker.name}".html_safe %>';
 
-        // revert template
-        $('#revert_template').click(function() {
-            templateNS.revertAppliedTemplate();
-        });
-
-        $('#erase_template').click(function() {
-            templateNS.eraseSubjectAndDescription();
-        });
-
-        // Hide overwrite confirmation dialog using cookie.
-        $('#issue_template_confirm_to_replace_hide_dialog').click(function () {
-          if ($(this).is(':checked')) {
-            // NOTE: Use document.cookie because Redmine itself does not use jquery.cookie.js.
-            document.cookie = 'issue_template_confirm_to_replace_hide_dialog=1';
-          } else {
-            document.cookie = 'issue_template_confirm_to_replace_hide_dialog=0';
-          }
-        });
-
-        $("input[name='template_search_filter']").on("keydown keyup",function(){
-            let cols = $('.template_data');
-            let searchWord = $(this).val();
-            reg = new RegExp(searchWord,'gi');
-            cols.each(function(i,val){
-                let col_name = $(val).children('td').text();
-                if (col_name.match(reg)) {
-                    $(val).show();
-                } else {
-                    $(val).hide();
-                }
-            })
-        });
-
-        // NOTE: Workaround for GitHub issue: 193
-        // Start observing the target node for configured mutations
-        try {
-            if (CKEDITOR.instances) {
-                // Create an observer instance linked to the callback function
-                let observer = new MutationObserver(callback);
-
-                // Select the node that will be observed for mutations
-                let targetNode = document.querySelector('#issue_description_and_toolbar');
-
-                // Options for the observer (which mutations to observe)
-                let config = {attributes: true, childList: true, characterData: true, subtree: true};
-
-                // Callback function to execute when mutations are observed
-                let callback = function (mutationsList) {
-                    for (let i = 0, len = mutationsList.length; i < len; ++i) {
-                        let mutation = mutationsList[i];
-                        if (mutation.type === 'attributes') {
-                            console.log('The ' + mutation.attributeName + ' attribute was modified.');
-                            if (mutation.target.className == 'cke_contents cke_reset') {
-                                // Wait for a while til CKE Editor's textarea is rendered, and after that
-                                // apply template text.
-                                setTimeout('templateNS.replaceCkeContent()', 200);
-                                observer.disconnect();
-                            }
-                        }
-                    }
-                };
-                observer.observe(targetNode, config);
-            }
-        } catch (e) {
-            // do nothing.
-        }
+      templateNS.openDialog(templateListUrl, templateListTitle);
     });
+
+    // revert template
+    $('#revert_template').click(function() {
+      templateNS.revertAppliedTemplate();
+    });
+
+    $('#erase_template').click(function() {
+      templateNS.eraseSubjectAndDescription();
+    });
+
+    // Hide overwrite confirmation dialog using cookie.
+    $('#issue_template_confirm_to_replace_hide_dialog').click(function () {
+      if ($(this).is(':checked')) {
+      // NOTE: Use document.cookie because Redmine itself does not use jquery.cookie.js.
+        document.cookie = 'issue_template_confirm_to_replace_hide_dialog=1';
+      } else {
+        document.cookie = 'issue_template_confirm_to_replace_hide_dialog=0';
+      }
+    });
+
+    $("input[name='template_search_filter']").on("keydown keyup", function() {
+      let cols = $('.template_data');
+      let searchWord = $(this).val();
+      reg = new RegExp(searchWord,'gi');
+      cols.each(function(i,val){
+        let col_name = $(val).children('td').text();
+        if (col_name.match(reg)) {
+          $(val).show();
+        } else {
+          $(val).hide();
+        }
+      })
+    });
+
+    // NOTE: Workaround for GitHub issue: 193
+    // Start observing the target node for configured mutations
+    try {
+      if (CKEDITOR.instances) {
+        // Create an observer instance linked to the callback function
+        let observer = new MutationObserver(callback);
+
+        // Select the node that will be observed for mutations
+        let targetNode = document.querySelector('#issue_description_and_toolbar');
+
+        // Options for the observer (which mutations to observe)
+        let config = { attributes: true, childList: true, characterData: true, subtree: true };
+
+        // Callback function to execute when mutations are observed
+        let callback = function (mutationsList) {
+          for (let i = 0, len = mutationsList.length; i < len; ++i) {
+            let mutation = mutationsList[i];
+            if (mutation.type === 'attributes') {
+              console.log('The ' + mutation.attributeName + ' attribute was modified.');
+              if (mutation.target.className == 'cke_contents cke_reset') {
+                // Wait for a while til CKE Editor's textarea is rendered, and after that
+                // apply template text.
+                setTimeout('templateNS.replaceCkeContent()', 200);
+                observer.disconnect();
+              }
+            }
+          }
+        };
+        observer.observe(targetNode, config);
+      }
+    } catch (e) {
+      // do nothing.
+    }
+  });
 </script>
