@@ -72,29 +72,60 @@
 </div>
 <script type='text/javascript'>
   //<![CDATA[
-    let pulldown_url = '<%= pulldown_url %>'
-    let tracker = '<%= @issue.tracker.id %>'
-    let is_triggered_by = '<%= is_triggered_by %>'
-    let load_url = '<%= url_for(controller: 'issue_templates', action: 'load',
+  //document.addEventListener('DOMContentLoaded', (event) => {
+    var template_config = {
+      pulldown_url: '<%= pulldown_url %>',
+      tracker: '<%= @issue.tracker.id %>',
+      is_triggered_by: '<%= is_triggered_by %>',
+      load_url: '<%= url_for(controller: 'issue_templates', action: 'load', project_id: project_id, is_triggered_by: is_triggered_by) %>',
+      should_replaced: '<%= setting.should_replaced %>',
+      confirmToReplace: true,
+      confirmation: '<%=h l(:label_confirmation) %>',
+      general_text_Yes: '<%=h l(:general_text_Yes) %>',
+      confirm_message: undefined,
+      confirm_message: confirmMessage('<%= setting.should_replaced %>'),
+    }
+    /*
+    var pulldown_url = '<%= pulldown_url %>'
+    var tracker = '<%= @issue.tracker.id %>'
+    var is_triggered_by = '<%= is_triggered_by %>'
+    var load_url = '<%= url_for(controller: 'issue_templates', action: 'load',
         project_id: project_id, is_triggered_by: is_triggered_by) %>'
-    let should_replaced = '<%= setting.should_replaced %>'
-    let confirmToReplace = true
-    let confirmation = '<%=h l(:label_confirmation) %>'
-    let general_text_Yes = '<%=h l(:general_text_Yes) %>'
-    let general_text_No = '<%=h l(:general_text_No) %>'
-    let confirm_message = undefined
+    var should_replaced = '<%= setting.should_replaced %>'
+    var confirmToReplace = true
+    var confirmation = '<%=h l(:label_confirmation) %>'
+    var general_text_Yes = '<%=h l(:general_text_Yes) %>'
+    var general_text_No = '<%=h l(:general_text_No) %>'
+    var confirm_message = undefined
     if (should_replaced) {
       confirm_message = '<%=h l(:label_template_applied, default: "Issue template is applied. You can revert with click 'Revert' link.") %>'
     }
+    */
+    function confirmMessage(should_replaced) {
+      let confirm_message = undefined
+      if (should_replaced) {
+        confirm_message = '<%=h l(:label_template_applied, default: "Issue template is applied. You can revert with click 'Revert' link.") %>'
+      }
+      return confirm_message
+    }
 
-    let templateNS = new ISSUE_TEMPLATE(
-      pulldown_url, load_url, confirm_message, should_replaced, confirmToReplace,
-      confirmation, general_text_Yes, general_text_No, is_triggered_by
+    var templateNS = new ISSUE_TEMPLATE(
+      template_config.pulldown_url,
+      template_config.load_url,
+      template_config.confirm_message,
+      template_config.should_replaced,
+      template_config.confirmToReplace,
+      template_config.confirmation,
+      template_config.general_text_Yes,
+      template_config.general_text_No,
+      template_config.is_triggered_by
     )
 
-    templateNS.set_pulldown(tracker)
+    console.log('set pulldown ' + templateNS)
+    templateNS.set_pulldown(template_config.tracker)
 
     document.getElementById('issue_template').addEventListener('change', (event) => {
+      console.log('issue_template change')
       templateNS.changeTemplatePlace()
       templateNS.load_template()
     })
@@ -159,4 +190,5 @@
     } catch (e) {
       // do nothing.
     }
+  //})
 </script>

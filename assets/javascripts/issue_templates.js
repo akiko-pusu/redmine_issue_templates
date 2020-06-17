@@ -63,7 +63,7 @@ ISSUE_TEMPLATE.prototype = {
 
     let issueDescription = document.getElementById('issue_description')
     let oldDescription = document.getElementById('original_description')
-    let templateNS = this
+    let templateNS = window.templateNS
 
     issueSubject.value = templateNS.escapeHTML(oldSubject.textContent)
 
@@ -82,13 +82,13 @@ ISSUE_TEMPLATE.prototype = {
     oldDescription.textContent = ''
     document.getElementById('revert_template').classList.add('disabled')
   },
-  load_template: (confirm_flg) => {
+  load_template: function (confirm_flg) {
     let confirmFlg = true
     if (confirm_flg != null) {
       confirmFlg = confirm_flg
     }
 
-    let ns = templateNS
+    var ns = this
     let selectedTemplate = document.getElementById('issue_template')
 
     if (selectedTemplate.value === '') return
@@ -202,7 +202,7 @@ ISSUE_TEMPLATE.prototype = {
       })
   },
   confirmToReplaceMsg: () => {
-    let ns = templateNS
+    var ns = this
     let dialog = document.getElementById('issue_template_confirm_to_replace_dialog')
     dialog.style.visibility = 'visible'
     dialog.classList.add('active')
@@ -248,7 +248,7 @@ ISSUE_TEMPLATE.prototype = {
 
     templateStatusArea.appendChild(messageElement)
   },
-  getCsrfToken: () => {
+  getCsrfToken: function () {
     const metas = document.getElementsByTagName('meta')
     for (let meta of metas) {
       if (meta.getAttribute('name') === 'csrf-token') {
@@ -258,7 +258,7 @@ ISSUE_TEMPLATE.prototype = {
     return ''
   },
   set_pulldown: function (tracker) {
-    let ns = this
+    var ns = this
     fetch(ns.pulldownUrl,
       {
         method: 'POST',
@@ -345,7 +345,7 @@ ISSUE_TEMPLATE.prototype = {
   },
   // support built-in field update
   builtin_fields: (template) => {
-    let ns = templateNS
+    var ns = this
     let builtinFieldsJson = template.builtin_fields_json
     if (builtinFieldsJson === undefined) return false
 
