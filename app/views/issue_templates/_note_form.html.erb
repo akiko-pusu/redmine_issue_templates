@@ -28,9 +28,19 @@
 
 <script type="text/javascript">
 
-var element_id = "<%= element_id %>";
-var select_id = "select_" + "<%= element_id %>";
-var content = document.querySelectorAll('#' + element_id);
+let element_id = "<%= element_id %>";
+let select_id = "select_" + "<%= element_id %>";
+let content = document.querySelectorAll('#' + element_id);
+
+// Show dialog
+let dialog_link = document.getElementById('link_<%= element_id %>_dialog');
+let base_template_list_url = '<%= url_for(controller: 'note_templates',
+        action:'list_templates') %>';
+
+let base_tracker_id = <%= tracker_id %>;
+let base_project_id = <%= project_id %>;
+
+let load_note_template_url = '<%= load_note_templates_path %>'
 
 if (content.length == 1) {
   if (element_id == 'template_issue_notes') {
@@ -42,8 +52,8 @@ if (content.length == 1) {
   }
 }
 
-function setDescription(target, value) {
-  var element = document.getElementById(target);
+function setNoteDescription(target, value) {
+  let element = document.getElementById(target);
   if (element.value.length === 0) {
     element.value = value;
   } else {
@@ -61,20 +71,55 @@ function setDescription(target, value) {
   }
 }
 
-// Show dialog
-var dialog_link = document.getElementById('link_<%= element_id %>_dialog');
-dialog_link.addEventListener("click",function() {
-  var template_list_url = '<%= url_for(controller: 'note_templates',
-        action:'list_templates', project_id: project_id, tracker_id: tracker_id) %>';
-  var token = document.querySelectorAll('#issue-form input[name="authenticity_token"]')[0];
+dialog_link.addEventListener("click", function() {
+  changeNoteTemplateList(base_template_list_url)
+}, false);
 
-  var req = new XMLHttpRequest();
+function applyNoteTemplate(targetElement) {
+  let template_id = targetElement.dataset.noteTemplateId
+  let load_url = targetElement.dataset.noteTemplateLoadUrl
+  let JSONdata = {
+    note_template: { note_template_id: template_id }
+  };
+  let token = document.querySelectorAll('#issue-form input[name="authenticity_token"]')[0];
+  let req = new XMLHttpRequest();
+  req.onreadystatechange = function() {
+    let container = targetElement.closest('div.overlay');
+    let target = container.id.replace('template_', '');
+    target = target.replace('_dialog', '');
+    if (req.readyState == 4) {
+      if (req.status == 200) {
+        let value = JSON.parse(req.responseText);
+        setNoteDescription(target, value.note_template.description);
+      }
+    }
+  }
+  req.open('POST', load_url, true);
+  req.setRequestHeader('X-CSRF-Token', token.value);
+  req.setRequestHeader("Content-Type", "application/json");
+  req.send(JSON.stringify(JSONdata));
+}
+
+function changeNoteTemplateList(base_template_list_url) {
+  let token = document.querySelectorAll('#issue-form input[name="authenticity_token"]')[0];
+
+  let project_id = document.getElementById('issue_project_id').value
+  let tracker_id = document.getElementById('issue_tracker_id').value
+  let template_list_url = base_template_list_url
+  if (tracker_id != undefined && project_id != undefined) {
+    template_list_url += '?tracker_id=' + tracker_id
+    template_list_url += '&project_id=' + project_id
+  } else {
+    template_list_url += '?tracker_id=' + base_tracker_id + '&project_id=' + base_project_id
+  }
+
+  let req = new XMLHttpRequest();
   req.onreadystatechange = function() {
     if (req.readyState == 4) {
       if (req.status == 200) {
-        var value = req.responseText;
+        let value = req.responseText;
         // replace here!
-        var target = document.querySelectorAll('#<%= element_id %>_dialog .popup .filtered_templates_list')[0];
+        let target = document.querySelectorAll('#<%= element_id %>_dialog .popup .filtered_templates_list')[0];
         target.innerHTML = value;
       }
     }
@@ -82,29 +127,5 @@ dialog_link.addEventListener("click",function() {
   req.open('GET', template_list_url, true);
   req.setRequestHeader('X-CSRF-Token', token.value);
   req.send();
-},false);
-
-
-function applyNoteTemplate(event, template_id) {
-  var JSONdata = {
-    note_template: { note_template_id: template_id }
-  };
-  var token = document.querySelectorAll('#issue-form input[name="authenticity_token"]')[0];
-  var req = new XMLHttpRequest();
-  req.onreadystatechange = function() {
-    var container = event.closest('div.overlay');
-    var target = container.id.replace('template_', '');
-    target = target.replace('_dialog', '');
-    if (req.readyState == 4) {
-      if (req.status == 200) {
-        var value = JSON.parse(req.responseText);
-        setDescription(target, value.note_template.description);
-      }
-    }
-  }
-  req.open('POST', '<%= load_note_templates_path %>', true);
-  req.setRequestHeader('X-CSRF-Token', token.value);
-  req.setRequestHeader("Content-Type", "application/json");
-  req.send(JSON.stringify(JSONdata));
 }
 </script>
