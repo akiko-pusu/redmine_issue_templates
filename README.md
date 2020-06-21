@@ -6,7 +6,7 @@
 
 Plugin to generate and use issue templates for each project to assist issue
 creation. The latest version 1.0.x **is not compatible with IE11**. (Related: #310)
-Please use version 0.3.7 or **[0.3-stable](https://github.com/akiko-pusu/redmine_issue_templates/tree/0.3-stable) branch** (uing jQuery version) as a stable release for Redmine4.x.
+Please use version 0.3.8 or **[0.3-stable](https://github.com/akiko-pusu/redmine_issue_templates/tree/0.3-stable) branch** (uing jQuery version) as a stable release for Redmine4.x.
 
 ## Repository
 
@@ -143,7 +143,7 @@ Thank you for the valuable information and feedback, @AlUser71!
 ### 1.0.0
 
 RESTRICTION: This version **is not compatible with IE11**. (Related: #310)
-Please use version **0.3.7** or **[0.3-stable](https://github.com/akiko-pusu/redmine_issue_templates/tree/0.3-stable) branch** (uing jQuery version) if you need to support IE11.
+Please use version **0.3.8** or **[0.3-stable](https://github.com/akiko-pusu/redmine_issue_templates/tree/0.3-stable) branch** (uing jQuery version) if you need to support IE11.
 
 NOTE: **Migration is required**.
 Since ``Support Built-In / Custom Fields`` is an experimental feature, please **be careful** if you hope to try it.
