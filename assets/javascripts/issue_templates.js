@@ -1,27 +1,26 @@
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
+ *
+ * Use '==' operator to evaluate null or undefined.
  */
 
 // For namespace setting.
 // var ISSUE_TEMPLATE = ISSUE_TEMPLATE || function () {}
-function ISSUE_TEMPLATE(pulldownUrl, loadUrl, confirmMsg, shouldReplaced, confirmToReplace,
-  confirmation, generalTextYes, generalTextNo, isTriggeredBy) {
-  this.pulldownUrl = pulldownUrl
-  this.loadUrl = loadUrl
-  this.confirmMsg = confirmMsg
-  this.shouldReplaced = shouldReplaced
-  this.confirmToReplace = confirmToReplace
-  this.confirmation = confirmation
-  this.generalTextYes = generalTextYes
-  this.generalTextNo = generalTextNo
-  this.isTriggeredBy = isTriggeredBy
+function ISSUE_TEMPLATE(config) {
+  this.pulldownUrl = config.pulldownUrl
+  this.loadUrl = config.loadUrl
+  this.confirmMsg = config.confirmMessage
+  this.shouldReplaced = config.shouldReplaced
+  this.generalTextYes = config.generalTextYes
+  this.generalTextNo = config.generalTextNo
+  this.isTriggeredBy = config.isTriggeredBy
 }
 
 ISSUE_TEMPLATE.prototype = {
   clearValue: (id) => {
     let target = document.getElementById(id)
-    if (target === null) {
+    if (target == null) {
       return
     }
     target.value = ''
@@ -67,7 +66,7 @@ ISSUE_TEMPLATE.prototype = {
 
     issueSubject.value = templateNS.escapeHTML(oldSubject.textContent)
 
-    if (issueDescription !== null) {
+    if (issueDescription != null) {
       issueDescription.value = templateNS.escapeHTML(oldDescription.textContent)
     }
 
@@ -82,14 +81,9 @@ ISSUE_TEMPLATE.prototype = {
     oldDescription.textContent = ''
     document.getElementById('revert_template').classList.add('disabled')
   },
-  load_template: function (confirm_flg) {
-    let confirmFlg = true
-    if (confirm_flg != null) {
-      confirmFlg = confirm_flg
-    }
-
-    var ns = this
+  loadTemplate: function () {
     let selectedTemplate = document.getElementById('issue_template')
+    let ns = this
 
     if (selectedTemplate.value === '') return
 
@@ -120,89 +114,91 @@ ISSUE_TEMPLATE.prototype = {
         // when operator submits new issue form without required field and returns
         // with error message. If flash message #errorExplanation exists, not overwrited.
         // (https://github.com/akiko-pusu/redmine_issue_templates/issues/50)
-        if (document.querySelector('#errorExplanation') && document.querySelector('#errorExplanation')[0]) return
+        if (document.querySelector('#errorExplanation') && document.querySelector('#errorExplanation')[0]) {
+          document.querySelector('#errorExplanation')
+          return
+        }
 
         // Returned JSON may have the key named 'global_template' or 'issue_template'
         let parsedData = JSON.parse(data)
         let templateKey = Object.keys(parsedData)[0]
         let obj = parsedData[templateKey]
 
-        obj.description = (obj.description === null) ? '' : obj.description
-        obj.issue_title = (obj.issue_title === null) ? '' : obj.issue_title
+        obj.description = (obj.description == null) ? '' : obj.description
+        obj.issue_title = (obj.issue_title == null) ? '' : obj.issue_title
 
-        let oldSubj = ''
-        let oldVal = ''
         let issueSubject = document.getElementById('issue_subject')
         let issueDescription = document.getElementById('issue_description')
 
-        if (confirmFlg === true && ns.confirmToReplace === true && ns.shouldReplaced === 'true' && (issueSubject.value !== '')) {
-          if (oldSubj !== obj.issue_title) {
+        this.loadedTemplate = obj
+
+        if (ns.shouldReplaced === 'true' && (issueDescription.value !== '' || issueSubject.value !== '')) {
+          if (obj.description !== '' || obj.issue_title !== '') {
             let hideConfirmFlag = ns.hideOverwiteConfirm()
             if (hideConfirmFlag === false) {
-              return ns.confirmToReplaceMsg()
+              return ns.confirmToReplaceContent(obj)
             }
           }
         }
-
-        // for description
-        if (issueDescription !== null) {
-          let originalDescription = document.getElementById('original_description')
-          if (issueDescription.value !== '' && ns.shouldReplaced === 'false') {
-            oldVal = issueDescription.value + '\n\n'
-          }
-
-          originalDescription.textContent = issueDescription.value
-
-          issueDescription.getAttribute('original_description', issueDescription.value)
-          if (oldVal.replace(/(?:\r\n|\r|\n)/g, '').trim() !== obj.description.replace(/(?:\r\n|\r|\n)/g, '').trim()) {
-            issueDescription.value = oldVal + obj.description
-          }
-        }
-
-        let originalSubject = document.getElementById('original_subject')
-        if (issueSubject.value !== '' && ns.shouldReplaced === 'false') {
-          oldSubj = issueSubject.value + ' '
-        }
-        originalSubject.textContent = issueSubject.value
-
-        issueSubject.setAttribute('original_title', issueSubject.value)
-        if (oldSubj.trim() !== obj.issue_title.trim()) {
-          issueSubject.value = oldSubj + obj.issue_title
-        }
-
-        try {
-          if (CKEDITOR.instances.issue_description) {
-            CKEDITOR.instances.issue_description.setData(oldVal + obj.description)
-          }
-        } catch (e) {
-          // do nothing.
-        }
-        // show message just after default template loaded.
-        if (ns.confirmMsg) {
-          ns.show_loaded_message(ns.confirmMsg, issueSubject)
-        }
-
-        if (originalSubject.textContent.length > 0) {
-          document.getElementById('revert_template').classList.remove('disabled')
-        }
-
-        if (obj.related_link !== '') {
-          let relatedLink = document.getElementById('issue_template_related_link')
-
-          relatedLink.setAttribute('href', obj.related_link)
-          relatedLink.style.display = 'inline'
-          relatedLink.textContent = obj.link_title
-        } else {
-          let relatedLink = document.getElementById('issue_template_related_link')
-          relatedLink.style.display = 'none'
-        }
-
-        ns.addCheckList(obj)
-        ns.builtin_fields(obj)
+        ns.replaceTemplateValue(obj)
       })
   },
-  confirmToReplaceMsg: () => {
-    var ns = this
+  replaceTemplateValue: function (obj) {
+    let ns = this
+
+    let oldSubj = ''
+    let oldVal = ''
+    let issueSubject = document.getElementById('issue_subject')
+    let issueDescription = document.getElementById('issue_description')
+
+    if (issueDescription != null) {
+      let originalDescription = document.getElementById('original_description')
+      if (issueDescription.value !== '' && ns.shouldReplaced === 'false') {
+        oldVal = issueDescription.value + '\n\n'
+      }
+
+      originalDescription.textContent = issueDescription.value
+
+      issueDescription.getAttribute('original_description', issueDescription.value)
+      if (oldVal.replace(/(?:\r\n|\r|\n)/g, '').trim() !== obj.description.replace(/(?:\r\n|\r|\n)/g, '').trim()) {
+        issueDescription.value = oldVal + obj.description
+      }
+    }
+
+    let originalSubject = document.getElementById('original_subject')
+    if (issueSubject.value !== '' && ns.shouldReplaced === 'false') {
+      oldSubj = issueSubject.value + ' '
+    }
+    originalSubject.textContent = issueSubject.value
+
+    issueSubject.setAttribute('original_title', issueSubject.value)
+    if (oldSubj.trim() !== obj.issue_title.trim()) {
+      issueSubject.value = oldSubj + obj.issue_title
+    }
+
+    try {
+      if (CKEDITOR.instances.issue_description) {
+        CKEDITOR.instances.issue_description.setData(oldVal + obj.description)
+      }
+    } catch (e) {
+      // do nothing.
+    }
+    // show message just after default template loaded.
+    if (ns.confirmMsg && ns.shouldReplaced) {
+      ns.showLoadedMessage(issueDescription)
+    }
+
+    if (originalSubject.textContent.length > 0) {
+      document.getElementById('revert_template').classList.remove('disabled')
+    }
+
+    ns.setRelatedLink(obj)
+    ns.addCheckList(obj)
+    ns.builtinFields(obj)
+    ns.confirmToReplace = true
+  },
+  confirmToReplaceContent: function (obj) {
+    let ns = this
     let dialog = document.getElementById('issue_template_confirm_to_replace_dialog')
     dialog.style.visibility = 'visible'
     dialog.classList.add('active')
@@ -215,7 +211,7 @@ ISSUE_TEMPLATE.prototype = {
         document.cookie = 'issue_template_confirm_to_replace_hide_dialog=0'
       }
       dialog.classList.remove('active')
-      ns.load_template(false)
+      ns.replaceTemplateValue(obj)
     })
 
     document.getElementById('overwrite_no').addEventListener('click', () => {
@@ -233,16 +229,17 @@ ISSUE_TEMPLATE.prototype = {
         dialog.classList.remove('active')
       })
   },
-  show_loaded_message: (confirmMsg, target) => {
+  showLoadedMessage: function (target) {
+    let ns = this
     // in app/views/issue_templates/_issue_select_form.html.erb
     let templateStatusArea = document.getElementById('template_status-area')
-    if (templateStatusArea === null) return false
+    if (templateStatusArea == null) return false
     if (document.querySelector('div.flash_message')) {
       document.querySelector('div.flash_message').remove()
     }
 
     let messageElement = document.createElement('div')
-    messageElement.innerHTML = confirmMsg
+    messageElement.innerHTML = ns.confirmMsg
     messageElement.classList.add('flash_message')
     messageElement.classList.add('fadeout')
 
@@ -257,8 +254,14 @@ ISSUE_TEMPLATE.prototype = {
     }
     return ''
   },
-  set_pulldown: function (tracker) {
-    var ns = this
+  setPulldown: function (tracker) {
+    let ns = this
+    let params = { issue_tracker_id: tracker }
+    let pullDownProject = document.getElementById('issue_project_id')
+    if (pullDownProject) {
+      params.issue_project_id = pullDownProject.value
+    }
+
     fetch(ns.pulldownUrl,
       {
         method: 'POST',
@@ -267,9 +270,7 @@ ISSUE_TEMPLATE.prototype = {
           'Content-Type': 'application/json',
           'X-CSRF-Token': ns.getCsrfToken()
         },
-        body: JSON.stringify({
-          issue_tracker_id: tracker
-        })
+        body: JSON.stringify(params)
       })
       .then((response) => {
         return response.text()
@@ -279,7 +280,7 @@ ISSUE_TEMPLATE.prototype = {
         let length = document.querySelectorAll('#issue_template > optgroup > option').length
         if (length < 1) {
           document.getElementById('template_area').style.display = 'none'
-          if (ns.isTriggeredBy !== undefined && this.isTriggeredBy === 'issue_tracker_id') {
+          if (ns.isTriggeredBy != null && this.isTriggeredBy === 'issue_tracker_id') {
             if (document.querySelectorAll('#issue-form.new_issue').length > 0 && ns.should_replaced === true) {
               if (typeof templateNS !== 'undefined') {
                 ns.eraseSubjectAndDescription()
@@ -295,7 +296,7 @@ ISSUE_TEMPLATE.prototype = {
   },
   addCheckList: function (obj) {
     let list = obj.checklist
-    if (list === undefined) return false
+    if (list == null) return false
     let checklistForm = document.getElementById('checklist_form')
     if (!checklistForm) return
 
@@ -314,21 +315,31 @@ ISSUE_TEMPLATE.prototype = {
       console.log(`NOTE: Checklist could not be applied due to this error. ${e.message} : ${e.message}`)
     }
   },
-  escapeHTML: (val) => {
+  setRelatedLink: function (obj) {
+    let relatedLink = document.getElementById('issue_template_related_link')
+    if (obj.related_link != null && obj.related_link !== '') {
+      relatedLink.setAttribute('href', obj.related_link)
+      relatedLink.style.display = 'inline'
+      relatedLink.textContent = obj.link_title
+    } else {
+      relatedLink.style.display = 'none'
+    }
+  },
+  escapeHTML: function (val) {
     const div = document.createElement('div')
     div.textContent = val
     return div.textContent
   },
-  unescapeHTML: (val) => {
+  unescapeHTML: function (val) {
     const div = document.createElement('div')
     div.innerHTML = val
     return div.innerHTML
   },
-  replaceCkeContent: () => {
+  replaceCkeContent: function () {
     let element = document.getElementById('issue_description')
     return CKEDITOR.instances.issue_description.setData(element.value)
   },
-  hideOverwiteConfirm: () => {
+  hideOverwiteConfirm: function () {
     let cookieArray = []
     if (document.cookie !== '') {
       let tmp = document.cookie.split('; ')
@@ -338,16 +349,16 @@ ISSUE_TEMPLATE.prototype = {
       }
     }
     let confirmationCookie = cookieArray['issue_template_confirm_to_replace_hide_dialog']
-    if (confirmationCookie === undefined || parseInt(confirmationCookie) === 0) {
+    if (confirmationCookie == null || parseInt(confirmationCookie) === 0) {
       return false
     }
     return true
   },
   // support built-in field update
-  builtin_fields: (template) => {
-    var ns = this
+  builtinFields: function (template) {
+    let ns = this
     let builtinFieldsJson = template.builtin_fields_json
-    if (builtinFieldsJson === undefined) return false
+    if (builtinFieldsJson == null) return false
 
     try {
       Object.keys(builtinFieldsJson).forEach(function (key) {
@@ -363,7 +374,7 @@ ISSUE_TEMPLATE.prototype = {
             return ns.updateFieldValues(elements, value)
           }
         }
-        if (element === null) {
+        if (element == null) {
           return
         }
         ns.updateFieldValue(element, value)
@@ -372,7 +383,7 @@ ISSUE_TEMPLATE.prototype = {
       console.log(`NOTE: Builtin / custom fields could not be applied due to this error. ${e.message} : ${e.message}`)
     }
   },
-  updateFieldValue: (element, value) => {
+  updateFieldValue: function (element, value) {
     // In case field is a select element, scans its option values and marked 'selected'.
     if (element.tagName.toLowerCase() === 'select') {
       let values = []
@@ -393,11 +404,12 @@ ISSUE_TEMPLATE.prototype = {
       element.value = value
     }
   },
-  updateFieldValues: (elements, value) => {
+  updateFieldValues: function (elements, value) {
+    let ns = this
     for (let i = 0; i < elements.length; i++) {
       let element = elements[i]
       if (element.tagName.toLowerCase() === 'select') {
-        return templateNS.updateFieldValue(element, value)
+        return ns.updateFieldValue(element, value)
       }
       if (element.value === value) {
         if (element.tagName.toLowerCase() === 'input') {
@@ -414,7 +426,7 @@ ISSUE_TEMPLATE.prototype = {
       }
     }
   },
-  updateTemplateSelect: (event) => {
+  updateTemplateSelect: function (event) {
     let link = event.target
     let optionId = link.getAttribute('data-issue-template-id')
     let optionSelector = '#issue_template > optgroup > option[value="' + optionId + '"]'
@@ -427,7 +439,7 @@ ISSUE_TEMPLATE.prototype = {
     let changeEvent = new Event('change')
     document.getElementById('issue_template').dispatchEvent(changeEvent)
   },
-  filterTemplate: (event) => {
+  filterTemplate: function (event) {
     let cols = document.getElementsByClassName('template_data')
     let searchWord = event.target.value
     let reg = new RegExp(searchWord, 'gi')
@@ -440,7 +452,7 @@ ISSUE_TEMPLATE.prototype = {
       }
     }
   },
-  changeTemplatePlace: () => {
+  changeTemplatePlace: function () {
     if (document.querySelector('div.flash_message')) {
       document.querySelector('div.flash_message').remove()
     }
@@ -464,7 +476,7 @@ if (!Element.prototype.closest) {
     do {
       if (el.matches(s)) return el
       el = el.parentElement || el.parentNode
-    } while (el !== null && el.nodeType === 1)
+    } while (el != null && el.nodeType === 1)
     return null
   }
 }
@@ -490,7 +502,7 @@ document.onreadystatechange = () => {
       let element = templateHelps[i]
       element.addEventListener('mouseenter', (event) => {
         let contentId = event.target.getAttribute('data-tooltip-content')
-        if (contentId === null) return
+        if (contentId == null) return
 
         let target = event.target.getAttribute('data-tooltip-area')
         let obj = document.getElementById(target)
@@ -501,7 +513,7 @@ document.onreadystatechange = () => {
       })
       element.addEventListener('mouseleave', (event) => {
         let contentId = event.target.getAttribute('data-tooltip-content')
-        if (contentId === null) return
+        if (contentId == null) return
 
         let target = event.target.getAttribute('data-tooltip-area')
         let obj = document.getElementById(target)
@@ -542,5 +554,108 @@ document.onreadystatechange = () => {
         })
       }
     }
+  }
+}
+
+// ------- fot NoteTemplate
+
+function NOTE_TEMPLATE(config) {
+  this.baseElementId = config.baseElementId
+  this.baseTemplateListUrl = config.baseTemplateListUrl
+  this.baseTrackerId = config.baseTrackerId
+  this.baseProjectId = config.baseProjectId
+  this.loadNoteTemplateUrl = config.loadNoteTemplateUrl
+}
+
+NOTE_TEMPLATE.prototype = {
+  setNoteDescription: function (target, value, container) {
+    let element = document.getElementById(target)
+    if (element.value.length === 0) {
+      element.value = value
+    } else {
+      element.value += '\n\n' + value
+    }
+    element.focus()
+    container.style.display = 'none'
+
+    try {
+      if (CKEDITOR.instances.issue_notes) {
+        CKEDITOR.instances.issue_notes.setData(value)
+        CKEDITOR.instances.issue_notes.focus()
+      }
+    } catch (e) {
+      // do nothing.
+    }
+  },
+  applyNoteTemplate: function (targetElement) {
+    let ns = this
+    let templateId = targetElement.dataset.noteTemplateId
+    let projectId = document.getElementById('issue_project_id')
+    let loadUrl = targetElement.dataset.noteTemplateLoadUrl
+
+    let JSONdata = {
+      note_template: { note_template_id: templateId }
+    }
+
+    if (targetElement.classList.contains('template-global')) {
+      JSONdata.note_template.template_type = 'global'
+      JSONdata.note_template.project_id = ns.baseProjectId
+      if (projectId && projectId.value) {
+        JSONdata.note_template.project_id = projectId.value
+      }
+    }
+
+    let token = document.querySelector('#issue-form input[name="authenticity_token"]')
+    let req = new XMLHttpRequest()
+    req.onreadystatechange = function() {
+      let container = targetElement.closest('div.overlay')
+      let target = container.id.replace('template_', '')
+      target = target.replace('_dialog', '')
+      if (req.readyState === 4) {
+        if (req.status === 200 || req.status === 304) {
+          let value = JSON.parse(req.responseText)
+          ns.setNoteDescription(target, value.note_template.description, container)
+        }
+      }
+    }
+    req.open('POST', loadUrl, true)
+    if (token) {
+      req.setRequestHeader('X-CSRF-Token', token.value)
+    }
+    req.setRequestHeader('Content-Type', 'application/json')
+    req.send(JSON.stringify(JSONdata))
+  },
+  changeNoteTemplateList: function (elementId) {
+    let ns = this
+    let token = document.querySelectorAll('#issue-form input[name="authenticity_token"]')
+
+    let projectId = document.getElementById('issue_project_id')
+    let trackerId = document.getElementById('issue_tracker_id')
+    let templateListUrl = ns.baseTemplateListUrl
+    if (trackerId != null && projectId != null) {
+      templateListUrl += '?tracker_id=' + trackerId.value
+      templateListUrl += '&project_id=' + projectId.value
+    } else {
+      templateListUrl += '?tracker_id=' + ns.baseTrackerId + '&project_id=' + ns.baseProjectId
+    }
+
+    let req = new XMLHttpRequest();
+    req.onreadystatechange = function() {
+      if (req.readyState === 4) {
+        if (req.status === 200 || req.status === 304) {
+          let value = req.responseText
+          // replace here!
+          let dialog = document.getElementById(`${elementId}_dialog`)
+          let target = document.querySelector(`#${elementId}_dialog .popup .filtered_templates_list`)
+          target.innerHTML = value
+          dialog.style = 'display: block;'
+        }
+      }
+    }
+    req.open('GET', templateListUrl, true)
+    if (token) {
+      req.setRequestHeader('X-CSRF-Token', token.value)
+    }
+    req.send()
   }
 }

@@ -163,6 +163,8 @@ feature 'IssueTemplate', js: true do
 
     context 'have subproject' do
       background do
+        template_setting = IssueTemplateSetting.find_or_create(1)
+        template_setting.inherit_templates = true
         sub_project = Project.find(3)
         sub_project.inherit_members = true
         sub_project.enabled_modules << EnabledModule.new(name: 'issue_templates')
@@ -173,6 +175,8 @@ feature 'IssueTemplate', js: true do
 
       scenario 'Select sub project then template for subproject is shown' do
         sub_project = page.find('#issue_project_id > option[value="3"]')
+
+        expect(page).to have_selector('#issue_template > optgroup > option', count: 3)
         template_option = page.find('#issue_template > optgroup > option:nth-child(1)')
         expect(template_option.text).to eq issue_templates.first.title
 
