@@ -112,6 +112,15 @@ If you have any requests, bug reports, please use GitHub issues. <https://github
 
 ## Changelog
 
+### 1.0.3
+
+NOTE: Mainly, maintenance, bugfix and refactoring only. There is no additional feature.
+
+* Refactor JavaScript to work properly under jQuery 3.x (for Redmine trunk).
+* Add some feature specs to test Builtin-fields support.
+
+RESTRICTION: This version **is still not compatible with IE11**. (Related: #310)
+
 ### 1.0.2
 
 Release to implememted Global note templates feature.
