@@ -10,7 +10,7 @@
   <label for='select_note_template' style='font-weight: bold;'>
     <%=h l(:label_template_for_note, default: 'Template for note') %>
   </label>
-  <a class='icon template_tooltip' id='link_<%= element_id %>_dialog' href='#<%= element_id %>_dialog'>
+  <a class='icon template_tooltip' id='link_<%= element_id %>_dialog' href='#<%= element_id %>_dialog' onclick='noteTemplateNS.changeNoteTemplateList("<%= element_id %>")'>
     <%=h l(:display_and_filter_issue_templates_in_dialog, default: 'Filter Templates') %>
   </a>
   <!-- dialog box -->
@@ -30,96 +30,24 @@
 
 
 <script type='text/javascript'>
+  var noteTemplateConfig = {
+    baseElementId: '<%= element_id %>',
+    baseTemplateListUrl: '<%= url_for(controller: 'note_templates', action:'list_templates') %>',
+    baseTrackerId: <%= tracker_id %>,
+    baseProjectId: <%= project_id %>,
+    loadNoteTemplateUrl: '<%= load_note_templates_path %>'
+  }
 
-let element_id = '<%= element_id %>'
-let select_id = 'select_' + '<%= element_id %>'
-let content = document.querySelectorAll('#' + element_id)
+  // let baseElementId = '<%= element_id %>'
+  let content = document.querySelectorAll('#' + noteTemplateConfig.baseElementId)
 
-if (content.length === 1) {
-  if (element_id === 'template_issue_notes') {
-    element = content[0].closest('fieldset')
+  if (content.length === 1) {
+    let element = content[0].closest('form')
+    if (noteTemplateConfig.baseElementId === 'template_issue_notes') {
+      element = content[0].closest('fieldset')
+    }
     element.insertBefore(content[0], element.firstChild)
-  } else {
-    element = content[0].closest('form')
-    element.insertBefore(content[0], element.firstChild)
-  }
-}
-
-function setDescription(target, value, container) {
-  let element = document.getElementById(target)
-  if (element.value.length === 0) {
-    element.value = value
-  } else {
-    element.value += '\n\n' + value
-  }
-  container.style.display = 'none'
-
-  try {
-    if (CKEDITOR.instances.issue_notes) {
-      CKEDITOR.instances.issue_notes.setData(value)
-      CKEDITOR.instances.issue_notes.focus()
-    }
-  } catch (e) {
-    // do nothing.
-  }
-}
-
-// Show dialog
-let dialog_link = document.getElementById('link_<%= element_id %>_dialog')
-dialog_link.addEventListener("click", function() {
-  let template_list_url = '<%= url_for(controller: "note_templates",
-        action: "list_templates", project_id: project_id, tracker_id: tracker_id) %>'
-  let token = document.querySelectorAll('#issue-form input[name="authenticity_token"]')[0]
-
-  let req = new XMLHttpRequest()
-  req.open('GET', template_list_url, true)
-  if (token) {
-    req.setRequestHeader('X-CSRF-Token', token.value)
   }
 
-  req.onreadystatechange = function() {
-    if (req.readyState === XMLHttpRequest.DONE) {
-      if (req.status === 0 || (req.status >= 200 && req.status < 400)) {
-        let value = req.responseText
-        // replace here!
-        let target = document.querySelectorAll('#<%= element_id %>_dialog .popup .filtered_templates_list')[0]
-        target.innerHTML = value
-        document.getElementById('template_issue_notes_dialog').style.display = 'block'
-      }
-    }
-  }
-  req.send()
-}, false)
-
-
-function applyNoteTemplate(event, template_id) {
-  let project_id = <%= project_id %>
-  let JSONdata = {
-    note_template: { note_template_id: template_id }
-  }
-  if (event.classList.contains('template-global')) {
-    JSONdata.note_template.template_type = 'global'
-    JSONdata.note_template.project_id = project_id
-  }
-
-  let token = document.querySelectorAll('#issue-form input[name="authenticity_token"]')[0]
-  let req = new XMLHttpRequest()
-  req.onreadystatechange = function() {
-    let container = event.closest('div.overlay')
-    let target = container.id.replace('template_', '')
-    target = target.replace('_dialog', '')
-    if (req.readyState === 4) {
-      if (req.status === 200) {
-        let value = JSON.parse(req.responseText)
-        setDescription(target, value.note_template.description, container)
-      }
-    }
-  }
-  req.open('POST', '<%= load_note_templates_path %>', true)
-  if (token) {
-    req.setRequestHeader('X-CSRF-Token', token.value)
-  }
-  req.setRequestHeader('Content-Type', 'application/json')
-  req.send(JSON.stringify(JSONdata))
-}
+  var noteTemplateNS = noteTemplateNS || new NOTE_TEMPLATE(noteTemplateConfig)
 </script>
