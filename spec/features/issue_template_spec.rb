@@ -79,9 +79,10 @@ feature 'IssueTemplate', js: true do
 
   feature 'create template' do
     given!(:enabled_module) { FactoryBot.create(:enabled_module) }
+    given(:issue_template_title) { page.find('#issue_template_title') }
+    given(:issue_template_description) { page.find('#issue_template_description') }
+
     context 'When user has priv to  issue template' do
-      given(:issue_template_title) { page.find('#issue_template_title') }
-      given(:issue_template_description) { page.find('#issue_template_description') }
       given(:create_button) { page.find('#issue_template-form > input[type="submit"]') }
       given(:error_message) { page.find('#errorExplanation') }
       background do
@@ -97,6 +98,28 @@ feature 'IssueTemplate', js: true do
 
       scenario 'create template failed' do
         expect(error_message).to have_content('Title cannot be blank')
+      end
+    end
+
+    # enable buildin-fields
+    context 'Setting "enable_builtin_fields" is true' do
+      background do
+        # enable_builtin_fields
+        Setting.send 'plugin_redmine_issue_templates=', 'enable_builtin_fields' => 'true'
+        assign_template_priv(role, add_permission: :edit_issue_templates)
+        log_user('jsmith', 'jsmith')
+        visit '/projects/ecookbook/issue_templates/new'
+      end
+
+      scenario 'form for builtin_fields are shown' do
+        select 'Bug', from: 'issue_template[tracker_id]'
+
+        expect(page).to have_selector('div#json_generator')
+        expect(page).to have_selector('select#field_selector')
+
+        select 'Priority', from: 'field_selector'
+
+        expect(page).to have_select('Value', options: IssuePriority.active.pluck(:name))
       end
     end
   end
