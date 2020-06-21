@@ -60,7 +60,7 @@
     <div id="json_generator">
       <p>
         <label><%= l(:label_select_field, default: 'Select a field') %></label>
-        <select v-model='newItemTitle'>
+        <select v-model='newItemTitle' id='field_selector'>
           <option v-for='(value, key) in customFields' v-bind:value='key'>
            {{ value.name }}
           </option>
@@ -73,7 +73,7 @@
         </a>
       </p>
       <p>
-          <label><%= l(:field_value) %></label>
+          <label for='value_selector'><%= l(:field_value) %></label>
           <textarea id='issue_template_json_setting_field' v-if='fieldFormat() == "text"' rows=6
               placeholder='<%= l(:enter_value, default: 'Please enter a value') %>' v-model='newItemValue'>
           </textarea>
@@ -93,7 +93,7 @@
           </select>
 
           <select v-model='newItemValue' :multiple='customFields[newItemTitle].multiple == true'
-            v-if='fieldFormat() == "list" || fieldFormat() == "bool"'>
+            v-if='fieldFormat() == "list" || fieldFormat() == "bool"' id='value_selector'>
             <option v-for="value in possibleValues()">{{ value }}</option>
           </select>
           <span style='margin-left: 4px;' class='icon icon-add' v-on:click='addField(newItemTitle, newItemValue)'>
