@@ -49,7 +49,8 @@
         </td>
         <td>
           <a data-note-template-id='<%= template.id %>'
-             onclick='applyNoteTemplate(this, <%= template.id %>)'
+             data-note-template-load-url='<%= load_note_templates_url %>''
+             onclick='noteTemplateNS.applyNoteTemplate(this)'
              class='icon icon-test template-global template-update-link'></a>
         </td>
       </tr>

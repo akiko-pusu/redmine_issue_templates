@@ -181,7 +181,7 @@ td.template_title {
 }
 
 .filtered_templates_list {
-    padding-top: 10px;
+    padding-top: 2px;
 }
 
 select.issue_template {
@@ -388,7 +388,7 @@ a.icon-help:hover .tooltip-area {
     width: auto;
     background-color: #c6d9ec;
     padding: 6px;
-    margin-bottom: 20px;
+    margin-bottom: 2px;
 }
 
 .overlay .cancel {
@@ -396,6 +396,11 @@ a.icon-help:hover .tooltip-area {
     width: 100%;
     height: 100%;
     cursor: default;
+}
+
+.overlay .template_search_filter_wrapper {
+    margin-top:  8px;
+    margin-bottom: 8px;
 }
 
 /*--------- for Flash message --------*/

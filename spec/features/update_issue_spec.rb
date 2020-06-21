@@ -103,8 +103,6 @@ feature 'Update issue', js: true do
         Setting.send 'plugin_redmine_issue_templates=', 'apply_global_template_to_all_projects' => 'true'
       end
 
-      given(:template_rows) { page.find('div#template_issue_notes_dialog table > tbody') }
-
       scenario 'One Global template for note' do
         visit_update_issue(user)
         issue = Issue.last
@@ -116,6 +114,8 @@ feature 'Update issue', js: true do
         page.find('a#link_template_issue_notes_dialog').click
 
         wait_for_ajax
+        template_rows = page.find('div#template_issue_notes_dialog table > tbody')
+
         expect(page).to have_selector('div#template_issue_notes_dialog')
         expect(template_rows).to have_selector('tr:first-child > td:nth-child(3) > a.template-global')
       end
