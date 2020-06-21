@@ -21,7 +21,8 @@ feature 'IssueTemplate', js: true do
            :issue_statuses,
            :trackers,
            :projects_trackers,
-           :enabled_modules
+           :enabled_modules,
+           :enumerations
 
   given(:role) { Role.find(1) }
   after do
@@ -290,6 +291,39 @@ feature 'IssueTemplate', js: true do
       page.find('#revert_template').click
       expect(issue_description.value).to eq 'Test for revert description'
       expect(issue_subject.value).to eq 'Test for revert subject'
+    end
+  end
+
+  # builtin fields test
+  feature 'Can apply value to the builtin field' do
+    given(:priority_name) { IssuePriority.active.sample.name }
+    given(:builtin_fields_json_value) do
+      {
+        "issue_priority_id": priority_name,
+        "issue_estimated_hours": 5
+      }
+    end
+    given(:expected_title) { 'Sample Title for rspec' }
+    given!(:enabled_module) { FactoryBot.create(:enabled_module) }
+    given!(:issue_templates) do
+      FactoryBot.create(:issue_template, title: expected_title,
+                                         project_id: 1, tracker_id: 1, builtin_fields_json: builtin_fields_json_value)
+    end
+    background do
+      # enable_builtin_fields
+      Setting.send 'plugin_redmine_issue_templates=', 'enable_builtin_fields' => 'true'
+
+      assign_template_priv(role, add_permission: :show_issue_templates)
+      log_user('jsmith', 'jsmith')
+      visit '/projects/ecookbook/issues/new'
+
+      select expected_title, from: 'issue_template'
+      sleep(0.2)
+    end
+
+    scenario 'Builtin fields are filled' do
+      expect(page).to have_select('issue[priority_id]', selected: priority_name)
+      expect(page.find('#issue_estimated_hours').value).to eq '5'
     end
   end
 end
