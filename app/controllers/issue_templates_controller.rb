@@ -203,6 +203,9 @@ class IssueTemplatesController < ApplicationController
   end
 
   def issue_templates
+    if params[:issue_project_id]
+      @project = Project.find(params[:issue_project_id])
+    end
     IssueTemplate.get_templates_for_project_tracker(@project.id, @tracker.id)
   end
 
