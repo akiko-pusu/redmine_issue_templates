@@ -62,17 +62,17 @@ ISSUE_TEMPLATE.prototype = {
 
     let issueDescription = document.getElementById('issue_description')
     let oldDescription = document.getElementById('original_description')
-    let templateNS = window.templateNS
+    let ns = this
 
-    issueSubject.value = templateNS.escapeHTML(oldSubject.textContent)
+    issueSubject.value = ns.escapeHTML(oldSubject.textContent)
 
     if (issueDescription != null) {
-      issueDescription.value = templateNS.escapeHTML(oldDescription.textContent)
+      issueDescription.value = ns.escapeHTML(oldDescription.textContent)
     }
 
     try {
       if (CKEDITOR.instances.issue_description) {
-        CKEDITOR.instances.issue_description.setData(templateNS.escapeHTML(oldDescription.text()))
+        CKEDITOR.instances.issue_description.setData(ns.escapeHTML(oldDescription.text()))
       }
     } catch (e) {
       // do nothing.
@@ -282,7 +282,7 @@ ISSUE_TEMPLATE.prototype = {
           document.getElementById('template_area').style.display = 'none'
           if (ns.isTriggeredBy != null && this.isTriggeredBy === 'issue_tracker_id') {
             if (document.querySelectorAll('#issue-form.new_issue').length > 0 && ns.should_replaced === true) {
-              if (typeof templateNS !== 'undefined') {
+              if (typeof ns !== 'undefined') {
                 ns.eraseSubjectAndDescription()
               }
             }
