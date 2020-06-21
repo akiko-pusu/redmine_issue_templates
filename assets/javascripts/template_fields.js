@@ -1,4 +1,5 @@
 // This JS is used only when create / edit template. (Using Vue.js)
+'use strict'
 const vm = new Vue({
   el: '#json_generator',
   data: {

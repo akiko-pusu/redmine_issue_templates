@@ -7,6 +7,8 @@
 
 // For namespace setting.
 // var ISSUE_TEMPLATE = ISSUE_TEMPLATE || function () {}
+'use strict'
+
 function ISSUE_TEMPLATE(config) {
   this.pulldownUrl = config.pulldownUrl
   this.loadUrl = config.loadUrl

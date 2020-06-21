@@ -1,3 +1,4 @@
+'use strict'
 const removeCheckList = (obj) => {
   let target = obj.closest('li')
   target.remove()
