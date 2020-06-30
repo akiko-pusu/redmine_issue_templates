@@ -258,7 +258,7 @@ ISSUE_TEMPLATE.prototype = {
   },
   setPulldown: function (tracker) {
     let ns = this
-    let params = { issue_tracker_id: tracker }
+    let params = { issue_tracker_id: tracker, is_triggered_by: ns.isTriggeredBy }
     let pullDownProject = document.getElementById('issue_project_id')
     if (pullDownProject) {
       params.issue_project_id = pullDownProject.value

@@ -100,12 +100,12 @@ class IssueTemplatesController < ApplicationController
     add_templates_to_group(@inherit_templates, class: 'inherited')
     add_templates_to_group(@global_templates, class: 'global')
 
-    is_triggered_by = request.parameters[:is_triggered_by]
-    is_update_issue = request.parameters[:is_update_issue]
-    @group[@default_template].selected = 'selected' if @default_template.present? && (is_update_issue.blank? || is_update_issue != 'true')
+    if loadable_trigger?
+      @group[@default_template].selected = 'selected'
+    end
 
     render action: '_template_pulldown', layout: false,
-           locals: { is_triggered_by: is_triggered_by, grouped_options: @group,
+           locals: { is_triggered_by: request.parameters[:is_triggered_by], grouped_options: @group,
                      should_replaced: setting.should_replaced, default_template: @default_template }
   end
 
@@ -232,5 +232,13 @@ class IssueTemplatesController < ApplicationController
     { layout: !request.xhr?,
       locals: { issue_template: template, project: @project, child_project_used_count: child_project_used_count,
                 checklist_enabled: checklist_enabled?, custom_fields: custom_fields.to_s, builtin_fields_enable: builtin_fields_enabled? } }
+  end
+
+  def loadable_trigger?
+    is_triggered_by = request.parameters[:is_triggered_by]
+    is_update_issue = request.parameters[:is_update_issue]
+
+    return false if is_triggered_by.present? && is_triggered_by != 'is_update_issue'
+    return @default_template.present? && (is_update_issue.blank? || is_update_issue != 'true')
   end
 end
