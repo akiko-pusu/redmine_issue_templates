@@ -4,12 +4,10 @@
  *
  * Use '==' operator to evaluate null or undefined.
  */
-
-// For namespace setting.
-// var ISSUE_TEMPLATE = ISSUE_TEMPLATE || function () {}
+/* global CKEDITOR, Element, Event */
 'use strict'
 
-function ISSUE_TEMPLATE(config) {
+function ISSUE_TEMPLATE (config) {
   this.pulldownUrl = config.pulldownUrl
   this.loadUrl = config.loadUrl
   this.confirmMsg = config.confirmMessage
@@ -41,7 +39,7 @@ ISSUE_TEMPLATE.prototype = {
   },
   openDialog: function (url, title) {
     // Open dialog (modal window) to display selectable templates list.
-    fetch(url)
+    window.fetch(url)
       .then((response) => {
         return response.text()
       })
@@ -95,7 +93,7 @@ ISSUE_TEMPLATE.prototype = {
       templateType = 'global'
     }
 
-    fetch(ns.loadUrl,
+    window.fetch(ns.loadUrl,
       {
         method: 'POST',
         credentials: 'same-origin',
@@ -264,7 +262,7 @@ ISSUE_TEMPLATE.prototype = {
       params.issue_project_id = pullDownProject.value
     }
 
-    fetch(ns.pulldownUrl,
+    window.fetch(ns.pulldownUrl,
       {
         method: 'POST',
         credentials: 'same-origin',
@@ -529,7 +527,7 @@ document.onreadystatechange = () => {
     if (orphanedTemplateLink) {
       orphanedTemplateLink.addEventListener('click', (event) => {
         const url = orphanedTemplateLink.getAttribute('data-url')
-        fetch(url)
+        window.fetch(url)
           .then((response) => {
             return response.text()
           })
@@ -561,7 +559,7 @@ document.onreadystatechange = () => {
 
 // ------- fot NoteTemplate
 
-function NOTE_TEMPLATE(config) {
+function NOTE_TEMPLATE (config) {
   this.baseElementId = config.baseElementId
   this.baseTemplateListUrl = config.baseTemplateListUrl
   this.baseTrackerId = config.baseTrackerId
@@ -593,7 +591,7 @@ NOTE_TEMPLATE.prototype = {
     let ns = this
     let templateId = targetElement.dataset.noteTemplateId
     let projectId = document.getElementById('issue_project_id')
-    let loadUrl = targetElement.dataset.noteTemplateLoadUrl
+    let loadUrl = ns.loadNoteTemplateUrl
 
     let JSONdata = {
       note_template: { note_template_id: templateId }
@@ -608,8 +606,8 @@ NOTE_TEMPLATE.prototype = {
     }
 
     let token = document.querySelector('#issue-form input[name="authenticity_token"]')
-    let req = new XMLHttpRequest()
-    req.onreadystatechange = function() {
+    let req = new window.XMLHttpRequest()
+    req.onreadystatechange = function () {
       let container = targetElement.closest('div.overlay')
       let target = container.id.replace('template_', '')
       target = target.replace('_dialog', '')
@@ -641,8 +639,8 @@ NOTE_TEMPLATE.prototype = {
       templateListUrl += '?tracker_id=' + ns.baseTrackerId + '&project_id=' + ns.baseProjectId
     }
 
-    let req = new XMLHttpRequest();
-    req.onreadystatechange = function() {
+    let req = new window.XMLHttpRequest()
+    req.onreadystatechange = function () {
       if (req.readyState === 4) {
         if (req.status === 200 || req.status === 304) {
           let value = req.responseText
