@@ -83,7 +83,8 @@
     confirmMessage: '<%=h l(:label_template_applied, default: "Issue template is applied. You can revert with click 'Revert' link.") %>'
   }
 
-  var templateNS = templateNS || new ISSUE_TEMPLATE(templateConfig);
+  var templateNS = templateNS || new ISSUE_TEMPLATE(templateConfig)
+  templateNS.isTriggeredBy = '<%= is_triggered_by %>'
   templateNS.setPulldown('<%= @issue.tracker.id %>')
 
   document.getElementById('issue_template').addEventListener('change', (event) => {
