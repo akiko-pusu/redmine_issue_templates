@@ -593,7 +593,7 @@ NOTE_TEMPLATE.prototype = {
     let ns = this
     let templateId = targetElement.dataset.noteTemplateId
     let projectId = document.getElementById('issue_project_id')
-    let loadUrl = targetElement.dataset.noteTemplateLoadUrl
+    let loadUrl = ns.loadNoteTemplateUrl
 
     let JSONdata = {
       note_template: { note_template_id: templateId }
