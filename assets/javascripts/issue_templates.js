@@ -374,6 +374,11 @@ ISSUE_TEMPLATE.prototype = {
             return ns.updateFieldValues(elements, value)
           }
         }
+
+        if (/issue_watcher_user_ids/.test(key)) {
+          return ns.checkSelectedWatchers(value)
+        }
+
         if (element == null) {
           return
         }
@@ -438,6 +443,15 @@ ISSUE_TEMPLATE.prototype = {
 
     let changeEvent = new Event('change')
     document.getElementById('issue_template').dispatchEvent(changeEvent)
+  },
+  checkSelectedWatchers: function (values) {
+    let targets = document.querySelectorAll('input[name="issue[watcher_user_ids][]"]')
+    for (let i = 0; i < targets.length; i++) {
+      let target = targets[i]
+      if (values.includes(target.value)) {
+        target.checked = true
+      }
+    }
   },
   filterTemplate: function (event) {
     let cols = document.getElementsByClassName('template_data')

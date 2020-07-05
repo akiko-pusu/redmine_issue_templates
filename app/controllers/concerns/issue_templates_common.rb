@@ -84,6 +84,7 @@ module Concerns
       return {} unless builtin_fields_enabled?
 
       fields = %w[status_id priority_id]
+      fields << 'watcher_user_ids' if project_id.present?
 
       # exclude "description"
       tracker = Tracker.find_by(id: tracker_id)
@@ -104,6 +105,16 @@ module Concerns
         if field == 'status_id' && tracker.present?
           value[:possible_values] = tracker.issue_statuses.pluck(:name)
           value[:field_format] = 'list'
+        end
+
+        if field == 'watcher_user_ids' && project_id.present?
+          issue = Issue.new(tracker_id: tracker_id, project_id: project_id)
+          watchers = helpers.users_for_new_issue_watchers(issue)
+          value[:field_format] = 'list'
+
+          value[:possible_values] = watchers.map { |user| "#{user.name} :#{user.id}" }
+          value[:name] = I18n.t('field_watcher')
+          value[:multiple] = true
         end
 
         value[:field_format] = 'date' if %(start_date due_date).include?(field)
