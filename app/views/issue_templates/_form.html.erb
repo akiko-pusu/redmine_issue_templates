@@ -220,11 +220,12 @@
 <!-- tooltip content -->
 <script>
   const baseUrl = "<%= url_for(controller: 'issue_templates', action: 'load_selectable_fields') %>"
-  const template_id = "<%= issue_template&.id || '' %>"
-  const template_type = 'issue_template'
-  const tracker_pulldown_id = template_type + '_tracker_id'
+  const templateId = "<%= issue_template&.id || '' %>"
+  const templateType = 'issue_template'
+  const trackerPulldownId = templateType + '_tracker_id'
   const base_builtin_fields = <%= issue_template.builtin_fields.html_safe %>
   const base_custom_fields = <%= custom_fields.html_safe %>
+  const projectId = "<%= project.id %>"
 </script>
 
 <% if builtin_fields_enable %>

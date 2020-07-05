@@ -114,12 +114,15 @@ feature 'IssueTemplate', js: true do
       scenario 'form for builtin_fields are shown' do
         select 'Bug', from: 'issue_template[tracker_id]'
 
+        wait_for_ajax
         expect(page).to have_selector('div#json_generator')
         expect(page).to have_selector('select#field_selector')
 
         select 'Priority', from: 'field_selector'
-
         expect(page).to have_select('Value', options: IssuePriority.active.pluck(:name))
+
+        select 'Watcher', from: 'field_selector'
+        expect(page).to have_select('Value', options:  ['Dave Lopper :3', 'John Smith :2'])
       end
     end
   end
