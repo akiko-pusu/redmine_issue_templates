@@ -112,6 +112,20 @@ If you have any requests, bug reports, please use GitHub issues. <https://github
 
 ## Changelog
 
+### 1.0.4
+
+Release to implememted some additional built-in/custom fields support.
+
+* Feature: Add preselected watchers to templates. (GitHub: #302)
+* Feature: Enabled to define assignees and categories. (GitHub: #362)
+* Bugfix: Template duplicates when changing Status or Category fields. (GitHub: #354)
+* Bugfix: Template body not loaded into issue answer (v.1.0.3 only) (GitHub: #356)
+* Update JavaScript and Spec.
+
+Thank you for the valuable information and feedback, @ChrisUHZ!
+
+RESTRICTION: This version **is still not compatible with IE11**. (Related: #310)
+
 ### 1.0.3
 
 NOTE: Mainly, maintenance, bugfix and refactoring only. There is no additional feature.
