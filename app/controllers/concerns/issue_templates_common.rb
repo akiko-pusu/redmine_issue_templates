@@ -89,7 +89,7 @@ module Concerns
       # exclude "description"
       tracker = Tracker.find_by(id: tracker_id)
       fields += tracker.core_fields.reject { |field| field == 'description' } if tracker.present?
-      fields.reject! { |field| %w[category_id fixed_version_id].include?(field) } if project_id.blank?
+      fields.reject! { |field| %w[category_id fixed_version_id assigned_to_id].include?(field) } if project_id.blank?
 
       map = {}
 
@@ -104,6 +104,19 @@ module Concerns
 
         if field == 'status_id' && tracker.present?
           value[:possible_values] = tracker.issue_statuses.pluck(:name)
+          value[:field_format] = 'list'
+        end
+
+        if field == 'category_id' && project_id.present?
+          categories = IssueCategory.where(project_id: project_id)
+          value[:possible_values] = categories.pluck(:name)
+          value[:field_format] = 'list'
+        end
+
+        if field == 'assigned_to_id' && project_id.present?
+          project = Project.find(project_id)
+          assignable_users = (project.assignable_users(tracker).to_a + [project.default_assigned_to]).uniq.compact
+          value[:possible_values] = assignable_users.map { |user| user.name }
           value[:field_format] = 'list'
         end
 

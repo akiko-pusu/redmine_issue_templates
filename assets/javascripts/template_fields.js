@@ -8,7 +8,8 @@ const vm = new Vue({
     newItemTitle: '',
     newItemValue: '',
     api_builtin_fields: {},
-    api_custom_fields: {}
+    api_custom_fields: {},
+    customFieldUrl: ''
   },
   methods: {
     addField: function (newFieldName, newFieldValue) {
@@ -88,7 +89,7 @@ const vm = new Vue({
         this.$el.style.display = 'block'
         const trackerId = event.target.value
         let url = baseUrl + '?tracker_id=' + trackerId + '&template_id=' + templateId
-        if (projectId) {
+        if (typeof projectId !== 'undefined') {
           url += '&project_id=' + projectId
         }
         window.fetch(url)
@@ -103,6 +104,24 @@ const vm = new Vue({
       })
     }
     this.loadField()
+  },
+  computed: {
+    // not yet
+  },
+  watch: {
+    newItemTitle: function (val) {
+      if (typeof relativeUrlRoot === 'undefined') {
+        this.customFieldUrl = ''
+        return
+      }
+
+      let field = this.customFields[val]
+      if (field == null || field.type != 'IssueCustomField') {
+        this.customFieldUrl = ''
+        return
+      }
+      this.customFieldUrl = relativeUrlRoot + '/custom_fields/' + field.id + '/edit'
+    }
   }
 })
 
