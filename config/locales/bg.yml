@@ -63,7 +63,7 @@ bg:
   note_template: "Шаблон за коментар"
   no_note_templates_for_this_project: "Шаблони за коментари не са дефинирани за този проект."
   label_memo_help_message: "Моля запишете тук обяснителна бележка, която се появява при прилагане на този шаблон."
-  note_template_name: "Име на шаблона за кмоментар"
+  note_template_name: "Име на шаблона за коментар"
   note_description: "Коментар"
   field_template_visibility: Видимост на шаблоните
   note_templates:
@@ -87,3 +87,5 @@ bg:
   warning_enable_builtin_fields: Моля бъдете внимателни, ако активирате тази поддръжка, защото тя все още е в експериментален стадий. Все още не е предвиден достатъчно UI и функции за поддръжка на всички типове полета. Възможна е несигурна работа в зависимост от браузъра. Бъдете внимателни.
   label_field_information: Информация за полето
   unavailable_fields_for_this_tracker: Недостъпно поле за този тракер
+  global_note_templates: Глобален шаблон за коментар
+  link_to_index_edit_note_template: Шаблони за коментари / редактиране на шаблони
