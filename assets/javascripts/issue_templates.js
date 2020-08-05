@@ -193,7 +193,6 @@ ISSUE_TEMPLATE.prototype = {
     }
 
     ns.setRelatedLink(obj)
-    ns.addCheckList(obj)
     ns.builtinFields(obj)
     ns.confirmToReplace = true
   },
@@ -293,27 +292,6 @@ ISSUE_TEMPLATE.prototype = {
         let changeEvent = new Event('change')
         document.getElementById('issue_template').dispatchEvent(changeEvent)
       })
-  },
-  addCheckList: function (obj) {
-    let list = obj.checklist
-    if (list == null) return false
-    let checklistForm = document.getElementById('checklist_form')
-    if (!checklistForm) return
-
-    // NOTE: If Checklist does not work fine, please confirm its version and the DOM element of
-    // checklist input field exists.
-    // If some difference, please report the issue or feedback to IssueTemplate's repository.
-    try {
-      for (let i = 0; i < list.length; i++) {
-        let node = document.querySelector('span.checklist-item.new > span.checklist-edit-box > input.edit-box')
-        if (node) {
-          node.value = list[i]
-          document.querySelector('span.checklist-item.new > span.icon.icon-add.checklist-new-only.save-new-by-button').click()
-        }
-      }
-    } catch (e) {
-      console.log(`NOTE: Checklist could not be applied due to this error. ${e.message} : ${e.message}`)
-    }
   },
   setRelatedLink: function (obj) {
     let relatedLink = document.getElementById('issue_template_related_link')

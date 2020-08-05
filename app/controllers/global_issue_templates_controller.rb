@@ -131,7 +131,7 @@ class GlobalIssueTemplatesController < ApplicationController
     params.require(:global_issue_template)
           .permit(:title, :tracker_id, :issue_title, :description, :note, :is_default, :enabled,
                   :author_id, :position, :related_link, :link_title, :builtin_fields,
-                  project_ids: [], checklists: [])
+                  project_ids: [])
   end
 
   def render_form_params
@@ -142,7 +142,7 @@ class GlobalIssueTemplatesController < ApplicationController
                     .merge(custom_fields_map_by_tracker_id(tracker_id)).to_json
 
     { layout: !request.xhr?,
-      locals: { checklist_enabled: checklist_enabled?, trackers: trackers, apply_all_projects: apply_all_projects?,
+      locals: { trackers: trackers, apply_all_projects: apply_all_projects?,
                 issue_template: @global_issue_template, projects: projects, custom_fields: custom_fields.to_s,
                 builtin_fields_enable: builtin_fields_enabled? } }
   end

@@ -9,8 +9,7 @@
                       html: { id: 'global_issue_template-form',
                                   class: nil, multipart: false } do |f| %>
 
-  <%= render 'form', { f: f, checklist_enabled: checklist_enabled,
-                        trackers: trackers, projects: projects,
+  <%= render 'form', { f: f, trackers: trackers, projects: projects,
                         issue_template: issue_template, apply_all_projects: apply_all_projects,
                         custom_fields: custom_fields, builtin_fields_enable: builtin_fields_enable } %>
 <% end %>

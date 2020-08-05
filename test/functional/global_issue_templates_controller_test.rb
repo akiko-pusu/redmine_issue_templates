@@ -32,29 +32,6 @@ class GlobalIssueTemplatesControllerTest < Redmine::ControllerTest
     assert_equal 'Update Test Global template2', global_issue_template.description
   end
 
-  def test_update_template_when_checklist_enable
-    # Use stub to test with other plugin
-    mock = MiniTest::Mock.new
-    mock.expect(:call, true, [:redmine_checklists])
-    Redmine::Plugin.registered_plugins.stub(:key?, mock) do
-      checklists_param = %w[check1 check2]
-
-      num = GlobalIssueTemplate.count
-      # when title blank, validation bloks to save.
-      put :update, params: { id: 2, global_issue_template:
-        { description: 'Update Test Global template2 with checklist param', checklists: checklists_param } }
-
-      assert_response :redirect # show
-      assert_equal(num, GlobalIssueTemplate.count)
-
-      global_issue_template = GlobalIssueTemplate.find(2)
-
-      assert_equal(checklists_param.to_json, global_issue_template.checklist_json)
-      assert_equal(checklists_param, global_issue_template.checklist)
-    end
-    mock.verify
-  end
-
   def test_update_template_with_empty_title
     put :update, params: { id: 2, global_issue_template:
       { title: '' } }
