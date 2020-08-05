@@ -28,14 +28,14 @@ const addCheckListItem = (value) => {
   span.classList.add('text')
 
   let checkListText = document.createTextNode(value)
-  span.appendChild(checkListText);
+  span.appendChild(checkListText)
 
   let hidden = document.createElement('input')
   hidden.classList.add('checklist-item')
   hidden.value = value
   hidden.setAttribute('type', 'hidden')
-  hidden.setAttribute('id', template_type + '_checklist')
-  hidden.setAttribute('name', template_type + '[checklists][]')
+  hidden.setAttribute('id', templateType + '_checklist')
+  hidden.setAttribute('name', templateType + '[checklists][]')
 
   li.appendChild(hidden)
 

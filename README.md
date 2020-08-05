@@ -112,9 +112,16 @@ If you have any requests, bug reports, please use GitHub issues. <https://github
 
 ## Changelog
 
+### 1.0.5
+
+Bugfix and filal release to support Checklist integration.
+Please see: <https://github.com/akiko-pusu/redmine_issue_templates/issues/363>
+
+* Bugfix: template_type is not defined error (GitHub: #364 / Thanks for reporting issue, @toku463ne)
+
 ### 1.0.4
 
-Release to implememted some additional built-in/custom fields support.
+Release to implemented some additional built-in/custom fields support.
 
 * Feature: Add preselected watchers to templates. (GitHub: #302)
 * Feature: Enabled to define assignees and categories. (GitHub: #362)
