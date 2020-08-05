@@ -58,6 +58,8 @@ module Concerns
         position <=> other.position
       end
 
+      # Keep this method for a while, but this will be deprecated.
+      # Please see: https://github.com/akiko-pusu/redmine_issue_templates/issues/363
       def checklist
         return [] if checklist_json.blank?
 

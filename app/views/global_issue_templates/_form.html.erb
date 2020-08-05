@@ -30,26 +30,6 @@
                       required: true,
                       label: l(:issue_description), class: 'wiki-edit', style: 'overflow: auto;' %>
     </p>
-    <!-- for Checklist -->
-    <% if checklist_enabled %>
-      <p id='checklist_form'>
-        <label>Checklist</label>
-        <input type='text' id='checklist_text' class='edit-box'>
-        <span class='icon icon-add checklist-new-only save-new-by-button' onclick='addCheckList()'></span>
-        <ul class='checklist' style='padding-left: 180px;'>
-          <% issue_template.checklist.each_with_index do |content, i| %>
-            <li id='checklist_<%= i %>'>
-              <span class='text'>
-                <%= content %>
-                <i class='icon icon-del' onclick='removeCheckList(this)'></i>
-              </span>
-              <input type='hidden' name='global_issue_template[checklists][]'
-                     id='global_issue_template_checklist' value='<%= content %>'>
-            </li>
-          <% end %>
-        </ul>
-      </p>
-    <% end %>
 
     <!-- for Builtin Fields -->
     <!-- buildin field Generator -->
@@ -258,6 +238,3 @@
 <%= javascript_include_tag('template_fields', plugin: 'redmine_issue_templates') %>
 <% end %>
 
-<% if checklist_enabled %>
-<%= javascript_include_tag('template_checklists', plugin: 'redmine_issue_templates') %>
-<% end %>

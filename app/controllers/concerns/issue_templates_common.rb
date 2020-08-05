@@ -48,10 +48,6 @@ module Concerns
       plugin_setting['apply_global_template_to_all_projects'].to_s == 'true'
     end
 
-    def checklists
-      template_params[:checklists].presence || []
-    end
-
     def builtin_fields_json
       value = template_params[:builtin_fields].blank? ? {} : JSON.parse(template_params[:builtin_fields])
       return value if value.is_a?(Hash)
@@ -59,17 +55,9 @@ module Concerns
       raise InvalidTemplateFormatError
     end
 
-    def checklist_enabled?
-      Redmine::Plugin.registered_plugins.key? :redmine_checklists
-    rescue StandardError
-      false
-    end
-
     def valid_params
-      # convert attribute name and data for checklist plugin supporting
-      attributes = template_params.except(:checklists, :builtin_fields)
+      attributes = template_params.except(:builtin_fields)
       attributes[:builtin_fields_json] = builtin_fields_json if builtin_fields_enabled?
-      attributes[:checklist_json] = checklists.to_json if checklist_enabled?
       attributes
     end
 
