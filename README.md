@@ -114,7 +114,7 @@ If you have any requests, bug reports, please use GitHub issues. <https://github
 
 ### 1.0.5
 
-Bugfix and filal release to support Checklist integration.
+Bugfix and final release to support Checklist integration.
 Please see: <https://github.com/akiko-pusu/redmine_issue_templates/issues/363>
 
 * Bugfix: template_type is not defined error (GitHub: #364 / Thanks for reporting issue, @toku463ne)

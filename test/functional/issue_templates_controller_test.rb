@@ -73,7 +73,7 @@ class IssueTemplatesControllerTest < Redmine::ControllerTest
 
     num = IssueTemplate.count
     post :create, params: {
-      issue_template: { title: 'newtitle', note: 'note', checklists: %w[check1 check2],
+      issue_template: { title: 'newtitle', note: 'note',
                         description: 'description', tracker_id: 1, enabled: 1, author_id: 3 },
       project_id: 1
     }
@@ -93,34 +93,6 @@ class IssueTemplatesControllerTest < Redmine::ControllerTest
 
     assert_nil(template.checklist_json)
     assert_equal([], template.checklist)
-  end
-
-  def test_create_template_when_checklist_enable
-    edit_permission
-
-    # Use stub to test with other plugin
-    mock = MiniTest::Mock.new
-    mock.expect(:call, true, [:redmine_checklists])
-    Redmine::Plugin.registered_plugins.stub(:key?, mock) do
-      checklists_param = %w[check1 check2]
-
-      num = IssueTemplate.count
-      post :create, params: {
-        issue_template: { title: 'newtitle', note: 'note', checklists: checklists_param,
-                          description: 'description', tracker_id: 1, enabled: 1, author_id: 3 },
-        project_id: 1
-      }
-
-      template = IssueTemplate.last
-      assert_response :redirect
-
-      assert_equal(num + 1, IssueTemplate.count)
-
-      assert_not_nil template
-      assert_equal(checklists_param.to_json, template.checklist_json)
-      assert_equal(checklists_param, template.checklist)
-    end
-    mock.verify
   end
 
   def test_create_template_with_empty_title
@@ -179,31 +151,6 @@ class IssueTemplatesControllerTest < Redmine::ControllerTest
     assert_select 'div#edit-issue_template'
     # Error message should be displayed.
     assert_select 'div#errorExplanation', { count: 1, text: /Title cannot be blank/ }, @response.body.to_s
-  end
-
-  def test_update_template_when_checklist_enable
-    edit_permission
-
-    # Use stub to test with other plugin
-    mock = MiniTest::Mock.new
-    mock.expect(:call, true, [:redmine_checklists])
-    Redmine::Plugin.registered_plugins.stub(:key?, mock) do
-      checklists_param = %w[check1 check2]
-
-      num = IssueTemplate.count
-      # when title blank, validation bloks to save.
-      put :update, params: { id: 2,
-                             issue_template: { title: 'update with checklist param', checklists: checklists_param }, project_id: 1 }
-
-      assert_response :redirect # show
-      assert_equal(num, IssueTemplate.count)
-
-      issue_template = IssueTemplate.find(2)
-
-      assert_equal(checklists_param.to_json, issue_template.checklist_json)
-      assert_equal(checklists_param, issue_template.checklist)
-    end
-    mock.verify
   end
 
   def test_delete_template_fail_if_enabled

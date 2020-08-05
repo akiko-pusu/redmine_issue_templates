@@ -12,23 +12,6 @@ describe 'IssueTemplatesCommon' do
   end
   let(:mock_controller) { FakesController.new }
 
-  describe '#checklist_enabled?' do
-    subject { mock_controller.checklist_enabled? }
-    context 'checklist plugin not registered' do
-      before do
-        allow(Redmine::Plugin).to receive(:registered_plugins).and_return({})
-      end
-      it { is_expected.to be_falsey }
-    end
-
-    context 'checklist plugin registered' do
-      before do
-        allow(Redmine::Plugin).to receive(:registered_plugins).and_return(redmine_checklists: 'mock data')
-      end
-      it { is_expected.to be_truthy }
-    end
-  end
-
   describe '#log_action' do
     subject { mock_controller.log_action }
 

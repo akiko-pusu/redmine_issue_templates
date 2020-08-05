@@ -19,7 +19,6 @@ class IssueTemplate < ActiveRecord::Base
                   'enabled_sharing',
                   'visible_children',
                   'position',
-                  'checklist_json',
                   'related_link',
                   'link_title',
                   'builtin_fields_json'

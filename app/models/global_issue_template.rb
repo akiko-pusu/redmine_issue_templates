@@ -18,7 +18,6 @@ class GlobalIssueTemplate < ActiveRecord::Base
                   'project_ids',
                   'position',
                   'author_id',
-                  'checklist_json',
                   'related_link',
                   'link_title',
                   'builtin_fields_json'
