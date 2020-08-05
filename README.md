@@ -112,6 +112,11 @@ If you have any requests, bug reports, please use GitHub issues. <https://github
 
 ## Changelog
 
+### 1.1.0
+
+Drop off the feature to integrate with Checklist plugin, for maintenance reason.
+Please see for more details: <https://github.com/akiko-pusu/redmine_issue_templates/issues/363>
+
 ### 1.0.5
 
 Bugfix and final release to support Checklist integration.
