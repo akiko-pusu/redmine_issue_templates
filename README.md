@@ -94,8 +94,8 @@ project has some format for issues.
 
 ## Troubleshoot for bundle intall and startup problem
 
-This plugin repository includes some test code and gem settiing. If you have
-some trouble related "bundle intall", please try --without option.
+This plugin repository includes some test code and gem settings. If you have
+some trouble related "bundle install", please try --without option.
 
 > Exp. bundle install --without test
 
